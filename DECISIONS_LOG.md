@@ -1,0 +1,197 @@
+# Decisions Log
+
+Extends the D1–D12 decision table locked in `MECHSYNTH_SPEC_v0.1.md` §0.
+
+Status: D13–D23 `CONFIRMED`. Ontology rows: D-ONT-1/2/3/4/6/7/8/9 `CONFIRMED`, D-ONT-5 `DEFERRED`
+(M6 variant-ladder), D-ONT-10 CONFIRMED. Bayer D-BAYER-1..5 CONFIRMED (A-PETG-1 permanent in ASSUMPTIONS.md). Generality D-GEN-1/2 CONFIRMED.
+also lives permanently in `ASSUMPTIONS.md` / gate G-S4 until a datasheet lands).
+
+---
+
+| # | Decision | Rationale | Status |
+|---|----------|-----------|--------|
+| D13 | **Tier0 (exact B-rep) runs before Tier2 (physics), and is a hard gate** | M0 found the pin embedded in solid plastic — un-insertable, violating the pin_hinge card's own `assembly` constraint. A solid-knuckle collision primitive has no bore to be blocked, so MuJoCo would have certified a hinge that cannot be assembled. The stage ordering in §5 is load-bearing, not bureaucratic. **General form: verification is a function of representation — every checker question requires a referent, and an unstructured blob contains no nouns to check, hence no predicates. This is why "naive generation + downstream checker" cannot work.** | **CONFIRMED** |
+| D14 | **Collision-hint invariant: no primitive of a moving piece may share a face plane with, or be exactly tangent to, a static piece's primitive.** Inset the moving piece by `COLLISION_EPS = 0.2 mm`; leave the load-bearing plane exact. | A flush lid gave MuJoCo's box–box routine two tied separating axes; it flipped its normal and reported −57.7 mm / 362 N between parts 0.0002 mm apart, launching the lid at 214 rad/s. Cannot hide real interference — Tier0 has already proved there is none. **The Hard anchor's drawer-in-cabinet is exactly this flush-panel-in-flush-opening geometry; expect this at M3.** | **CONFIRMED** |
+| D15 | **The visual-vs-collision overlay (§6.2) is mandatory and load-bearing.** G-CONV additionally asserts visual bbox ≈ collision bbox. | build123d exports STL in **mm**; MuJoCo reads mesh files as **m**. Collision and inertia were computed in metres and were correct, so *every gate passed* while the visual meshes were 1000× oversized. Numerically right, visually false — and G-H is a human approving a video. Caught only because a human looked. | **CONFIRMED** |
+| D16 | **P-HINGE actuation is a follower force (normal to the lid face), not a world-vertical one.** Force is applied at a *moving material point*, never a fixed world point. | §6.3 as written is unsatisfiable. A world-vertical tip force exerts `τ = cosθ·(F·R − mg·R_com)`: the moment arm vanishes at *exactly* the 90° criterion. Measured, it converges to **89.65°** and stalls there forever — approaching its own pass threshold from below and never crossing. A follower force has constant authority in both directions and certifies cleanly (102.2°). | **CONFIRMED** |
+| D17 | **The contact preset is fixed by a physical requirement, then frozen** (§6.2 / R5): penetration under working loads ≤ 0.05 mm, i.e. ≪ the 0.30 mm PETG print clearance. `solref=(0.001,1.0)`, `solimp=(0.99,0.9999,0.0001)`, dt=0.5 ms. | A softer preset squashed parts by 0.284 mm — as much as the entire print clearance, rendering the clearances the project exists to verify meaningless. Fixed by physics, not by what turned a test green. | **CONFIRMED** |
+| **D18** | **The collision pathway that retires R1 is (c) primitive ring decomposition supplied by the card — i.e. `ElementCard.collision_hint()`. CoACD does not, and MuJoCo SDF cannot.** Cards MUST supply convex decompositions for every functional clearance (bore, groove, tooth flank). CoACD is a fallback for *non-functional* geometry only. | See §D18 evidence below. This is the load-bearing decision for P-GEAR. | **CONFIRMED** |
+| D19 | **Verification answers the questions the behaviour spec asked. Everything else the simulation reveals is recorded as an `observables` block in the verdict JSON — never silently discarded, and never silently promoted to a criterion, nor silently demoted from one.** | The Easy anchor's behaviour spec (§8.1) asks for ≥90° opening and return-to-closed. It asks for neither an angular limit nor stop-impact survival. **Amendment (your call):** the slam response is an *unasked question* — the protocol releases the drive at θ_target and reverse-ramps to close, rather than driving F_max into a stop. Stop-impact response (peak penetration + contact force) and fold-flat overtravel are recorded as observables on a **separate probe pass**, promoted to criteria only when a future behaviour spec declares the requirement. Implemented as `overtravel_check`. | **CONFIRMED** |
+| **D20** | **Constraint-assisted simulation (V-A) confirms any mechanism whose missing features its own joint declarations supply — proven by no-stop vs stop-flange both passing V-A 5/5 while V-B separates them (220° vs 115°). V-B is therefore required, not optional, for card-realized joints.** | This run. A declared MuJoCo joint's `range`/`axis` silently substitutes for geometry the part may not have; only contact-only V-B tests the geometry itself. | **CONFIRMED** |
+| **D21** | **`mujoco.sdf.gear` is forbidden for P-GEAR verification** — it simulates an ideal analytic gear, not the compiled geometry (invisible D2/D3 violation). The `rack_pinion` card must supply convex tooth-flank decompositions via `collision_hint()`; the gate is clearance/backlash retention by ray-cast, the same method as the bore. | This run (D18 evidence): the SDF plugin ships only analytic shapes, and using its gear would verify a gear we did not design while every test went green. | **CONFIRMED** |
+| **D22** | **Penetration is stratified by contact intent.** (i) *Non-intended* contact during travel = a defect, hard limit **0.2 mm**. (ii) For *intended* contacts (pin/bore, closing seat, end stop) the **HARD criteria are functional outcomes the geometry answers**: settles closed (θ_final ≤ 5°), no bounce-open, pin retention maintained through the event. Penetration **magnitude** at an intended contact under impact is an **OBSERVABLE** with a flag threshold (flag if > clearance scale, 0.3 mm), **never a gate** — in a soft-constraint engine, impact penetration depth measures the solver preset's compliance (frozen quasi-static per D17), not the geometry. If a future behaviour spec declares an impact/durability requirement, the honest instruments are **peak contact force / impulse with a preset validated for impact**, not penetration depth. | The second application of the pin/bore split (D18), **not a retreat**: an intended load-bearing contact and a stray travel interference are different physical events. The "≤ 0.3 mm" in the first draft was a drafting error — a clearance-scale number applied to a *dynamic* event; the event is an impact, so depth is a preset artefact, not a geometry verdict. **The no-stop baseline still fails under every amendment (pin/bore 0.39 > 0.3, folds flat) — the suite's discriminative power is the control proving these are corrections, not relaxations.** | **CONFIRMED** |
+| **D23** | **V-B fixture rule:** weld the designated **base** piece to world — a boundary condition, not a joint declaration on the mechanism under test — and free everything the behaviour spec claims moves, plus its realizing elements. **On by default in M0 V-B.** | Full-free V-B lets the lid's reaction torque tumble an unfixtured box; that tumble is noise orthogonal to the R1 question ("does the pin+bore geometry produce the DoF"), and it broke pin retention on a seed. Fixing the base is what a bench vice does; it is not the joint we are trying to prove exists. Turned out **necessary at M0**, not just an M1 nicety. | **CONFIRMED** |
+
+---
+
+## D18 — the evidence
+
+The question: which collision pathway lets a **bore hold a pin through contact alone**, with
+no declared joint? This is R1 in its strict form, and it is the capability §6.1 *mandates*
+for P-GEAR ("gears MUST use V-B, or meshing is assumed rather than demonstrated").
+
+| Level | Pathway | Bore patency | G-CONV | Verdict |
+|---|---|---|---|---|
+| (a) | **CoACD** | **SWALLOWED** — best of 5 configs leaves the wall at 2.014 mm vs a 2.000 mm pin: **10% of clearance retained**. Default `threshold=0.03` fills the hole solid (wall at 1.083 mm — *inside* the pin). | **FAIL** — pin starts 0.0026 mm embedded; assembly will not sit still (peak ω 7.2 rad/s) | **REJECTED** |
+| (b) | **MuJoCo SDF** | **UNAVAILABLE** — the SDF plugin ships analytic shapes only: `bolt`, `bowl`, `gear`, `nut`, `torus`. There is no mesh-SDF. A carved bore cannot be expressed at all. | n/a | **UNAVAILABLE** |
+| (c) | **Ring of convex wedges** (card-supplied) | **OPEN** — wall at 2.192 mm, **128% of nominal clearance retained** (the polygonal hole is marginally *generous*, a bounded +0.042 mm, never tight) | **PASS** | **ADOPTED** |
+
+CoACD's cost even at its best: **239 hulls** (173 box + 66 lid), ~10 s, and a seized fit.
+The ring pathway: **57 geoms**, instant, exact where it matters.
+
+### The trap in level (b), and why it matters for P-GEAR
+
+MuJoCo *does* ship `mujoco.sdf.gear`. It will be tempting at M1. **Do not use it.** It is an
+*analytic* gear — using it would mean the physics engine simulates an ideal involute gear
+rather than **the gear our compiler actually produced**. That is precisely the thing D2 and D3
+exist to prevent: it would verify a gear we did not design, and the paper's central claim
+("we verify the geometry we generated") would be false while every test went green. This is
+the most dangerous failure mode available to us, because it looks like success.
+
+**Consequence for P-GEAR (M1):** the `rack_pinion` card must supply a convex decomposition of
+its **tooth flanks** via `collision_hint()` — one convex wedge per tooth is the natural
+analogue of the ring. CoACD on gear teeth will do to the involute flank exactly what it did to
+the bore: round it off until the clearance (here, the backlash, 0.1–0.25 mm) is gone. **Budget
+for this at M1; do not discover it there.**
+
+### What V-B proved that V-A could not
+
+The pin is held by the bore alone. The revolute DoF **emerges from the geometry** — no joint
+declared, and the lid still turns about the axis: pin radial drift 0.32–0.46 mm, axial drift
+0.09–0.30 mm, θ reaching 115°. **R1 is retired for the pin hinge via pathway (c).**
+
+And V-B found a design defect that V-A is structurally blind to:
+
+> **V-A passes 5/5 on *both* the no-stop and the stop design.** It cannot tell them apart,
+> because MuJoCo's joint `range` silently supplies the end stop that one design has and the
+> other does not. V-B, which declares no joints, separates them instantly: **220° (folds flat)
+> vs 115° (stops).**
+
+This is not a footnote — it is an argument for V-B being required, not optional, and it is
+paper material. A constraint-assisted sim will confirm any mechanism whose missing features
+its own joint declarations happen to supply.
+
+### Honest status of V-B (ring) — after the D19 release-at-target protocol
+
+The scored protocol is now: gentle quasi-static open → **release** the drive at θ_target →
+reverse-ramp to close → release. The overtravel/slam probe is a **separate** observable pass
+(D19). Results, 5 seeds each, criteria as written:
+
+| Criterion | no-stop | stop | |
+|---|---|---|---|
+| pin radial drift ≤ 0.40 mm | 0.555 | **0.31** | fail (nostop) / **pass** (stop) |
+| pin axial drift ≤ 3.0 mm | 0.107 | 0.035 | pass |
+| θ_max ≥ 90° | 221 | 115 | pass |
+| penetration, non-interface ≤ 0.2 mm | 0.70 | **0.33** | **fail (both)** |
+| penetration, pin/bore ≤ 0.30 mm | 0.388 | 0.132 | fail (nostop) / pass |
+| θ_final ≤ 5° | 0.0 | 0.0 | pass |
+
+**The stop variant now passes every criterion except one: non-interface penetration.**
+
+That residual was diagnosed to the exact event, and the diagnosis matters because it decides
+which side of the D17/R5 fork we are on:
+
+- Opening is now quasi-static: the lid arrives at θ_target at **0.001 rad/s** (at rest).
+- It coasts to its stop under **gravity alone** (over-centre past 90°); that stop touch is a
+  gentle **0.011 mm**.
+- The scored **0.33 mm** penetration is neither of those — it is the lid **slamming shut**:
+  during close it goes back over-centre past 90°, gravity accelerates it down, and it seats
+  onto the box rim with impact. **A closing impact at the intended closed-seat contact.**
+- Gentle close drive cannot prevent it: past 90° gravity dominates the drive, so the lid falls
+  shut regardless. This is inherent to an over-centre hinge, not a tuning artifact.
+
+So option (1) (protocol) is **exhausted** — it fixed the drive-momentum overshoot, the box
+slide, and made the slam a clean observable, but it cannot lower a *gravity-driven* seat
+impact. The remaining 0.33 mm vs 0.20 mm is now a genuine either/or, **your call**:
+
+1. **Criterion scope** — the 0.2 mm "sweep penetration" limit (spec §6.3) is meant to catch
+   geometry passing through geometry *during travel*, not the compliance of the intended
+   endpoint contacts (closed seat, end stop). Split it the way the pin/bore interface is split:
+   score sweep interference, exclude intended seat/stop contacts (which have their own
+   observables). *No preset change; no R5 regression.* — **recommended.**
+2. **Preset stiffness** — add an impact criterion and stiffen the contact so a gravity seat
+   impact stays < 0.2 mm. *Global preset change → re-run M0 V-A regression per R5.*
+
+The no-stop variant fails legitimately (it is the defect V-B caught — folds flat, jostles the
+pin in the bore to 0.39 mm). It is not meant to pass; it is documented via the overtravel
+observable.
+
+Box slide is now 2–5 mm (was 15 mm) — the earlier version held −F_max after closing and shoved
+the free assembly; the drive is now released after close. Recorded as an observable.
+
+### Runner bug: finite-but-absurd divergence
+
+A blow-up need not produce NaN. One V-B seed put the pin **405 metres** from its bore with
+every value finite, and an `isfinite` check passed it straight through as a real measurement.
+Divergence detection now carries a **model-scaled sanity bound**: the pin may not travel past
+`10 × model.stat.extent` from the box, and |qvel| may not exceed 1e3 — either trips the §6.4
+half-timestep retry. This is a runner bug class, not a physics result: any observable read off
+a diverged state is noise wearing a number's clothes, and must be caught before it reaches a
+verdict. (FINDINGS §4.5.)
+
+---
+
+## Ontology session (M-S track) — schema decisions & gaps (RULED)
+
+Built: `ontology/schema.py`, `ontology/validators.py` (V-01..V-13), `knowledge/cards/base.py`
+(ElementCard ABC + MechanicalElement/PassiveFeature split + D18/D21 enforcement),
+`knowledge/materials.py`, `ontology/measurements.py`, three golden IRs, `viz/` (mermaid+SVG),
+`m2_ontology/` (review package). All validate clean; 13/13 validator tests + 4/4 round-trip.
+
+| # | Decision | Why / resolution | Status |
+|---|----------|------------------|--------|
+| D-ONT-1 | **The DesignPlan carries its `HostTemplate`s (with anchor lists).** | Without the template in the IR, V-02 needs an external registry and the IR is not self-validating. Only the anchor interface is carried; geometry stays out of scope. | **CONFIRMED** |
+| D-ONT-2 | **`VerificationProtocol` is a typed class splitting `criteria` (gates) from `observables`.** | M0 proved gates and recorded-but-ungated quantities must never be confused (D19/D22); encode it in the type system. | **CONFIRMED** |
+| D-ONT-3 | **Typed `Function`; `Piece.is_base` (D23); `MotionSpec.kind += snap_event` + `event_force_window_N`; `undercut_dir` in `offset_params`.** | Directed M-S extensions + M0 lessons, landed in code. | **CONFIRMED** |
+| D-ONT-4 | **Second card class `PassiveFeature`** (alongside MechanicalElement): elements that CONSTRAIN or SUPPORT behaviours rather than realize them (stops, bosses, ribs, guides). Ports, params, imposes, citations, verification hooks — but **no `realizes`**. The stop-flange becomes the `stop_flange` card (contact port, `stop_angle` param, imposes a use-phase rotation limit; its verification = the overtravel observable **promoted to a criterion when a plan includes the stop**). **HostTemplate features do NOT impose behaviours — that path stays closed; only card-backed things impose (V-08 spans both card classes).** | **Resolution (b), refined.** Acceptance test done: m0 stop variant re-expressed with `F1 stop_flange` → imposes B3 (use/rotation) → P-HINGE gains the `angle_limited` gate (7→8 gates); nostop keeps overtravel as an observable. **M3's drawer stop-tab and T-S3's board-support bosses land in this same class.** | **CONFIRMED** |
+| D-ONT-5 | **No variant-family concept.** Two near-identical DesignPlans in two files; `variant` is a label only. | **DEFERRED — revisit at M6 variant-ladder generation.** Do not build a family concept now. | **DEFERRED (DRAFT)** |
+| D-ONT-6 | **Controlled measurement-name registry** (`ontology/measurements.py`) + **V-13**: every criterion/observable measurement key must be registered. | Light form. Closes the free-string gap (a typo now fails validation, not at sim time — the D13 "checkable referent" lesson one level up). Registry migrates into the verify harness later (it is the harness's output contract). | **CONFIRMED** |
+| D-ONT-7 | **Milestone-folder + REVIEW discipline** (restores spec §7). Every milestone gets `mN_<name>/` with `out/` (artifacts) and `REVIEW.md` — the single G-H entry point (embedded/linked visuals, "what to check", approval checklist). Code and living data stay in unnumbered dirs; numbered folders hold reviewable snapshots only. **"Tests pass" without a REVIEW.md is an incomplete milestone.** | Applied retroactively: `m2_ontology/` created with `viz/ir_graph.py` (DesignPlan → mermaid + SVG), IR graphs for all goldens, stop-vs-nostop diff, schema map, validator matrix, and `REVIEW.md`. From m3_cards on this is automatic (the Bayer session's REVIEW.md carries formula-vs-golden plots). **Evidence the gate earns its keep: the m2 G-H review caught TWO genuine IR bugs — B3's bound ambiguity (a rotation LIMIT indistinguishable from a range-of-motion, D-ONT-9) and B2's realized+imposed double-tagging — both invisible to the 14/14 validator suite (the goldens were "CLEAN") and surfaced only by a human reading the rendered graphs. A green test suite does not certify a correct IR; the visualization gate is load-bearing, not decorative.** m2_ontology APPROVED. | **CONFIRMED** |
+| D-ONT-8 | **Cross-doc card-name conflict:** MECHSYNTH §3.4 `snap_latch` (ports `catch_face`, `has_functional_clearance=False`) vs SNAPFIT (authoritative, §12 A1) `snap_hook_cantilever` (ports `catch_window`, **clearance=True → collision_hint REQUIRED**). | **Resolution (your ruling): canonical = `snap_hook_cantilever`, `has_functional_clearance=True` — the catch window IS a functional clearance, D18 applies; §3.4's `clearance=False` was wrong.** MECHSYNTH §3.4 and §8.1 edited to match (name, ports incl. `catch_window`, clearance flag). The `snap_latch` alias is kept **only until the card session lands, then removed**. | **CONFIRMED** |
+| D-ONT-9 | **`MotionSpec.bound` (`min`/`max`/`exact`)** distinguishes a range-of-motion floor from an imposed LIMIT ceiling. | Found at m0-stop G-H: B3 (the stop's rotation LIMIT, ≤109°) was `kind="rotation"` with a bare `range_value`, indistinguishable from B1 (the opening range-of-motion, ≥90°) — a real IR ambiguity, not a label bug. `bound="max"` marks a ceiling (a stop), `bound="min"` a floor (a capability). Also fixed alongside: B2 (pin-insertion path) is now `imposed_by` only, not `realized_by` — §3.3 says the hinge *imposes* that path; `pin_hinge.imposes` now declares it so V-08 verifies it. | **CONFIRMED (G-H fix)** |
+
+### Notes (not decisions)
+- **V-08 now bites on real card data.** `stop_flange` (imposes use/rotation) and
+  `snap_hook_cantilever` (imposes use/fixed sweep clearance) both declare `imposes`, and the m0
+  stop + T-S1 goldens register the matching behaviours — so V-08 is exercised by real designs,
+  not only the injected-card unit test.
+- **V-12 (keepout) remains a reserved no-op** — the schema home of the M0 bore keep-out finding.
+  Needs a keepout declaration on templates/cards that does not exist yet.
+- **`undercut_dir` is still an untyped free key** in `offset_params` (`"insertion_axis_neg"`
+  works but a nonsense value passes). Typing it is a candidate for the V-12 keepout rule.
+- **SNAPFIT reconciliation:** my inferred `snap_starter.json` (a hinged box + secondary latch)
+  was structurally wrong — SNAPFIT §1.3 is a snap-**only** lid. Replaced by an authoritative
+  transcription; `command` is now the doc's English string, `task_id` = `T-S1`.
+
+---
+
+## m3 cards session (snap_hook_cantilever formulas) — Bayer extraction (DRAFT rows)
+
+Source of truth: `knowledge/refs/Plastic_Snap_fit_design.pdf`, read directly and verified
+page-by-page. `tests/test_golden_bayer.py` reproduces Calc Example I (p.16) to ±1–2%.
+
+| # | Extraction decision | Evidence / rationale | Status |
+|---|---------------------|----------------------|--------|
+| D-BAYER-1 | **PETG material constants are ASSUMPTIONS** (the PDF has NO PETG in its tables/curves): `Es ≈ 0.75·E`, `EPS_PERM_PETG = 0.04`, `MU_PETG = 0.35`. | Fig.16 (secant modulus) carries Bayer PC resins only; Table 2 (strain) and Table 3 (friction) have no PETG. The 0.04 is *borrowed from PC's 4%* (p.12), not computed from PETG yield strain — p.11 says amorphous ~70% of yield strain, but PETG's yield strain needs a datasheet. **Gate G-S4: replace all three with PETG data.** The golden test is unaffected — it uses PC values directly (Es=1815, ε=2%, μ=0.6), so it validates the *formulas*, not the assumptions. | **CONFIRMED** |
+| D-BAYER-2 | **freq_factor = 0.60, safety = 0.5** verified, not assumed. | Table 2 footnote (p.12): "for frequent separation and rejoining, use ~60% of these values." p.16 example: working ε = ½·ε_perm. | **CONFIRMED** |
+| D-BAYER-3 | **MECHSYNTH §3.4's `eps = 1.5·t·y/L²` is the design-1 rectangular *approximation*** (1/0.67 = 1.49 ≈ 1.5); the PDF Table 1 (p.9) gives exact per-design coefficients (0.67 / 1.09 / 0.86). **The card uses the Table 1 coefficients (PDF wins).** | Not a disagreement — a refinement. The 1.5 conflates design types; the card keeps them distinct (design 2 permits >60% more deflection, p.12, and is what Example I uses). | **CONFIRMED** |
+| D-BAYER-4 | **The card imposes TWO behaviours** (assembly insertion-path + use non-interference); T-S1 gained **B4** (assembly/translation, imposed_by E1) so V-08 is satisfied. | Per the session brief's deliverable-3 imposes list. Extends the authoritative SNAPFIT §1.3 golden with a D-ONT-4/V-08-driven imposed behaviour — the established `pin_hinge` insertion-path pattern (m0 B2), applied to the hook. | **CONFIRMED** |
+| D-BAYER-5 | **No PDF-vs-doc disagreements found.** SNAPFIT §2.1/§2.4's formula mapping (`y_perm` coeffs, `P = b·h²·Es·ε/6L`, `W = P·(μ+tanα)/(1−μtanα)`, separation uses α′) matches the PDF exactly; the assumptions are flagged in both. | Verified: p.9 Table 1, p.14 mating/separation, p.16 example, Fig.18. The mapping table was a faithful guide; the PDF confirmed every constant. | **CONFIRMED** |
+
+---
+
+## m5 resolve + Tier0/Tier1 session — generality & schema
+
+| # | Decision | Rationale | Status |
+|---|----------|-----------|--------|
+| D-ONT-10 | **`Parameter.citation`** (optional Citation) added; every stage-5-resolved Parameter must carry `resolved_by` + a citation. | Directed at m5. A resolved value without provenance is unauditable; the snap params now trace to Bayer Table 1 / p.14 / p.16. | **CONFIRMED** |
+| D-GEN-1 | **Cards are host-agnostic; hosts are consumed only through the anchor/binding contract.** A card's `carve()`/`collision_hint()` reference only the bound anchors (root position + growth normal + catch position) — never a host's dimensions and never a host-type branch. | Host-agnostic PLACEMENT is proven (anchor-driven, zero host-type branching, one carve on box AND flat_panel_mount). Host-agnostic FUNCTIONAL CATCH is **not** — the box (window) works; the board clip (edge-overhang) needs a nose topology the card lacks (D-GEN-4), and a compiler L bug (D-GEN-3) made its geometry silently non-functional. Downgraded on m6 visual review; the full claim re-proves at M-G. | **PARTIAL** (was CONFIRMED; re-proves at M-G-1) |
+| D-GEN-2 | **The 60% rule's geometric consequence depends on the resolve STRATEGY; the system must know both and pick by requirement.** (i) **fixed_y** (default): fix the undercut, solve h from the strain ceiling, DO NOT escalate α_out — frequent-reopen thins h and the thin beam fails the retention floor **honestly (INFEASIBLE)**, the correct diagnosis. (ii) **hold_retention**: hold W_out at its floor, free L within bounds, solve L from the strain ceiling then h — frequent-reopen **LENGTHENS** the beam (L 12→15.7, h stays 2.15). Longer, not thinner. Plus a **placement rule**: `α_out ≤ self_locking_angle(μ) − 10°` (Bayer p.14/Fig.18 asymptote) — a design at the cliff is one μ-assumption (A-PETG-1) from permanent lock. | Your ruling: the physics is confirmed (the brief's "must thicken" was wrong as stated), and the fix is a second strategy, not a re-thinning. My earlier α_out escalation MASKED the infeasibility by pushing toward the self-locking cliff; removing it makes fixed_y honest. Demonstrated in the m5 three-way figure (Demo A's mechanism, one session early). | **CONFIRMED** |
+| D-GEN-3 | **⑤ owns L; ⑥ honors it and never re-derives an engineering quantity from geometry.** L is a Bayer result (working strain ∝ 1/L²), so ⑥ builds the beam at ⑤'s resolved L (the window follows the beam tip); Tier1 re-measures against ⑤'s RESOLVED params, not ⑥'s own dims. | m6 visual-review finding: ⑥ silently built L=growth_dist (7 mm) while ⑤ resolved 12 mm — box agreed only by coincidence, and hold_retention (L=15.7) exposed it. Tier1's blind spot: it compared ⑥-vs-⑥, so a 5 mm drift was invisible. Both fixed; `tests/test_t1_drift.py` guards the reference. | **CONFIRMED** (m6) |
+| D-GEN-4 | **Nose topology is a discrete card option — `window_catch` (Bayer p.5 Fig.3, cut a hole in an owned wall) vs `edge_overhang` (Bayer p.5 Fig.2, grab a foreign part's edge) — conveyed through the binding/port contract, NOT host-type branching.** | The board clip is edge-overhang; the card implements only window_catch. **M-G-1** = implement edge_overhang carve + a matching overhang three-way check + panel golden passes + D-GEN-1 re-proof. The panel golden is kept as an EXPECTED_FAIL / V-14 negative-test regression target. | **LOGGED → M-G-1** |
+| D-GEN-5 | **window_catch is legal only when the catch-side piece is an OWNED, mutable host** (a card carves only pieces in `host_pieces`; a foreign/`retained` component is immutable). External components admit `edge_overhang` only. | A ④ hard constraint on element/topology selection, enforced by **V-14** (schema, negative-test fixture = snap_panel) with defense-in-depth downstream: ⑥ retained-cut refusal (GEOM_INFEASIBLE) and Tier0 (d) positive_retention. Directly relevant to T-S2's board. | **CONFIRMED** (V-14) |
+| D-GEN-6 | **Retention must be demonstrated GEOMETRICALLY, not by annotation — Tier0 (d) positive_retention.** For a snap_event retention behavior (B2-class) the nose must bear against the catch on pull-out (base→retained separation axis): projected bearing area > 0. | "Held by gravity only" now fails a check, not a reviewer's eye: box = 9.12 mm² engaged (≈ y·b), panel = 0 mm² (nose lifts clear). `verify/t0_static.py` + `tests/test_positive_retention.py`. The 9.12 counts only catch material AHEAD of the nose in the pull-out direction (the true bearing) — a naive full-shadow overlap would report ~27 mm² and over-credit non-load-bearing overlap. | **CONFIRMED** |
+| D-M1-1 | **R2 is REAL at m=2 for the rigid faceted-contact rig: the tooth profile is geometrically conjugate but the contact is too numerically stiff for the frozen preset.** MECHSYNTH §3.6's "trapezoidal approximation allowed" clause is **DEAD** (L1's contact-jump divergence is its evidence, `l1_contact_jump.png`). `rack_pinion.collision_hint` defaults to **involute wedge decomposition** (the only conjugate profile; trapezoid rejected). | Ladder L1–L4: all pass G-CONV; all diverge at the frozen dt AND the §6.4 retry. Involute rolls at ratio −0.501 (conjugate) only at dt ≈ 2e-5 (25× below frozen) — out of bounds under R5. Trapezoid additionally needs +0.9 mm centre (backlash 0.85 mm, 4×) just to seat. **Mitigation to discuss at G-H before touching the preset: larger module.** The passing-rung wedge parameters are pending an in-bounds pass (deferred). See `m1_gear/REVIEW.md`. | **CONFIRMED** (R2 real); wedge-count default **DEFERRED** |
+| D-M1-4 | **PRE-DECLARED decision rule for the bounded R2b extrapolation probe (logged BEFORE running — G-H ruling on D-M1-3, modified option (a) then (b) automatically).** Probe m=5 and m=6 (z=12, same rig, frozen preset, 5 seeds each); record max-stable-dt; extend `probe_verdict.png` to 5 points. **Rule:** (i) **if any m ≤ 6 achieves stability at dt ≥ frozen/2** (= 2.5e-4, the in-bounds line): **R2b RETIRES geometry-side**; `rack_pinion` module bounds := **[that m, 6]**; card `selection_notes` must state "large module mandated by contact-simulation stability, not mechanics." (ii) **else the geometry route is EXHAUSTED within the usable envelope** → open the **preset-amendment procedure (R5)**: propose ONE candidate `preset_v2` with a stated physics rationale (e.g. stiffer `solref` appropriate to steel-like gear contact vs the quasi-static calibration), version it, and re-run the FULL V-A/V-B regression set (M0 hinge both variants, M0-stretch V-B, snap-box t0 equivalents where contact-relevant) **side by side v1 vs v2**; adoption is a **separate G-H sign-off (the human's), not the AI's**. | Rationale (G-H): the monotonic trend (frozen/25→/10→/5 for m=2/3/4) earns two more points, but module size is not free — it consumes design space (m=5, z=12 → 60 mm pitch pinion; rack teeth ~11 mm, marginal for the Hard anchor's desktop cabinet), so the probe stays within the usable envelope (m ≤ 6). Declared before running so the outcome cannot bias the rule (the record-honesty discipline, applied prospectively). Either outcome: m7 gets the 5-point figure + this rule text + the outcome; retired → proceed into the rack_pinion card; preset route → STOP after the v1-vs-v2 regression comparison table. | **PRE-DECLARED** (rule fixed; probe pending) |
+| D-M1-3 | **R2b mitigation probe (larger module) — sanctioned probe m=3 FAILS, but the mitigation is directionally correct.** m=3 involute pair, clean G-CONV (op_cd 54.2, backlash 0.35), **0/5 seeds converge at the frozen dt** → R2b NOT retired at m=3. Decision input (m=2/4 added): the **max stable timestep relaxes monotonically with module** — m=2: frozen/25, m=3: frozen/10, m=4: frozen/5 — the geometry-side fix WORKS and scales, it just has not reached the in-bounds line (frozen dt, or §6.4 retry frozen/2) by m=4. | Per D-M1-2's FAIL branch I **STOPPED before the rack_pinion card** and did not touch the preset (R5). Module bounds stay **provisional [3.0,4.0]** — but note *neither* m=3 *nor* m=4 passes in-bounds, so [3.0,4.0] is still R2b-open. **The data adds a third option the original queue did not enumerate:** the trend extrapolates to **m≈5–6 reaching in-bounds**, so the recommendation is to *continue the geometry-side route* (probe m=5–6) **before** the preset-amendment route. Awaiting G-H ruling on: (a) continue module probes m=5–6, vs (b) open the preset-amendment procedure now. Evidence: `m1_gear/out/probe_verdict.{png,json}`, `r2b_frozen_vs_fine.{mp4,png}`. | **R2b OPEN**; m=3 probe **FAIL**; card **DEFERRED** |
+| D-M1-2 | **M1 decomposed R2 into two distinct risks.** **R2a (geometry):** does a tooth profile survive hint-approximation and mesh conjugately? **RETIRED** — involute wedge decomposition proves conjugate action (ratio error −0.5%); trapezoidal is dead (contact-jump evidence). **R2b (simulation parameters):** is that mesh stable at the frozen preset's dt? **OPEN** — stable only at dt/25, out of bounds under R5. **Mitigation queue, in order:** (1) larger module (m=2→3; gentler contact geometry may relax the dt requirement — a geometry-side fix, R5 intact); (2) if insufficient, a formally versioned preset change with full V-A/V-B regression re-runs per R5's own amendment procedure. `rack_pinion`'s `param_bounds` must reflect R2b: **module lower bound provisionally raised** (§3.6: [1.0,2.5]→[3.0,4.0]) until (1) is tested. | Replaces the flat "R2 real" framing with the honest split (G-H ruling): the geometry risk is retired, only the sim-parameter risk remains, and the first mitigation is geometry-side (R5 untouched). **Meta-note:** this is the **third instance of evidence overruling authority** (after D-GEN-2 — the "must thicken" brief was wrong; and D-GEN-6 / the m6 panel HOLD — the render failed visual review). The record-honesty discipline is functioning **in both directions**: here the human corrected the AI's over-strong "R2 real" toward the more precise split, just as the evidence earlier corrected the human's briefs. | **R2a RETIRED · R2b OPEN** |

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Project python. Two things every MechSynth process needs:
+#
+#  1. LD_PRELOAD of the env's libexpat. Importing OCP (the OpenCascade kernel under
+#     build123d) pulls in system libexpat 2.2.x via its X11/fontconfig deps; pyexpat
+#     then binds to that instead of the env's 2.7.4 and dies with
+#     "undefined symbol: XML_SetReparseDeferralEnabled". Preloading the new libexpat
+#     (ABI-compatible) fixes it for OCP and MJCF XML alike.
+#  2. MUJOCO_GL=egl -- this box is headless, render on the GPUs.
+#
+set -euo pipefail
+ENV_DIR=/home/ftk3187/miniconda3/envs/psed310
+export LD_PRELOAD="${ENV_DIR}/lib/libexpat.so.1${LD_PRELOAD:+:$LD_PRELOAD}"
+export MUJOCO_GL="${MUJOCO_GL:-egl}"
+exec "${ENV_DIR}/bin/python" "$@"

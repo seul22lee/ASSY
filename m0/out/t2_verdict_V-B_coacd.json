@@ -1,0 +1,29 @@
+{
+  "mode": "V-B",
+  "strategy": "coacd",
+  "contact_preset": {
+    "solref": [
+      0.001,
+      1.0
+    ],
+    "solimp": [
+      0.99,
+      0.9999,
+      0.0001
+    ],
+    "friction_mu": 0.3
+  },
+  "collision": {
+    "box_shell": "coacd (173 hulls)",
+    "lid_panel": "coacd (66 hulls)",
+    "hinge_pin": "cylinder (convex, exact)"
+  },
+  "bore_patency": {
+    "open": false,
+    "min_wall_r_mm": 2.01427852325158,
+    "note": "wall at 2.014 mm (bore 2.150, pin 2.000); clearance +0.014 of 0.150 mm nominal (10% retained)"
+  },
+  "g_conv": false,
+  "verdict": false,
+  "failure": "bore swallowed by the collision approximation -> pin starts embedded in solid plastic"
+}

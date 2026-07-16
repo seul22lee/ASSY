@@ -1,0 +1,527 @@
+<?xml version="1.0" ?>
+<mujoco model="m0_hinge_box_V-B">
+  <compiler angle="radian" meshdir="meshes" autolimits="true"/>
+  <option timestep="0.0005" integrator="implicitfast" cone="elliptic" impratio="10"/>
+  <visual>
+    <headlight ambient="0.5 0.5 0.5" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2"/>
+    <global offwidth="1280" offheight="960" azimuth="140" elevation="-20"/>
+    <rgba haze="0.9 0.93 0.96 1"/>
+  </visual>
+  <default>
+    <geom solref="0.001 1.0" solimp="0.99 0.9999 0.0001" friction="0.3 0.005 0.0001" condim="4" density="0"/>
+  </default>
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" rgb1=".15 .17 .2" rgb2=".22 .24 .28" width="300" height="300"/>
+    <material name="grid" texture="grid" texrepeat="6 6" reflectance=".1"/>
+    <material name="petg" rgba="0.35 0.65 0.85 1"/>
+    <material name="petg_lid" rgba="0.95 0.62 0.25 1"/>
+    <material name="steel" rgba="0.8 0.8 0.85 1"/>
+    <mesh name="box_shell_vis" file="box_shell_visual.stl"/>
+    <mesh name="box_shell_col0" file="box_shell_col0.stl"/>
+    <mesh name="box_shell_col1" file="box_shell_col1.stl"/>
+    <mesh name="box_shell_col2" file="box_shell_col2.stl"/>
+    <mesh name="box_shell_col3" file="box_shell_col3.stl"/>
+    <mesh name="box_shell_col4" file="box_shell_col4.stl"/>
+    <mesh name="box_shell_col5" file="box_shell_col5.stl"/>
+    <mesh name="box_shell_col6" file="box_shell_col6.stl"/>
+    <mesh name="box_shell_col7" file="box_shell_col7.stl"/>
+    <mesh name="box_shell_col8" file="box_shell_col8.stl"/>
+    <mesh name="box_shell_col9" file="box_shell_col9.stl"/>
+    <mesh name="box_shell_col10" file="box_shell_col10.stl"/>
+    <mesh name="box_shell_col11" file="box_shell_col11.stl"/>
+    <mesh name="box_shell_col12" file="box_shell_col12.stl"/>
+    <mesh name="box_shell_col13" file="box_shell_col13.stl"/>
+    <mesh name="box_shell_col14" file="box_shell_col14.stl"/>
+    <mesh name="box_shell_col15" file="box_shell_col15.stl"/>
+    <mesh name="box_shell_col16" file="box_shell_col16.stl"/>
+    <mesh name="box_shell_col17" file="box_shell_col17.stl"/>
+    <mesh name="box_shell_col18" file="box_shell_col18.stl"/>
+    <mesh name="box_shell_col19" file="box_shell_col19.stl"/>
+    <mesh name="box_shell_col20" file="box_shell_col20.stl"/>
+    <mesh name="box_shell_col21" file="box_shell_col21.stl"/>
+    <mesh name="box_shell_col22" file="box_shell_col22.stl"/>
+    <mesh name="box_shell_col23" file="box_shell_col23.stl"/>
+    <mesh name="box_shell_col24" file="box_shell_col24.stl"/>
+    <mesh name="box_shell_col25" file="box_shell_col25.stl"/>
+    <mesh name="box_shell_col26" file="box_shell_col26.stl"/>
+    <mesh name="box_shell_col27" file="box_shell_col27.stl"/>
+    <mesh name="box_shell_col28" file="box_shell_col28.stl"/>
+    <mesh name="box_shell_col29" file="box_shell_col29.stl"/>
+    <mesh name="box_shell_col30" file="box_shell_col30.stl"/>
+    <mesh name="box_shell_col31" file="box_shell_col31.stl"/>
+    <mesh name="box_shell_col32" file="box_shell_col32.stl"/>
+    <mesh name="box_shell_col33" file="box_shell_col33.stl"/>
+    <mesh name="box_shell_col34" file="box_shell_col34.stl"/>
+    <mesh name="box_shell_col35" file="box_shell_col35.stl"/>
+    <mesh name="box_shell_col36" file="box_shell_col36.stl"/>
+    <mesh name="box_shell_col37" file="box_shell_col37.stl"/>
+    <mesh name="box_shell_col38" file="box_shell_col38.stl"/>
+    <mesh name="box_shell_col39" file="box_shell_col39.stl"/>
+    <mesh name="box_shell_col40" file="box_shell_col40.stl"/>
+    <mesh name="box_shell_col41" file="box_shell_col41.stl"/>
+    <mesh name="box_shell_col42" file="box_shell_col42.stl"/>
+    <mesh name="box_shell_col43" file="box_shell_col43.stl"/>
+    <mesh name="box_shell_col44" file="box_shell_col44.stl"/>
+    <mesh name="box_shell_col45" file="box_shell_col45.stl"/>
+    <mesh name="box_shell_col46" file="box_shell_col46.stl"/>
+    <mesh name="box_shell_col47" file="box_shell_col47.stl"/>
+    <mesh name="box_shell_col48" file="box_shell_col48.stl"/>
+    <mesh name="box_shell_col49" file="box_shell_col49.stl"/>
+    <mesh name="box_shell_col50" file="box_shell_col50.stl"/>
+    <mesh name="box_shell_col51" file="box_shell_col51.stl"/>
+    <mesh name="box_shell_col52" file="box_shell_col52.stl"/>
+    <mesh name="box_shell_col53" file="box_shell_col53.stl"/>
+    <mesh name="box_shell_col54" file="box_shell_col54.stl"/>
+    <mesh name="box_shell_col55" file="box_shell_col55.stl"/>
+    <mesh name="box_shell_col56" file="box_shell_col56.stl"/>
+    <mesh name="box_shell_col57" file="box_shell_col57.stl"/>
+    <mesh name="box_shell_col58" file="box_shell_col58.stl"/>
+    <mesh name="box_shell_col59" file="box_shell_col59.stl"/>
+    <mesh name="box_shell_col60" file="box_shell_col60.stl"/>
+    <mesh name="box_shell_col61" file="box_shell_col61.stl"/>
+    <mesh name="box_shell_col62" file="box_shell_col62.stl"/>
+    <mesh name="box_shell_col63" file="box_shell_col63.stl"/>
+    <mesh name="box_shell_col64" file="box_shell_col64.stl"/>
+    <mesh name="box_shell_col65" file="box_shell_col65.stl"/>
+    <mesh name="box_shell_col66" file="box_shell_col66.stl"/>
+    <mesh name="box_shell_col67" file="box_shell_col67.stl"/>
+    <mesh name="box_shell_col68" file="box_shell_col68.stl"/>
+    <mesh name="box_shell_col69" file="box_shell_col69.stl"/>
+    <mesh name="box_shell_col70" file="box_shell_col70.stl"/>
+    <mesh name="box_shell_col71" file="box_shell_col71.stl"/>
+    <mesh name="box_shell_col72" file="box_shell_col72.stl"/>
+    <mesh name="box_shell_col73" file="box_shell_col73.stl"/>
+    <mesh name="box_shell_col74" file="box_shell_col74.stl"/>
+    <mesh name="box_shell_col75" file="box_shell_col75.stl"/>
+    <mesh name="box_shell_col76" file="box_shell_col76.stl"/>
+    <mesh name="box_shell_col77" file="box_shell_col77.stl"/>
+    <mesh name="box_shell_col78" file="box_shell_col78.stl"/>
+    <mesh name="box_shell_col79" file="box_shell_col79.stl"/>
+    <mesh name="box_shell_col80" file="box_shell_col80.stl"/>
+    <mesh name="box_shell_col81" file="box_shell_col81.stl"/>
+    <mesh name="box_shell_col82" file="box_shell_col82.stl"/>
+    <mesh name="box_shell_col83" file="box_shell_col83.stl"/>
+    <mesh name="box_shell_col84" file="box_shell_col84.stl"/>
+    <mesh name="box_shell_col85" file="box_shell_col85.stl"/>
+    <mesh name="box_shell_col86" file="box_shell_col86.stl"/>
+    <mesh name="box_shell_col87" file="box_shell_col87.stl"/>
+    <mesh name="box_shell_col88" file="box_shell_col88.stl"/>
+    <mesh name="box_shell_col89" file="box_shell_col89.stl"/>
+    <mesh name="box_shell_col90" file="box_shell_col90.stl"/>
+    <mesh name="box_shell_col91" file="box_shell_col91.stl"/>
+    <mesh name="box_shell_col92" file="box_shell_col92.stl"/>
+    <mesh name="box_shell_col93" file="box_shell_col93.stl"/>
+    <mesh name="box_shell_col94" file="box_shell_col94.stl"/>
+    <mesh name="box_shell_col95" file="box_shell_col95.stl"/>
+    <mesh name="box_shell_col96" file="box_shell_col96.stl"/>
+    <mesh name="box_shell_col97" file="box_shell_col97.stl"/>
+    <mesh name="box_shell_col98" file="box_shell_col98.stl"/>
+    <mesh name="box_shell_col99" file="box_shell_col99.stl"/>
+    <mesh name="box_shell_col100" file="box_shell_col100.stl"/>
+    <mesh name="box_shell_col101" file="box_shell_col101.stl"/>
+    <mesh name="box_shell_col102" file="box_shell_col102.stl"/>
+    <mesh name="box_shell_col103" file="box_shell_col103.stl"/>
+    <mesh name="box_shell_col104" file="box_shell_col104.stl"/>
+    <mesh name="box_shell_col105" file="box_shell_col105.stl"/>
+    <mesh name="box_shell_col106" file="box_shell_col106.stl"/>
+    <mesh name="box_shell_col107" file="box_shell_col107.stl"/>
+    <mesh name="box_shell_col108" file="box_shell_col108.stl"/>
+    <mesh name="box_shell_col109" file="box_shell_col109.stl"/>
+    <mesh name="box_shell_col110" file="box_shell_col110.stl"/>
+    <mesh name="box_shell_col111" file="box_shell_col111.stl"/>
+    <mesh name="box_shell_col112" file="box_shell_col112.stl"/>
+    <mesh name="box_shell_col113" file="box_shell_col113.stl"/>
+    <mesh name="box_shell_col114" file="box_shell_col114.stl"/>
+    <mesh name="box_shell_col115" file="box_shell_col115.stl"/>
+    <mesh name="box_shell_col116" file="box_shell_col116.stl"/>
+    <mesh name="box_shell_col117" file="box_shell_col117.stl"/>
+    <mesh name="box_shell_col118" file="box_shell_col118.stl"/>
+    <mesh name="box_shell_col119" file="box_shell_col119.stl"/>
+    <mesh name="box_shell_col120" file="box_shell_col120.stl"/>
+    <mesh name="box_shell_col121" file="box_shell_col121.stl"/>
+    <mesh name="box_shell_col122" file="box_shell_col122.stl"/>
+    <mesh name="box_shell_col123" file="box_shell_col123.stl"/>
+    <mesh name="box_shell_col124" file="box_shell_col124.stl"/>
+    <mesh name="box_shell_col125" file="box_shell_col125.stl"/>
+    <mesh name="box_shell_col126" file="box_shell_col126.stl"/>
+    <mesh name="box_shell_col127" file="box_shell_col127.stl"/>
+    <mesh name="box_shell_col128" file="box_shell_col128.stl"/>
+    <mesh name="box_shell_col129" file="box_shell_col129.stl"/>
+    <mesh name="box_shell_col130" file="box_shell_col130.stl"/>
+    <mesh name="box_shell_col131" file="box_shell_col131.stl"/>
+    <mesh name="box_shell_col132" file="box_shell_col132.stl"/>
+    <mesh name="box_shell_col133" file="box_shell_col133.stl"/>
+    <mesh name="box_shell_col134" file="box_shell_col134.stl"/>
+    <mesh name="box_shell_col135" file="box_shell_col135.stl"/>
+    <mesh name="box_shell_col136" file="box_shell_col136.stl"/>
+    <mesh name="box_shell_col137" file="box_shell_col137.stl"/>
+    <mesh name="box_shell_col138" file="box_shell_col138.stl"/>
+    <mesh name="box_shell_col139" file="box_shell_col139.stl"/>
+    <mesh name="box_shell_col140" file="box_shell_col140.stl"/>
+    <mesh name="box_shell_col141" file="box_shell_col141.stl"/>
+    <mesh name="box_shell_col142" file="box_shell_col142.stl"/>
+    <mesh name="box_shell_col143" file="box_shell_col143.stl"/>
+    <mesh name="box_shell_col144" file="box_shell_col144.stl"/>
+    <mesh name="box_shell_col145" file="box_shell_col145.stl"/>
+    <mesh name="box_shell_col146" file="box_shell_col146.stl"/>
+    <mesh name="box_shell_col147" file="box_shell_col147.stl"/>
+    <mesh name="box_shell_col148" file="box_shell_col148.stl"/>
+    <mesh name="box_shell_col149" file="box_shell_col149.stl"/>
+    <mesh name="box_shell_col150" file="box_shell_col150.stl"/>
+    <mesh name="box_shell_col151" file="box_shell_col151.stl"/>
+    <mesh name="box_shell_col152" file="box_shell_col152.stl"/>
+    <mesh name="box_shell_col153" file="box_shell_col153.stl"/>
+    <mesh name="box_shell_col154" file="box_shell_col154.stl"/>
+    <mesh name="box_shell_col155" file="box_shell_col155.stl"/>
+    <mesh name="box_shell_col156" file="box_shell_col156.stl"/>
+    <mesh name="box_shell_col157" file="box_shell_col157.stl"/>
+    <mesh name="box_shell_col158" file="box_shell_col158.stl"/>
+    <mesh name="box_shell_col159" file="box_shell_col159.stl"/>
+    <mesh name="box_shell_col160" file="box_shell_col160.stl"/>
+    <mesh name="box_shell_col161" file="box_shell_col161.stl"/>
+    <mesh name="box_shell_col162" file="box_shell_col162.stl"/>
+    <mesh name="box_shell_col163" file="box_shell_col163.stl"/>
+    <mesh name="box_shell_col164" file="box_shell_col164.stl"/>
+    <mesh name="box_shell_col165" file="box_shell_col165.stl"/>
+    <mesh name="box_shell_col166" file="box_shell_col166.stl"/>
+    <mesh name="box_shell_col167" file="box_shell_col167.stl"/>
+    <mesh name="box_shell_col168" file="box_shell_col168.stl"/>
+    <mesh name="box_shell_col169" file="box_shell_col169.stl"/>
+    <mesh name="box_shell_col170" file="box_shell_col170.stl"/>
+    <mesh name="box_shell_col171" file="box_shell_col171.stl"/>
+    <mesh name="box_shell_col172" file="box_shell_col172.stl"/>
+    <mesh name="lid_panel_vis" file="lid_panel_visual.stl"/>
+    <mesh name="lid_panel_col0" file="lid_panel_col0.stl"/>
+    <mesh name="lid_panel_col1" file="lid_panel_col1.stl"/>
+    <mesh name="lid_panel_col2" file="lid_panel_col2.stl"/>
+    <mesh name="lid_panel_col3" file="lid_panel_col3.stl"/>
+    <mesh name="lid_panel_col4" file="lid_panel_col4.stl"/>
+    <mesh name="lid_panel_col5" file="lid_panel_col5.stl"/>
+    <mesh name="lid_panel_col6" file="lid_panel_col6.stl"/>
+    <mesh name="lid_panel_col7" file="lid_panel_col7.stl"/>
+    <mesh name="lid_panel_col8" file="lid_panel_col8.stl"/>
+    <mesh name="lid_panel_col9" file="lid_panel_col9.stl"/>
+    <mesh name="lid_panel_col10" file="lid_panel_col10.stl"/>
+    <mesh name="lid_panel_col11" file="lid_panel_col11.stl"/>
+    <mesh name="lid_panel_col12" file="lid_panel_col12.stl"/>
+    <mesh name="lid_panel_col13" file="lid_panel_col13.stl"/>
+    <mesh name="lid_panel_col14" file="lid_panel_col14.stl"/>
+    <mesh name="lid_panel_col15" file="lid_panel_col15.stl"/>
+    <mesh name="lid_panel_col16" file="lid_panel_col16.stl"/>
+    <mesh name="lid_panel_col17" file="lid_panel_col17.stl"/>
+    <mesh name="lid_panel_col18" file="lid_panel_col18.stl"/>
+    <mesh name="lid_panel_col19" file="lid_panel_col19.stl"/>
+    <mesh name="lid_panel_col20" file="lid_panel_col20.stl"/>
+    <mesh name="lid_panel_col21" file="lid_panel_col21.stl"/>
+    <mesh name="lid_panel_col22" file="lid_panel_col22.stl"/>
+    <mesh name="lid_panel_col23" file="lid_panel_col23.stl"/>
+    <mesh name="lid_panel_col24" file="lid_panel_col24.stl"/>
+    <mesh name="lid_panel_col25" file="lid_panel_col25.stl"/>
+    <mesh name="lid_panel_col26" file="lid_panel_col26.stl"/>
+    <mesh name="lid_panel_col27" file="lid_panel_col27.stl"/>
+    <mesh name="lid_panel_col28" file="lid_panel_col28.stl"/>
+    <mesh name="lid_panel_col29" file="lid_panel_col29.stl"/>
+    <mesh name="lid_panel_col30" file="lid_panel_col30.stl"/>
+    <mesh name="lid_panel_col31" file="lid_panel_col31.stl"/>
+    <mesh name="lid_panel_col32" file="lid_panel_col32.stl"/>
+    <mesh name="lid_panel_col33" file="lid_panel_col33.stl"/>
+    <mesh name="lid_panel_col34" file="lid_panel_col34.stl"/>
+    <mesh name="lid_panel_col35" file="lid_panel_col35.stl"/>
+    <mesh name="lid_panel_col36" file="lid_panel_col36.stl"/>
+    <mesh name="lid_panel_col37" file="lid_panel_col37.stl"/>
+    <mesh name="lid_panel_col38" file="lid_panel_col38.stl"/>
+    <mesh name="lid_panel_col39" file="lid_panel_col39.stl"/>
+    <mesh name="lid_panel_col40" file="lid_panel_col40.stl"/>
+    <mesh name="lid_panel_col41" file="lid_panel_col41.stl"/>
+    <mesh name="lid_panel_col42" file="lid_panel_col42.stl"/>
+    <mesh name="lid_panel_col43" file="lid_panel_col43.stl"/>
+    <mesh name="lid_panel_col44" file="lid_panel_col44.stl"/>
+    <mesh name="lid_panel_col45" file="lid_panel_col45.stl"/>
+    <mesh name="lid_panel_col46" file="lid_panel_col46.stl"/>
+    <mesh name="lid_panel_col47" file="lid_panel_col47.stl"/>
+    <mesh name="lid_panel_col48" file="lid_panel_col48.stl"/>
+    <mesh name="lid_panel_col49" file="lid_panel_col49.stl"/>
+    <mesh name="lid_panel_col50" file="lid_panel_col50.stl"/>
+    <mesh name="lid_panel_col51" file="lid_panel_col51.stl"/>
+    <mesh name="lid_panel_col52" file="lid_panel_col52.stl"/>
+    <mesh name="lid_panel_col53" file="lid_panel_col53.stl"/>
+    <mesh name="lid_panel_col54" file="lid_panel_col54.stl"/>
+    <mesh name="lid_panel_col55" file="lid_panel_col55.stl"/>
+    <mesh name="lid_panel_col56" file="lid_panel_col56.stl"/>
+    <mesh name="lid_panel_col57" file="lid_panel_col57.stl"/>
+    <mesh name="lid_panel_col58" file="lid_panel_col58.stl"/>
+    <mesh name="lid_panel_col59" file="lid_panel_col59.stl"/>
+    <mesh name="lid_panel_col60" file="lid_panel_col60.stl"/>
+    <mesh name="lid_panel_col61" file="lid_panel_col61.stl"/>
+    <mesh name="lid_panel_col62" file="lid_panel_col62.stl"/>
+    <mesh name="lid_panel_col63" file="lid_panel_col63.stl"/>
+    <mesh name="lid_panel_col64" file="lid_panel_col64.stl"/>
+    <mesh name="lid_panel_col65" file="lid_panel_col65.stl"/>
+    <mesh name="hinge_pin_vis" file="hinge_pin_visual.stl"/>
+  </asset>
+  <worldbody>
+    <light pos="0.15 -0.25 0.4" dir="-0.3 0.5 -1" directional="true" diffuse="0.5 0.5 0.5"/>
+    <light pos="-0.2 0.2 0.3" dir="0.4 -0.4 -1" directional="true" diffuse="0.25 0.25 0.25"/>
+    <geom name="floor" type="plane" size="1 1 .05" rgba="0.82 0.85 0.88 1" pos="0 0 0"/>
+    <camera name="iso" pos="0.125 -0.125 0.115" xyaxes="0.707 0.707 0 -0.38 0.38 0.84"/>
+    <camera name="hinge_closeup" pos="0.065 -0.105 0.085" xyaxes="0.85 0.53 0 -0.32 0.51 0.80"/>
+    <body name="box_shell" pos="0 0 0">
+      <freejoint name="box_shell_free"/>
+      <inertial pos="-0.000000000 -0.000895754 0.015333721" mass="0.039507716" fullinertia="0.000027786203 0.000038421717 0.000051891681 0.000000000000 -0.000000000000 0.000000868629"/>
+      <geom name="box_shell_vis" type="mesh" mesh="box_shell_vis" contype="0" conaffinity="0" group="2" material="petg"/>
+      <geom name="box_shell_c0" type="mesh" mesh="box_shell_col0" group="3" material="petg"/>
+      <geom name="box_shell_c1" type="mesh" mesh="box_shell_col1" group="3" material="petg"/>
+      <geom name="box_shell_c2" type="mesh" mesh="box_shell_col2" group="3" material="petg"/>
+      <geom name="box_shell_c3" type="mesh" mesh="box_shell_col3" group="3" material="petg"/>
+      <geom name="box_shell_c4" type="mesh" mesh="box_shell_col4" group="3" material="petg"/>
+      <geom name="box_shell_c5" type="mesh" mesh="box_shell_col5" group="3" material="petg"/>
+      <geom name="box_shell_c6" type="mesh" mesh="box_shell_col6" group="3" material="petg"/>
+      <geom name="box_shell_c7" type="mesh" mesh="box_shell_col7" group="3" material="petg"/>
+      <geom name="box_shell_c8" type="mesh" mesh="box_shell_col8" group="3" material="petg"/>
+      <geom name="box_shell_c9" type="mesh" mesh="box_shell_col9" group="3" material="petg"/>
+      <geom name="box_shell_c10" type="mesh" mesh="box_shell_col10" group="3" material="petg"/>
+      <geom name="box_shell_c11" type="mesh" mesh="box_shell_col11" group="3" material="petg"/>
+      <geom name="box_shell_c12" type="mesh" mesh="box_shell_col12" group="3" material="petg"/>
+      <geom name="box_shell_c13" type="mesh" mesh="box_shell_col13" group="3" material="petg"/>
+      <geom name="box_shell_c14" type="mesh" mesh="box_shell_col14" group="3" material="petg"/>
+      <geom name="box_shell_c15" type="mesh" mesh="box_shell_col15" group="3" material="petg"/>
+      <geom name="box_shell_c16" type="mesh" mesh="box_shell_col16" group="3" material="petg"/>
+      <geom name="box_shell_c17" type="mesh" mesh="box_shell_col17" group="3" material="petg"/>
+      <geom name="box_shell_c18" type="mesh" mesh="box_shell_col18" group="3" material="petg"/>
+      <geom name="box_shell_c19" type="mesh" mesh="box_shell_col19" group="3" material="petg"/>
+      <geom name="box_shell_c20" type="mesh" mesh="box_shell_col20" group="3" material="petg"/>
+      <geom name="box_shell_c21" type="mesh" mesh="box_shell_col21" group="3" material="petg"/>
+      <geom name="box_shell_c22" type="mesh" mesh="box_shell_col22" group="3" material="petg"/>
+      <geom name="box_shell_c23" type="mesh" mesh="box_shell_col23" group="3" material="petg"/>
+      <geom name="box_shell_c24" type="mesh" mesh="box_shell_col24" group="3" material="petg"/>
+      <geom name="box_shell_c25" type="mesh" mesh="box_shell_col25" group="3" material="petg"/>
+      <geom name="box_shell_c26" type="mesh" mesh="box_shell_col26" group="3" material="petg"/>
+      <geom name="box_shell_c27" type="mesh" mesh="box_shell_col27" group="3" material="petg"/>
+      <geom name="box_shell_c28" type="mesh" mesh="box_shell_col28" group="3" material="petg"/>
+      <geom name="box_shell_c29" type="mesh" mesh="box_shell_col29" group="3" material="petg"/>
+      <geom name="box_shell_c30" type="mesh" mesh="box_shell_col30" group="3" material="petg"/>
+      <geom name="box_shell_c31" type="mesh" mesh="box_shell_col31" group="3" material="petg"/>
+      <geom name="box_shell_c32" type="mesh" mesh="box_shell_col32" group="3" material="petg"/>
+      <geom name="box_shell_c33" type="mesh" mesh="box_shell_col33" group="3" material="petg"/>
+      <geom name="box_shell_c34" type="mesh" mesh="box_shell_col34" group="3" material="petg"/>
+      <geom name="box_shell_c35" type="mesh" mesh="box_shell_col35" group="3" material="petg"/>
+      <geom name="box_shell_c36" type="mesh" mesh="box_shell_col36" group="3" material="petg"/>
+      <geom name="box_shell_c37" type="mesh" mesh="box_shell_col37" group="3" material="petg"/>
+      <geom name="box_shell_c38" type="mesh" mesh="box_shell_col38" group="3" material="petg"/>
+      <geom name="box_shell_c39" type="mesh" mesh="box_shell_col39" group="3" material="petg"/>
+      <geom name="box_shell_c40" type="mesh" mesh="box_shell_col40" group="3" material="petg"/>
+      <geom name="box_shell_c41" type="mesh" mesh="box_shell_col41" group="3" material="petg"/>
+      <geom name="box_shell_c42" type="mesh" mesh="box_shell_col42" group="3" material="petg"/>
+      <geom name="box_shell_c43" type="mesh" mesh="box_shell_col43" group="3" material="petg"/>
+      <geom name="box_shell_c44" type="mesh" mesh="box_shell_col44" group="3" material="petg"/>
+      <geom name="box_shell_c45" type="mesh" mesh="box_shell_col45" group="3" material="petg"/>
+      <geom name="box_shell_c46" type="mesh" mesh="box_shell_col46" group="3" material="petg"/>
+      <geom name="box_shell_c47" type="mesh" mesh="box_shell_col47" group="3" material="petg"/>
+      <geom name="box_shell_c48" type="mesh" mesh="box_shell_col48" group="3" material="petg"/>
+      <geom name="box_shell_c49" type="mesh" mesh="box_shell_col49" group="3" material="petg"/>
+      <geom name="box_shell_c50" type="mesh" mesh="box_shell_col50" group="3" material="petg"/>
+      <geom name="box_shell_c51" type="mesh" mesh="box_shell_col51" group="3" material="petg"/>
+      <geom name="box_shell_c52" type="mesh" mesh="box_shell_col52" group="3" material="petg"/>
+      <geom name="box_shell_c53" type="mesh" mesh="box_shell_col53" group="3" material="petg"/>
+      <geom name="box_shell_c54" type="mesh" mesh="box_shell_col54" group="3" material="petg"/>
+      <geom name="box_shell_c55" type="mesh" mesh="box_shell_col55" group="3" material="petg"/>
+      <geom name="box_shell_c56" type="mesh" mesh="box_shell_col56" group="3" material="petg"/>
+      <geom name="box_shell_c57" type="mesh" mesh="box_shell_col57" group="3" material="petg"/>
+      <geom name="box_shell_c58" type="mesh" mesh="box_shell_col58" group="3" material="petg"/>
+      <geom name="box_shell_c59" type="mesh" mesh="box_shell_col59" group="3" material="petg"/>
+      <geom name="box_shell_c60" type="mesh" mesh="box_shell_col60" group="3" material="petg"/>
+      <geom name="box_shell_c61" type="mesh" mesh="box_shell_col61" group="3" material="petg"/>
+      <geom name="box_shell_c62" type="mesh" mesh="box_shell_col62" group="3" material="petg"/>
+      <geom name="box_shell_c63" type="mesh" mesh="box_shell_col63" group="3" material="petg"/>
+      <geom name="box_shell_c64" type="mesh" mesh="box_shell_col64" group="3" material="petg"/>
+      <geom name="box_shell_c65" type="mesh" mesh="box_shell_col65" group="3" material="petg"/>
+      <geom name="box_shell_c66" type="mesh" mesh="box_shell_col66" group="3" material="petg"/>
+      <geom name="box_shell_c67" type="mesh" mesh="box_shell_col67" group="3" material="petg"/>
+      <geom name="box_shell_c68" type="mesh" mesh="box_shell_col68" group="3" material="petg"/>
+      <geom name="box_shell_c69" type="mesh" mesh="box_shell_col69" group="3" material="petg"/>
+      <geom name="box_shell_c70" type="mesh" mesh="box_shell_col70" group="3" material="petg"/>
+      <geom name="box_shell_c71" type="mesh" mesh="box_shell_col71" group="3" material="petg"/>
+      <geom name="box_shell_c72" type="mesh" mesh="box_shell_col72" group="3" material="petg"/>
+      <geom name="box_shell_c73" type="mesh" mesh="box_shell_col73" group="3" material="petg"/>
+      <geom name="box_shell_c74" type="mesh" mesh="box_shell_col74" group="3" material="petg"/>
+      <geom name="box_shell_c75" type="mesh" mesh="box_shell_col75" group="3" material="petg"/>
+      <geom name="box_shell_c76" type="mesh" mesh="box_shell_col76" group="3" material="petg"/>
+      <geom name="box_shell_c77" type="mesh" mesh="box_shell_col77" group="3" material="petg"/>
+      <geom name="box_shell_c78" type="mesh" mesh="box_shell_col78" group="3" material="petg"/>
+      <geom name="box_shell_c79" type="mesh" mesh="box_shell_col79" group="3" material="petg"/>
+      <geom name="box_shell_c80" type="mesh" mesh="box_shell_col80" group="3" material="petg"/>
+      <geom name="box_shell_c81" type="mesh" mesh="box_shell_col81" group="3" material="petg"/>
+      <geom name="box_shell_c82" type="mesh" mesh="box_shell_col82" group="3" material="petg"/>
+      <geom name="box_shell_c83" type="mesh" mesh="box_shell_col83" group="3" material="petg"/>
+      <geom name="box_shell_c84" type="mesh" mesh="box_shell_col84" group="3" material="petg"/>
+      <geom name="box_shell_c85" type="mesh" mesh="box_shell_col85" group="3" material="petg"/>
+      <geom name="box_shell_c86" type="mesh" mesh="box_shell_col86" group="3" material="petg"/>
+      <geom name="box_shell_c87" type="mesh" mesh="box_shell_col87" group="3" material="petg"/>
+      <geom name="box_shell_c88" type="mesh" mesh="box_shell_col88" group="3" material="petg"/>
+      <geom name="box_shell_c89" type="mesh" mesh="box_shell_col89" group="3" material="petg"/>
+      <geom name="box_shell_c90" type="mesh" mesh="box_shell_col90" group="3" material="petg"/>
+      <geom name="box_shell_c91" type="mesh" mesh="box_shell_col91" group="3" material="petg"/>
+      <geom name="box_shell_c92" type="mesh" mesh="box_shell_col92" group="3" material="petg"/>
+      <geom name="box_shell_c93" type="mesh" mesh="box_shell_col93" group="3" material="petg"/>
+      <geom name="box_shell_c94" type="mesh" mesh="box_shell_col94" group="3" material="petg"/>
+      <geom name="box_shell_c95" type="mesh" mesh="box_shell_col95" group="3" material="petg"/>
+      <geom name="box_shell_c96" type="mesh" mesh="box_shell_col96" group="3" material="petg"/>
+      <geom name="box_shell_c97" type="mesh" mesh="box_shell_col97" group="3" material="petg"/>
+      <geom name="box_shell_c98" type="mesh" mesh="box_shell_col98" group="3" material="petg"/>
+      <geom name="box_shell_c99" type="mesh" mesh="box_shell_col99" group="3" material="petg"/>
+      <geom name="box_shell_c100" type="mesh" mesh="box_shell_col100" group="3" material="petg"/>
+      <geom name="box_shell_c101" type="mesh" mesh="box_shell_col101" group="3" material="petg"/>
+      <geom name="box_shell_c102" type="mesh" mesh="box_shell_col102" group="3" material="petg"/>
+      <geom name="box_shell_c103" type="mesh" mesh="box_shell_col103" group="3" material="petg"/>
+      <geom name="box_shell_c104" type="mesh" mesh="box_shell_col104" group="3" material="petg"/>
+      <geom name="box_shell_c105" type="mesh" mesh="box_shell_col105" group="3" material="petg"/>
+      <geom name="box_shell_c106" type="mesh" mesh="box_shell_col106" group="3" material="petg"/>
+      <geom name="box_shell_c107" type="mesh" mesh="box_shell_col107" group="3" material="petg"/>
+      <geom name="box_shell_c108" type="mesh" mesh="box_shell_col108" group="3" material="petg"/>
+      <geom name="box_shell_c109" type="mesh" mesh="box_shell_col109" group="3" material="petg"/>
+      <geom name="box_shell_c110" type="mesh" mesh="box_shell_col110" group="3" material="petg"/>
+      <geom name="box_shell_c111" type="mesh" mesh="box_shell_col111" group="3" material="petg"/>
+      <geom name="box_shell_c112" type="mesh" mesh="box_shell_col112" group="3" material="petg"/>
+      <geom name="box_shell_c113" type="mesh" mesh="box_shell_col113" group="3" material="petg"/>
+      <geom name="box_shell_c114" type="mesh" mesh="box_shell_col114" group="3" material="petg"/>
+      <geom name="box_shell_c115" type="mesh" mesh="box_shell_col115" group="3" material="petg"/>
+      <geom name="box_shell_c116" type="mesh" mesh="box_shell_col116" group="3" material="petg"/>
+      <geom name="box_shell_c117" type="mesh" mesh="box_shell_col117" group="3" material="petg"/>
+      <geom name="box_shell_c118" type="mesh" mesh="box_shell_col118" group="3" material="petg"/>
+      <geom name="box_shell_c119" type="mesh" mesh="box_shell_col119" group="3" material="petg"/>
+      <geom name="box_shell_c120" type="mesh" mesh="box_shell_col120" group="3" material="petg"/>
+      <geom name="box_shell_c121" type="mesh" mesh="box_shell_col121" group="3" material="petg"/>
+      <geom name="box_shell_c122" type="mesh" mesh="box_shell_col122" group="3" material="petg"/>
+      <geom name="box_shell_c123" type="mesh" mesh="box_shell_col123" group="3" material="petg"/>
+      <geom name="box_shell_c124" type="mesh" mesh="box_shell_col124" group="3" material="petg"/>
+      <geom name="box_shell_c125" type="mesh" mesh="box_shell_col125" group="3" material="petg"/>
+      <geom name="box_shell_c126" type="mesh" mesh="box_shell_col126" group="3" material="petg"/>
+      <geom name="box_shell_c127" type="mesh" mesh="box_shell_col127" group="3" material="petg"/>
+      <geom name="box_shell_c128" type="mesh" mesh="box_shell_col128" group="3" material="petg"/>
+      <geom name="box_shell_c129" type="mesh" mesh="box_shell_col129" group="3" material="petg"/>
+      <geom name="box_shell_c130" type="mesh" mesh="box_shell_col130" group="3" material="petg"/>
+      <geom name="box_shell_c131" type="mesh" mesh="box_shell_col131" group="3" material="petg"/>
+      <geom name="box_shell_c132" type="mesh" mesh="box_shell_col132" group="3" material="petg"/>
+      <geom name="box_shell_c133" type="mesh" mesh="box_shell_col133" group="3" material="petg"/>
+      <geom name="box_shell_c134" type="mesh" mesh="box_shell_col134" group="3" material="petg"/>
+      <geom name="box_shell_c135" type="mesh" mesh="box_shell_col135" group="3" material="petg"/>
+      <geom name="box_shell_c136" type="mesh" mesh="box_shell_col136" group="3" material="petg"/>
+      <geom name="box_shell_c137" type="mesh" mesh="box_shell_col137" group="3" material="petg"/>
+      <geom name="box_shell_c138" type="mesh" mesh="box_shell_col138" group="3" material="petg"/>
+      <geom name="box_shell_c139" type="mesh" mesh="box_shell_col139" group="3" material="petg"/>
+      <geom name="box_shell_c140" type="mesh" mesh="box_shell_col140" group="3" material="petg"/>
+      <geom name="box_shell_c141" type="mesh" mesh="box_shell_col141" group="3" material="petg"/>
+      <geom name="box_shell_c142" type="mesh" mesh="box_shell_col142" group="3" material="petg"/>
+      <geom name="box_shell_c143" type="mesh" mesh="box_shell_col143" group="3" material="petg"/>
+      <geom name="box_shell_c144" type="mesh" mesh="box_shell_col144" group="3" material="petg"/>
+      <geom name="box_shell_c145" type="mesh" mesh="box_shell_col145" group="3" material="petg"/>
+      <geom name="box_shell_c146" type="mesh" mesh="box_shell_col146" group="3" material="petg"/>
+      <geom name="box_shell_c147" type="mesh" mesh="box_shell_col147" group="3" material="petg"/>
+      <geom name="box_shell_c148" type="mesh" mesh="box_shell_col148" group="3" material="petg"/>
+      <geom name="box_shell_c149" type="mesh" mesh="box_shell_col149" group="3" material="petg"/>
+      <geom name="box_shell_c150" type="mesh" mesh="box_shell_col150" group="3" material="petg"/>
+      <geom name="box_shell_c151" type="mesh" mesh="box_shell_col151" group="3" material="petg"/>
+      <geom name="box_shell_c152" type="mesh" mesh="box_shell_col152" group="3" material="petg"/>
+      <geom name="box_shell_c153" type="mesh" mesh="box_shell_col153" group="3" material="petg"/>
+      <geom name="box_shell_c154" type="mesh" mesh="box_shell_col154" group="3" material="petg"/>
+      <geom name="box_shell_c155" type="mesh" mesh="box_shell_col155" group="3" material="petg"/>
+      <geom name="box_shell_c156" type="mesh" mesh="box_shell_col156" group="3" material="petg"/>
+      <geom name="box_shell_c157" type="mesh" mesh="box_shell_col157" group="3" material="petg"/>
+      <geom name="box_shell_c158" type="mesh" mesh="box_shell_col158" group="3" material="petg"/>
+      <geom name="box_shell_c159" type="mesh" mesh="box_shell_col159" group="3" material="petg"/>
+      <geom name="box_shell_c160" type="mesh" mesh="box_shell_col160" group="3" material="petg"/>
+      <geom name="box_shell_c161" type="mesh" mesh="box_shell_col161" group="3" material="petg"/>
+      <geom name="box_shell_c162" type="mesh" mesh="box_shell_col162" group="3" material="petg"/>
+      <geom name="box_shell_c163" type="mesh" mesh="box_shell_col163" group="3" material="petg"/>
+      <geom name="box_shell_c164" type="mesh" mesh="box_shell_col164" group="3" material="petg"/>
+      <geom name="box_shell_c165" type="mesh" mesh="box_shell_col165" group="3" material="petg"/>
+      <geom name="box_shell_c166" type="mesh" mesh="box_shell_col166" group="3" material="petg"/>
+      <geom name="box_shell_c167" type="mesh" mesh="box_shell_col167" group="3" material="petg"/>
+      <geom name="box_shell_c168" type="mesh" mesh="box_shell_col168" group="3" material="petg"/>
+      <geom name="box_shell_c169" type="mesh" mesh="box_shell_col169" group="3" material="petg"/>
+      <geom name="box_shell_c170" type="mesh" mesh="box_shell_col170" group="3" material="petg"/>
+      <geom name="box_shell_c171" type="mesh" mesh="box_shell_col171" group="3" material="petg"/>
+      <geom name="box_shell_c172" type="mesh" mesh="box_shell_col172" group="3" material="petg"/>
+      <site name="box_axis" pos="0.000000000 -0.034000000 0.041500000" size="0.0012" rgba="0.1 0.9 0.2 1"/>
+    </body>
+    <body name="lid_panel" pos="0 0 0">
+      <freejoint name="lid_panel_free"/>
+      <inertial pos="-0.000000000 -0.000161712 0.041509676" mass="0.018329440" fullinertia="0.000005649111 0.000009578972 0.000015197439 -0.000000000000 0.000000000000 0.000000005067"/>
+      <geom name="lid_panel_vis" type="mesh" mesh="lid_panel_vis" contype="0" conaffinity="0" group="2" material="petg_lid"/>
+      <geom name="lid_panel_c0" type="mesh" mesh="lid_panel_col0" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c1" type="mesh" mesh="lid_panel_col1" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c2" type="mesh" mesh="lid_panel_col2" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c3" type="mesh" mesh="lid_panel_col3" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c4" type="mesh" mesh="lid_panel_col4" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c5" type="mesh" mesh="lid_panel_col5" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c6" type="mesh" mesh="lid_panel_col6" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c7" type="mesh" mesh="lid_panel_col7" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c8" type="mesh" mesh="lid_panel_col8" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c9" type="mesh" mesh="lid_panel_col9" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c10" type="mesh" mesh="lid_panel_col10" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c11" type="mesh" mesh="lid_panel_col11" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c12" type="mesh" mesh="lid_panel_col12" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c13" type="mesh" mesh="lid_panel_col13" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c14" type="mesh" mesh="lid_panel_col14" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c15" type="mesh" mesh="lid_panel_col15" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c16" type="mesh" mesh="lid_panel_col16" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c17" type="mesh" mesh="lid_panel_col17" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c18" type="mesh" mesh="lid_panel_col18" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c19" type="mesh" mesh="lid_panel_col19" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c20" type="mesh" mesh="lid_panel_col20" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c21" type="mesh" mesh="lid_panel_col21" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c22" type="mesh" mesh="lid_panel_col22" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c23" type="mesh" mesh="lid_panel_col23" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c24" type="mesh" mesh="lid_panel_col24" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c25" type="mesh" mesh="lid_panel_col25" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c26" type="mesh" mesh="lid_panel_col26" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c27" type="mesh" mesh="lid_panel_col27" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c28" type="mesh" mesh="lid_panel_col28" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c29" type="mesh" mesh="lid_panel_col29" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c30" type="mesh" mesh="lid_panel_col30" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c31" type="mesh" mesh="lid_panel_col31" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c32" type="mesh" mesh="lid_panel_col32" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c33" type="mesh" mesh="lid_panel_col33" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c34" type="mesh" mesh="lid_panel_col34" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c35" type="mesh" mesh="lid_panel_col35" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c36" type="mesh" mesh="lid_panel_col36" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c37" type="mesh" mesh="lid_panel_col37" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c38" type="mesh" mesh="lid_panel_col38" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c39" type="mesh" mesh="lid_panel_col39" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c40" type="mesh" mesh="lid_panel_col40" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c41" type="mesh" mesh="lid_panel_col41" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c42" type="mesh" mesh="lid_panel_col42" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c43" type="mesh" mesh="lid_panel_col43" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c44" type="mesh" mesh="lid_panel_col44" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c45" type="mesh" mesh="lid_panel_col45" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c46" type="mesh" mesh="lid_panel_col46" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c47" type="mesh" mesh="lid_panel_col47" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c48" type="mesh" mesh="lid_panel_col48" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c49" type="mesh" mesh="lid_panel_col49" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c50" type="mesh" mesh="lid_panel_col50" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c51" type="mesh" mesh="lid_panel_col51" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c52" type="mesh" mesh="lid_panel_col52" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c53" type="mesh" mesh="lid_panel_col53" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c54" type="mesh" mesh="lid_panel_col54" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c55" type="mesh" mesh="lid_panel_col55" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c56" type="mesh" mesh="lid_panel_col56" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c57" type="mesh" mesh="lid_panel_col57" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c58" type="mesh" mesh="lid_panel_col58" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c59" type="mesh" mesh="lid_panel_col59" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c60" type="mesh" mesh="lid_panel_col60" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c61" type="mesh" mesh="lid_panel_col61" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c62" type="mesh" mesh="lid_panel_col62" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c63" type="mesh" mesh="lid_panel_col63" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c64" type="mesh" mesh="lid_panel_col64" group="3" material="petg_lid"/>
+      <geom name="lid_panel_c65" type="mesh" mesh="lid_panel_col65" group="3" material="petg_lid"/>
+      <site name="lid_tip" pos="0.000000000 0.030000000 0.041500000" size="0.002" rgba="1 0.2 0.2 1"/>
+    </body>
+    <body name="hinge_pin" pos="0 0 0">
+      <freejoint name="hinge_pin_free"/>
+      <inertial pos="0.000000000 -0.034000000 0.041500000" mass="0.000487545" fullinertia="0.000000000973 0.000000038530 0.000000038530 -0.000000000000 0.000000000000 -0.000000000000"/>
+      <geom name="hinge_pin_vis" type="mesh" mesh="hinge_pin_vis" contype="0" conaffinity="0" group="2" material="steel"/>
+      <geom name="hinge_pin_c0" type="cylinder" pos="0.000000000 -0.034000000 0.041500000" size="0.002000000 0.015300000" group="3" material="steel" euler="0.000000000 1.570796327 0.000000000"/>
+      <site name="pin_center" pos="0.000000000 -0.034000000 0.041500000" size="0.0012" rgba="0.9 0.1 0.9 1"/>
+    </body>
+  </worldbody>
+</mujoco>

@@ -1,0 +1,31 @@
+flowchart LR
+  %% T-S1
+  FN0("🎯 secure: lid"):::fn
+  FN1("🎯 allow_access: contents"):::fn
+  P1["⏚ P1 base\nbox_shell"]:::piece
+  P2["P2 lid\nlid_panel"]:::piece
+  E1("E1\nsnap_hook_cantilever"):::elem
+  B1["B1 · assembly\nsnap_event [0,80]N"]:::assembly
+  B2["B2 · static\nsnap_event [15,60]N"]:::static
+  B3["B3 · use\nfixed"]:::use
+  PR_T1_MATE["🔬 PR-T1-MATE\n1 gates / 1 obs"]:::proto
+  PR_T1_SEP["🔬 PR-T1-SEP\n2 gates / 2 obs"]:::proto
+  PR_T0_SWEEP["🔬 PR-T0-SWEEP\n1 gates / 0 obs"]:::proto
+  E1 -->|realizes| B1
+  B1 -->|verified_by| PR_T1_MATE
+  E1 -->|realizes| B2
+  B2 -->|verified_by| PR_T1_SEP
+  E1 -.->|imposes| B3
+  B3 -->|verified_by| PR_T0_SWEEP
+  E1 ---|beam_root@rim_underside_left| P2
+  E1 ---|beam_root@rim_underside_right| P2
+  E1 ---|catch_window@side_wall_left| P1
+  E1 ---|catch_window@side_wall_right| P1
+  classDef use fill:#bee3f8,stroke:#3182ce;
+  classDef assembly fill:#fed7aa,stroke:#dd6b20;
+  classDef static fill:#e2e8f0,stroke:#718096;
+  classDef elem fill:#c6f6d5,stroke:#38a169;
+  classDef feat fill:#fefcbf,stroke:#d69e2e;
+  classDef piece fill:#edf2f7,stroke:#4a5568;
+  classDef proto fill:#ffffff,stroke:#805ad5;
+  classDef fn fill:#ebf8ff,stroke:#3182ce;

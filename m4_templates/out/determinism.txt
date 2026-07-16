@@ -1,0 +1,4 @@
+G6-d determinism (normalized STEP hash, compiled twice)
+compile 1: {'P1': '68aaa427e56f2784', 'P2': '189d35a9af924f41'}
+compile 2: {'P1': '68aaa427e56f2784', 'P2': '189d35a9af924f41'}
+IDENTICAL: True

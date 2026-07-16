@@ -1,0 +1,114 @@
+{
+  "mode": "V-B",
+  "strategy": "ring",
+  "contact_preset": {
+    "solref": [
+      0.001,
+      1.0
+    ],
+    "solimp": [
+      0.99,
+      0.9999,
+      0.0001
+    ],
+    "friction_mu": 0.3
+  },
+  "collision": {
+    "box_shell": "ring (16 wedges/knuckle)",
+    "lid_panel": "ring (16 wedges/knuckle)",
+    "hinge_pin": "cylinder (convex, exact)"
+  },
+  "bore_patency": {
+    "open": true,
+    "min_wall_r_mm": 2.1921199703574854,
+    "note": "wall at 2.192 mm (bore 2.150, pin 2.000); clearance +0.192 of 0.150 mm nominal (128% retained)"
+  },
+  "g_conv": true,
+  "seeds_passed": 0,
+  "n_seeds": 5,
+  "verdict": false,
+  "criteria_seed0": {
+    "1 pin retention: radial drift <= clearance+0.1": {
+      "value": 405405.8745,
+      "threshold": 0.4,
+      "pass": false
+    },
+    "1 pin retention: axial drift <= protrusion": {
+      "value": 10798.7347,
+      "threshold": 3.0,
+      "pass": false
+    },
+    "2 theta_max >= 90 deg": {
+      "value": 182446.39,
+      "threshold": 90.0,
+      "pass": true
+    },
+    "3 penetration (non-interface) <= 0.2 mm": {
+      "value": 5.1748,
+      "threshold": 0.2,
+      "pass": false
+    },
+    "3 penetration (pin/bore interface) <= clearance": {
+      "value": 2157.1811,
+      "threshold": 0.3,
+      "pass": false
+    },
+    "4 theta_final <= 5 deg": {
+      "value": 180055.29,
+      "threshold": 5.0,
+      "pass": false
+    }
+  },
+  "per_seed": [
+    {
+      "theta_max_deg": 182446.38507346666,
+      "theta_final_deg": 180055.2874665199,
+      "pin_radial_max_mm": 405405.8744709109,
+      "pin_axial_max_mm": 10798.734666256712,
+      "pen_general_mm": 5.174769617018092,
+      "pen_interface_mm": 2157.181071463875,
+      "box_slid_mm": 833.9775677004999,
+      "diverged": false
+    },
+    {
+      "theta_max_deg": 226.46590670807876,
+      "theta_final_deg": 1.922454178978736e-05,
+      "pin_radial_max_mm": 0.44113280187309095,
+      "pin_axial_max_mm": 0.5151526448625816,
+      "pen_general_mm": 0.6695580390220031,
+      "pen_interface_mm": 0.7397757029381689,
+      "box_slid_mm": 16.089371420623905,
+      "diverged": false
+    },
+    {
+      "theta_max_deg": 223.20941410619386,
+      "theta_final_deg": 1.8811999781873335e-05,
+      "pin_radial_max_mm": 0.34794427311866305,
+      "pin_axial_max_mm": 0.42291403006220063,
+      "pen_general_mm": 1.2298277585459136,
+      "pen_interface_mm": 0.5332019449040477,
+      "box_slid_mm": 6.2048642723381535,
+      "diverged": false
+    },
+    {
+      "theta_max_deg": 223.3363820171509,
+      "theta_final_deg": 2.048506519270519e-05,
+      "pin_radial_max_mm": 0.5381714374915292,
+      "pin_axial_max_mm": 0.10738651204442069,
+      "pen_general_mm": 1.1970192387353897,
+      "pen_interface_mm": 0.542753829426563,
+      "box_slid_mm": 13.209200007751997,
+      "diverged": false
+    },
+    {
+      "theta_max_deg": 224.1963028625877,
+      "theta_final_deg": 1.971183776532829e-05,
+      "pin_radial_max_mm": 0.32544129005123024,
+      "pin_axial_max_mm": 0.12484853982234342,
+      "pen_general_mm": 0.47359077172650155,
+      "pen_interface_mm": 0.5292709965638862,
+      "box_slid_mm": 16.392803490173833,
+      "diverged": false
+    }
+  ]
+}

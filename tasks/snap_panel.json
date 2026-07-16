@@ -1,0 +1,279 @@
+{
+  "task_id": "T-S1-panel",
+  "command": "Design a clip that retains a flat board and can be removed by hand. Plastic, 3D printing.",
+  "functions": [
+    {
+      "verb": "secure",
+      "object": "board",
+      "qualifier": "retain a flat part"
+    },
+    {
+      "verb": "allow_access",
+      "object": "board",
+      "qualifier": "removable by hand"
+    }
+  ],
+  "behaviors": [
+    {
+      "id": "B1",
+      "phase": "assembly",
+      "motion": {
+        "kind": "snap_event",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": [
+          0.0,
+          80.0
+        ]
+      },
+      "load": null,
+      "realized_by": "E1",
+      "imposed_by": null,
+      "verified_by": "PR-T1-MATE",
+      "imposed_by_card": null
+    },
+    {
+      "id": "B2",
+      "phase": "static",
+      "motion": {
+        "kind": "snap_event",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": [
+          15.0,
+          60.0
+        ]
+      },
+      "load": null,
+      "realized_by": "E1",
+      "imposed_by": null,
+      "verified_by": "PR-T1-SEP",
+      "imposed_by_card": null
+    },
+    {
+      "id": "B3",
+      "phase": "use",
+      "motion": {
+        "kind": "fixed",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "load": null,
+      "realized_by": null,
+      "imposed_by": "E1",
+      "verified_by": "PR-T0-SWEEP",
+      "imposed_by_card": "snap_hook_cantilever"
+    },
+    {
+      "id": "B4",
+      "phase": "assembly",
+      "motion": {
+        "kind": "translation",
+        "axis_hint": "insertion_axis",
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "load": null,
+      "realized_by": null,
+      "imposed_by": "E1",
+      "verified_by": null,
+      "imposed_by_card": "snap_hook_cantilever"
+    }
+  ],
+  "pieces": [
+    {
+      "id": "M1",
+      "role": "base",
+      "template_ref": "flat_panel_mount",
+      "params": {},
+      "is_base": true
+    },
+    {
+      "id": "B1",
+      "role": "retained",
+      "template_ref": "retained_board",
+      "params": {},
+      "is_base": false
+    }
+  ],
+  "templates": [
+    {
+      "template_ref": "flat_panel_mount",
+      "anchors": [
+        {
+          "name": "rail_inner_left",
+          "kind": "face"
+        },
+        {
+          "name": "rail_inner_right",
+          "kind": "face"
+        }
+      ],
+      "params": {}
+    },
+    {
+      "template_ref": "retained_board",
+      "anchors": [
+        {
+          "name": "board_edge_left",
+          "kind": "face"
+        },
+        {
+          "name": "board_edge_right",
+          "kind": "face"
+        }
+      ],
+      "params": {}
+    }
+  ],
+  "elements": [
+    {
+      "id": "E1",
+      "card_ref": "snap_hook_cantilever",
+      "params": {
+        "n_hooks": 2.0,
+        "design_type": 2.0,
+        "alpha_in_deg": 30.0,
+        "alpha_out_deg": 45.0
+      },
+      "host_pieces": [
+        "M1",
+        "B1"
+      ]
+    }
+  ],
+  "features": [],
+  "bindings": [
+    {
+      "element_id": "E1",
+      "port": "beam_root",
+      "piece_id": "M1",
+      "anchor": "rail_inner_left",
+      "mate": "on_face_uv",
+      "offset_params": {
+        "u": 0.5,
+        "v": 0.5
+      }
+    },
+    {
+      "element_id": "E1",
+      "port": "beam_root",
+      "piece_id": "M1",
+      "anchor": "rail_inner_right",
+      "mate": "on_face_uv",
+      "offset_params": {
+        "u": 0.5,
+        "v": 0.5
+      }
+    },
+    {
+      "element_id": "E1",
+      "port": "catch_window",
+      "piece_id": "B1",
+      "anchor": "board_edge_left",
+      "mate": "offset_face",
+      "offset_params": {
+        "undercut_dir": "inward"
+      }
+    },
+    {
+      "element_id": "E1",
+      "port": "catch_window",
+      "piece_id": "B1",
+      "anchor": "board_edge_right",
+      "mate": "offset_face",
+      "offset_params": {
+        "undercut_dir": "inward"
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "n_hooks",
+      "value": 2.0,
+      "unit": "count",
+      "lo": 2.0,
+      "hi": 4.0,
+      "resolved_by": "user",
+      "citation": null
+    }
+  ],
+  "protocols": [
+    {
+      "id": "PR-T1-MATE",
+      "verifies": "B1",
+      "actuation": {
+        "kind": "formula_recheck"
+      },
+      "criteria": [
+        {
+          "name": "hand_closeable",
+          "observable": "mating_force_total_N",
+          "op": "<=",
+          "threshold": 80.0,
+          "unit": "N"
+        }
+      ],
+      "observables": [],
+      "mode": null,
+      "seeds": 5,
+      "seed_pass": 4
+    },
+    {
+      "id": "PR-T1-SEP",
+      "verifies": "B2",
+      "actuation": {
+        "kind": "formula_recheck"
+      },
+      "criteria": [
+        {
+          "name": "retention_floor",
+          "observable": "retention_force_N",
+          "op": ">=",
+          "threshold": 15.0,
+          "unit": "N"
+        }
+      ],
+      "observables": [],
+      "mode": null,
+      "seeds": 5,
+      "seed_pass": 4
+    },
+    {
+      "id": "PR-T0-SWEEP",
+      "verifies": "B3",
+      "actuation": {
+        "kind": "tier0_sweep"
+      },
+      "criteria": [
+        {
+          "name": "no_defect_interference",
+          "observable": "pen_travel_mm",
+          "op": "<=",
+          "threshold": 0.2,
+          "unit": "mm"
+        }
+      ],
+      "observables": [],
+      "mode": null,
+      "seeds": 5,
+      "seed_pass": 4
+    }
+  ],
+  "material": "PETG",
+  "variant": null,
+  "stage_log": []
+}

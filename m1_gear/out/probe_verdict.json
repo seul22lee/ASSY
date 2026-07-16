@@ -1,0 +1,38 @@
+{
+  "sanctioned_probe_module": 3,
+  "m3_5seed": {
+    "seeds_pass": 0,
+    "n_seeds": 5,
+    "pass": false
+  },
+  "per_module": {
+    "2": {
+      "module": 2,
+      "op_cd": 36.0,
+      "backlash_realised_mm": 0.2,
+      "frozen_diverged": true,
+      "frozen_ratio": 0.0,
+      "max_stable_dt": 2e-05,
+      "frozen_over_stable": 25.0
+    },
+    "3": {
+      "module": 3,
+      "op_cd": 54.2,
+      "backlash_realised_mm": 0.346,
+      "frozen_diverged": true,
+      "frozen_ratio": 0.0,
+      "max_stable_dt": 5e-05,
+      "frozen_over_stable": 10.0
+    },
+    "4": {
+      "module": 4,
+      "op_cd": 72.6,
+      "backlash_realised_mm": 0.637,
+      "frozen_diverged": true,
+      "frozen_ratio": -0.5017,
+      "max_stable_dt": 0.0001,
+      "frozen_over_stable": 5.0
+    }
+  },
+  "conclusion": "FAIL at m=3 (0/5 at frozen dt); module mitigation monotonic but not in-bounds by m=4; recommend continuing geometry-side (m=5-6) before preset amendment; preset UNTOUCHED (R5)"
+}

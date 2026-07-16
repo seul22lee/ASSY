@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="620" viewBox="0 0 900 620" font-family="monospace">
+<rect width="900" height="620" fill="#fbfdff"/>
+<text x="20" y="26" font-size="16" font-weight="bold" fill="#1a202c">MechSynth ontology v0.1 — class map</text>
+<text x="20" y="44" font-size="10" fill="#718096">DesignPlan is the IR root; arrows = "contains list of". D-ONT rows tagged.</text>
+<rect x="360" y="60" width="200" height="58" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="2"/>
+<rect x="360" y="60" width="200" height="20" rx="6" fill="#805ad5"/>
+<text x="460.0" y="74" font-size="11" font-weight="bold" fill="white" font-family="monospace" text-anchor="middle">DesignPlan</text>
+<text x="368" y="94" font-size="9" font-family="monospace" fill="#4a5568">task_id, command, variant</text>
+<text x="368" y="108" font-size="9" font-family="monospace" fill="#4a5568">material, stage_log</text>
+<rect x="40" y="170" width="190" height="58" rx="6" fill="#ffffff" stroke="#38a169" stroke-width="2"/>
+<rect x="40" y="170" width="190" height="20" rx="6" fill="#38a169"/>
+<text x="135.0" y="184" font-size="11" font-weight="bold" fill="white" font-family="monospace" text-anchor="middle">Function</text>
+<text x="48" y="204" font-size="9" font-family="monospace" fill="#4a5568">verb, object, qualifier</text>
+<text x="48" y="218" font-size="9" font-family="monospace" fill="#4a5568">(D-ONT-3 typed)</text>
+<rect x="250" y="170" width="190" height="72" rx="6" fill="#ffffff" stroke="#38a169" stroke-width="2"/>
+<rect x="250" y="170" width="190" height="20" rx="6" fill="#38a169"/>
+<text x="345.0" y="184" font-size="11" font-weight="bold" fill="white" font-family="monospace" text-anchor="middle">Behavior</text>
+<text x="258" y="204" font-size="9" font-family="monospace" fill="#4a5568">phase, motion:MotionSpec</text>
+<text x="258" y="218" font-size="9" font-family="monospace" fill="#4a5568">realized_by / imposed_by</text>
+<text x="258" y="232" font-size="9" font-family="monospace" fill="#4a5568">verified_by</text>
+<rect x="470" y="170" width="190" height="72" rx="6" fill="#ffffff" stroke="#38a169" stroke-width="2"/>
+<rect x="470" y="170" width="190" height="20" rx="6" fill="#38a169"/>
+<text x="565.0" y="184" font-size="11" font-weight="bold" fill="white" font-family="monospace" text-anchor="middle">Piece</text>
+<text x="478" y="204" font-size="9" font-family="monospace" fill="#4a5568">role, template_ref</text>
+<text x="478" y="218" font-size="9" font-family="monospace" fill="#4a5568">is_base  (D23/D-ONT-3)</text>
+<text x="478" y="232" font-size="9" font-family="monospace" fill="#4a5568">params</text>
+<rect x="680" y="170" width="190" height="58" rx="6" fill="#ffffff" stroke="#d69e2e" stroke-width="2"/>
+<rect x="680" y="170" width="190" height="20" rx="6" fill="#d69e2e"/>
+<text x="775.0" y="184" font-size="11" font-weight="bold" fill="white" font-family="monospace" text-anchor="middle">HostTemplate</text>
+<text x="688" y="204" font-size="9" font-family="monospace" fill="#4a5568">anchors:[Anchor]</text>
+<text x="688" y="218" font-size="9" font-family="monospace" fill="#4a5568">(D-ONT-1: in IR)</text>
+<rect x="40" y="320" width="190" height="58" rx="6" fill="#ffffff" stroke="#38a169" stroke-width="2"/>
+<rect x="40" y="320" width="190" height="20" rx="6" fill="#38a169"/>
+<text x="135.0" y="334" font-size="11" font-weight="bold" fill="white" font-family="monospace" text-anchor="middle">ElementInstance</text>
+<text x="48" y="354" font-size="9" font-family="monospace" fill="#4a5568">card_ref, host_pieces</text>
+<text x="48" y="368" font-size="9" font-family="monospace" fill="#4a5568">→ MechanicalElementCard</text>
+<rect x="250" y="320" width="190" height="72" rx="6" fill="#ffffff" stroke="#d69e2e" stroke-width="2"/>
+<rect x="250" y="320" width="190" height="20" rx="6" fill="#d69e2e"/>
+<text x="345.0" y="334" font-size="11" font-weight="bold" fill="white" font-family="monospace" text-anchor="middle">FeatureInstance</text>
+<text x="258" y="354" font-size="9" font-family="monospace" fill="#4a5568">card_ref, host_pieces</text>
+<text x="258" y="368" font-size="9" font-family="monospace" fill="#4a5568">→ PassiveFeatureCard</text>
+<text x="258" y="382" font-size="9" font-family="monospace" fill="#4a5568">(D-ONT-4)</text>
+<rect x="470" y="320" width="190" height="72" rx="6" fill="#ffffff" stroke="#38a169" stroke-width="2"/>
+<rect x="470" y="320" width="190" height="20" rx="6" fill="#38a169"/>
+<text x="565.0" y="334" font-size="11" font-weight="bold" fill="white" font-family="monospace" text-anchor="middle">Binding</text>
+<text x="478" y="354" font-size="9" font-family="monospace" fill="#4a5568">port↦anchor, mate</text>
+<text x="478" y="368" font-size="9" font-family="monospace" fill="#4a5568">offset_params</text>
+<text x="478" y="382" font-size="9" font-family="monospace" fill="#4a5568">  ·undercut_dir (M-S)</text>
+<rect x="680" y="320" width="190" height="58" rx="6" fill="#ffffff" stroke="#38a169" stroke-width="2"/>
+<rect x="680" y="320" width="190" height="20" rx="6" fill="#38a169"/>
+<text x="775.0" y="334" font-size="11" font-weight="bold" fill="white" font-family="monospace" text-anchor="middle">Parameter</text>
+<text x="688" y="354" font-size="9" font-family="monospace" fill="#4a5568">value, lo, hi, unit</text>
+<text x="688" y="368" font-size="9" font-family="monospace" fill="#4a5568">resolved_by</text>
+<rect x="150" y="470" width="190" height="72" rx="6" fill="#ffffff" stroke="#3182ce" stroke-width="2"/>
+<rect x="150" y="470" width="190" height="20" rx="6" fill="#3182ce"/>
+<text x="245.0" y="484" font-size="11" font-weight="bold" fill="white" font-family="monospace" text-anchor="middle">VerificationProtocol</text>
+<text x="158" y="504" font-size="9" font-family="monospace" fill="#4a5568">criteria:[Criterion]  GATES</text>
+<text x="158" y="518" font-size="9" font-family="monospace" fill="#4a5568">observables:[Observable]</text>
+<text x="158" y="532" font-size="9" font-family="monospace" fill="#4a5568">(D-ONT-2 split)</text>
+<rect x="470" y="470" width="190" height="72" rx="6" fill="#ffffff" stroke="#38a169" stroke-width="2"/>
+<rect x="470" y="470" width="190" height="20" rx="6" fill="#38a169"/>
+<text x="565.0" y="484" font-size="11" font-weight="bold" fill="white" font-family="monospace" text-anchor="middle">MotionSpec</text>
+<text x="478" y="504" font-size="9" font-family="monospace" fill="#4a5568">kind (+snap_event M-S)</text>
+<text x="478" y="518" font-size="9" font-family="monospace" fill="#4a5568">event_force_window_N</text>
+<text x="478" y="532" font-size="9" font-family="monospace" fill="#4a5568">transmission</text>
+<rect x="700" y="470" width="190" height="58" rx="6" fill="#ffffff" stroke="#38a169" stroke-width="2"/>
+<rect x="700" y="470" width="190" height="20" rx="6" fill="#38a169"/>
+<text x="795.0" y="484" font-size="11" font-weight="bold" fill="white" font-family="monospace" text-anchor="middle">Material</text>
+<text x="708" y="504" font-size="9" font-family="monospace" fill="#4a5568">E, eps_allow, mu ...</text>
+<text x="708" y="518" font-size="9" font-family="monospace" fill="#4a5568">PETG (D8)</text>
+<path d="M460,118 C460,144.0 135,144.0 135,170" fill="none" stroke="#cbd5e0" stroke-width="1.4"/>
+<path d="M460,118 C460,144.0 345,144.0 345,170" fill="none" stroke="#cbd5e0" stroke-width="1.4"/>
+<path d="M460,118 C460,144.0 565,144.0 565,170" fill="none" stroke="#cbd5e0" stroke-width="1.4"/>
+<path d="M460,118 C460,144.0 775,144.0 775,170" fill="none" stroke="#cbd5e0" stroke-width="1.4"/>
+<path d="M460,118 C460,219.0 135,219.0 135,320" fill="none" stroke="#cbd5e0" stroke-width="1.4"/>
+<path d="M460,118 C460,219.0 345,219.0 345,320" fill="none" stroke="#cbd5e0" stroke-width="1.4"/>
+<path d="M460,118 C460,219.0 565,219.0 565,320" fill="none" stroke="#cbd5e0" stroke-width="1.4"/>
+<path d="M460,118 C460,219.0 775,219.0 775,320" fill="none" stroke="#cbd5e0" stroke-width="1.4"/>
+<path d="M460,118 C460,294.0 245,294.0 245,470" fill="none" stroke="#cbd5e0" stroke-width="1.4"/>
+<path d="M460,118 C460,294.0 565,294.0 565,470" fill="none" stroke="#cbd5e0" stroke-width="1.4"/>
+<path d="M460,118 C460,294.0 795,294.0 795,470" fill="none" stroke="#cbd5e0" stroke-width="1.4"/>
+<rect x="250" y="576" width="640" height="34" rx="6" fill="#fffff0" stroke="#d69e2e"/>
+<text x="262" y="596" font-size="9.5" font-family="monospace" fill="#744210">knowledge/cards/base.py: ElementCard (ABC) → MechanicalElementCard | PassiveFeatureCard (D-ONT-4).</text>
+<text x="262" y="606" font-size="9.5" font-family="monospace" fill="#744210">has_functional_clearance=True ⇒ collision_hint() REQUIRED at class-def time (D18/D21).</text>
+</svg>

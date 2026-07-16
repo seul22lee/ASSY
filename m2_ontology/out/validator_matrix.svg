@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="790" height="468" viewBox="0 0 790 468" font-family="monospace">
+<rect width="790" height="468" fill="#fbfdff"/>
+<text x="20" y="26" font-size="16" font-weight="bold" fill="#1a202c">Validator matrix — V-01..V-13 × goldens</text>
+<text x="20" y="44" font-size="10" fill="#718096">All cells green = every rule passes on every golden. Each rule also has a dedicated FAILING-case test in tests/test_validators.py.</text>
+<text x="375.0" y="82" font-size="9.5" font-weight="bold" fill="#2d3748" text-anchor="middle">T-S1</text>
+<text x="525.0" y="82" font-size="9.5" font-weight="bold" fill="#2d3748" text-anchor="middle">m0_stop</text>
+<text x="675.0" y="82" font-size="9.5" font-weight="bold" fill="#2d3748" text-anchor="middle">m0_nostop</text>
+<rect x="20" y="92" width="750" height="26" fill="#ffffff"/>
+<text x="28" y="109" font-size="10" font-weight="bold" fill="#2d3748">V-01</text>
+<text x="80" y="109" font-size="9" fill="#4a5568">use behavior has verified_by protocol</text>
+<text x="375.0" y="110" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="525.0" y="110" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="675.0" y="110" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<rect x="20" y="118" width="750" height="26" fill="#f7fafc"/>
+<text x="28" y="135" font-size="10" font-weight="bold" fill="#2d3748">V-02</text>
+<text x="80" y="135" font-size="9" fill="#4a5568">binding anchor exists in target template</text>
+<text x="375.0" y="136" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="525.0" y="136" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="675.0" y="136" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<rect x="20" y="144" width="750" height="26" fill="#ffffff"/>
+<text x="28" y="161" font-size="10" font-weight="bold" fill="#2d3748">V-03</text>
+<text x="80" y="161" font-size="9" fill="#4a5568">binding port exists in element/feature card</text>
+<text x="375.0" y="162" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="525.0" y="162" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="675.0" y="162" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<rect x="20" y="170" width="750" height="26" fill="#f7fafc"/>
+<text x="28" y="187" font-size="10" font-weight="bold" fill="#2d3748">V-04</text>
+<text x="80" y="187" font-size="9" fill="#4a5568">parameter value within [lo,hi]</text>
+<text x="375.0" y="188" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="525.0" y="188" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="675.0" y="188" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<rect x="20" y="196" width="750" height="26" fill="#ffffff"/>
+<text x="28" y="213" font-size="10" font-weight="bold" fill="#2d3748">V-05</text>
+<text x="80" y="213" font-size="9" fill="#4a5568">material satisfies card requires</text>
+<text x="375.0" y="214" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="525.0" y="214" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="675.0" y="214" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<rect x="20" y="222" width="750" height="26" fill="#f7fafc"/>
+<text x="28" y="239" font-size="10" font-weight="bold" fill="#2d3748">V-06</text>
+<text x="80" y="239" font-size="9" fill="#4a5568">rot_to_trans behavior has transmission</text>
+<text x="375.0" y="240" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="525.0" y="240" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="675.0" y="240" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<rect x="20" y="248" width="750" height="26" fill="#ffffff"/>
+<text x="28" y="265" font-size="10" font-weight="bold" fill="#2d3748">V-07</text>
+<text x="80" y="265" font-size="9" fill="#4a5568">no orphan pieces (bound or base)</text>
+<text x="375.0" y="266" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="525.0" y="266" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="675.0" y="266" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<rect x="20" y="274" width="750" height="26" fill="#f7fafc"/>
+<text x="28" y="291" font-size="10" font-weight="bold" fill="#2d3748">V-08</text>
+<text x="80" y="291" font-size="9" fill="#4a5568">imposed behaviors registered; passive realizes nothing</text>
+<text x="375.0" y="292" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="525.0" y="292" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="675.0" y="292" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<rect x="20" y="300" width="750" height="26" fill="#ffffff"/>
+<text x="28" y="317" font-size="10" font-weight="bold" fill="#2d3748">V-09</text>
+<text x="80" y="317" font-size="9" fill="#4a5568">on_face_uv has u,v in [0,1]</text>
+<text x="375.0" y="318" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="525.0" y="318" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="675.0" y="318" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<rect x="20" y="326" width="750" height="26" fill="#f7fafc"/>
+<text x="28" y="343" font-size="10" font-weight="bold" fill="#2d3748">V-10</text>
+<text x="80" y="343" font-size="9" fill="#4a5568">DesignPlan round-trips losslessly</text>
+<text x="375.0" y="344" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="525.0" y="344" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="675.0" y="344" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<rect x="20" y="352" width="750" height="26" fill="#ffffff"/>
+<text x="28" y="369" font-size="10" font-weight="bold" fill="#2d3748">V-11</text>
+<text x="80" y="369" font-size="9" fill="#4a5568">snap_event has event_force_window_N</text>
+<text x="375.0" y="370" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="525.0" y="370" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="675.0" y="370" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<rect x="20" y="378" width="750" height="26" fill="#f7fafc"/>
+<text x="28" y="395" font-size="10" font-weight="bold" fill="#2d3748">V-12</text>
+<text x="80" y="395" font-size="9" fill="#4a5568">RESERVED (keepout) — no-op</text>
+<text x="375.0" y="396" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="525.0" y="396" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="675.0" y="396" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<rect x="20" y="404" width="750" height="26" fill="#ffffff"/>
+<text x="28" y="421" font-size="10" font-weight="bold" fill="#2d3748">V-13</text>
+<text x="80" y="421" font-size="9" fill="#4a5568">measurement keys in controlled registry</text>
+<text x="375.0" y="422" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="525.0" y="422" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+<text x="675.0" y="422" font-size="14" font-weight="bold" fill="#38a169" text-anchor="middle">✓</text>
+</svg>

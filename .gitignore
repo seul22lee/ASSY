@@ -1,0 +1,19 @@
+# Build intermediates — regenerable from code; never reviewed directly.
+# Mesh geometry emitted by step2mjcf / gear_mjcf and their hint pieces:
+*.stl
+*.obj
+# Per-run MJCF + meta intermediates (the review artifacts are png/mp4/md/verdict-json):
+**/out/assets/
+**/out/meshes/
+**/out/**/meshes/
+m1_gear/out/gear_*.xml
+m1_gear/out/gear_*_meta.json
+
+# Python / tooling
+__pycache__/
+*.pyc
+.DS_Store
+
+# NOTE: review artifacts are explicitly NOT ignored — *.png, *.mp4, *.md, and the
+# verdict/report JSONs (ladder_verdict.json, probe_verdict.json, coacd_pinion.json) are
+# checked in. If a specific STL ever needs review, whitelist it: `!path/to/keep.stl`.

@@ -1,0 +1,23 @@
+flowchart LR
+  %% m0_hinge_box_nostop [nostop]
+  FN0("🎯 allow_access: contents"):::fn
+  P1["⏚ P1 base\nbox_shell"]:::piece
+  P2["P2 lid\nlid_panel"]:::piece
+  E1("E1\npin_hinge"):::elem
+  B1["B1 · use\nrotation ≥90°"]:::use
+  B2["B2 · assembly\ntranslation"]:::assembly
+  P_HINGE["🔬 P-HINGE\n7 gates / 3 obs"]:::proto
+  E1 -->|realizes| B1
+  B1 -->|verified_by| P_HINGE
+  E1 -.->|imposes| B2
+  E1 ---|axis@rear_top_edge| P1
+  E1 ---|mount_A@rear_wall_outer| P1
+  E1 ---|mount_B@rear_edge_underside| P2
+  classDef use fill:#bee3f8,stroke:#3182ce;
+  classDef assembly fill:#fed7aa,stroke:#dd6b20;
+  classDef static fill:#e2e8f0,stroke:#718096;
+  classDef elem fill:#c6f6d5,stroke:#38a169;
+  classDef feat fill:#fefcbf,stroke:#d69e2e;
+  classDef piece fill:#edf2f7,stroke:#4a5568;
+  classDef proto fill:#ffffff,stroke:#805ad5;
+  classDef fn fill:#ebf8ff,stroke:#3182ce;

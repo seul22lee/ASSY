@@ -1,0 +1,141 @@
+{
+  "mode": "V-B",
+  "strategy": "ring",
+  "contact_preset": {
+    "solref": [
+      0.001,
+      1.0
+    ],
+    "solimp": [
+      0.99,
+      0.9999,
+      0.0001
+    ],
+    "friction_mu": 0.3
+  },
+  "collision": {
+    "box_shell": "ring (16 wedges/knuckle)",
+    "lid_panel": "ring (16 wedges/knuckle)",
+    "hinge_pin": "cylinder (convex, exact)"
+  },
+  "bore_patency": {
+    "open": true,
+    "min_wall_r_mm": 2.1921199703574854,
+    "note": "wall at 2.192 mm (bore 2.150, pin 2.000); clearance +0.192 of 0.150 mm nominal (128% retained)"
+  },
+  "g_conv": true,
+  "seeds_passed": 5,
+  "n_seeds": 5,
+  "verdict": true,
+  "criteria_seed0": {
+    "1 pin retention: radial drift <= clearance+0.1": {
+      "value": 0.2452,
+      "threshold": 0.4,
+      "pass": true
+    },
+    "1 pin retention: axial drift <= protrusion": {
+      "value": 0.0257,
+      "threshold": 3.0,
+      "pass": true
+    },
+    "2 theta_max >= 90 deg": {
+      "value": 115.37,
+      "threshold": 90.0,
+      "pass": true
+    },
+    "3 travel interference (non-intended) <= 0.2 mm": {
+      "value": 0.0,
+      "threshold": 0.2,
+      "pass": true
+    },
+    "3 pin/bore interface <= clearance": {
+      "value": 0.0689,
+      "threshold": 0.3,
+      "pass": true
+    },
+    "4 settles closed: theta_final <= 5 deg, no bounce-open": {
+      "value": 2.84,
+      "threshold": 5.0,
+      "pass": true
+    }
+  },
+  "observables": {
+    "overtravel_check": {
+      "theta_overtravel_max_deg": 115.83,
+      "hard_stop_contact": true,
+      "stop_impact_penetration_mm": 0.0737,
+      "stop_impact_force_N": 75.565,
+      "probe": "open, then 0.5*F_max sustained for 0.6s",
+      "flag": null,
+      "note": "Design information for the intent layer, NOT a pass/fail item (D19): the Easy anchor behaviour spec asks for >=90 deg opening + return to closed, and requests neither an angular limit nor stop-impact survival. A future behaviour spec may promote either to a criterion."
+    },
+    "closing_seat_impact": {
+      "closing_seat_penetration_mm_max": 0.5245,
+      "flag_threshold_mm": 0.3,
+      "flag": "seat impact 0.5245 mm > clearance 0.3 mm -- dynamic gravity slam; depth reflects the frozen quasi-static preset (D17), not the geometry. If a spec declares an impact/durability requirement, instrument peak contact force / impulse with an impact-validated preset, not depth."
+    },
+    "box_displacement_mm_mean": 0.0
+  },
+  "per_seed": [
+    {
+      "theta_max_deg": 115.36845204325785,
+      "theta_final_deg": 6.28396223921358e-07,
+      "pin_radial_max_mm": 0.2451610589527295,
+      "pin_axial_max_mm": 0.025741203358771687,
+      "pen_travel_mm": 0.0,
+      "pen_seat_mm": 0.42893160360533916,
+      "pen_interface_mm": 0.06887489159834986,
+      "bounce_open_deg": 2.8414408349910536,
+      "box_slid_mm": 0.0,
+      "diverged": false
+    },
+    {
+      "theta_max_deg": 115.33670202348546,
+      "theta_final_deg": 6.27107989973823e-07,
+      "pin_radial_max_mm": 0.24183641428337918,
+      "pin_axial_max_mm": 0.021829820938063123,
+      "pen_travel_mm": 0.0,
+      "pen_seat_mm": 0.5245030056393701,
+      "pen_interface_mm": 0.06928943542043361,
+      "bounce_open_deg": 2.813444968382711,
+      "box_slid_mm": 0.0,
+      "diverged": false
+    },
+    {
+      "theta_max_deg": 115.23359271184627,
+      "theta_final_deg": 6.410709708929308e-07,
+      "pin_radial_max_mm": 0.23788741066010033,
+      "pin_axial_max_mm": 0.023875352995182626,
+      "pen_travel_mm": 0.0,
+      "pen_seat_mm": 0.1836566098365089,
+      "pen_interface_mm": 0.0640059605887905,
+      "bounce_open_deg": 2.4411666549556195,
+      "box_slid_mm": 0.0,
+      "diverged": false
+    },
+    {
+      "theta_max_deg": 115.54303044462543,
+      "theta_final_deg": 6.353983038095659e-07,
+      "pin_radial_max_mm": 0.2599878942714766,
+      "pin_axial_max_mm": 0.006991506243832304,
+      "pen_travel_mm": 0.0,
+      "pen_seat_mm": 0.24467902027457425,
+      "pen_interface_mm": 0.07283364236428347,
+      "bounce_open_deg": 2.989354820104792,
+      "box_slid_mm": 0.0,
+      "diverged": false
+    },
+    {
+      "theta_max_deg": 115.34738889382986,
+      "theta_final_deg": 6.367397683488631e-07,
+      "pin_radial_max_mm": 0.24555735785343058,
+      "pin_axial_max_mm": 0.021120063297241736,
+      "pen_travel_mm": 0.0,
+      "pen_seat_mm": 0.4268682860445653,
+      "pen_interface_mm": 0.05976490693389889,
+      "bounce_open_deg": 2.7177347331144563,
+      "box_slid_mm": 0.0,
+      "diverged": false
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>T-S1-panel — board clip (EXPECTED_FAIL, M-G-1) — run report</title>
+<style>
+ body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:980px;margin:2rem auto;
+      padding:0 1rem;color:#1a202c;line-height:1.45}
+ h1{border-bottom:3px solid #2b6cb0;padding-bottom:.3rem}
+ h2{margin-top:2rem;color:#2b6cb0;border-bottom:1px solid #cbd5e0;padding-bottom:.2rem}
+ .cmd{background:#1a202c;color:#e2e8f0;padding:.8rem 1rem;border-radius:6px;font-family:monospace}
+ table{border-collapse:collapse;width:100%;margin:.6rem 0;font-size:.9rem}
+ th,td{border:1px solid #cbd5e0;padding:.35rem .5rem;text-align:left;vertical-align:top}
+ th{background:#edf2f7} code{background:#edf2f7;padding:.05rem .3rem;border-radius:3px}
+ .pass{color:#22543d;font-weight:bold}.fail{color:#742a2a;font-weight:bold}
+ .verdict{font-size:1.15rem;padding:.8rem 1rem;border-radius:6px;font-weight:bold}
+ .vpass{background:#c6f6d5;color:#22543d}.vfail{background:#fed7d7;color:#742a2a}
+ .na{background:#e2e8f0;color:#4a5568;padding:.5rem .8rem;border-radius:6px;margin:.5rem 0}
+ img{max-width:100%;border:1px solid #cbd5e0;border-radius:6px}
+ .mermaid{background:#fbfdff;border:1px solid #cbd5e0;border-radius:6px;padding:.5rem}
+ pre{background:#f7fafc;border:1px solid #cbd5e0;border-radius:6px;padding:.6rem;overflow:auto;
+     font-size:.75rem} ul.chk{list-style:none;padding-left:0} ul.chk li{margin:.3rem 0}
+</style></head><body>
+<h1>T-S1-panel — board clip (EXPECTED_FAIL, M-G-1) — snap-fit run report</h1>
+
+<h2>1 · Command (verbatim)</h2>
+<div class="cmd">Design a clip that retains a flat board and can be removed by hand. Plastic, 3D printing.</div>
+
+
+
+<h2>Verdict</h2>
+<div class="verdict vfail">✗ FAIL (INFEASIBLE at ⑥ — GEOM_INFEASIBLE)</div>
+<p><b>GEOM_INFEASIBLE:</b> a window catch would cut receiver 'B1', but that piece is RETAINED — a foreign, immutable part (e.g. a board/PCB) the assembly may not modify. This host needs an EDGE-OVERHANG catch that grabs the part's edge without cutting it (M-G-1 / D-GEN-4). Roll back to ④.</p>
+<p>This is a correct diagnosis, not a crash — the pipeline rejected the design at a named stage and
+rolls back to stage ④ (design choice).</p>
+<div class="na"><b>EXPECTED_FAIL — regression target:</b> KNOWN DEFECT — edge-overhang nose topology is unimplemented (M-G-1, D-GEN-4). The only catch the card implements is a WINDOW, which cuts a hole in the receiver; but this receiver is a RETAINED board (foreign/immutable), so ⑥ correctly refuses to cut it: GEOM_INFEASIBLE. This is a PASSING expected-fail — the failure, its stage (⑥), and its named cause are exactly as predicted. Independently machine-checked: even on the analysis geometry, Tier0 (d) positive_retention = 0.00 mm² — the board would lift straight out past the nose (held by gravity only). The panel is a live regression target for M-G-1, not N/A and not deleted.</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>if(window.mermaid){mermaid.initialize({startOnLoad:true});}</script>
+</body></html>

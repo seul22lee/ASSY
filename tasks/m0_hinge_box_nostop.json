@@ -1,0 +1,274 @@
+{
+  "task_id": "m0_hinge_box_nostop",
+  "command": "Design a small box with a lid that opens and closes. Plastic, for 3D printing.",
+  "functions": [
+    {
+      "verb": "allow_access",
+      "object": "contents",
+      "qualifier": "repeated open/close"
+    }
+  ],
+  "behaviors": [
+    {
+      "id": "B1",
+      "phase": "use",
+      "motion": {
+        "kind": "rotation",
+        "axis_hint": "horizontal_rear",
+        "range_value": 90.0,
+        "range_unit": "deg",
+        "bound": "min",
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "load": null,
+      "realized_by": "E1",
+      "imposed_by": null,
+      "verified_by": "P-HINGE",
+      "imposed_by_card": null
+    },
+    {
+      "id": "B2",
+      "phase": "assembly",
+      "motion": {
+        "kind": "translation",
+        "axis_hint": "along_hinge_axis",
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "load": null,
+      "realized_by": null,
+      "imposed_by": "E1",
+      "verified_by": null,
+      "imposed_by_card": "pin_hinge"
+    }
+  ],
+  "pieces": [
+    {
+      "id": "P1",
+      "role": "base",
+      "template_ref": "box_shell",
+      "params": {
+        "box_l": 80.0,
+        "box_w": 60.0,
+        "box_h": 40.0,
+        "wall": 2.0
+      },
+      "is_base": true
+    },
+    {
+      "id": "P2",
+      "role": "lid",
+      "template_ref": "lid_panel",
+      "params": {
+        "lid_t": 3.0
+      },
+      "is_base": false
+    }
+  ],
+  "templates": [
+    {
+      "template_ref": "box_shell",
+      "anchors": [
+        {
+          "name": "rear_top_edge",
+          "kind": "edge"
+        },
+        {
+          "name": "rear_wall_outer",
+          "kind": "face"
+        },
+        {
+          "name": "rim_top",
+          "kind": "face"
+        }
+      ],
+      "params": {
+        "box_l": 80.0,
+        "box_w": 60.0,
+        "box_h": 40.0,
+        "wall": 2.0
+      }
+    },
+    {
+      "template_ref": "lid_panel",
+      "anchors": [
+        {
+          "name": "rear_edge_underside",
+          "kind": "face"
+        },
+        {
+          "name": "free_edge_mid",
+          "kind": "point"
+        }
+      ],
+      "params": {
+        "lid_t": 3.0
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "E1",
+      "card_ref": "pin_hinge",
+      "params": {
+        "pin_d": 4.0,
+        "knuckle_w": 8.0,
+        "knuckle_n": 3.0,
+        "clearance": 0.3
+      },
+      "host_pieces": [
+        "P1",
+        "P2"
+      ]
+    }
+  ],
+  "features": [],
+  "bindings": [
+    {
+      "element_id": "E1",
+      "port": "axis",
+      "piece_id": "P1",
+      "anchor": "rear_top_edge",
+      "mate": "coincident_axis",
+      "offset_params": {
+        "edge_margin_mm": 34.0
+      }
+    },
+    {
+      "element_id": "E1",
+      "port": "mount_A",
+      "piece_id": "P1",
+      "anchor": "rear_wall_outer",
+      "mate": "flush_face",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E1",
+      "port": "mount_B",
+      "piece_id": "P2",
+      "anchor": "rear_edge_underside",
+      "mate": "flush_face",
+      "offset_params": {}
+    }
+  ],
+  "parameters": [
+    {
+      "name": "pin_d",
+      "value": 4.0,
+      "unit": "mm",
+      "lo": 2.0,
+      "hi": 6.0,
+      "resolved_by": "user",
+      "citation": null
+    },
+    {
+      "name": "clearance",
+      "value": 0.3,
+      "unit": "mm",
+      "lo": 0.2,
+      "hi": 0.4,
+      "resolved_by": "rule",
+      "citation": null
+    }
+  ],
+  "protocols": [
+    {
+      "id": "P-HINGE",
+      "verifies": "B1",
+      "actuation": {
+        "kind": "follower_force_ramp",
+        "F_open_N": 0.11,
+        "F_close_N": 0.15,
+        "point": "free_edge_mid",
+        "release_at_theta_deg": 95.0
+      },
+      "criteria": [
+        {
+          "name": "opens",
+          "observable": "theta_max_deg",
+          "op": ">=",
+          "threshold": 90.0,
+          "unit": "deg"
+        },
+        {
+          "name": "pin_radial_retention",
+          "observable": "pin_radial_max_mm",
+          "op": "<=",
+          "threshold": 0.4,
+          "unit": "mm"
+        },
+        {
+          "name": "pin_axial_retention",
+          "observable": "pin_axial_max_mm",
+          "op": "<=",
+          "threshold": 3.0,
+          "unit": "mm"
+        },
+        {
+          "name": "no_travel_interference",
+          "observable": "pen_travel_mm",
+          "op": "<=",
+          "threshold": 0.2,
+          "unit": "mm"
+        },
+        {
+          "name": "pin_bore_interface",
+          "observable": "pen_interface_mm",
+          "op": "<=",
+          "threshold": 0.3,
+          "unit": "mm"
+        },
+        {
+          "name": "settles_closed",
+          "observable": "theta_final_deg",
+          "op": "<=",
+          "threshold": 5.0,
+          "unit": "deg"
+        },
+        {
+          "name": "no_bounce_open",
+          "observable": "bounce_open_deg",
+          "op": "<=",
+          "threshold": 5.0,
+          "unit": "deg"
+        }
+      ],
+      "observables": [
+        {
+          "name": "closing_seat_impact",
+          "measured": "seat_impact_mm",
+          "unit": "mm",
+          "flag_op": ">",
+          "flag_threshold": 0.3,
+          "note": "dynamic gravity slam; depth reflects the frozen quasi-static preset (D17), not the geometry (D22 amended)"
+        },
+        {
+          "name": "box_displacement",
+          "measured": "box_slid_mm",
+          "unit": "mm",
+          "flag_op": null,
+          "flag_threshold": null,
+          "note": ""
+        },
+        {
+          "name": "overtravel",
+          "measured": "overtravel_deg",
+          "unit": "deg",
+          "flag_op": ">",
+          "flag_threshold": 150.0,
+          "note": "no angular limit -> lid free to fold flat (the no-stop defect)"
+        }
+      ],
+      "mode": "V-B",
+      "seeds": 5,
+      "seed_pass": 4
+    }
+  ],
+  "material": "PETG",
+  "variant": "nostop",
+  "stage_log": []
+}

@@ -1,0 +1,125 @@
+{
+  "mode": "V-A",
+  "contact_preset": {
+    "solref": [
+      0.001,
+      1.0
+    ],
+    "solimp": [
+      0.99,
+      0.9999,
+      0.0001
+    ],
+    "friction_mu": 0.3
+  },
+  "runs": {
+    "follower": {
+      "seeds_passed": 5,
+      "n_seeds": 5,
+      "verdict": true,
+      "criteria_seed0": {
+        "theta_max >= 90 deg": {
+          "value": 102.18,
+          "threshold": 90.0,
+          "pass": true
+        },
+        "sweep penetration <= 0.2 mm": {
+          "value": 0.1039,
+          "threshold": 0.2,
+          "pass": true
+        },
+        "theta_final <= 5 deg (returns closed)": {
+          "value": -0.0,
+          "threshold": 5.0,
+          "pass": true
+        }
+      },
+      "per_seed": [
+        {
+          "theta_max_deg": 102.18147646524243,
+          "theta_final_deg": -4.095520891621092e-06,
+          "penetration_max_mm": 0.10393832603343292,
+          "diverged": false
+        },
+        {
+          "theta_max_deg": 102.18147646524243,
+          "theta_final_deg": -4.095520891621092e-06,
+          "penetration_max_mm": 0.10393832603343292,
+          "diverged": false
+        },
+        {
+          "theta_max_deg": 102.18147646524243,
+          "theta_final_deg": -4.095520891621092e-06,
+          "penetration_max_mm": 0.10393832603343292,
+          "diverged": false
+        },
+        {
+          "theta_max_deg": 102.18147646524243,
+          "theta_final_deg": -4.095520891621092e-06,
+          "penetration_max_mm": 0.10393832603343292,
+          "diverged": false
+        },
+        {
+          "theta_max_deg": 102.18147646524243,
+          "theta_final_deg": -4.095520891621092e-06,
+          "penetration_max_mm": 0.10393832603343292,
+          "diverged": false
+        }
+      ]
+    },
+    "world_z": {
+      "seeds_passed": 0,
+      "n_seeds": 5,
+      "verdict": false,
+      "criteria_seed0": {
+        "theta_max >= 90 deg": {
+          "value": 89.65,
+          "threshold": 90.0,
+          "pass": false
+        },
+        "sweep penetration <= 0.2 mm": {
+          "value": 0.0101,
+          "threshold": 0.2,
+          "pass": true
+        },
+        "theta_final <= 5 deg (returns closed)": {
+          "value": 89.61,
+          "threshold": 5.0,
+          "pass": false
+        }
+      },
+      "per_seed": [
+        {
+          "theta_max_deg": 89.64663571497303,
+          "theta_final_deg": 89.61017585888601,
+          "penetration_max_mm": 0.010095891203011891,
+          "diverged": false
+        },
+        {
+          "theta_max_deg": 89.64663571497303,
+          "theta_final_deg": 89.61017585888601,
+          "penetration_max_mm": 0.00405082752850624,
+          "diverged": false
+        },
+        {
+          "theta_max_deg": 89.64663571497303,
+          "theta_final_deg": 89.61017585888601,
+          "penetration_max_mm": 0.0008296819317070003,
+          "diverged": false
+        },
+        {
+          "theta_max_deg": 89.64663571497303,
+          "theta_final_deg": 89.61017585888601,
+          "penetration_max_mm": 0.009625805516533768,
+          "diverged": false
+        },
+        {
+          "theta_max_deg": 89.64663571497303,
+          "theta_final_deg": 89.61017585888601,
+          "penetration_max_mm": 0.023050616990769608,
+          "diverged": false
+        }
+      ]
+    }
+  }
+}

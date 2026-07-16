@@ -1,0 +1,99 @@
+{
+  "params": {
+    "box_l": 80.0,
+    "box_w": 60.0,
+    "box_h": 40.0,
+    "wall": 2.0,
+    "lid_t": 3.0,
+    "pin_d": 4.0,
+    "knuckle_w": 8.0,
+    "knuckle_n": 3,
+    "knuckle_wall": 2.0,
+    "clearance": 0.3,
+    "stop_flange_r": 8.0
+  },
+  "derived": {
+    "knuckle_od": 8.0,
+    "bore_d": 4.3,
+    "stack_w": 24.6,
+    "edge_margin": 27.7,
+    "chamfer_len": 2.3,
+    "pin_len": 30.6,
+    "lid_rear_y": -29.7,
+    "bore_keepout_r": 2.4499999999999997,
+    "lug_top_z": 39.05,
+    "tab_rear_y": -31.55,
+    "stop_flange_r": 8.0,
+    "stop_angle_deg": 229.95
+  },
+  "hinge_axis": {
+    "point_mm": [
+      0.0,
+      -34.0,
+      41.5
+    ],
+    "dir": [
+      1.0,
+      0.0,
+      0.0
+    ]
+  },
+  "knuckles": [
+    {
+      "x0": -12.3,
+      "x1": -4.300000000000001,
+      "owner": "box"
+    },
+    {
+      "x0": -4.0,
+      "x1": 4.0,
+      "owner": "lid"
+    },
+    {
+      "x0": 4.300000000000001,
+      "x1": 12.3,
+      "owner": "box"
+    }
+  ],
+  "pieces": {
+    "box_shell": {
+      "step": "box_shell.step",
+      "volume_mm3": 31109.187,
+      "mass_kg": 0.039509,
+      "bbox_mm": [
+        -40.0,
+        -38.0,
+        0.0,
+        40.0,
+        30.0,
+        45.5
+      ]
+    },
+    "lid_panel": {
+      "step": "lid_panel.step",
+      "volume_mm3": 14531.308,
+      "mass_kg": 0.018455,
+      "bbox_mm": [
+        -40.0,
+        -42.0,
+        37.5,
+        40.0,
+        30.0,
+        45.5
+      ]
+    },
+    "hinge_pin": {
+      "step": "hinge_pin.step",
+      "volume_mm3": 384.531,
+      "mass_kg": 0.000488,
+      "bbox_mm": [
+        -15.3,
+        -36.0,
+        39.5,
+        15.3,
+        -32.0,
+        43.5
+      ]
+    }
+  }
+}

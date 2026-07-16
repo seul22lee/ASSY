@@ -1,0 +1,40 @@
+{
+  "mode": "V-A",
+  "masses_kg": {
+    "box_shell": 0.03950771646808913,
+    "lid_panel": 0.018329440496812323,
+    "hinge_pin": 0.00048754511368091715
+  },
+  "strategies": {
+    "box_shell": "primitive (solid knuckle)",
+    "lid_panel": "primitive (solid knuckle)",
+    "hinge_pin": "none (V-A: joint replaces pin)"
+  },
+  "contact_preset": {
+    "solref": [
+      0.001,
+      1.0
+    ],
+    "solimp": [
+      0.99,
+      0.9999,
+      0.0001
+    ],
+    "friction_mu": 0.3
+  },
+  "hinge_axis_m": [
+    0.0,
+    -0.034,
+    0.0415
+  ],
+  "lid_tip_m": [
+    0.0,
+    0.03,
+    0.0415
+  ],
+  "clearance_mm": 0.3,
+  "radial_clearance_mm": 0.1499999999999999,
+  "pin_protrusion_mm": 3.0,
+  "ring_sectors": 16,
+  "strategy": "primitive"
+}

@@ -1,0 +1,338 @@
+{
+  "task_id": "T-S1",
+  "command": "Design a snap-lid box I can push shut and pull open by hand. Plastic, for 3D printing.",
+  "functions": [
+    {
+      "verb": "secure",
+      "object": "lid",
+      "qualifier": "hold closed"
+    },
+    {
+      "verb": "allow_access",
+      "object": "contents",
+      "qualifier": "repeated hand open/close"
+    }
+  ],
+  "behaviors": [
+    {
+      "id": "B1",
+      "phase": "assembly",
+      "motion": {
+        "kind": "snap_event",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": [
+          0.0,
+          80.0
+        ]
+      },
+      "load": null,
+      "realized_by": "E1",
+      "imposed_by": null,
+      "verified_by": "PR-T1-MATE",
+      "imposed_by_card": null
+    },
+    {
+      "id": "B2",
+      "phase": "static",
+      "motion": {
+        "kind": "snap_event",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": [
+          15.0,
+          60.0
+        ]
+      },
+      "load": null,
+      "realized_by": "E1",
+      "imposed_by": null,
+      "verified_by": "PR-T1-SEP",
+      "imposed_by_card": null
+    },
+    {
+      "id": "B3",
+      "phase": "use",
+      "motion": {
+        "kind": "fixed",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "load": null,
+      "realized_by": null,
+      "imposed_by": "E1",
+      "verified_by": "PR-T0-SWEEP",
+      "imposed_by_card": "snap_hook_cantilever"
+    },
+    {
+      "id": "B4",
+      "phase": "assembly",
+      "motion": {
+        "kind": "translation",
+        "axis_hint": "insertion_axis",
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "load": null,
+      "realized_by": null,
+      "imposed_by": "E1",
+      "verified_by": null,
+      "imposed_by_card": "snap_hook_cantilever"
+    }
+  ],
+  "pieces": [
+    {
+      "id": "P1",
+      "role": "base",
+      "template_ref": "box_shell",
+      "params": {
+        "box_l": 80.0,
+        "box_w": 60.0,
+        "box_h": 40.0,
+        "wall": 2.0
+      },
+      "is_base": true
+    },
+    {
+      "id": "P2",
+      "role": "lid",
+      "template_ref": "lid_panel",
+      "params": {
+        "lid_t": 3.0
+      },
+      "is_base": false
+    }
+  ],
+  "templates": [
+    {
+      "template_ref": "box_shell",
+      "anchors": [
+        {
+          "name": "side_wall_left",
+          "kind": "face"
+        },
+        {
+          "name": "side_wall_right",
+          "kind": "face"
+        }
+      ],
+      "params": {
+        "box_l": 80.0,
+        "box_w": 60.0,
+        "box_h": 40.0,
+        "wall": 2.0
+      }
+    },
+    {
+      "template_ref": "lid_panel",
+      "anchors": [
+        {
+          "name": "rim_underside_left",
+          "kind": "face"
+        },
+        {
+          "name": "rim_underside_right",
+          "kind": "face"
+        }
+      ],
+      "params": {
+        "lid_t": 3.0
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "E1",
+      "card_ref": "snap_hook_cantilever",
+      "params": {
+        "n_hooks": 2.0,
+        "design_type": 2.0,
+        "alpha_in_deg": 30.0,
+        "alpha_out_deg": 45.0
+      },
+      "host_pieces": [
+        "P2",
+        "P1"
+      ]
+    }
+  ],
+  "features": [],
+  "bindings": [
+    {
+      "element_id": "E1",
+      "port": "beam_root",
+      "piece_id": "P2",
+      "anchor": "rim_underside_left",
+      "mate": "on_face_uv",
+      "offset_params": {
+        "u": 0.5,
+        "v": 1.0
+      }
+    },
+    {
+      "element_id": "E1",
+      "port": "beam_root",
+      "piece_id": "P2",
+      "anchor": "rim_underside_right",
+      "mate": "on_face_uv",
+      "offset_params": {
+        "u": 0.5,
+        "v": 1.0
+      }
+    },
+    {
+      "element_id": "E1",
+      "port": "catch_window",
+      "piece_id": "P1",
+      "anchor": "side_wall_left",
+      "mate": "offset_face",
+      "offset_params": {
+        "undercut_dir": "insertion_axis_neg"
+      }
+    },
+    {
+      "element_id": "E1",
+      "port": "catch_window",
+      "piece_id": "P1",
+      "anchor": "side_wall_right",
+      "mate": "offset_face",
+      "offset_params": {
+        "undercut_dir": "insertion_axis_neg"
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "n_hooks",
+      "value": 2.0,
+      "unit": "count",
+      "lo": 2.0,
+      "hi": 4.0,
+      "resolved_by": "user",
+      "citation": null
+    },
+    {
+      "name": "alpha_in_deg",
+      "value": 30.0,
+      "unit": "deg",
+      "lo": 25.0,
+      "hi": 35.0,
+      "resolved_by": "user",
+      "citation": null
+    }
+  ],
+  "protocols": [
+    {
+      "id": "PR-T1-MATE",
+      "verifies": "B1",
+      "actuation": {
+        "kind": "formula_recheck",
+        "source": "Bayer p.16 mating force"
+      },
+      "criteria": [
+        {
+          "name": "hand_closeable",
+          "observable": "mating_force_total_N",
+          "op": "<=",
+          "threshold": 80.0,
+          "unit": "N"
+        }
+      ],
+      "observables": [
+        {
+          "name": "per_hook_mate",
+          "measured": "W_in_N",
+          "unit": "N",
+          "flag_op": null,
+          "flag_threshold": null,
+          "note": ""
+        }
+      ],
+      "mode": null,
+      "seeds": 5,
+      "seed_pass": 4
+    },
+    {
+      "id": "PR-T1-SEP",
+      "verifies": "B2",
+      "actuation": {
+        "kind": "formula_recheck",
+        "source": "Bayer p.16 separation force"
+      },
+      "criteria": [
+        {
+          "name": "retention_floor",
+          "observable": "retention_force_N",
+          "op": ">=",
+          "threshold": 15.0,
+          "unit": "N"
+        },
+        {
+          "name": "hand_openable",
+          "observable": "retention_force_N",
+          "op": "<=",
+          "threshold": 60.0,
+          "unit": "N"
+        }
+      ],
+      "observables": [
+        {
+          "name": "per_hook_sep",
+          "measured": "W_out_N",
+          "unit": "N",
+          "flag_op": null,
+          "flag_threshold": null,
+          "note": ""
+        },
+        {
+          "name": "peak_strain",
+          "measured": "eps_pct",
+          "unit": "%",
+          "flag_op": ">",
+          "flag_threshold": 4.0,
+          "note": "Tier1 re-measured strain; gate lives with resolve_params"
+        }
+      ],
+      "mode": null,
+      "seeds": 5,
+      "seed_pass": 4
+    },
+    {
+      "id": "PR-T0-SWEEP",
+      "verifies": "B3",
+      "actuation": {
+        "kind": "tier0_sweep",
+        "note": "insertion-path sweep, intentional-vs-defect"
+      },
+      "criteria": [
+        {
+          "name": "no_defect_interference",
+          "observable": "pen_travel_mm",
+          "op": "<=",
+          "threshold": 0.2,
+          "unit": "mm"
+        }
+      ],
+      "observables": [],
+      "mode": null,
+      "seeds": 5,
+      "seed_pass": 4
+    }
+  ],
+  "material": "PETG",
+  "variant": null,
+  "stage_log": []
+}
