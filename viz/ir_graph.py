@@ -76,10 +76,14 @@ def to_mermaid(plan: DesignPlan) -> str:
         q = f"{fn.verb}: {fn.object}"
         L.append(f'  FN{i}("🎯 {q}"):::fn')
 
-    # Pieces (ground marker for base)
+    # Pieces (ground marker for base; HARDWARE pieces (D-ONT-11) drawn as a distinct parallelogram
+    # with a bolt marker and their source_element instead of a template_ref)
     for p in plan.pieces:
-        mark = "⏚ " if (p.is_base or p.role == "base") else ""
-        L.append(f'  {m(p.id)}["{mark}{p.id} {p.role}\\n{p.template_ref}"]:::piece')
+        if p.provenance == "hardware":
+            L.append(f'  {m(p.id)}[/"🔩 {p.id} {p.role}\\nhardware ← {p.source_element}"/]:::hardware')
+        else:
+            mark = "⏚ " if (p.is_base or p.role == "base") else ""
+            L.append(f'  {m(p.id)}["{mark}{p.id} {p.role}\\n{p.template_ref}"]:::piece')
 
     # Elements + Features
     for e in plan.elements:
@@ -107,8 +111,21 @@ def to_mermaid(plan: DesignPlan) -> str:
             L.append(f'  {m(b.id)} -->|verified_by| {m(b.verified_by)}')
     for bd in plan.bindings:
         L.append(f'  {m(bd.element_id)} ---|{bd.port}@{bd.anchor}| {m(bd.piece_id)}')
+    # D-ONT-11: the element that PROVIDES a hardware piece → a dashed provenance edge to it
+    for p in plan.pieces:
+        if p.provenance == "hardware" and p.source_element:
+            L.append(f'  {m(p.source_element)} -.->|provides| {m(p.id)}')
+    # D-ONT-12: AssemblyRules as first-class nodes (rhombus), edges to the elements they constrain
+    for ar in plan.assembly_rules:
+        L.append(f'  {m(ar.id)}{{"⚖ {ar.id}\\n{ar.kind}"}}:::arule')
+        for s in ar.subjects:
+            base = s.split(".")[0]
+            if plan.instance(base):
+                L.append(f'  {m(ar.id)} -.->|{ar.kind}| {m(base)}')
 
     L += [
+        f'  classDef hardware fill:#cbd5e0,stroke:#2d3748,stroke-width:2px;',
+        f'  classDef arule fill:#fefcbf,stroke:#b7791f,stroke-width:2px;',
         f'  classDef use fill:{PHASE_FILL["use"]},stroke:{PHASE_STROKE["use"]};',
         f'  classDef assembly fill:{PHASE_FILL["assembly"]},stroke:{PHASE_STROKE["assembly"]};',
         f'  classDef static fill:{PHASE_FILL["static"]},stroke:{PHASE_STROKE["static"]};',
@@ -134,6 +151,7 @@ class _Node:
     row: int
     ground: bool = False
     hexagon: bool = False  # passive features drawn as hexagons
+    hardware: bool = False  # D-ONT-11 hardware piece (steel fill + HW badge)
     new: bool = False      # diff highlight
 
     x = y = 0.0
@@ -156,8 +174,12 @@ def _layout(plan: DesignPlan, new_ids: set[str] | None = None) -> list[_Node]:
         return n
 
     for p in plan.pieces:
-        add(p.id, [f"{p.id}  {p.role}", p.template_ref], PC_FILL, PC_STROKE, 0,
-            ground=(p.is_base or p.role == "base"))
+        if p.provenance == "hardware":
+            add(p.id, [f"{p.id}  {p.role}", f"hardware < {p.source_element}"], "#cbd5e0", "#2d3748",
+                0, hardware=True)
+        else:
+            add(p.id, [f"{p.id}  {p.role}", p.template_ref or ""], PC_FILL, PC_STROKE, 0,
+                ground=(p.is_base or p.role == "base"))
     for e in plan.elements:
         add(e.id, [e.id, e.card_ref], EL_FILL, EL_STROKE, 1)
     for f in plan.features:
@@ -192,6 +214,11 @@ def _edges(plan: DesignPlan, new_edges: set[tuple] | None = None) -> list[tuple]
     for bd in plan.bindings:
         out.append((bd.element_id, bd.piece_id, f"{bd.port}", False,
                     (bd.element_id, bd.piece_id, bd.port, bd.anchor) in new_edges))
+    # D-ONT-11: element → hardware piece it provides (dashed provenance edge)
+    for p in plan.pieces:
+        if p.provenance == "hardware" and p.source_element:
+            out.append((p.source_element, p.id, "provides", True,
+                        (p.source_element, p.id) in new_edges))
     return out
 
 
@@ -216,6 +243,11 @@ def _svg_node(n: _Node) -> str:
         parts.append(f'<text x="{cx}" y="{n.y + 18 + i*14}" font-size="{fs}" '
                      f'font-family="monospace" font-weight="{weight}" fill="{col}" '
                      f'text-anchor="middle">{html.escape(ln)}</text>')
+    if n.hardware:  # D-ONT-11 HW badge, top-right corner
+        bx, by = n.x + NODE_W - 26, n.y + 3
+        parts.append(f'<rect x="{bx}" y="{by}" width="22" height="12" rx="2" fill="#2d3748"/>'
+                     f'<text x="{bx+11}" y="{by+9}" font-size="8" font-family="monospace" '
+                     f'fill="#e2e8f0" text-anchor="middle" font-weight="bold">HW</text>')
     if n.ground:  # D23 ground symbol under the base piece
         gx, gy = cx, n.y + NODE_H + 3
         parts.append(f'<line x1="{gx}" y1="{n.y+NODE_H}" x2="{gx}" y2="{gy}" '
@@ -309,7 +341,8 @@ def to_svg(plan: DesignPlan, new_ids: set[str] | None = None,
     items = [("use", PHASE_FILL["use"], PHASE_STROKE["use"]),
              ("assembly", PHASE_FILL["assembly"], PHASE_STROKE["assembly"]),
              ("static", PHASE_FILL["static"], PHASE_STROKE["static"]),
-             ("element", EL_FILL, EL_STROKE), ("feature (hexagon)", FT_FILL, FT_STROKE)]
+             ("element", EL_FILL, EL_STROKE), ("feature (hexagon)", FT_FILL, FT_STROKE),
+             ("hardware piece [HW]", "#cbd5e0", "#2d3748")]
     lx = 20
     for lbl, fill, stroke in items:
         S.append(f'<rect x="{lx}" y="{ly}" width="14" height="14" fill="{fill}" stroke="{stroke}"/>'
