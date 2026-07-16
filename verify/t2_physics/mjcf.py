@@ -55,7 +55,8 @@ def _ring_world(prim, loc_pts):
 
 
 def build_mjcf(parts: dict, hints: dict, axis: dict, base_pid: str, mover_pid: str,
-               pin_pid: str, mode: str, meshdir: Path, roles: dict, tag: str):
+               pin_pid: str, mode: str, meshdir: Path, roles: dict, tag: str,
+               tip_point=None, latch_point=None):
     """parts: {pid: build123d Solid}; hints: {pid: [collision prim dicts]}; axis: {point,dir} in mm;
     roles: {pid: 'base'|'mover'|'hardware'|'other'}. Emits MJCF for `mode` ('V-A'|'V-B')."""
     meshdir.mkdir(parents=True, exist_ok=True)
@@ -103,24 +104,73 @@ def build_mjcf(parts: dict, hints: dict, axis: dict, base_pid: str, mover_pid: s
         ET.SubElement(asset, "mesh", name=f"{pid}_vis", file=vf.name)
         ET.SubElement(body, "geom", name=f"{pid}_vis", type="mesh", mesh=f"{pid}_vis",
                       contype="0", conaffinity="0", group="2", material=role)
-        # collision geoms: card hints (ring-of-wedges etc.), placed by the axis frame for hardware;
-        # in V-A the pin is visual-only (the joint does its job), so skip its collision.
+        # collision geoms. Two provenances (D-ONT-11): template SEATING prims (frame='world' — the
+        # lid-on-box load path) and card MECHANISM prims (the ring-of-wedges + pin, frame='axis').
+        # In V-A the declared hinge joint IS the mechanism, so its collision approximation is not
+        # only redundant but JAMS the joint (a convex wedge ring is not clearance-perfect) — emit
+        # only the world-frame seating prims. In V-B the DoF emerges FROM the mechanism prims, so
+        # emit everything. The pin (hardware) is visual-only in V-A likewise.
         if mode == "V-A" and role == "hardware":
             continue
         for i, prim in enumerate(hints.get(pid, [])):
+            if mode == "V-A" and prim.get("frame") != "world":
+                continue
+            if prim.get("modes") and mode not in prim["modes"]:   # e.g. the V-B-only open-stop
+                continue
             _emit_prim(body, prim, ax_pt, ax_dir, f"{pid}_c{i}", role)
+
+    # sites: the follower-force point (mover free edge), the latch point (release tracking), and the
+    # V-B pin-drift references (M0: pin centre vs the base's axis).
+    mb = world.find(f"body[@name='{mover_pid}']")
+    if tip_point is not None:
+        ET.SubElement(mb, "site", name="tip", pos=_v(np.array(tip_point) * MM), size="0.002",
+                      rgba="1 0.2 0.2 1")
+    if latch_point is not None:
+        ET.SubElement(mb, "site", name="latch", pos=_v(np.array(latch_point) * MM), size="0.002",
+                      rgba="0.2 0.8 0.2 1")
+    if mode == "V-B":
+        ET.SubElement(world.find(f"body[@name='{base_pid}']"), "site", name="axis_ref",
+                      pos=_v(ax_pt), size="0.0012", rgba="0.1 0.9 0.2 1")
+        ET.SubElement(world.find(f"body[@name='{pin_pid}']"), "site", name="pin_center",
+                      pos=_v(ax_pt), size="0.0012", rgba="0.9 0.1 0.9 1")
 
     xml = minidom.parseString(ET.tostring(root)).toprettyxml(indent="  ")
     meta = {"mode": mode, "masses_kg": masses, "axis_m": {"point": list(ax_pt), "dir": list(ax_dir)},
             "base": base_pid, "mover": mover_pid, "pin": pin_pid,
+            "tip_point_mm": list(tip_point) if tip_point is not None else None,
             "contact_preset": {"solref": SOLREF, "solimp": SOLIMP, "friction_mu": MU,
                                "timestep": 0.0005, "frozen": True}}
     return xml, meta
 
 
+# Two contact classes so convex-proxy artefacts between the MECHANISM (ring-of-wedges + pin) and
+# the SEATING load path (walls, lid panel, floor) never grind. A geom collides with another iff
+# (contype & other.conaffinity) is nonzero, so same-class geoms collide and cross-class do not:
+#   seat  (1): lid-on-box seating + floor — the load path
+#   mech  (2): pin ↔ bore ring-of-wedges — the rotational DoF
+# The pin/bore contact and the seating both work; the box-knuckle-vs-lid-panel and lid-knuckle-vs-
+# rear-wall grazes (which jammed the sweep at ~26°) are suppressed as the proxy artefacts they are.
+CCLASS = {"seat": (1, 1), "mech": (2, 2)}
+
+
+def _cclass(prim):
+    return "mech" if (prim.get("owner") or prim.get("cclass") == "mech") else "seat"
+
+
 def _emit_prim(body, prim, ax_pt, ax_dir, name, role):
-    """Emit one collision primitive. Ring-of-wedge boxes are canonical about local +X (the axis);
-    place them by the world axis frame. Non-ring prims (if any) are treated as already world-local."""
+    """Emit one collision primitive. `frame='world'` prims (template seating boxes, the pin) are
+    already in the piece frame → emitted as-is. Ring-of-wedge boxes (`frame='axis'`, the default for
+    card hints) are canonical about local +X → placed by the world axis frame. Each geom is assigned
+    a contact class (seat|mech) so cross-class convex-proxy artefacts do not jam the sweep."""
+    ct, ca = CCLASS[_cclass(prim)]
+    if prim.get("frame") == "world":
+        attrs = {"name": name, "type": prim["type"], "pos": _v(np.array(prim["pos"]) * MM),
+                 "size": _v(np.array(prim["size"]) * MM), "group": "3", "material": role,
+                 "contype": str(ct), "conaffinity": str(ca)}
+        if "euler_world" in prim:      # a world-oriented prim (e.g. the pin cylinder along the axis)
+            attrs["euler"] = _v(np.deg2rad(np.array(prim["euler_world"])))
+        ET.SubElement(body, "geom", **attrs)
+        return
     # axis frame: X = ax_dir; Y,Z arbitrary orthonormal
     X = ax_dir
     up = np.array([0, 0, 1.0]) if abs(X[2]) < 0.9 else np.array([0, 1.0, 0])
@@ -128,7 +178,8 @@ def _emit_prim(body, prim, ax_pt, ax_dir, name, role):
     R = np.column_stack([X, Y, Z])
     pos = ax_pt + R @ (np.array(prim["pos"]) * MM)
     attrs = {"name": name, "type": prim["type"], "pos": _v(pos),
-             "size": _v(np.array(prim["size"]) * MM), "group": "3", "material": role}
+             "size": _v(np.array(prim["size"]) * MM), "group": "3", "material": role,
+             "contype": str(ct), "conaffinity": str(ca)}
     if "euler" in prim:
         # local euler about X composed with the axis frame → use a rotation matrix via zaxis/xyaxes
         from scipy.spatial.transform import Rotation as SR

@@ -42,6 +42,41 @@ BOX_DEFAULTS = {"box_l": 80.0, "box_w": 60.0, "box_h": 40.0, "wall": 2.0}
 LID_DEFAULTS = {"box_l": 80.0, "box_w": 60.0, "lid_t": 3.0}
 # how far inboard of each side wall the hook root sits (so the beam hangs just inside the wall)
 HOOK_INSET = 3.0
+# D14 / M0 COLLISION_EPS: the MOVING piece's seating primitive is inset laterally so it never shares
+# a face-plane with the static rim (the drawer lesson — a tied separating axis flips the contact
+# normal). The load-bearing Z seating plane is left EXACT.
+COLLISION_EPS = 0.2  # mm
+
+
+def _bx(cx, cy, cz, sx, sy, sz, frame="world"):
+    """A box collision primitive: centre (mm) + FULL extents (mm) → half-extents at emit time."""
+    return {"type": "box", "frame": frame, "pos": (cx, cy, cz),
+            "size": (sx / 2, sy / 2, sz / 2)}
+
+
+def box_shell_collision(**params) -> list:
+    """Floor + four walls (M0 primitives_for box_shell). Static host — no COLLISION_EPS inset."""
+    p = {**BOX_DEFAULTS, **params}
+    L, W, H, wall = p["box_l"], p["box_w"], p["box_h"], p["wall"]
+    return [_bx(0, 0, wall / 2, L, W, wall),                        # floor
+            _bx(0, -(W - wall) / 2, H / 2, L, wall, H),             # rear wall
+            _bx(0, (W - wall) / 2, H / 2, L, wall, H),              # front wall
+            _bx(-(L - wall) / 2, 0, H / 2, wall, W - 2 * wall, H),  # left wall
+            _bx((L - wall) / 2, 0, H / 2, wall, W - 2 * wall, H)]   # right wall
+
+
+def lid_panel_collision(**params) -> list:
+    """The lid panel, INSET by COLLISION_EPS in X and Y (D14) so its edges do not tie with the box
+    wall outer faces; the Z seating plane (lid underside on the wall tops) is left exact — that is
+    the load path (M0 lid_panel primitive)."""
+    p = {**LID_DEFAULTS, **params}
+    L, W, lid_t = p["box_l"], p["box_w"], p["lid_t"]
+    H = p.get("box_h", BOX_DEFAULTS["box_h"])
+    e = COLLISION_EPS
+    return [_bx(0, 0, H + lid_t / 2, L - 2 * e, W - 2 * e, lid_t)]
+
+
+TEMPLATE_COLLISION = {"box_shell": box_shell_collision, "lid_panel": lid_panel_collision}
 
 
 def box_shell(**params) -> TemplateResult:
