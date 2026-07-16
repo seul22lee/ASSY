@@ -45,27 +45,43 @@ module, preset parameter, or timestep.
 did not survive the real criterion — I corrected my own measure toward the worse truth. Fourth
 honesty correction in the log; first that is AI-self-correcting (after D-GEN-2, D-GEN-6, D-M1-2).
 
-## The G-H fork (a human decision, not an AI call)
+## The fork — RESOLVED by D1 → D3 (G-H ruling, D-M1-7)
 
-The pre-declared rule assumed a `preset_v2` would exist; it does not, so adoption is moot and the
-next step is a genuine design choice:
+Before any preset amendment, the G-H ruling ordered one diagnostic separation — the **D1 reversal
+isolation probe** (m=4, dt=frozen/5 where forward is stable, frozen contact, 5 seeds × 4 protocols):
 
-- **(A) Change the contact representation.** A rolling **pitch-cylinder proxy** carries the
-  transmission kinematics (the ratio/TE that R2a already proves), with wedge teeth kept only for the
-  discrete checks they *can* do (backlash / interference / limit). This verifies gear FUNCTION
-  without asking the convex-facet solver to do continuous tangent rolling it cannot.
-- **(B) Accept the limit.** Gears are not P-GEAR-verifiable in this rig; the `rack_pinion` card
-  carries a standing **R2b-open** flag — geometry + formula verified, contact-sim verification
-  deferred — and the benchmark scores gears on that basis.
+| protocol | full P-GEAR |
+|---|---|
+| forward-only, 3 rev | **4/5 PASS** (ratio −0.50) |
+| reverse-only, 3 rev | 0/5 |
+| fwd+rev, instant flip | 1/5 |
+| fwd+rev, 0.5 s dwell at reversal | **0/5** |
 
-Either way the frozen preset is not touched, and the card is not built until you rule.
+`d1_reversal.png`. **Forward transmission is sim-demonstrable; every reverse engagement fails, and
+the dwell does not help** — so the "instantaneous step-reverse is a protocol artifact" hypothesis is
+**refuted**. The killer is the **backlash-crossing impact** (engaging the coast flank after
+free-travel): a rigid convex-facet contact cannot absorb the impact impulse a real elastic gear
+would. This is formulation, not actuation.
+
+**Routing = D3** (dwell still fails):
+- **Do NOT open the preset procedure.** Preset UNTOUCHED (R5).
+- **FREEZE R2b** as a known limitation: "gear contact-only (V-B) verification pending preset_v2 —
+  deferred."
+- **Downgrade the Hard-anchor P-GEAR requirement to V-A** (declared-shaft transmission-ratio
+  verification, which bypasses tooth contact), with the **V-B gap documented and specific**:
+  *bidirectional* meshing (the reversal/backlash-crossing impact), NOT all meshing — forward V-B is
+  demonstrable at frozen/5.
+- **STOP; return to the main line.** The fork's option (A) pitch-cylinder proxy remains a future G-H
+  item if the V-B gap is ever to be closed; option (B) is effectively adopted (R2b-open flag), now
+  with the sharp D1 diagnosis attached.
 
 ## Artifacts (`out/`)
 
-`preset_route_verdict.png` (the honest full-P-GEAR wall) · `preset_route.json` ·
-`probe_verdict.png` (lenient-metric module trend, **superseded**) · `probe_verdict.json` ·
-`r2b_frozen_vs_fine.png` (what R2b looks like). Decision text: D-M1-4 (rule) + D-M1-5 (outcome) in
-`DECISIONS_LOG.md`.
+`d1_reversal.png` / `.json` (**the D1 routing → D3**, guard trio present) ·
+`probe_verdict.png` / `.json` (real 5-point sanctioned probe, all 0/5, decision-row tagged) ·
+`preset_route_verdict.png` / `.json` (the full-P-GEAR wall — no viable preset_v2) ·
+`r2b_frozen_vs_fine.png` (what R2b looks like). Decision text: D-M1-4 (rule) → D-M1-5 (module/preset
+exhausted) → D-M1-7 (D1 → D3 freeze) in `DECISIONS_LOG.md`.
 
 ## G-H findings
 
@@ -90,11 +106,13 @@ A REVIEW that references a verdict file failing (a)–(c) should refuse to rende
 ## G-H checklist
 
 - ☐ Accept the self-correction: the lenient probe metric is superseded; full P-GEAR never passes
-- ☐ Accept R2b as a contact-**formulation** limit (not module/preset/timestep tunable), preset untouched
-- ☐ Accept R2a stays retired; the card is NOT built pending the fork
-- ☐ Rule the fork: **(A)** pitch-cylinder proxy contact model, or **(B)** rack_pinion card with a
-  standing R2b-open flag
-- ☐ Module bounds remain provisional [3.0,4.0] until the fork is resolved
+- ☐ Accept R2a retired + **forward V-B meshing sim-demonstrable** (D1: fwd-only 4/5, ratio −0.50)
+- ☐ Accept the D1 diagnosis: the R2b killer is the **reversal backlash-crossing impact**
+  (formulation — dwell doesn't help), not module/preset/timestep/actuation-tunable
+- ☐ Accept **D3 routing**: preset procedure NOT opened (R5 intact); R2b FROZEN/deferred;
+  Hard-anchor P-GEAR **downgraded to V-A** with the specific V-B gap documented
+- ☐ `rack_pinion` carries a standing **R2b-open** flag; pitch-cylinder proxy (option A) is a future
+  G-H item, not built now; module bounds stay provisional [3.0,4.0]
 
-Stopped per the pre-declared rule (preset route → stop after the comparison table). The card and any
-contact-model change await your ruling on the fork.
+Routed to D3 and stopped; returning to the main line. **Next brief = B-track** (pin_hinge
+cardification + stage-⑨ pipeline wiring + Easy anchor).

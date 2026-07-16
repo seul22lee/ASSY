@@ -1,0 +1,73 @@
+{
+  "decision_row": "D-M1-6 routing / D1 reversal isolation",
+  "compile_hash": "c0390fc",
+  "config": {
+    "module": 4,
+    "dt": 0.0001,
+    "frozen_contact_preset": true,
+    "kv": 0.0004,
+    "seeds": 5
+  },
+  "protocols_probed": [
+    "fwd3",
+    "rev3",
+    "instant",
+    "dwell"
+  ],
+  "results": {
+    "fwd3": {
+      "seeds_pass": 4,
+      "diverged": 1,
+      "ratios": [
+        -0.5,
+        -0.5,
+        -0.5,
+        -0.5,
+        -0.5
+      ]
+    },
+    "rev3": {
+      "seeds_pass": 0,
+      "diverged": 5,
+      "ratios": [
+        -0.5,
+        0.0,
+        -0.45,
+        -0.5,
+        -0.49
+      ]
+    },
+    "instant": {
+      "seeds_pass": 1,
+      "diverged": 4,
+      "ratios": [
+        -0.501,
+        -0.501,
+        -0.499,
+        -0.499,
+        -0.5
+      ]
+    },
+    "dwell": {
+      "seeds_pass": 0,
+      "diverged": 5,
+      "ratios": [
+        -0.501,
+        -0.5,
+        -0.5,
+        -0.5,
+        -0.5
+      ]
+    }
+  },
+  "context": {
+    "fwd3_at_frozen_dt": {
+      "seeds_pass": 0,
+      "diverged": 5
+    }
+  },
+  "routing": "D3 \u2014 dwell still fails: do NOT open the preset procedure. FREEZE R2b (gear contact-only verification pending preset v2 \u2014 deferred); downgrade P-GEAR Hard-anchor requirement to V-A with the V-B gap documented; STOP",
+  "shape_assert": {
+    "protocols_covered": true
+  }
+}
