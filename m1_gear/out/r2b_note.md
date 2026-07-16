@@ -15,3 +15,21 @@ timestep: **frozen preset dt = 5e-4** vs **dt/25 = 2e-5**.
 Sixteen orders of magnitude of contact force separate the two runs of *identical geometry*. That gap
 is R2b. The mitigation queue (D-M1-2) attacks it geometry-side first (larger module, m=2→3) before
 any preset change.
+
+## Mitigation queue (D-M1-2, extended)
+
+1. **Larger module** (m=2→3→…, geometry-side, R5 intact) — probed through m=6; monotonic dt relaxation
+   but never reached in-bounds (D-M1-3/-4/-5). Exhausted within the usable envelope.
+2. **Formally versioned preset change** (`preset_v2`, per R5's amendment procedure, full V-A/V-B
+   regression) — D-M1-5 found NO viable candidate: the limit is contact *formulation*, not a tunable
+   preset parameter.
+3. **[DEFERRED] Alternative backend — PhysX 5 SDF contacts** as a `preset_v2`-time candidate.
+   Evaluated against the *same* V-A/V-B regression set as any preset amendment (M0 hinge both
+   variants, M0-stretch V-B, snap-box t0 contact equivalents). Rationale: R2b is a convex-facet
+   contact-formulation limit (D-M1-5) — a signed-distance-field contact solver addresses the
+   formulation, not a parameter. Because the `collision_hint` and protocol layers are **engine-neutral
+   by design (D12)**, the swap surface is confined to `verify/t2_physics` only; the ontology, cards,
+   and compile stay untouched. Note the tension with D21/D-M1-5's caution (MuJoCo's own analytic SDF
+   gear is forbidden for our *compiled-geometry* philosophy) — an SDF *contact* over our own compiled
+   meshes is a different thing from an analytic gear primitive, and that distinction is what a G-H
+   sign-off on this option would have to rule on.

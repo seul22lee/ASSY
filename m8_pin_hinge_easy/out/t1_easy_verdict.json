@@ -1,0 +1,77 @@
+{
+  "decision_row": "stage-\u2467 Tier1 re-measure on compiled Easy anchor",
+  "compile_hash": "d569494",
+  "elements": {
+    "E2_snap": {
+      "ok": true,
+      "rows": [
+        [
+          "L",
+          12.0,
+          12.0,
+          0.0,
+          true
+        ],
+        [
+          "h",
+          2.5,
+          2.5,
+          0.0,
+          true
+        ],
+        [
+          "b",
+          8.0,
+          8.0,
+          0.0,
+          true
+        ],
+        [
+          "y",
+          1.5,
+          1.5,
+          0.0,
+          true
+        ]
+      ],
+      "undercut_measured_mm": 1.5
+    },
+    "E1_hinge": {
+      "ok": true,
+      "rows": [
+        [
+          "pin_d",
+          4.0,
+          4.0,
+          0.0,
+          true
+        ],
+        [
+          "pin_len",
+          30.6,
+          30.6,
+          0.0,
+          true
+        ],
+        [
+          "bore_d",
+          4.3,
+          4.3,
+          0.0,
+          true
+        ],
+        [
+          "knuckle_od",
+          8.0,
+          8.0,
+          0.0,
+          true
+        ]
+      ]
+    }
+  },
+  "shape_assert": {
+    "elements_covered": true
+  },
+  "verdict": true
+}

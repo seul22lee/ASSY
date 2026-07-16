@@ -152,12 +152,13 @@ class _Node:
     ground: bool = False
     hexagon: bool = False  # passive features drawn as hexagons
     hardware: bool = False  # D-ONT-11 hardware piece (steel fill + HW badge)
+    rule: bool = False     # D-ONT-12 AssemblyRule drawn as a rhombus (⚖)
     new: bool = False      # diff highlight
 
     x = y = 0.0
 
 
-COL_X = [40, 250, 470, 700]   # piece, element/feature, behavior, protocol
+COL_X = [40, 250, 470, 700, 940]   # piece, element/feature, behavior, protocol, assembly-rule
 NODE_W, NODE_H, ROW_GAP, COL_LABEL_Y = 150, 46, 30, 24
 FN_Y = 44  # functions banner
 
@@ -165,7 +166,7 @@ FN_Y = 44  # functions banner
 def _layout(plan: DesignPlan, new_ids: set[str] | None = None) -> list[_Node]:
     new_ids = new_ids or set()
     nodes: list[_Node] = []
-    rows = [0, 0, 0, 0]
+    rows = [0, 0, 0, 0, 0]
 
     def add(nid, lines, fill, stroke, col, **kw):
         n = _Node(nid, lines, fill, stroke, col, rows[col], new=nid in new_ids, **kw)
@@ -190,6 +191,13 @@ def _layout(plan: DesignPlan, new_ids: set[str] | None = None) -> list[_Node]:
     for pr in plan.protocols:
         add(pr.id, [pr.id, f"{len(pr.criteria)} gates / {len(pr.observables)} obs"],
             PR_FILL, PR_STROKE, 3)
+    # D-ONT-12: AssemblyRules as first-class rhombus nodes (col 4). The sub-line shows provenance
+    # — a card:<card> rule traces to that card's interaction_rules API; a task rule is plan-authored.
+    for ar in getattr(plan, "assembly_rules", []):
+        prov = ar.provenance
+        sub = (f"< {prov.split(':', 1)[1]}.interaction_rules" if prov.startswith("card:")
+               else f"provenance: {prov}")
+        add(ar.id, [f"{ar.id}  {ar.kind}", sub], "#fefcbf", "#b7791f", 4, rule=True)
 
     # assign coordinates
     for n in nodes:
@@ -219,6 +227,36 @@ def _edges(plan: DesignPlan, new_edges: set[tuple] | None = None) -> list[tuple]
         if p.provenance == "hardware" and p.source_element:
             out.append((p.source_element, p.id, "provides", True,
                         (p.source_element, p.id) in new_edges))
+    # D-ONT-12: AssemblyRule → each subject it constrains, labeled by its ROLE in the predicate
+    # (excluded/sweep_of for an exclusion; contributor/budget for a resource). Dashed = a constraint.
+    for ar in getattr(plan, "assembly_rules", []):
+        pred = ar.predicate or {}
+        roles = {}
+        if ar.kind == "exclusion":
+            roles = {pred.get("excluded"): "excluded", pred.get("sweep_of"): "sweep_of"}
+        elif ar.kind == "resource":
+            for c in pred.get("contributors", []):
+                roles[c] = f"{c.split('.', 1)[1]} (+)" if "." in c else "contributor"
+            b = pred.get("budget")
+            if b:
+                roles[b] = f"{b.split('.', 1)[1]} (budget)" if "." in b else "budget"
+        for subj, label in roles.items():
+            if not subj:
+                continue
+            base = subj.split(".")[0]
+            if plan.instance(base) or plan.piece(base) or plan.feature(base):
+                out.append((ar.id, base, label, True, (ar.id, base) in new_edges))
+    # the imposed behavior ↔ its checkable AssemblyRule form. The precise link is through the
+    # PROTOCOL that implements the rule's check: an exclusion rule is checked by a tier0_sweep, so
+    # the behavior that sweep verifies (B5, the latch-∉-sweep requirement) is the one AR1 makes
+    # checkable — not every behavior the card happens to impose (that would wrongly rope in B6).
+    ROLE_ACTUATION = {"exclusion": "tier0_sweep", "resource": "budget_check"}
+    for ar in getattr(plan, "assembly_rules", []):
+        kind_act = ROLE_ACTUATION.get(ar.kind)
+        for pr in plan.protocols:
+            if (pr.actuation or {}).get("kind") == kind_act and pr.verifies:
+                out.append((pr.verifies, ar.id, "checkable form", True,
+                            (pr.verifies, ar.id) in new_edges))
     return out
 
 
@@ -227,7 +265,14 @@ def _svg_node(n: _Node) -> str:
     sw = 3 if n.new else 1.5
     cx = n.x + NODE_W / 2
     parts = []
-    if n.hexagon:
+    if n.rule:  # D-ONT-12 AssemblyRule: a rhombus (⚖), matching the mermaid renderer
+        w, h = NODE_W, NODE_H
+        pts = f"{n.x},{n.y+h/2} {cx},{n.y} {n.x+w},{n.y+h/2} {cx},{n.y+h}"
+        parts.append(f'<polygon points="{pts}" fill="{n.fill}" stroke="{stroke}" '
+                     f'stroke-width="{sw}"/>')
+        parts.append(f'<text x="{n.x+10}" y="{n.y+h/2+4}" font-size="12" '
+                     f'fill="{stroke}">&#9878;</text>')  # scales/balance glyph
+    elif n.hexagon:
         w, h = NODE_W, NODE_H
         pts = f"{n.x+12},{n.y} {n.x+w-12},{n.y} {n.x+w},{n.y+h/2} {n.x+w-12},{n.y+h} " \
               f"{n.x+12},{n.y+h} {n.x},{n.y+h/2}"
@@ -289,7 +334,8 @@ def to_svg(plan: DesignPlan, new_ids: set[str] | None = None,
     S.append(f'<text x="20" y="24" font-size="15" font-weight="bold" fill="#1a202c">{html.escape(ttl)}</text>')
 
     # column labels
-    for cx0, lbl in zip(COL_X, ("PIECES", "ELEMENTS / FEATURES", "BEHAVIORS", "PROTOCOLS")):
+    for cx0, lbl in zip(COL_X, ("PIECES", "ELEMENTS / FEATURES", "BEHAVIORS", "PROTOCOLS",
+                                "ASSEMBLY RULES")):
         S.append(f'<text x="{cx0}" y="{FN_Y+30}" font-size="10" font-weight="bold" '
                  f'fill="#718096">{lbl}</text>')
 
@@ -342,7 +388,8 @@ def to_svg(plan: DesignPlan, new_ids: set[str] | None = None,
              ("assembly", PHASE_FILL["assembly"], PHASE_STROKE["assembly"]),
              ("static", PHASE_FILL["static"], PHASE_STROKE["static"]),
              ("element", EL_FILL, EL_STROKE), ("feature (hexagon)", FT_FILL, FT_STROKE),
-             ("hardware piece [HW]", "#cbd5e0", "#2d3748")]
+             ("hardware piece [HW]", "#cbd5e0", "#2d3748"),
+             ("AssemblyRule (rhombus)", "#fefcbf", "#b7791f")]
     lx = 20
     for lbl, fill, stroke in items:
         S.append(f'<rect x="{lx}" y="{ly}" width="14" height="14" fill="{fill}" stroke="{stroke}"/>'

@@ -1,0 +1,213 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>m8 — pin_hinge Easy anchor</title>
+<style>
+ body{font:14px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;max-width:1080px;margin:0 auto;
+   padding:24px;color:#1a202c;background:#fafbfc}
+ h1{font-size:24px;margin:.2em 0} h2{font-size:18px;border-bottom:2px solid #e2e8f0;padding-bottom:4px;
+   margin-top:34px} h3{font-size:15px;margin:18px 0 6px}
+ .verdict{display:inline-block;padding:4px 14px;border-radius:6px;font-weight:700;color:#fff}
+ .PASS{background:#2f855a} .FAIL{background:#c53030}
+ table{border-collapse:collapse;width:100%;margin:8px 0;font-size:13px}
+ th,td{border:1px solid #e2e8f0;padding:6px 8px;text-align:left;vertical-align:top}
+ th{background:#f7fafc} .num{text-align:right;font-variant-numeric:tabular-nums}
+ .mono{font-family:ui-monospace,Menlo,monospace;font-size:12px} .sub{color:#718096;font-size:12px}
+ tr.pass td:last-child{color:#2f855a;font-weight:600} tr.fail td:last-child{color:#c53030;font-weight:600}
+ .cmd{background:#1a202c;color:#e2e8f0;padding:12px 16px;border-radius:8px;font-family:ui-monospace,monospace;
+   font-size:12.5px;white-space:pre-wrap}
+ .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px} img{max-width:100%;border:1px solid #e2e8f0;border-radius:6px}
+ video{width:100%;border:1px solid #e2e8f0;border-radius:6px} .cap{color:#718096;font-size:12px;margin:2px 0 12px}
+ .ir{overflow-x:auto;border:1px solid #e2e8f0;border-radius:6px;padding:8px;background:#fff}
+</style></head><body>
+
+<h1>m8 — <span class="mono">pin_hinge</span> Easy anchor <span class="verdict PASS">PASS</span></h1>
+<p class="sub">Box + lid on a formalized pin hinge, with a front snap latch; the loose pin is
+element-provided hardware (D-ONT-11); two first-class AssemblyRules (D-ONT-12) govern the latch
+sweep and the rim budget. Compiled from the IR, then verified through t0 → t1 → t2.</p>
+
+<h2>① Command</h2>
+<div class="cmd">intent:  a box whose lid opens on a hinge to ~95°, is held shut by a snap latch,
+         and closes back onto its seat.
+plan:    2 elements (E1 pin_hinge, E2 snap_hook_cantilever) · 3 pieces (P1 box[base],
+         P2 lid[mover], P3 pin[hardware ← E1]) · 2 AssemblyRules (AR1 exclusion, AR2 resource)
+compile: motion-before-fasteners (E1 hinge carve → E2 snap carve → assign P3 = E1.pin_solid)
+verify:  t0 three-way + AssemblyRules · t1 re-measure (COMPILE_DRIFT) · t2 P-HINGE V-A + V-B</div>
+
+<h2>② Decisions &amp; citations</h2>
+<table><tr><th>ID</th><th>Decision</th><th>Citation</th></tr><tr><td class='mono'>D-ONT-11</td><td><b>Element-provided pieces</b><br><span class='sub'>The loose pin is a Piece with provenance='hardware', instantiated at ④ and provenance-tagged; its geometry comes from the hinge element E1's carve (pin_solid). V-07 amended: hardware exempt from binding.</span></td><td class='sub'>MECHSYNTH §3.3 / M0 hinge</td></tr><tr><td class='mono'>D-ONT-12</td><td><b>AssemblyRule as a first-class entity</b><br><span class='sub'>Two typed, declarative rules on the plan: an EXCLUSION (the latch must lie outside the lid's swept volume) and a RESOURCE budget (Σ contributors ≤ budget). Provenance-tagged; referents resolve per D13.</span></td><td class='sub'>MECHSYNTH §5.2 / Pahl&Beitz</td></tr><tr><td class='mono'>D14 / COLLISION_EPS</td><td><b>Lid seating without a tied separating axis</b><br><span class='sub'>The moving lid's seating primitive is inset by 0.2 mm laterally so it never shares a face-plane with the static rim (the drawer lesson); the load-bearing Z plane is left exact.</span></td><td class='sub'>M0 FINDINGS / drawer</td></tr><tr><td class='mono'>D22</td><td><b>Intended vs defect interference</b><br><span class='sub'>Undercut release (0–10°), the closing seat, the pin/bore interface and the open-stop impact are INTENDED contacts (observables); only non-intended travel interference gates.</span></td><td class='sub'>your ruling / M0 B4</td></tr><tr><td class='mono'>pin_hinge card</td><td><b>Formalized M0 hinge (Bayer/§3.3)</b><br><span class='sub'>Ports axis/mount_A/mount_B; bounded params; carve() = knuckles+lugs+bore+chamfer+pin; collision_hint() = ring-of-wedges bore.</span></td><td class='sub'>SNAPFIT §12 / M0</td></tr><tr><td class='mono'>snap_hook_cantilever card</td><td><b>Formalized Bayer cantilever</b><br><span class='sub'>Grows hooks into the lid, cuts catch windows; contributes the EXCLUSION AssemblyRule (imposes-family knowledge).</span></td><td class='sub'>Bayer p.5 Fig.1</td></tr></table>
+
+<h2>③ Rationale</h2>
+<p>The pipeline constrains the LLM to discrete ontology choices (which cards, which ports, which
+rules) while deterministic code owns every dimension. The pin is not modelled as a fourth free
+part the planner invented — it is <b>provided by the hinge card</b> and tagged hardware, so its
+geometry and provenance trace to E1 (D-ONT-11). The latch-vs-sweep constraint is not hand-written
+either: it is an <b>AssemblyRule the snap card imposes</b> (D-ONT-12), evaluated on the compiled
+geometry. Physics is split into two independent questions: does the declared hinge <i>axis</i>
+carry the motion (V-A), and does the <i>geometry alone</i> — pin in a bored knuckle — produce the
+same DoF by contact (V-B)? Both must agree, or the mechanism is an artifact of the joint we
+declared rather than the shape we built.</p>
+
+<h2>④ Assembly — 4-view, exploded, section</h2>
+<div class="grid">
+ <div><img src="out/anchor_4view.png"><div class="cap">Hinge knuckles + protruding pin at the rear
+   (−Y); snap latch at the front (+Y).</div></div>
+ <div><img src="out/anchor_exploded.png"><div class="cap">The pin is a separate hardware body,
+   provided by E1 (D-ONT-11). Box knuckles + front catch window visible on the base.</div></div>
+</div>
+<img src="out/anchor_section.png">
+<div class="cap">SECTION at x=0 — the centre hinge knuckle wraps the pin/bore (rear, left) and the
+ snap latch teeth seat in the box's catch window (front, right), in a single cut.</div>
+
+<h3>IR graph</h3>
+<div class="ir"><svg xmlns="http://www.w3.org/2000/svg" width="1130" height="544" font-family="monospace" viewBox="0 0 1130 544">
+<rect width="1130" height="544" fill="#fbfdff"/>
+<defs><marker id="arw" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#4a5568"/></marker><marker id="arwN" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#e53e3e"/></marker></defs>
+<text x="20" y="24" font-size="15" font-weight="bold" fill="#1a202c">anchor_easy — IR  (compile 6f21d66)</text>
+<text x="40" y="74" font-size="10" font-weight="bold" fill="#718096">PIECES</text>
+<text x="250" y="74" font-size="10" font-weight="bold" fill="#718096">ELEMENTS / FEATURES</text>
+<text x="470" y="74" font-size="10" font-weight="bold" fill="#718096">BEHAVIORS</text>
+<text x="700" y="74" font-size="10" font-weight="bold" fill="#718096">PROTOCOLS</text>
+<text x="940" y="74" font-size="10" font-weight="bold" fill="#718096">ASSEMBLY RULES</text>
+<text x="20" y="44" font-size="10" fill="#718096">INTENT:</text>
+<rect x="80" y="30" width="162.8" height="20" rx="10" fill="#ebf8ff" stroke="#3182ce"/><circle cx="91" cy="40" r="3.2" fill="#3182ce"/><text x="100" y="44" font-size="10" fill="#2c5282">allow_access: contents</text>
+<rect x="254.8" y="30" width="92.4" height="20" rx="10" fill="#ebf8ff" stroke="#3182ce"/><circle cx="265.8" cy="40" r="3.2" fill="#3182ce"/><text x="274.8" y="44" font-size="10" fill="#2c5282">secure: lid</text>
+<line x1="400" y1="107.0" x2="470" y2="107.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
+<rect x="406.4" y="96.0" width="46.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="429.4" y="105.0" font-size="8" fill="#4a5568" text-anchor="middle">realizes</text>
+<line x1="620" y1="107.0" x2="700" y2="183.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
+<rect x="623.1" y="127.91999999999999" width="61.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="653.6" y="136.92" font-size="8" fill="#4a5568" text-anchor="middle">verified_by</text>
+<line x1="400" y1="107.0" x2="470" y2="183.0" stroke="#718096" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
+<rect x="408.9" y="127.91999999999999" width="41.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="429.4" y="136.92" font-size="8" fill="#4a5568" text-anchor="middle">imposes</text>
+<line x1="400" y1="183.0" x2="470" y2="259.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
+<rect x="406.4" y="203.92" width="46.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="429.4" y="212.92" font-size="8" fill="#4a5568" text-anchor="middle">realizes</text>
+<line x1="620" y1="259.0" x2="700" y2="259.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
+<rect x="623.1" y="248.0" width="61.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="653.6" y="257.0" font-size="8" fill="#4a5568" text-anchor="middle">verified_by</text>
+<line x1="400" y1="183.0" x2="470" y2="335.0" stroke="#718096" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
+<rect x="408.9" y="235.84" width="41.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="429.4" y="244.84" font-size="8" fill="#4a5568" text-anchor="middle">imposes</text>
+<line x1="620" y1="335.0" x2="700" y2="335.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
+<rect x="623.1" y="324.0" width="61.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="653.6" y="333.0" font-size="8" fill="#4a5568" text-anchor="middle">verified_by</text>
+<line x1="400" y1="183.0" x2="470" y2="411.0" stroke="#718096" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
+<rect x="408.9" y="267.76" width="41.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="429.4" y="276.76" font-size="8" fill="#4a5568" text-anchor="middle">imposes</text>
+<line x1="250" y1="107.0" x2="190" y2="107.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
+<rect x="211.8" y="96.0" width="26.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="224.8" y="105.0" font-size="8" fill="#4a5568" text-anchor="middle">axis</text>
+<line x1="250" y1="107.0" x2="190" y2="107.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
+<rect x="204.3" y="96.0" width="41.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="224.8" y="105.0" font-size="8" fill="#4a5568" text-anchor="middle">mount_A</text>
+<line x1="250" y1="107.0" x2="190" y2="183.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
+<rect x="204.3" y="127.91999999999999" width="41.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="224.8" y="136.92" font-size="8" fill="#4a5568" text-anchor="middle">mount_B</text>
+<line x1="250" y1="183.0" x2="190" y2="183.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
+<rect x="199.3" y="172.0" width="51.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="224.8" y="181.0" font-size="8" fill="#4a5568" text-anchor="middle">beam_root</text>
+<line x1="250" y1="183.0" x2="190" y2="107.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
+<rect x="191.8" y="140.08" width="66.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="224.8" y="149.08" font-size="8" fill="#4a5568" text-anchor="middle">catch_window</text>
+<line x1="250" y1="107.0" x2="190" y2="259.0" stroke="#718096" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
+<rect x="201.8" y="159.84" width="46.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="224.8" y="168.84" font-size="8" fill="#4a5568" text-anchor="middle">provides</text>
+<line x1="940" y1="107.0" x2="400" y2="183.0" stroke="#718096" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
+<rect x="690.2" y="127.91999999999999" width="46.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="713.2" y="136.92" font-size="8" fill="#4a5568" text-anchor="middle">excluded</text>
+<line x1="940" y1="107.0" x2="400" y2="107.0" stroke="#718096" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
+<rect x="690.2" y="96.0" width="46.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="713.2" y="105.0" font-size="8" fill="#4a5568" text-anchor="middle">sweep_of</text>
+<line x1="940" y1="183.0" x2="400" y2="183.0" stroke="#718096" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
+<rect x="690.2" y="172.0" width="46.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="713.2" y="181.0" font-size="8" fill="#4a5568" text-anchor="middle">L_mm (+)</text>
+<line x1="940" y1="183.0" x2="400" y2="107.0" stroke="#718096" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
+<rect x="672.7" y="140.08" width="81.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="713.2" y="149.08" font-size="8" fill="#4a5568" text-anchor="middle">edge_margin (+)</text>
+<line x1="940" y1="183.0" x2="190" y2="183.0" stroke="#718096" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
+<rect x="574.5" y="172.0" width="101.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="625.0" y="181.0" font-size="8" fill="#4a5568" text-anchor="middle">rim_length (budget)</text>
+<line x1="620" y1="335.0" x2="940" y2="107.0" stroke="#718096" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
+<rect x="716.4" y="228.24" width="76.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="754.4" y="237.24" font-size="8" fill="#4a5568" text-anchor="middle">checkable form</text>
+<rect x="40" y="84" width="150" height="46" rx="6" fill="#edf2f7" stroke="#4a5568" stroke-width="1.5"/><text x="115.0" y="102" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">P1  base</text><text x="115.0" y="116" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">box_shell</text><line x1="115.0" y1="130" x2="115.0" y2="133" stroke="#4a5568" stroke-width="1.5"/><line x1="101.0" y1="133" x2="129.0" y2="133" stroke="#4a5568" stroke-width="1.5"/><line x1="106.0" y1="136" x2="124.0" y2="136" stroke="#4a5568" stroke-width="1.5"/><line x1="111.0" y1="139" x2="119.0" y2="139" stroke="#4a5568" stroke-width="1.5"/>
+<rect x="40" y="160" width="150" height="46" rx="6" fill="#edf2f7" stroke="#4a5568" stroke-width="1.5"/><text x="115.0" y="178" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">P2  lid</text><text x="115.0" y="192" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">lid_panel</text>
+<rect x="40" y="236" width="150" height="46" rx="6" fill="#cbd5e0" stroke="#2d3748" stroke-width="1.5"/><text x="115.0" y="254" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">P3  pin</text><text x="115.0" y="268" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">hardware &lt; E1</text><rect x="164" y="239" width="22" height="12" rx="2" fill="#2d3748"/><text x="175" y="248" font-size="8" font-family="monospace" fill="#e2e8f0" text-anchor="middle" font-weight="bold">HW</text>
+<rect x="250" y="84" width="150" height="46" rx="6" fill="#c6f6d5" stroke="#38a169" stroke-width="1.5"/><text x="325.0" y="102" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">E1</text><text x="325.0" y="116" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">pin_hinge</text>
+<rect x="250" y="160" width="150" height="46" rx="6" fill="#c6f6d5" stroke="#38a169" stroke-width="1.5"/><text x="325.0" y="178" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">E2</text><text x="325.0" y="192" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">snap_hook_cantilever</text>
+<rect x="470" y="84" width="150" height="46" rx="6" fill="#bee3f8" stroke="#3182ce" stroke-width="1.5"/><text x="545.0" y="102" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B1 · use</text><text x="545.0" y="116" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">rotation ≥90°</text>
+<rect x="470" y="160" width="150" height="46" rx="6" fill="#fed7aa" stroke="#dd6b20" stroke-width="1.5"/><text x="545.0" y="178" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B2 · assembly</text><text x="545.0" y="192" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">translation</text>
+<rect x="470" y="236" width="150" height="46" rx="6" fill="#e2e8f0" stroke="#718096" stroke-width="1.5"/><text x="545.0" y="254" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B4 · static</text><text x="545.0" y="268" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">snap_event [15,60]N</text>
+<rect x="470" y="312" width="150" height="46" rx="6" fill="#bee3f8" stroke="#3182ce" stroke-width="1.5"/><text x="545.0" y="330" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B5 · use</text><text x="545.0" y="344" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">fixed</text>
+<rect x="470" y="388" width="150" height="46" rx="6" fill="#fed7aa" stroke="#dd6b20" stroke-width="1.5"/><text x="545.0" y="406" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B6 · assembly</text><text x="545.0" y="420" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">translation</text>
+<rect x="700" y="84" width="150" height="46" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="1.5"/><text x="775.0" y="102" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">P-HINGE-VA</text><text x="775.0" y="116" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">4 gates / 0 obs</text>
+<rect x="700" y="160" width="150" height="46" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="1.5"/><text x="775.0" y="178" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">P-HINGE-VB</text><text x="775.0" y="192" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">4 gates / 0 obs</text>
+<rect x="700" y="236" width="150" height="46" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="1.5"/><text x="775.0" y="254" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">PR-LATCH</text><text x="775.0" y="268" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">2 gates / 0 obs</text>
+<rect x="700" y="312" width="150" height="46" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="1.5"/><text x="775.0" y="330" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">PR-SWEEP</text><text x="775.0" y="344" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">1 gates / 0 obs</text>
+<polygon points="940,107.0 1015.0,84 1090,107.0 1015.0,130" fill="#fefcbf" stroke="#b7791f" stroke-width="1.5"/><text x="950" y="111.0" font-size="12" fill="#b7791f">&#9878;</text><text x="1015.0" y="102" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">AR1  exclusion</text><text x="1015.0" y="116" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">&lt; snap_hook_cantilever.interaction_rules</text>
+<polygon points="940,183.0 1015.0,160 1090,183.0 1015.0,206" fill="#fefcbf" stroke="#b7791f" stroke-width="1.5"/><text x="950" y="187.0" font-size="12" fill="#b7791f">&#9878;</text><text x="1015.0" y="178" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">AR2  resource</text><text x="1015.0" y="192" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">provenance: task</text>
+<rect x="20" y="518" width="14" height="14" fill="#bee3f8" stroke="#3182ce"/><text x="38" y="529" font-size="9" fill="#4a5568">use</text>
+<rect x="68.0" y="518" width="14" height="14" fill="#fed7aa" stroke="#dd6b20"/><text x="86.0" y="529" font-size="9" fill="#4a5568">assembly</text>
+<rect x="146.0" y="518" width="14" height="14" fill="#e2e8f0" stroke="#718096"/><text x="164.0" y="529" font-size="9" fill="#4a5568">static</text>
+<rect x="212.0" y="518" width="14" height="14" fill="#c6f6d5" stroke="#38a169"/><text x="230.0" y="529" font-size="9" fill="#4a5568">element</text>
+<rect x="284.0" y="518" width="14" height="14" fill="#fefcbf" stroke="#d69e2e"/><text x="302.0" y="529" font-size="9" fill="#4a5568">feature (hexagon)</text>
+<rect x="416.0" y="518" width="14" height="14" fill="#cbd5e0" stroke="#2d3748"/><text x="434.0" y="529" font-size="9" fill="#4a5568">hardware piece [HW]</text>
+<rect x="560.0" y="518" width="14" height="14" fill="#fefcbf" stroke="#b7791f"/><text x="578.0" y="529" font-size="9" fill="#4a5568">AssemblyRule (rhombus)</text>
+<line x1="728.0" y1="525" x2="752.0" y2="525" stroke="#718096" stroke-width="1.4"/><text x="756.0" y="529" font-size="9" fill="#4a5568">realizes</text>
+<line x1="818.0" y1="525" x2="842.0" y2="525" stroke="#718096" stroke-width="1.4" stroke-dasharray="5,4"/><text x="846.0" y="529" font-size="9" fill="#4a5568">imposes</text>
+<line x1="910.0" y1="520" x2="910.0" y2="527" stroke="#4a5568" stroke-width="1.4"/><line x1="904.0" y1="527" x2="916.0" y2="527" stroke="#4a5568" stroke-width="1.4"/><line x1="906.0" y1="530" x2="914.0" y2="530" stroke="#4a5568" stroke-width="1.4"/><text x="922.0" y="529" font-size="9" fill="#4a5568">= base</text>
+</svg></div>
+<div class="cap">P3 renders as hardware provenance (steel, 🔩, “hardware ← E1”, dashed provides
+ edge); AR1/AR2 render as rhombus AssemblyRule nodes with kind-labeled edges.</div>
+
+<h2>⑤ Gates</h2>
+<h3>t0 — AssemblyRules (first live firing)</h3>
+<table><tr><th>rule</th><th>kind</th><th>provenance</th><th>result</th><th></th></tr><tr class='pass'><td class='mono'>AR1</td><td>exclusion</td><td class='sub'>card:snap_hook_cantilever</td><td>undercut releases by 10° (release-band peak 50 mm³, intended — D22); free sweep beyond 20° peak 0.00 mm³ → CLEARS the box</td><td>PASS</td></tr><tr class='pass'><td class='mono'>AR2</td><td>resource</td><td class='sub'>task</td><td>Σ(E2.L_mm+E1.edge_margin) = 39.7 <= P2.rim_length = 80.0  → ok</td><td>PASS</td></tr></table>
+<p class="sub">AR1 is D22-aware: the rigid hook's undercut interferes with the window edge only
+through the 0–10° release band (intended — in reality the beam flexes out); the free sweep beyond
+is clean, so the latch clears the box. AR2 reads ⑤ values straight from the IR.</p>
+
+<h3>t1 — re-measure on the compiled geometry (COMPILE_DRIFT guard)</h3>
+<table><tr><th>element</th><th>param</th><th>IR</th><th>measured</th><th>|Δ| (mm)</th><th></th></tr><tr class='pass'><td class='mono'>E2_snap</td><td>L</td><td class='num'>12.0</td><td class='num'>12.0</td><td class='num'>0.0</td><td>ok</td></tr><tr class='pass'><td class='mono'>E2_snap</td><td>h</td><td class='num'>2.5</td><td class='num'>2.5</td><td class='num'>0.0</td><td>ok</td></tr><tr class='pass'><td class='mono'>E2_snap</td><td>b</td><td class='num'>8.0</td><td class='num'>8.0</td><td class='num'>0.0</td><td>ok</td></tr><tr class='pass'><td class='mono'>E2_snap</td><td>y</td><td class='num'>1.5</td><td class='num'>1.5</td><td class='num'>0.0</td><td>ok</td></tr><tr class='pass'><td class='mono'>E1_hinge</td><td>pin_d</td><td class='num'>4.0</td><td class='num'>4.0</td><td class='num'>0.0</td><td>ok</td></tr><tr class='pass'><td class='mono'>E1_hinge</td><td>pin_len</td><td class='num'>30.6</td><td class='num'>30.6</td><td class='num'>0.0</td><td>ok</td></tr><tr class='pass'><td class='mono'>E1_hinge</td><td>bore_d</td><td class='num'>4.3</td><td class='num'>4.3</td><td class='num'>0.0</td><td>ok</td></tr><tr class='pass'><td class='mono'>E1_hinge</td><td>knuckle_od</td><td class='num'>8.0</td><td class='num'>8.0</td><td class='num'>0.0</td><td>ok</td></tr></table>
+<p class="sub">Both elements re-measured from the compiled STEP against the resolved IR — 0.0000 mm
+drift. The IR reference is ⑤'s resolved value, not the compiled dims (the panel blind-spot rule).</p>
+
+<h3>t2 — G-CONV + P-HINGE (5 seeds/mode, ≥4/5 → PASS)</h3>
+<div class="grid">
+ <div><h3 style="margin-top:0">V-A — declared hinge joint</h3>
+   <table><tr><th>criterion</th><th>value</th><th>thr</th><th></th></tr><tr class='pass'><td>theta_max >= 90 deg</td><td class='num'>112.41</td><td class='num'>≤ 90.0</td><td>ok</td></tr><tr class='pass'><td>travel interference (non-intended) <= 0.2 mm</td><td class='num'>0.0</td><td class='num'>≤ 0.2</td><td>ok</td></tr><tr class='pass'><td>settles closed: theta_final <= 5 deg, no bounce-open</td><td class='num'>2.98</td><td class='num'>≤ 5.0</td><td>ok</td></tr></table>
+   <p class="sub">5/5 seeds pass. The joint IS the hinge; the
+    ring-of-wedge collisions are skipped (they jam a convex approximation of the joint).</p></div>
+ <div><h3 style="margin-top:0">V-B — contact-only (DoF from geometry)</h3>
+   <table><tr><th>criterion</th><th>value</th><th>thr</th><th></th></tr><tr class='pass'><td>theta_max >= 90 deg</td><td class='num'>106.71</td><td class='num'>≤ 90.0</td><td>ok</td></tr><tr class='pass'><td>travel interference (non-intended) <= 0.2 mm</td><td class='num'>0.0</td><td class='num'>≤ 0.2</td><td>ok</td></tr><tr class='pass'><td>settles closed: theta_final <= 5 deg, no bounce-open</td><td class='num'>2.72</td><td class='num'>≤ 5.0</td><td>ok</td></tr><tr class='pass'><td>pin retention: radial <= clearance+0.1</td><td class='num'>0.2282</td><td class='num'>≤ 0.4</td><td>ok</td></tr><tr class='pass'><td>pin retention: axial <= protrusion</td><td class='num'>0.0198</td><td class='num'>≤ 3.0</td><td>ok</td></tr><tr class='pass'><td>pin/bore interface <= clearance</td><td class='num'>0.0329</td><td class='num'>≤ 0.3</td><td>ok</td></tr></table>
+   <p class="sub">4/5 seeds pass. The DoF emerges from the pin in the
+    bored knuckle; a designed open-stop (the lug hard-stop) arrests it at ~107°.</p></div>
+</div>
+
+<h2>⑥ Videos — P-HINGE HUD (D15: the scored values, burned in)</h2>
+<div class="grid">
+ <div><video controls muted loop src="out/t2_easy_V-A.mp4"></video><div class="cap">V-A —
+   open to ~112°, hold, reverse, seat closed. No droop: the lid rests on the box rim.</div></div>
+ <div><video controls muted loop src="out/t2_easy_V-B.mp4"></video><div class="cap">V-B —
+   open to ~107° against the stop, latch region clears, close &amp; SEAT. Pin retained.</div></div>
+</div>
+<div class="grid">
+ <div><img src="out/hud_V-A.png"><div class="cap">V-A mid-open (HUD frame).</div></div>
+ <div><img src="out/hud_V-B.png"><div class="cap">V-B mid-open — ANGLE 106°, PIN R 0.20 A 0.02,
+   PEN 0.00 TRAV 0.00.</div></div>
+</div>
+<div class="grid">
+ <div><img src="out/t2_easy_V-A.png"><div class="cap">V-A θ/F/penetration series.</div></div>
+ <div><img src="out/t2_easy_V-B.png"><div class="cap">V-B θ/F/stratified-penetration series.</div></div>
+</div>
+
+<h2>⑦ Verdict</h2>
+<p><span class="verdict PASS">PASS</span>&nbsp; t0 AssemblyRules
+all PASS · t1 PASS
+(0 drift) · t2 V-A 5/5 + V-B 4/5
+→ PASS. The compiled Easy anchor opens, releases, and re-seats
+under physics in both verification modes, with the pin retained.</p>
+<p class="sub">Guard trio on every verdict JSON: decision_row + compile_hash (e99e9ec)
++ shape assertion.</p>
+
+</body></html>

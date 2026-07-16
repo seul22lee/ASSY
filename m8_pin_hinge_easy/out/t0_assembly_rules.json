@@ -1,0 +1,17 @@
+[
+  {
+    "id": "AR1",
+    "kind": "exclusion",
+    "provenance": "card:snap_hook_cantilever",
+    "ok": true,
+    "detail": "undercut releases by 10\u00b0 (release-band peak 50 mm\u00b3, intended \u2014 D22); free sweep beyond 20\u00b0 peak 0.00 mm\u00b3 \u2192 CLEARS the box",
+    "peak_interference_mm3": 0.0
+  },
+  {
+    "id": "AR2",
+    "kind": "resource",
+    "provenance": "task",
+    "ok": true,
+    "detail": "\u03a3(E2.L_mm+E1.edge_margin) = 39.7 <= P2.rim_length = 80.0  \u2192 ok"
+  }
+]
