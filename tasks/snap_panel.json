@@ -97,14 +97,18 @@
     {
       "id": "M1",
       "role": "base",
+      "provenance": "functional",
       "template_ref": "flat_panel_mount",
+      "source_element": null,
       "params": {},
       "is_base": true
     },
     {
       "id": "B1",
       "role": "retained",
+      "provenance": "functional",
       "template_ref": "retained_board",
+      "source_element": null,
       "params": {},
       "is_base": false
     }

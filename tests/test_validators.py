@@ -149,6 +149,20 @@ def test_v14_window_catch_not_on_retained():
         "V-14 must NOT flag the box (catch = owned, printed wall)"
 
 
+def test_v15_element_provided_pieces():
+    # D-ONT-11: the pin_hinge element PROVIDES a pin; the plan must instantiate it as a hardware
+    # piece (source_element=E1). Positive = the m0 golden (has P3); negatives = missing pin + orphan.
+    from ontology.schema import Piece
+    from tasks.build_goldens import m0_hinge_box
+    assert "V-15" not in _rule_ids(V.v15(m0_hinge_box("nostop"))), "m0 hinge + its pin must be clean"
+    missing = m0_hinge_box("nostop")
+    missing.pieces = [p for p in missing.pieces if p.provenance != "hardware"]
+    assert "V-15" in _rule_ids(V.v15(missing)), "V-15 must flag a pin_hinge element with no pin"
+    orphan = m0_hinge_box("nostop")
+    orphan.pieces.append(Piece(id="PX", role="pin", provenance="hardware", source_element="NOPE"))
+    assert "V-15" in _rule_ids(V.v15(orphan)), "V-15 must flag orphan hardware (no such element)"
+
+
 # --- positive control: the goldens are clean --------------------------------------------
 def test_goldens_validate_clean():
     from tasks.build_goldens import m0_hinge_box, snap_starter

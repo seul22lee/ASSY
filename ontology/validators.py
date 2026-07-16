@@ -137,11 +137,12 @@ def v06(plan: DesignPlan) -> list[Violation]:
 
 
 def v07(plan: DesignPlan) -> list[Violation]:
-    """Every Piece participates in >=1 Binding, or is the base (role=='base' or is_base)."""
+    """Every Piece participates in >=1 Binding, or is the base (role=='base' or is_base), OR is a
+    HARDWARE piece (D-ONT-11: bound-by-construction to its source element, not via a Binding)."""
     out = []
     bound = {bd.piece_id for bd in plan.bindings}
     for p in plan.pieces:
-        if p.id in bound or p.role == "base" or p.is_base:
+        if p.id in bound or p.role == "base" or p.is_base or p.provenance == "hardware":
             continue
         out.append(Violation("V-07", f"orphan piece '{p.id}' (no binding, not a base)"))
     return out
@@ -277,7 +278,36 @@ def v14(plan: DesignPlan) -> list[Violation]:
     return out
 
 
-ALL_RULES = [v01, v02, v03, v04, v05, v06, v07, v08, v09, v10, v11, v12, v13, v14]
+def v15(plan: DesignPlan) -> list[Violation]:
+    """D-ONT-11: element ↔ hardware-piece consistency. (a) NO ORPHAN HARDWARE — every hardware
+    piece's `source_element` is a real element whose card provides that role; (b) every element
+    whose card declares `provides_pieces` has a matching hardware piece instantiated. This is what
+    keeps the pin first-class in the IR (D13) while tying it to the element that chose it (④)."""
+    from knowledge.cards.base import CARD_REGISTRY
+    out = []
+    elem_by_id = {e.id: e for e in plan.elements}
+    hw = [p for p in plan.pieces if p.provenance == "hardware"]
+    for p in hw:                                   # (a) no orphan hardware
+        e = elem_by_id.get(p.source_element)
+        if e is None:
+            out.append(Violation("V-15", f"hardware piece '{p.id}' source_element "
+                                          f"'{p.source_element}' is not an element"))
+            continue
+        card = CARD_REGISTRY.get(e.card_ref)
+        roles = {pp.role for pp in getattr(card, "provides_pieces", [])} if card else set()
+        if p.role not in roles:
+            out.append(Violation("V-15", f"hardware piece '{p.id}' role '{p.role}' is not provided "
+                                          f"by element '{e.id}' (card '{e.card_ref}')"))
+    for e in plan.elements:                        # (b) every provided piece is instantiated
+        card = CARD_REGISTRY.get(e.card_ref)
+        for pp in (getattr(card, "provides_pieces", []) if card else []):
+            if not any(p.source_element == e.id and p.role == pp.role for p in hw):
+                out.append(Violation("V-15", f"element '{e.id}' (card '{e.card_ref}') provides "
+                                              f"'{pp.role}' but no hardware piece instantiates it"))
+    return out
+
+
+ALL_RULES = [v01, v02, v03, v04, v05, v06, v07, v08, v09, v10, v11, v12, v13, v14, v15]
 
 
 def validate_all(plan: DesignPlan) -> list[Violation]:

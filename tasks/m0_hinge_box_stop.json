@@ -68,7 +68,9 @@
     {
       "id": "P1",
       "role": "base",
+      "provenance": "functional",
       "template_ref": "box_shell",
+      "source_element": null,
       "params": {
         "box_l": 80.0,
         "box_w": 60.0,
@@ -80,10 +82,24 @@
     {
       "id": "P2",
       "role": "lid",
+      "provenance": "functional",
       "template_ref": "lid_panel",
+      "source_element": null,
       "params": {
         "lid_t": 3.0,
         "stop_flange_r": 8.0
+      },
+      "is_base": false
+    },
+    {
+      "id": "P3",
+      "role": "pin",
+      "provenance": "hardware",
+      "template_ref": null,
+      "source_element": "E1",
+      "params": {
+        "pin_d": 4.0,
+        "pin_len": 30.6
       },
       "is_base": false
     }

@@ -61,13 +61,16 @@ def m0_hinge_box(variant: str) -> DesignPlan:
         + ([Anchor(name="stop_flange_face", kind="face")] if variant == "stop" else []),
     )
 
-    # --- Pieces (1 STEP = 1 Piece). box is the base (D23). --------------------------------
+    # --- Pieces. box/lid are FUNCTIONAL hosts (chosen at ③); the PIN is HARDWARE the hinge
+    # provides (D-ONT-11) — instantiated at ④ from E1, provenance-tagged, params resolved at ⑤.
     pieces = [
         Piece(id="P1", role="base", template_ref="box_shell", is_base=True,
               params=dict(box_shell.params)),
         Piece(id="P2", role="lid", template_ref="lid_panel",
               params={**lid_panel.params,
                       **({"stop_flange_r": 8.0} if variant == "stop" else {})}),
+        Piece(id="P3", role="pin", provenance="hardware", source_element="E1",
+              params={"pin_d": 4.0, "pin_len": 30.6}),   # ⑤-resolved from the hinge (D-ONT-11)
     ]
 
     # --- Element: the pin hinge, carving into both pieces ---------------------------------

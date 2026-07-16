@@ -29,6 +29,16 @@ class CollisionHintRequired(TypeError):
     """Raised at class definition when a functional-clearance card omits collision_hint()."""
 
 
+class ProvidedPiece:
+    """A HARDWARE piece an element provides (D-ONT-11): the pin hinge's pin, a fastener, etc. The
+    card declares it (name, the params it resolves for it via its own formulas, and the role it
+    takes). ④ instantiates it into plan.pieces (provenance='hardware', source_element=<elem>); ⑤
+    resolves its params through `resolve_piece_params`; ⑥ compiles it (geometry from the card)."""
+
+    def __init__(self, name: str, params: list[str], role: str):
+        self.name, self.params, self.role = name, params, role
+
+
 class ElementCard(ABC):
     """Common base for both card classes (D-ONT-4). Carries the declared interface every card
     exposes to the validators. Two concrete kinds subclass this:
@@ -53,8 +63,14 @@ class ElementCard(ABC):
     param_bounds: dict[str, tuple[float, float, str]] = {}  # name -> (lo, hi, unit)
     requires: dict = {}  # material predicates, e.g. {"eps_allow_pct": (">=", 3.0)}
     imposes: list["Behavior"] = []  # imposed-constraint behaviour templates (V-08)
+    provides_pieces: list = []  # D-ONT-11: HARDWARE pieces this element instantiates (e.g. the pin)
     selection_notes: str = ""
     citations: list = []
+
+    def resolve_piece_params(self, name: str, inst) -> dict:
+        """Resolve a provided hardware piece's params from the element's resolved params (D-ONT-11,
+        stage ⑤). Overridden by cards that declare provides_pieces; default = empty."""
+        return {}
 
     # D18/D21: does this card carve a clearance the physics must resolve (bore, groove,
     # tooth flank)? If so, collision_hint() is mandatory (enforced below).
@@ -163,6 +179,9 @@ class PinHingeCard(MechanicalElementCard):
     imposes = _pin_hinge_imposes()  # §3.3: pin insertion path must be open (V-08)
     param_bounds = {"pin_d": (2.0, 6.0, "mm"), "knuckle_w": (4.0, 12.0, "mm"),
                     "knuckle_n": (3.0, 5.0, "count"), "clearance": (0.2, 0.4, "mm")}
+    # D-ONT-11: the hinge PROVIDES the pin as a hardware piece (the third body). ④ instantiates it,
+    # ⑤ resolves pin_d/pin_len via the card's formulas, ⑥ compiles it (geometry from carve()).
+    provides_pieces = [ProvidedPiece("pin", ["pin_d", "pin_len"], role="pin")]
     # §3.3 placement rules (M0-cited; the derivations in pin_hinge.py enforce them).
     placement_rules = [
         "bore_d = pin_d + clearance  [§3.3: rotational clearance = print clearance]",
@@ -185,6 +204,15 @@ class PinHingeCard(MechanicalElementCard):
         pinch the pin."""
         from knowledge.cards.pin_hinge import collision_primitives
         return collision_primitives(inst)
+
+    def resolve_piece_params(self, name, inst) -> dict:
+        """D-ONT-11 ⑤: the pin's params from the hinge's own derivations. pin_len = stack_w + 6
+        (M0: ~3 mm protrusion each side)."""
+        if name != "pin":
+            return {}
+        from knowledge.cards.pin_hinge import dims_from
+        g = dims_from(inst.params, face_len=40.0)  # face_len irrelevant to pin_d/pin_len
+        return {"pin_d": round(g.pin_d, 4), "pin_len": round(g.pin_len, 4)}
 
 
 def _snap_hook_imposes() -> list:

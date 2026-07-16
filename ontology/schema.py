@@ -184,12 +184,26 @@ class Rule(_Base):
 class Piece(_Base):
     id: str
     role: str
-    template_ref: str  # "box_shell" | "lid_panel" | "drawer_tray" | ...
+    # SCHEMA-DECISION (D-ONT-11): a piece is either FUNCTIONAL (host geometry chosen at ③, built
+    # from a template) or HARDWARE (a body an ELEMENT needs — the pin hinge's pin — instantiated
+    # at ④ into the plan, provenance-tagged and pointing back at its source element). Hardware
+    # pieces have no template_ref (the card provides their geometry) and carry source_element.
+    provenance: Literal["functional", "hardware"] = "functional"
+    template_ref: Optional[str] = None  # required for functional; None for hardware (card-provided)
+    source_element: Optional[str] = None  # set on hardware pieces → the element that provides them
     params: dict[str, float] = Field(default_factory=dict)
     # D23 (M0): V-B welds a designated base to world. The schema must name which piece is the
     # base, or the fixture rule has nothing to point at. role == "base" stays valid for spec
     # compatibility; is_base is the canonical, explicit flag.
     is_base: bool = False  # SCHEMA-DECISION (D23)
+
+    @model_validator(mode="after")
+    def _provenance_consistency(self):
+        if self.provenance == "functional" and not self.template_ref:
+            raise ValueError(f"functional piece '{self.id}' needs a template_ref")
+        if self.provenance == "hardware" and not self.source_element:
+            raise ValueError(f"hardware piece '{self.id}' needs source_element (D-ONT-11)")
+        return self
 
 
 class ElementInstance(_Base):
