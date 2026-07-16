@@ -59,9 +59,16 @@ def box_shell(**params) -> TemplateResult:
     #                  hook nose (grown from the lid) reaches it and seats in the window (not past
     #                  the outer wall). normal points inward (toward the cavity / the hook).
     xin = L / 2 - wall
+    # hinge anchors (pin_hinge card): the axis runs along +X behind the REAR (−Y) wall at lid
+    # height, offset out by a nominal knuckle radius so the lid clears the box on opening (M0).
+    y_rear = -W / 2
     anchors = {
         "side_wall_left": AnchorGeom("side_wall_left", "face", (-xin, 0.0, z_mid), (1, 0, 0)),
         "side_wall_right": AnchorGeom("side_wall_right", "face", (xin, 0.0, z_mid), (-1, 0, 0)),
+        # front wall inner face (a latch catch site distinct from the ±X side walls)
+        "front_wall_inner": AnchorGeom("front_wall_inner", "face", (0.0, W / 2 - wall, z_mid), (0, -1, 0)),
+        "rear_top_edge": AnchorGeom("rear_top_edge", "axis", (0.0, y_rear - 4.0, H), (1, 0, 0)),
+        "rear_wall_outer": AnchorGeom("rear_wall_outer", "face", (0.0, y_rear, H * 0.75), (0, -1, 0)),
     }
     return TemplateResult(part=part, anchors=anchors, params=p)
 
@@ -76,9 +83,14 @@ def lid_panel(**params) -> TemplateResult:
 
     # underside anchors near the ±X edges; normal points DOWN (−Z) — the hook grows downward.
     xr = L / 2 - HOOK_INSET
+    yr = W / 2 - HOOK_INSET
     anchors = {
         "rim_underside_left": AnchorGeom("rim_underside_left", "face", (-xr, 0.0, z0), (0, 0, -1)),
         "rim_underside_right": AnchorGeom("rim_underside_right", "face", (xr, 0.0, z0), (0, 0, -1)),
+        # front-edge underside (a latch beam root on the FRONT of the lid, +Y)
+        "front_edge_underside": AnchorGeom("front_edge_underside", "face", (0.0, yr, z0), (0, 0, -1)),
+        # rear edge underside — the hinge lid mount (mount_B); the knuckles/tab attach here
+        "rear_edge_underside": AnchorGeom("rear_edge_underside", "face", (0.0, -W / 2, z0), (0, 0, -1)),
     }
     return TemplateResult(part=part, anchors=anchors, params={**p, "box_h": z0})
 

@@ -134,61 +134,75 @@ def _bore(g: HingeDims):
     return Rotation(0, 90, 0) * Cylinder(radius=g.bore_d / 2, height=L)
 
 
-def carve(host_parts: dict, inst, bindings) -> HingeCarve:
-    """Add interleaved knuckles + a shared bore to the two bound mount pieces, build the loose pin,
-    all placed from the anchors (host-agnostic, D-GEN-1). Bindings carry ports axis / mount_A /
-    mount_B. `host_parts` maps piece_id → Solid (edited in place and returned).
+def carve(pieces: dict, inst, bindings) -> HingeCarve:
+    """Add interleaved knuckles + a shared bore to the two bound mount pieces, cut the lid back so
+    the box knuckles clear it (M0 lid_rear_y), chamfer the lid edge, and build the loose pin — all
+    placed from the ANCHORS (host-agnostic, D-GEN-1). `pieces` maps piece_id → TemplateResult (with
+    `.part` and `.anchors`), the pipeline convention (same as snap_hook_geometry.carve).
 
-    The pin is returned as a loose solid (pin_solid) and tagged — it has NO Piece home yet
-    (DRAFT D-ONT-11). We do not fuse it into a knuckle (that would seize the hinge — the M0 lesson).
+    The pin is returned as a loose solid (pin_solid) AND assigned to its hardware piece by the runner
+    (D-ONT-11). We never fuse it into a knuckle (that seizes the hinge — the M0 lesson).
     """
     b = {bd.port: bd for bd in bindings}
-    axis_a = _anchor(host_parts, b["axis"])
+    axis_a = _anchor(pieces, b["axis"])
     mA, mB = b["mount_A"], b["mount_B"]
-    # available axial span = the shorter mount face length along the axis (anchor-provided)
-    face_len = min(_face_len(host_parts, mA), _face_len(host_parts, mB))
+    face_len = _face_len(pieces, mA)
     g = dims_from(inst.params, face_len)
     loc = _axis_frame(axis_a["point"], axis_a["dir"])
 
-    parts = dict(host_parts)
+    parts = {pid: tr.part for pid, tr in pieces.items()}
     tags = {}
     owner_pid = {"A": mA.piece_id, "B": mB.piece_id}
-    bore_local = _bore(g)
+    # LID CUTBACK (M0 lid_rear_y): the lid is pulled forward so the box (owner-A) knuckles clear its
+    # panel — else knuckles and panel occupy the same band and t0 reports a real interference.
+    parts[mB.piece_id] = _lid_cutback(parts[mB.piece_id], g, loc)
     for i, (x0, x1, owner) in enumerate(g.knuckle_spans()):
         pid = owner_pid[owner]
         k_local = _knuckle(g, x0, x1)
         lug_local = _lug(g, x0, x1, owner)                 # bridge knuckle → mount face
-        k_world = loc * (k_local + lug_local)
-        parts[pid] = parts[pid] + k_world
+        parts[pid] = parts[pid] + loc * (k_local + lug_local)
         tags[f"knuckle_{owner}_{i}"] = loc * k_local
     # one bore cut through both mounts (clears any lug/tab it passes) — the clearance fit
-    bore_world = loc * bore_local
+    bore_world = loc * _bore(g)
     for pid in set(owner_pid.values()):
         parts[pid] = parts[pid] - bore_world
     tags["bore"] = bore_world
-    # chamfer the lid (mount_B) rear edge nearest the axis — the edge that sweeps the box rim
     parts[mB.piece_id] = _chamfer_lid_edge(parts[mB.piece_id], g, loc)
 
-    # THE PIN — loose solid, no Piece home (DRAFT D-ONT-11). Built, tagged, returned; not fused.
     pin_world = loc * (Rotation(0, 90, 0) * Cylinder(radius=g.pin_d / 2, height=g.pin_len))
     tags["pin"] = pin_world
-
-    axis_world = {"point": tuple(axis_a["point"]), "dir": tuple(axis_a["dir"])}
-    return HingeCarve(parts=parts, tags=tags, dims=g, pin_solid=pin_world, axis_world=axis_world,
+    return HingeCarve(parts=parts, tags=tags, dims=g, pin_solid=pin_world,
+                      axis_world={"point": tuple(axis_a["point"]), "dir": tuple(axis_a["dir"])},
                       meta={"face_len": face_len, "rule_violations": g.rule_violations(),
                             "pin_needs_piece": True})
 
 
+def _lid_cutback(lid_solid, g: HingeDims, loc):
+    """Remove lid material within (knuckle_r + clearance) of the axis on the rear side (M0
+    lid_rear_y), so the box knuckles clear the panel. Local frame: axis = +X; cut a slab at
+    local_y ≤ knuckle_r + clearance spanning the stack."""
+    R = g.knuckle_r + g.clearance
+    depth = g.knuckle_od + 40.0
+    cutter = loc * Pos(0.0, R - depth / 2, 0.0) * Box(g.face_len + 10, depth, g.knuckle_od + 20)
+    try:
+        cut = lid_solid - cutter
+        return cut if cut.volume > 1.0 else lid_solid
+    except Exception:
+        return lid_solid
+
+
 def _lug(g: HingeDims, x0, x1, owner):
     """A block bridging a knuckle to its mount face, stopping clear of the bore keep-out (M0 lug/tab).
-    Local frame: +X = axis. The lug reaches from the keep-out radius out to the mount face along a
-    perpendicular; here we approximate it as a short block below/front of the knuckle (owner A = box
-    from −Z; owner B = lid from +Y), faithful to M0's interleave without a host dimension."""
+    Local frame: +X = axis, +Z = up (lid side / world +Z), the box body at local z<0. The box lug
+    (owner A) reaches DOWN (−Z) into the box wall and fuses; the lid lug (owner B) is a PLATE at the
+    lid plane (local z ∈ [0, knuckle_r]) reaching +Y to the lid — it must not dip to local z<0 or it
+    pierces the box rear wall (the 64 mm³ interference this fixes)."""
     w = x1 - x0
     reach = g.knuckle_r + 3.0
-    if owner == "A":     # box lug approaches from below (local −Z)
+    if owner == "A":     # box lug: down into the box body (local −Z)
         return Pos((x0 + x1) / 2, 0, -(g.bore_keepout_r + reach / 2)) * Box(w, g.knuckle_od, reach)
-    return Pos((x0 + x1) / 2, (g.bore_keepout_r + reach / 2), 0) * Box(w, reach, g.knuckle_od)
+    return Pos((x0 + x1) / 2, (g.bore_keepout_r + reach / 2), g.knuckle_r / 2) * \
+        Box(w, reach, g.knuckle_r)
 
 
 def _chamfer_lid_edge(lid_solid, g: HingeDims, loc):
@@ -230,19 +244,16 @@ def collision_primitives(inst, face_len: float = 40.0) -> list:
     return prims
 
 
-# --- anchor helpers (the card reads only anchors; a host dimension never enters) ----------------
-def _anchor(host_parts, binding) -> dict:
-    """Resolve an axis/face binding to {point, dir}. Anchors are attached to the bound piece's
-    template; here we read the piece's declared anchor by name (the pipeline passes template insts)."""
-    pc = binding._piece if hasattr(binding, "_piece") else None
-    if pc is not None and binding.anchor in getattr(pc, "anchors", {}):
-        a = pc.anchors[binding.anchor]
-        return {"point": a.position, "dir": a.normal}
-    # fallback: the binding carries offset_params with an explicit axis (test harness)
-    op = getattr(binding, "offset_params", {}) or {}
-    return {"point": tuple(op.get("point_mm", (0, 0, 0))), "dir": tuple(op.get("axis_dir", (1, 0, 0)))}
+# --- anchor helpers: the card reads ONLY the bound piece's declared anchors (D-GEN-1) ------------
+def _anchor(pieces, binding) -> dict:
+    """Resolve an axis/face binding to {point, dir} from the bound piece's TemplateResult anchors."""
+    tr = pieces[binding.piece_id]
+    a = tr.anchors[binding.anchor]
+    return {"point": a.position, "dir": a.normal}
 
 
-def _face_len(host_parts, binding) -> float:
+def _face_len(pieces, binding) -> float:
+    """Available axial span = the mount piece's length along the axis (box_l), anchor-side info."""
+    tr = pieces[binding.piece_id]
     op = getattr(binding, "offset_params", {}) or {}
-    return float(op.get("face_len", 40.0))
+    return float(op.get("face_len") or (tr.params or {}).get("box_l", 40.0))
