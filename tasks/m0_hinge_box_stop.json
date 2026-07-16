@@ -214,6 +214,7 @@
       "offset_params": {}
     }
   ],
+  "assembly_rules": [],
   "parameters": [
     {
       "name": "pin_d",

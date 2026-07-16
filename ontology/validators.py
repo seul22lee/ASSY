@@ -307,7 +307,60 @@ def v15(plan: DesignPlan) -> list[Violation]:
     return out
 
 
-ALL_RULES = [v01, v02, v03, v04, v05, v06, v07, v08, v09, v10, v11, v12, v13, v14, v15]
+def _resolves(plan: DesignPlan, ref: str) -> bool:
+    """Does `ref` name a real IR referent (D13)? An element/feature/piece id, or 'id.suffix' where
+    suffix is a binding port on that element or a param on that instance/piece."""
+    if plan.instance(ref) or plan.piece(ref):
+        return True
+    if "." in ref:
+        base, suffix = ref.split(".", 1)
+        inst = plan.instance(base)
+        if inst is not None and (any(b.element_id == base and b.port == suffix for b in plan.bindings)
+                                 or suffix in (getattr(inst, "params", {}) or {})):
+            return True
+        pc = plan.piece(base)
+        if pc is not None and suffix in (pc.params or {}):
+            return True
+    return False
+
+
+def v16(plan: DesignPlan) -> list[Violation]:
+    """D-ONT-12: every AssemblyRule is well-formed and D13-grounded. (a) provenance prefix valid;
+    (b) each subject names a real IR referent; (c) the kind-typed predicate is well-formed and every
+    referent it names is in `subjects`. This is what lets t0/⑤ check the rule without an LLM."""
+    out = []
+    for ar in plan.assembly_rules:
+        if not (ar.provenance.startswith("card:") or ar.provenance.startswith("template:")
+                or ar.provenance == "task"):
+            out.append(Violation("V-16", f"assembly_rule '{ar.id}' provenance '{ar.provenance}' "
+                                          f"is not card:/template:/task (D-ONT-12 c)"))
+        for s in ar.subjects:
+            if not _resolves(plan, s):
+                out.append(Violation("V-16", f"assembly_rule '{ar.id}' subject '{s}' names no IR "
+                                              f"referent (D13)"))
+        p = ar.predicate or {}
+        if ar.kind == "exclusion":
+            refs = [p.get("excluded"), p.get("sweep_of")]
+            if not all(refs):
+                out.append(Violation("V-16", f"exclusion rule '{ar.id}' needs predicate.excluded "
+                                              f"and predicate.sweep_of"))
+            for r in refs:
+                if r and r not in ar.subjects:
+                    out.append(Violation("V-16", f"exclusion rule '{ar.id}' referent '{r}' not in "
+                                                  f"subjects (D13)"))
+        elif ar.kind == "resource":
+            contribs, budget = p.get("contributors") or [], p.get("budget")
+            if not contribs or budget is None or p.get("op") not in ("<=", "<"):
+                out.append(Violation("V-16", f"resource rule '{ar.id}' needs contributors[], budget, "
+                                              f"op ∈ {{<=,<}}"))
+            for r in list(contribs) + ([budget] if budget else []):
+                if r not in ar.subjects:
+                    out.append(Violation("V-16", f"resource rule '{ar.id}' referent '{r}' not in "
+                                                  f"subjects (D13)"))
+    return out
+
+
+ALL_RULES = [v01, v02, v03, v04, v05, v06, v07, v08, v09, v10, v11, v12, v13, v14, v15, v16]
 
 
 def validate_all(plan: DesignPlan) -> list[Violation]:

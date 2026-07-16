@@ -163,6 +163,38 @@ def test_v15_element_provided_pieces():
     assert "V-15" in _rule_ids(V.v15(orphan)), "V-15 must flag orphan hardware (no such element)"
 
 
+def test_v16_assembly_rules():
+    # D-ONT-12: AssemblyRules are declarative predicates over NAMED IR referents (D13). Well-formed
+    # exclusion + resource rules pass; unknown referents, bad provenance, and predicate referents
+    # absent from `subjects` must fire.
+    from ontology.schema import AssemblyRule, Binding, DesignPlan, ElementInstance, Piece
+    plan = DesignPlan(task_id="t", command="c",
+        pieces=[Piece(id="P1", role="base", template_ref="box_shell", is_base=True),
+                Piece(id="P2", role="lid", template_ref="lid_panel", params={"rim_length": 80.0})],
+        elements=[ElementInstance(id="E1", card_ref="pin_hinge", host_pieces=["P1", "P2"],
+                                  params={"edge_margin": 27.7}),
+                  ElementInstance(id="E2", card_ref="snap_hook_cantilever", host_pieces=["P2"],
+                                  params={"L_mm": 12.0})],
+        bindings=[Binding(element_id="E1", port="axis", piece_id="P1", anchor="a", mate="on_face_uv")],
+        assembly_rules=[
+            AssemblyRule(id="AR1", kind="exclusion", provenance="card:snap_hook_cantilever",
+                         subjects=["E2", "E1"], predicate={"excluded": "E2", "sweep_of": "E1"}),
+            AssemblyRule(id="AR2", kind="resource", provenance="task",
+                         subjects=["E2.L_mm", "E1.edge_margin", "P2.rim_length"],
+                         predicate={"contributors": ["E2.L_mm", "E1.edge_margin"],
+                                    "budget": "P2.rim_length", "op": "<="})])
+    assert "V-16" not in _rule_ids(V.v16(plan)), "well-formed exclusion+resource rules must pass V-16"
+    bad = plan.model_copy(deep=True)
+    bad.assembly_rules[0].subjects = ["E2", "NOPE"]
+    bad.assembly_rules[0].predicate = {"excluded": "E2", "sweep_of": "NOPE"}
+    assert "V-16" in _rule_ids(V.v16(bad)), "V-16 must flag a referent not in the IR (D13)"
+    bad2 = plan.model_copy(deep=True); bad2.assembly_rules[0].provenance = "thin air"
+    assert "V-16" in _rule_ids(V.v16(bad2)), "V-16 must flag provenance not card:/template:/task"
+    bad3 = plan.model_copy(deep=True)
+    bad3.assembly_rules[1].predicate = {"contributors": ["E2.L_mm"], "budget": "UNLISTED", "op": "<="}
+    assert "V-16" in _rule_ids(V.v16(bad3)), "V-16 must flag a predicate referent absent from subjects"
+
+
 # --- positive control: the goldens are clean --------------------------------------------
 def test_goldens_validate_clean():
     from tasks.build_goldens import m0_hinge_box, snap_starter

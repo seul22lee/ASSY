@@ -39,6 +39,17 @@ class ProvidedPiece:
         self.name, self.params, self.role = name, params, role
 
 
+class InteractionRule:
+    """A card's declaration that it CONTRIBUTES an AssemblyRule (D-ONT-12 provenance c): the
+    latch-vs-lid-sweep rule comes from snap_hook's imposes-family knowledge, not thin air. A PARTIAL
+    template in card-local terms ('self' = this element); ④ instantiates it into a concrete
+    `schema.AssemblyRule` (with element ids) once the assembly's other elements are known. `kind` ∈
+    {exclusion, resource}."""
+
+    def __init__(self, kind: str, describe: str, citation: str = ""):
+        self.kind, self.describe, self.citation = kind, describe, citation
+
+
 class ElementCard(ABC):
     """Common base for both card classes (D-ONT-4). Carries the declared interface every card
     exposes to the validators. Two concrete kinds subclass this:
@@ -64,6 +75,7 @@ class ElementCard(ABC):
     requires: dict = {}  # material predicates, e.g. {"eps_allow_pct": (">=", 3.0)}
     imposes: list["Behavior"] = []  # imposed-constraint behaviour templates (V-08)
     provides_pieces: list = []  # D-ONT-11: HARDWARE pieces this element instantiates (e.g. the pin)
+    interaction_rules: list = []  # D-ONT-12: AssemblyRule templates this card contributes (provenance)
     selection_notes: str = ""
     citations: list = []
 
@@ -245,6 +257,13 @@ class SnapHookCantileverCard(MechanicalElementCard):
              _p("catch_window", "face")]   # window/undercut lip in the box side wall
     requires = {"eps_allow_pct": (">=", 3.0)}  # material must sustain the snap-fit strain
     imposes = _snap_hook_imposes()
+    # D-ONT-12: the latch contributes an EXCLUSION AssemblyRule — it must lie outside a rotating
+    # host's swept volume (a lid on a pin_hinge). This is where the latch-vs-sweep rule COMES FROM.
+    interaction_rules = [InteractionRule(
+        "exclusion",
+        "self (the latch) must lie OUTSIDE the swept volume of any rotating host it shares a piece "
+        "with (e.g. a lid on a pin_hinge) — the M0 B4 lid-sweep clearance",
+        citation="MECHSYNTH §5.2 / M0 B4")]
     # SNAPFIT §2.2 param_bounds (bounds carried for V-04/stage-5). Governing FORMULAS now live in
     # knowledge/cards/snap_hook_cantilever.py, verified against Bayer Calc Example I (p.16).
     param_bounds = {"L_mm": (8.0, 25.0, "mm"), "h_mm": (1.2, 4.0, "mm"), "b_mm": (4.0, 12.0, "mm"),

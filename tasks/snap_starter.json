@@ -218,6 +218,7 @@
       }
     }
   ],
+  "assembly_rules": [],
   "parameters": [
     {
       "name": "n_hooks",

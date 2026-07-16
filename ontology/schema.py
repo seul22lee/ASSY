@@ -229,6 +229,33 @@ class FeatureInstance(_Base):
 
 
 # --------------------------------------------------------------------------------------
+# AssemblyRule (D-ONT-12): constraints BETWEEN element instances / their bindings.
+# --------------------------------------------------------------------------------------
+class AssemblyRule(_Base):
+    """A constraint BETWEEN element instances / their bindings — a FIRST-CLASS plan entity, the home
+    element↔element constraints need (exactly as PassiveFeature needed one, D-ONT-4). NOT card-local
+    (a card's `placement_rules` see one element) and NOT smuggled into either card. A DECLARATIVE
+    predicate over NAMED IR referents — checkable by t0/⑤ without an LLM, and D13 applies (every
+    referent it names must exist in the plan). Two typed kinds suffice for now (extensible later —
+    deliberately NOT a general constraint language):
+
+      exclusion  volume/sweep non-interference  — predicate {"excluded": <elem>, "sweep_of": <elem>}
+                 ("the latch must lie outside the lid's swept volume"; the M0 B4 heritage)
+      resource   a shared budget                 — predicate {"contributors": [<ref>,...],
+                 "budget": <ref>, "op": "<="}  ("hook length + hinge edge_margin ≤ rim length")
+
+    Provenance (D-ONT-12 c) records WHO imposed it — a card's `interaction_rules` knowledge, a
+    template, or the task — so a rule never appears from thin air.
+    """
+    id: str
+    kind: Literal["exclusion", "resource"]
+    provenance: str            # "card:<card_id>" | "template:<ref>" | "task"
+    subjects: list[str]        # named IR referents: element/feature/piece ids, "E.port", "P.name"
+    predicate: dict            # kind-typed payload (V-16 validates); its referents ⊆ subjects
+    citation: Optional[str] = None
+
+
+# --------------------------------------------------------------------------------------
 # Verification: criteria (gates) vs observables (recorded, flagged, never gated) — D19/D22
 # --------------------------------------------------------------------------------------
 CompareOp = Literal["<=", ">=", "<", ">", "=="]
@@ -301,6 +328,7 @@ class DesignPlan(_Base):
     elements: list[ElementInstance] = Field(default_factory=list)
     features: list[FeatureInstance] = Field(default_factory=list)  # PassiveFeatures (D-ONT-4)
     bindings: list[Binding] = Field(default_factory=list)
+    assembly_rules: list[AssemblyRule] = Field(default_factory=list)  # SCHEMA-DECISION (D-ONT-12)
     parameters: list[Parameter] = Field(default_factory=list)
     protocols: list[VerificationProtocol] = Field(default_factory=list)  # D-ONT-2
     material: str = "PETG"
