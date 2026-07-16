@@ -344,6 +344,19 @@ class StopFlangeCard(PassiveFeatureCard):
     ports = [_p("contact", "face")]  # the flange face that lands on the base wall
     param_bounds = {"stop_angle": (0.0, 180.0, "deg"), "stop_flange_r": (2.0, 20.0, "mm")}
     imposes = _stop_flange_imposes()
+
+    def carve(self, host_parts, inst, bindings, axis=None):
+        """Grow the rearward flange on the bound (moving) piece. Needs the hinge axis it caps —
+        the same information M0's builder had. Delegates to stop_flange_geometry."""
+        from knowledge.cards.stop_flange_geometry import carve as _carve
+        return _carve(host_parts, inst, bindings, axis)
+
+    def collision_hint(self, inst, lid_params=None, axis=None):
+        """The flange box — an EXACT proxy of real carved geometry (a box is already convex), not a
+        stop invented in the physics layer. Required for V-B: contact-only is the mode in which a
+        stop must act BY CONTACT, so the geometry that does the stopping must be present."""
+        from knowledge.cards.stop_flange_geometry import collision_primitives
+        return collision_primitives(inst, lid_params, axis)
     selection_notes = ("Use when a hinged lid must not fold past a set angle. Cheapest stop: a "
                        "flange on the moving piece landing on a fixed wall — no added part.")
 

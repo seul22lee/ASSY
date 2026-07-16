@@ -60,6 +60,47 @@ def _motion_label(m) -> str:
 # ======================================================================================
 # Mermaid (primary)
 # ======================================================================================
+def assembly_rule_edges(plan) -> list[tuple]:
+    """The D-ONT-12 AssemblyRule edges — the ONE derivation both renderers use, so the mermaid and
+    SVG views cannot drift apart (tests/test_ir_graph_parity pins it). Returns (src, dst, label,
+    dashed); dashed throughout, because every one of these is a constraint rather than a flow.
+
+      rule → subject       labeled by the subject's ROLE IN THE PREDICATE (excluded/sweep_of for an
+                           exclusion; the param + (+)/(budget) for a resource). Piece subjects count
+                           as much as element ones — AR2's budget referent IS a piece (P2.rim_length).
+      behaviour → rule     the imposed requirement ↔ its checkable form. Linked through the PROTOCOL
+                           that implements the rule's check (an exclusion is checked by a tier0_sweep,
+                           so the behaviour that sweep verifies — B5 — is the one AR1 makes
+                           checkable). Deliberately NOT "every behaviour the card imposes": that
+                           would wrongly rope in B6, the hook insertion path.
+    """
+    out = []
+    for ar in getattr(plan, "assembly_rules", []):
+        pred = ar.predicate or {}
+        roles = {}
+        if ar.kind == "exclusion":
+            roles = {pred.get("excluded"): "excluded", pred.get("sweep_of"): "sweep_of"}
+        elif ar.kind == "resource":
+            for c in pred.get("contributors", []):
+                roles[c] = f"{c.split('.', 1)[1]} (+)" if "." in c else "contributor"
+            b = pred.get("budget")
+            if b:
+                roles[b] = f"{b.split('.', 1)[1]} (budget)" if "." in b else "budget"
+        for subj, label in roles.items():
+            if not subj:
+                continue
+            base = subj.split(".")[0]
+            if plan.instance(base) or plan.piece(base) or plan.feature(base):
+                out.append((ar.id, base, label, True))
+    ROLE_ACTUATION = {"exclusion": "tier0_sweep", "resource": "budget_check"}
+    for ar in getattr(plan, "assembly_rules", []):
+        act = ROLE_ACTUATION.get(ar.kind)
+        for pr in plan.protocols:
+            if (pr.actuation or {}).get("kind") == act and pr.verifies:
+                out.append((pr.verifies, ar.id, "checkable form", True))
+    return out
+
+
 def _mid(raw: str) -> str:
     """Mermaid-safe node id: hyphens and other punctuation in ids (P-HINGE, PR-T1-MATE) can
     break the VS Code parser, so map to [A-Za-z0-9_] while the display label keeps the original."""
@@ -115,13 +156,13 @@ def to_mermaid(plan: DesignPlan) -> str:
     for p in plan.pieces:
         if p.provenance == "hardware" and p.source_element:
             L.append(f'  {m(p.source_element)} -.->|provides| {m(p.id)}')
-    # D-ONT-12: AssemblyRules as first-class nodes (rhombus), edges to the elements they constrain
+    # D-ONT-12: AssemblyRules as first-class nodes (rhombus), edges to every subject they constrain
+    # + the imposed behaviour ↔ checkable-rule link. Both renderers derive these from the SAME
+    # helpers (`assembly_rule_edges`), so the two views cannot drift apart — see tests/test_ir_graph_parity.
     for ar in plan.assembly_rules:
         L.append(f'  {m(ar.id)}{{"⚖ {ar.id}\\n{ar.kind}"}}:::arule')
-        for s in ar.subjects:
-            base = s.split(".")[0]
-            if plan.instance(base):
-                L.append(f'  {m(ar.id)} -.->|{ar.kind}| {m(base)}')
+    for src, dst, label, _dashed in assembly_rule_edges(plan):
+        L.append(f'  {m(src)} -.->|{label}| {m(dst)}')
 
     L += [
         f'  classDef hardware fill:#cbd5e0,stroke:#2d3748,stroke-width:2px;',
@@ -227,36 +268,8 @@ def _edges(plan: DesignPlan, new_edges: set[tuple] | None = None) -> list[tuple]
         if p.provenance == "hardware" and p.source_element:
             out.append((p.source_element, p.id, "provides", True,
                         (p.source_element, p.id) in new_edges))
-    # D-ONT-12: AssemblyRule → each subject it constrains, labeled by its ROLE in the predicate
-    # (excluded/sweep_of for an exclusion; contributor/budget for a resource). Dashed = a constraint.
-    for ar in getattr(plan, "assembly_rules", []):
-        pred = ar.predicate or {}
-        roles = {}
-        if ar.kind == "exclusion":
-            roles = {pred.get("excluded"): "excluded", pred.get("sweep_of"): "sweep_of"}
-        elif ar.kind == "resource":
-            for c in pred.get("contributors", []):
-                roles[c] = f"{c.split('.', 1)[1]} (+)" if "." in c else "contributor"
-            b = pred.get("budget")
-            if b:
-                roles[b] = f"{b.split('.', 1)[1]} (budget)" if "." in b else "budget"
-        for subj, label in roles.items():
-            if not subj:
-                continue
-            base = subj.split(".")[0]
-            if plan.instance(base) or plan.piece(base) or plan.feature(base):
-                out.append((ar.id, base, label, True, (ar.id, base) in new_edges))
-    # the imposed behavior ↔ its checkable AssemblyRule form. The precise link is through the
-    # PROTOCOL that implements the rule's check: an exclusion rule is checked by a tier0_sweep, so
-    # the behavior that sweep verifies (B5, the latch-∉-sweep requirement) is the one AR1 makes
-    # checkable — not every behavior the card happens to impose (that would wrongly rope in B6).
-    ROLE_ACTUATION = {"exclusion": "tier0_sweep", "resource": "budget_check"}
-    for ar in getattr(plan, "assembly_rules", []):
-        kind_act = ROLE_ACTUATION.get(ar.kind)
-        for pr in plan.protocols:
-            if (pr.actuation or {}).get("kind") == kind_act and pr.verifies:
-                out.append((pr.verifies, ar.id, "checkable form", True,
-                            (pr.verifies, ar.id) in new_edges))
+    for src, dst, label, dashed in assembly_rule_edges(plan):
+        out.append((src, dst, label, dashed, (src, dst) in new_edges))
     return out
 
 

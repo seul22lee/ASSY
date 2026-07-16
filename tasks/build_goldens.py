@@ -399,19 +399,30 @@ def snap_panel() -> DesignPlan:
         protocols=[pr_mate, pr_sep, pr_sweep], material="PETG")
 
 
-def anchor_easy() -> DesignPlan:
+def anchor_easy(variant: str | None = None) -> DesignPlan:
     """The EASY ANCHOR (MECHSYNTH §8.1) — the pipeline's first MULTI-ELEMENT assembly: a box + lid
     with a pin_hinge (E1, rear) AND a snap_hook latch (E2, front). Carries the D-ONT-11 hardware pin
     (P3) and both D-ONT-12 AssemblyRules (snap_hook's latch-vs-lid-sweep EXCLUSION + the
-    hook/edge_margin RESOURCE budget on the shared rim). This is what a post-④ plan looks like."""
+    hook/edge_margin RESOURCE budget on the shared rim). This is what a post-④ plan looks like.
+
+    variant=None ("baseline"): NO end stop. Past 90° the over-centre lid folds right over — and that
+    fold-over is THE FINDING (M0: "no stop: the lid is free to fold flat"), reported as an overtravel
+    observable, never engineered away.
+    variant="stop": adds ONLY F1 (a stop_flange PassiveFeature on the lid) + B3 (the use-phase
+    rotation LIMIT it imposes, bound="max" ≤108.85°, registered per V-08) + its binding. Zero other
+    changes — so the pair isolates exactly what a stop buys, and B3's ceiling is checkable geometry
+    (the flange), not an assertion. Per D-ONT-4 the overtravel observable is PROMOTED to a criterion
+    whenever the stop is present."""
     box_shell = HostTemplate(template_ref="box_shell",
         params={"box_l": 80.0, "box_w": 60.0, "box_h": 40.0, "wall": 2.0},
         anchors=[Anchor(name="rear_top_edge", kind="edge"), Anchor(name="rear_wall_outer", kind="face"),
                  Anchor(name="front_wall_inner", kind="face"), Anchor(name="rim_top", kind="face")])
-    lid_panel = HostTemplate(template_ref="lid_panel", params={"lid_t": 3.0},
+    lid_panel = HostTemplate(template_ref="lid_panel",
+        params={"lid_t": 3.0, **({"stop_flange_r": 8.0} if variant == "stop" else {})},
         anchors=[Anchor(name="rear_edge_underside", kind="face"),
                  Anchor(name="front_edge_underside", kind="face"),
-                 Anchor(name="free_edge_mid", kind="point")])
+                 Anchor(name="free_edge_mid", kind="point")]
+        + ([Anchor(name="stop_flange_face", kind="face")] if variant == "stop" else []))
 
     pieces = [
         Piece(id="P1", role="base", template_ref="box_shell", is_base=True, params=dict(box_shell.params)),
@@ -476,6 +487,32 @@ def anchor_easy() -> DesignPlan:
         Behavior(id="B6", phase="assembly", motion=MotionSpec(kind="translation"),
                  imposed_by="E2", imposed_by_card="snap_hook_cantilever"),   # hook insertion path
     ]
+    features = []
+    if variant == "stop":
+        # F1 — the stop_flange PassiveFeature (D-ONT-4). It CONSTRAINS; it realizes nothing.
+        # stop_angle is SOLVED from THIS box's geometry by the card's own formula (the hinge axis
+        # sits at the box's rear top edge, z=box_h) — not typed, and not copied from M0, whose axis
+        # is at the lid mid-plane and whose answer (108.85°) is therefore a different box's number.
+        from knowledge.cards.stop_flange_geometry import stop_angle_deg as _stop_ang
+        _bw, _bh = box_shell.params["box_w"], box_shell.params["box_h"]
+        _stop = _stop_ang(axis_y=-_bw / 2 - 4.0, axis_z=_bh, box_w=_bw, box_h=_bh,
+                          stop_flange_r=8.0)
+        features.append(FeatureInstance(id="F1", card_ref="stop_flange", host_pieces=["P2"],
+                                        params={"stop_flange_r": 8.0, "flange_w": 8.0,
+                                                "stop_angle": _stop}))
+        bindings.append(Binding(element_id="F1", port="contact", piece_id="P2",
+                                anchor="stop_flange_face", mate="offset_face",
+                                offset_params={"rearward_of_axis": True}))
+        # B3 — the rotation LIMIT F1 imposes (bound="max": a CEILING, not a range-of-motion like
+        # B1's floor). V-08 requires this: a constraint a feature imposes must be registered in the
+        # IR, so a stop can never exist only in geometry — let alone only in a collision model.
+        # range_value is F1's SOLVED stop_angle, so the declared ceiling and the compiled flange are
+        # the same number by construction (the carve re-solves and refuses on disagreement).
+        behaviors.append(
+            Behavior(id="B3", phase="use",
+                     motion=MotionSpec(kind="rotation", axis_hint="horizontal_rear",
+                                       range_value=_stop, range_unit="deg", bound="max"),
+                     imposed_by="F1", imposed_by_card="stop_flange", verified_by="P-HINGE-VB"))
     parameters = [Parameter(name="pin_d", value=4.0, unit="mm", lo=2.0, hi=6.0, resolved_by="user"),
                   Parameter(name="clearance", value=0.30, unit="mm", lo=0.2, hi=0.4, resolved_by="rule")]
     return DesignPlan(task_id="anchor_easy",
@@ -483,6 +520,7 @@ def anchor_easy() -> DesignPlan:
         functions=[Function(verb="allow_access", object="contents", qualifier="repeated open/close"),
                    Function(verb="secure", object="lid", qualifier="latch shut, hand-releasable")],
         behaviors=behaviors, pieces=pieces, templates=[box_shell, lid_panel], elements=elements,
+        features=features, variant=variant,
         bindings=bindings, assembly_rules=assembly_rules, parameters=parameters,
         protocols=[p_hinge_va, p_hinge_vb, pr_latch, pr_sweep], material="PETG")
 

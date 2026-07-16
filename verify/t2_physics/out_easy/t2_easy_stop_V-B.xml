@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<mujoco model="t2_easy_V-B">
+<mujoco model="t2_easy_stop_V-B">
   <compiler angle="radian" meshdir="assets" autolimits="true"/>
   <option timestep="0.0005" integrator="implicitfast" cone="elliptic" impratio="10"/>
   <visual>
@@ -14,9 +14,9 @@
     <material name="mover" rgba="0.95 0.62 0.25 1"/>
     <material name="hardware" rgba="0.8 0.8 0.85 1"/>
     <material name="other" rgba="0.6 0.75 0.6 1"/>
-    <mesh name="P1_vis" file="easy_P1_vis.stl"/>
-    <mesh name="P2_vis" file="easy_P2_vis.stl"/>
-    <mesh name="P3_vis" file="easy_P3_vis.stl"/>
+    <mesh name="P1_vis" file="easy_stop_P1_vis.stl"/>
+    <mesh name="P2_vis" file="easy_stop_P2_vis.stl"/>
+    <mesh name="P3_vis" file="easy_stop_P3_vis.stl"/>
   </asset>
   <worldbody>
     <light pos="0.15 -0.25 0.4" dir="-0.3 0.5 -1" directional="true" diffuse="0.5 0.5 0.5"/>
@@ -65,7 +65,7 @@
     </body>
     <body name="P2" pos="0 0 0">
       <freejoint name="P2_free"/>
-      <inertial pos="-0.000000000 -0.000228526 0.041362339" mass="0.018945589" fullinertia="0.000006151278 0.000009745297 0.000015823635 -0.000000000000 -0.000000000000 0.000000046572"/>
+      <inertial pos="-0.000000000 -0.000506559 0.041363778" mass="0.019079695" fullinertia="0.000006359977 0.000009746120 0.000016032942 -0.000000000000 -0.000000000000 0.000000047630"/>
       <geom name="P2_vis" type="mesh" mesh="P2_vis" contype="0" conaffinity="0" group="2" material="mover"/>
       <geom name="P2_c0" type="box" pos="0.000000000 0.000000000 0.041500000" size="0.039800000 0.029800000 0.001500000" group="3" material="mover" contype="1" conaffinity="1"/>
       <geom name="P2_c1" type="box" pos="0.000000000 -0.030903940 0.040000000" size="0.004000000 0.000903940 0.000436040" group="3" material="mover" contype="2" conaffinity="2" quat="1.000000 0.000000 0.000000 0.000000"/>
@@ -84,6 +84,7 @@
       <geom name="P2_c14" type="box" pos="0.000000000 -0.032815189 0.037139613" size="0.004000000 0.000903940 0.000436040" group="3" material="mover" contype="2" conaffinity="2" quat="0.831470 -0.555570 0.000000 0.000000"/>
       <geom name="P2_c15" type="box" pos="0.000000000 -0.031810755 0.037810755" size="0.004000000 0.000903940 0.000436040" group="3" material="mover" contype="2" conaffinity="2" quat="0.923880 -0.382683 0.000000 0.000000"/>
       <geom name="P2_c16" type="box" pos="0.000000000 -0.031139613 0.038815189" size="0.004000000 0.000903940 0.000436040" group="3" material="mover" contype="2" conaffinity="2" quat="0.980785 -0.195090 0.000000 0.000000"/>
+      <geom name="P2_c17" type="box" pos="0.000000000 -0.039500000 0.041500000" size="0.004000000 0.002500000 0.001500000" group="3" material="mover" contype="1" conaffinity="1"/>
       <site name="tip" pos="0.000000000 0.030000000 0.040000000" size="0.002" rgba="1 0.2 0.2 1"/>
       <site name="latch" pos="0.000000000 0.028000000 0.028000000" size="0.002" rgba="0.2 0.8 0.2 1"/>
     </body>

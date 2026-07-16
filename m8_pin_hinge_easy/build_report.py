@@ -31,11 +31,19 @@ def _crit_rows(criteria):
 
 def main():
     t2 = json.loads((OUT / "t2_easy_verdict.json").read_text())
+    t2s = json.loads((OUT / "t2_easy_stop_verdict.json").read_text())
     t1 = json.loads((OUT / "t1_easy_verdict.json").read_text())
     ars = json.loads((OUT / "t0_assembly_rules.json").read_text())
+    pair = json.loads((OUT / "stop_pair.json").read_text())
+    art = json.loads((OUT / "proxy_artifact.json").read_text())
     ir_svg = (OUT / "ir_easy.svg").read_text()
 
     va, vb = t2["modes"]["V-A"]["p_hinge"], t2["modes"]["V-B"]["p_hinge"]
+    vas, vbs = t2s["modes"]["V-A"]["p_hinge"], t2s["modes"]["V-B"]["p_hinge"]
+    b3 = pair["B3_ceiling_deg"]
+    a26 = art["parts_authority"]["interference_mm3_at_26deg"]
+    acon = art["proxies_authority"]["box_lid_contacts_at_26deg"]
+    bt = pair["baseline"]["theta_max_deg"]; st = pair["stop"]["theta_max_deg"]
 
     # --- decisions table --------------------------------------------------------------------
     decisions = [
@@ -81,7 +89,8 @@ def main():
                        f"<td class='num'>{i}</td><td class='num'>{m}</td><td class='num'>{dr}</td>"
                        f"<td>{'ok' if ok else 'DRIFT'}</td></tr>")
 
-    verdict = t2["verdict"] and t1["verdict"] and all(a["ok"] for a in ars)
+    verdict = (t1["verdict"] and all(a["ok"] for a in ars)
+               and va["passed"] and vas["passed"] and vbs["passed"])
     vbadge = "PASS" if verdict else "FAIL"
 
     html = f"""<!doctype html><html><head><meta charset="utf-8">
@@ -106,6 +115,15 @@ def main():
 </style></head><body>
 
 <h1>m8 — <span class="mono">pin_hinge</span> Easy anchor <span class="verdict {vbadge}">{vbadge}</span></h1>
+<div style="border-left:4px solid #c53030;background:#fff5f5;padding:10px 14px;border-radius:6px;margin:12px 0">
+<b>⚠ RETRACTION (D-M8-4).</b> An earlier version of this report claimed a V-B PASS for the baseline.
+It was <b>void</b>: it rested on an open-stop that existed only as a collision primitive in the
+physics driver — no solid in the compiled STEP, no entity in the IR. The baseline result read as a
+failure (θmax 272°, travel 0.63 mm) <b>was the correct answer</b>, reproducing M0's finding:
+<i>"no stop: the lid is free to fold flat. That is the finding."</i> The backstop is deleted; the
+stop angle is now read from the IR; the legitimate stop (F1 + B3) is built and demonstrated in §⑦.
+<b>Standing rule:</b> a collision prim may only proxy REAL carved geometry the IR declares.
+</div>
 <p class="sub">Box + lid on a formalized pin hinge, with a front snap latch; the loose pin is
 element-provided hardware (D-ONT-11); two first-class AssemblyRules (D-ONT-12) govern the latch
 sweep and the rim budget. Compiled from the IR, then verified through t0 → t1 → t2.</p>
@@ -189,12 +207,48 @@ drift. The IR reference is ⑤'s resolved value, not the compiled dims (the pane
  <div><img src="out/t2_easy_V-B.png"><div class="cap">V-B θ/F/stratified-penetration series.</div></div>
 </div>
 
-<h2>⑦ Verdict</h2>
+<h2>⑦ D20 — the no-stop / stop pair (stopping BY CONTACT)</h2>
+<p>Same assembly, same seed, same preset. The <b>only</b> difference: the stop variant's IR carries
+<b>F1</b> (a <span class="mono">stop_flange</span> PassiveFeature) and the <b>B3</b> rotation LIMIT it
+imposes (<span class="mono">bound=max</span>, ≤{b3}°, registered per V-08), which compiles to a real
+flange solid on the lid. <b>V-A passes both — only V-B separates them.</b></p>
+<table><tr><th></th><th>baseline</th><th>stop variant</th></tr>
+<tr><td>V-B seeds</td><td class="num">{vb['seeds_passed']}/5 — FAIL</td><td class="num">{vbs['seeds_passed']}/5 — PASS</td></tr>
+<tr><td>θ max</td><td class="num">{bt:.0f}°</td><td class="num">{st:.0f}°</td></tr>
+<tr><td>reading</td><td>the lid <b>folds right over</b> — that is the finding, reported not fixed</td>
+<td>the flange bottoms out on the box's own rear wall — <b>arrest BY CONTACT</b></td></tr></table>
+<img src="out/stop_pair_theta.png">
+<div class="cap">Identical until the flange engages (~0.9 s). Red blows through over-centre and
+folded-flat to 272° (with the travel spike as it sweeps the box); green arrests at the B3 ceiling.</div>
+<div class="grid">
+ <div><video controls muted loop src="out/t2_easy_V-B.mp4"></video><div class="cap">baseline V-B —
+   folds over.</div></div>
+ <div><video controls muted loop src="out/t2_easy_stop_V-B.mp4"></video><div class="cap">stop V-B —
+   arrests at the flange, then closes and seats.</div></div>
+</div>
+
+<h2>⑧ The ~26° suppression — artefact, measured</h2>
+<img src="out/proxy_artifact_26deg.png">
+<table><tr><th>authority</th><th>tool</th><th>result at 26°</th></tr>
+<tr class="pass"><td>the PARTS</td><td class="sub">build123d boolean on compiled solids</td>
+ <td>box ∩ rotated lid = <b>{a26} mm³</b> — they clear</td></tr>
+<tr class="fail"><td>the PROXIES</td><td class="sub">MuJoCo contacts, classes MERGED</td>
+ <td><b>{acon}</b> box↔lid contacts (rear wall vs lid ring-wedge)</td></tr></table>
+<p class="sub"><b>Guard (verified, not asserted):</b> suppression is scoped to cross-class pairs
+between the two NAMED intended-contact classes. <b>The travel class is never suppressed</b> — travel
+reads base↔mover seat↔seat contacts, live at every angle; the baseline fold-over's peak travel
+contact is P1_c1↔P2_c0 (rear wall vs lid panel), both seat-class, firing 0.99 mm at θ=272.9°.
+<b>Limitation:</b> a genuine mech↔seat interference would be invisible to the physics travel gate —
+covered instead at the PARTS level (t0's AR1 sweep + the boolean above).</p>
+
+<h2>⑨ Verdict</h2>
 <p><span class="verdict {vbadge}">{vbadge}</span>&nbsp; t0 AssemblyRules
 {'all PASS' if all(a['ok'] for a in ars) else 'FAIL'} · t1 {'PASS' if t1['verdict'] else 'FAIL'}
-(0 drift) · t2 V-A {va['seeds_passed']}/{va['n_seeds']} + V-B {vb['seeds_passed']}/{vb['n_seeds']}
-→ {'PASS' if t2['verdict'] else 'FAIL'}. The compiled Easy anchor opens, releases, and re-seats
-under physics in both verification modes, with the pin retained.</p>
+(0 drift) · V-A {va['seeds_passed']}/5 baseline + {vas['seeds_passed']}/5 stop ·
+<b>V-B {vb['seeds_passed']}/5 baseline (folds over — the finding)</b> vs
+<b>{vbs['seeds_passed']}/5 stop (arrests by contact)</b>.
+The compiled Easy anchor opens, releases and re-seats with the pin retained; and the stop_flange
+variant demonstrates D20 end-to-end — V-A cannot tell the two designs apart, V-B can.</p>
 <p class="sub">Guard trio on every verdict JSON: decision_row + compile_hash ({t2['compile_hash']})
 + shape assertion.</p>
 

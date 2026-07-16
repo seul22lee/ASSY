@@ -126,6 +126,9 @@ def lid_panel(**params) -> TemplateResult:
         "front_edge_underside": AnchorGeom("front_edge_underside", "face", (0.0, yr, z0), (0, 0, -1)),
         # rear edge underside — the hinge lid mount (mount_B); the knuckles/tab attach here
         "rear_edge_underside": AnchorGeom("rear_edge_underside", "face", (0.0, -W / 2, z0), (0, 0, -1)),
+        # the stop_flange contact site (D-ONT-4): a rearward flange grows from here, swings down as
+        # the lid opens and bottoms out on the box's rear wall. Normal points rearward (−Y).
+        "stop_flange_face": AnchorGeom("stop_flange_face", "face", (0.0, -W / 2, z0), (0, -1, 0)),
     }
     return TemplateResult(part=part, anchors=anchors, params={**p, "box_h": z0})
 

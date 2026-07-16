@@ -20,6 +20,15 @@
 </style></head><body>
 
 <h1>m8 — <span class="mono">pin_hinge</span> Easy anchor <span class="verdict PASS">PASS</span></h1>
+<div style="border-left:4px solid #c53030;background:#fff5f5;padding:10px 14px;border-radius:6px;margin:12px 0">
+<b>⚠ RETRACTION (D-M8-4).</b> An earlier version of this report claimed a V-B PASS for the baseline.
+It was <b>void</b>: it rested on an open-stop that existed only as a collision primitive in the
+physics driver — no solid in the compiled STEP, no entity in the IR. The baseline result read as a
+failure (θmax 272°, travel 0.63 mm) <b>was the correct answer</b>, reproducing M0's finding:
+<i>"no stop: the lid is free to fold flat. That is the finding."</i> The backstop is deleted; the
+stop angle is now read from the IR; the legitimate stop (F1 + B3) is built and demonstrated in §⑦.
+<b>Standing rule:</b> a collision prim may only proxy REAL carved geometry the IR declares.
+</div>
 <p class="sub">Box + lid on a formalized pin hinge, with a front snap latch; the loose pin is
 element-provided hardware (D-ONT-11); two first-class AssemblyRules (D-ONT-12) govern the latch
 sweep and the rim budget. Compiled from the IR, then verified through t0 → t1 → t2.</p>
@@ -61,7 +70,7 @@ declared rather than the shape we built.</p>
 <div class="ir"><svg xmlns="http://www.w3.org/2000/svg" width="1130" height="544" font-family="monospace" viewBox="0 0 1130 544">
 <rect width="1130" height="544" fill="#fbfdff"/>
 <defs><marker id="arw" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#4a5568"/></marker><marker id="arwN" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#e53e3e"/></marker></defs>
-<text x="20" y="24" font-size="15" font-weight="bold" fill="#1a202c">anchor_easy — IR  (compile 6f21d66)</text>
+<text x="20" y="24" font-size="15" font-weight="bold" fill="#1a202c">anchor_easy — IR  (compile 1f2eb47)</text>
 <text x="40" y="74" font-size="10" font-weight="bold" fill="#718096">PIECES</text>
 <text x="250" y="74" font-size="10" font-weight="bold" fill="#718096">ELEMENTS / FEATURES</text>
 <text x="470" y="74" font-size="10" font-weight="bold" fill="#718096">BEHAVIORS</text>
@@ -179,8 +188,8 @@ drift. The IR reference is ⑤'s resolved value, not the compiled dims (the pane
    <p class="sub">5/5 seeds pass. The joint IS the hinge; the
     ring-of-wedge collisions are skipped (they jam a convex approximation of the joint).</p></div>
  <div><h3 style="margin-top:0">V-B — contact-only (DoF from geometry)</h3>
-   <table><tr><th>criterion</th><th>value</th><th>thr</th><th></th></tr><tr class='pass'><td>theta_max >= 90 deg</td><td class='num'>106.71</td><td class='num'>≤ 90.0</td><td>ok</td></tr><tr class='pass'><td>travel interference (non-intended) <= 0.2 mm</td><td class='num'>0.0</td><td class='num'>≤ 0.2</td><td>ok</td></tr><tr class='pass'><td>settles closed: theta_final <= 5 deg, no bounce-open</td><td class='num'>2.72</td><td class='num'>≤ 5.0</td><td>ok</td></tr><tr class='pass'><td>pin retention: radial <= clearance+0.1</td><td class='num'>0.2282</td><td class='num'>≤ 0.4</td><td>ok</td></tr><tr class='pass'><td>pin retention: axial <= protrusion</td><td class='num'>0.0198</td><td class='num'>≤ 3.0</td><td>ok</td></tr><tr class='pass'><td>pin/bore interface <= clearance</td><td class='num'>0.0329</td><td class='num'>≤ 0.3</td><td>ok</td></tr></table>
-   <p class="sub">4/5 seeds pass. The DoF emerges from the pin in the
+   <table><tr><th>criterion</th><th>value</th><th>thr</th><th></th></tr><tr class='pass'><td>theta_max >= 90 deg</td><td class='num'>272.37</td><td class='num'>≤ 90.0</td><td>ok</td></tr><tr class='fail'><td>travel interference (non-intended) <= 0.2 mm</td><td class='num'>0.6316</td><td class='num'>≤ 0.2</td><td>FAIL</td></tr><tr class='pass'><td>settles closed: theta_final <= 5 deg, no bounce-open</td><td class='num'>2.28</td><td class='num'>≤ 5.0</td><td>ok</td></tr><tr class='pass'><td>pin retention: radial <= clearance+0.1</td><td class='num'>0.2242</td><td class='num'>≤ 0.4</td><td>ok</td></tr><tr class='pass'><td>pin retention: axial <= protrusion</td><td class='num'>0.0289</td><td class='num'>≤ 3.0</td><td>ok</td></tr><tr class='pass'><td>pin/bore interface <= clearance</td><td class='num'>0.0786</td><td class='num'>≤ 0.3</td><td>ok</td></tr></table>
+   <p class="sub">0/5 seeds pass. The DoF emerges from the pin in the
     bored knuckle; a designed open-stop (the lug hard-stop) arrests it at ~107°.</p></div>
 </div>
 
@@ -201,13 +210,49 @@ drift. The IR reference is ⑤'s resolved value, not the compiled dims (the pane
  <div><img src="out/t2_easy_V-B.png"><div class="cap">V-B θ/F/stratified-penetration series.</div></div>
 </div>
 
-<h2>⑦ Verdict</h2>
+<h2>⑦ D20 — the no-stop / stop pair (stopping BY CONTACT)</h2>
+<p>Same assembly, same seed, same preset. The <b>only</b> difference: the stop variant's IR carries
+<b>F1</b> (a <span class="mono">stop_flange</span> PassiveFeature) and the <b>B3</b> rotation LIMIT it
+imposes (<span class="mono">bound=max</span>, ≤120.05°, registered per V-08), which compiles to a real
+flange solid on the lid. <b>V-A passes both — only V-B separates them.</b></p>
+<table><tr><th></th><th>baseline</th><th>stop variant</th></tr>
+<tr><td>V-B seeds</td><td class="num">0/5 — FAIL</td><td class="num">4/5 — PASS</td></tr>
+<tr><td>θ max</td><td class="num">272°</td><td class="num">124°</td></tr>
+<tr><td>reading</td><td>the lid <b>folds right over</b> — that is the finding, reported not fixed</td>
+<td>the flange bottoms out on the box's own rear wall — <b>arrest BY CONTACT</b></td></tr></table>
+<img src="out/stop_pair_theta.png">
+<div class="cap">Identical until the flange engages (~0.9 s). Red blows through over-centre and
+folded-flat to 272° (with the travel spike as it sweeps the box); green arrests at the B3 ceiling.</div>
+<div class="grid">
+ <div><video controls muted loop src="out/t2_easy_V-B.mp4"></video><div class="cap">baseline V-B —
+   folds over.</div></div>
+ <div><video controls muted loop src="out/t2_easy_stop_V-B.mp4"></video><div class="cap">stop V-B —
+   arrests at the flange, then closes and seats.</div></div>
+</div>
+
+<h2>⑧ The ~26° suppression — artefact, measured</h2>
+<img src="out/proxy_artifact_26deg.png">
+<table><tr><th>authority</th><th>tool</th><th>result at 26°</th></tr>
+<tr class="pass"><td>the PARTS</td><td class="sub">build123d boolean on compiled solids</td>
+ <td>box ∩ rotated lid = <b>0.0 mm³</b> — they clear</td></tr>
+<tr class="fail"><td>the PROXIES</td><td class="sub">MuJoCo contacts, classes MERGED</td>
+ <td><b>4</b> box↔lid contacts (rear wall vs lid ring-wedge)</td></tr></table>
+<p class="sub"><b>Guard (verified, not asserted):</b> suppression is scoped to cross-class pairs
+between the two NAMED intended-contact classes. <b>The travel class is never suppressed</b> — travel
+reads base↔mover seat↔seat contacts, live at every angle; the baseline fold-over's peak travel
+contact is P1_c1↔P2_c0 (rear wall vs lid panel), both seat-class, firing 0.99 mm at θ=272.9°.
+<b>Limitation:</b> a genuine mech↔seat interference would be invisible to the physics travel gate —
+covered instead at the PARTS level (t0's AR1 sweep + the boolean above).</p>
+
+<h2>⑨ Verdict</h2>
 <p><span class="verdict PASS">PASS</span>&nbsp; t0 AssemblyRules
 all PASS · t1 PASS
-(0 drift) · t2 V-A 5/5 + V-B 4/5
-→ PASS. The compiled Easy anchor opens, releases, and re-seats
-under physics in both verification modes, with the pin retained.</p>
-<p class="sub">Guard trio on every verdict JSON: decision_row + compile_hash (e99e9ec)
+(0 drift) · V-A 5/5 baseline + 5/5 stop ·
+<b>V-B 0/5 baseline (folds over — the finding)</b> vs
+<b>4/5 stop (arrests by contact)</b>.
+The compiled Easy anchor opens, releases and re-seats with the pin retained; and the stop_flange
+variant demonstrates D20 end-to-end — V-A cannot tell the two designs apart, V-B can.</p>
+<p class="sub">Guard trio on every verdict JSON: decision_row + compile_hash (1f2eb47)
 + shape assertion.</p>
 
 </body></html>

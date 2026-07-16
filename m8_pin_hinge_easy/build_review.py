@@ -119,10 +119,13 @@ def render_section(parts, meshes):
     fig.savefig(OUT / "anchor_section.png", dpi=135); plt.close(fig)
 
 
-def render_ir(plan):
+def render_ir(plan, stop_plan=None):
     from verify.t2_physics.runner import _hash
-    svg = to_svg(plan, title=f"anchor_easy — IR  (compile {_hash()})")
-    (OUT / "ir_easy.svg").write_text(svg)
+    h = _hash()
+    (OUT / "ir_easy.svg").write_text(to_svg(plan, title=f"anchor_easy — IR  (compile {h})"))
+    if stop_plan is not None:
+        (OUT / "ir_easy_stop.svg").write_text(
+            to_svg(stop_plan, title=f"anchor_easy [stop] — IR: F1 stop_flange + B3 limit  (compile {h})"))
 
 
 def eval_ars(plan, ca):
@@ -140,7 +143,7 @@ def main():
     render_four_view(meshes)
     render_exploded(ca.parts)
     render_section(ca.parts, meshes)
-    render_ir(plan)
+    render_ir(plan, anchor_easy(variant="stop"))
     ars = eval_ars(plan, ca)
     print("wrote renders + ir_easy.svg + t0_assembly_rules.json")
     for r in ars:

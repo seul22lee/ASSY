@@ -1,0 +1,37 @@
+{
+  "decision_row": "D-M8-3 (contact-class separation \u2014 artefact evidence)",
+  "angle_deg": 26.0,
+  "parts_authority": {
+    "tool": "build123d boolean on compiled solids",
+    "interference_mm3_at_0deg": 0.0,
+    "interference_mm3_at_26deg": 0.0
+  },
+  "proxies_authority": {
+    "tool": "MuJoCo contact detection, classes MERGED",
+    "box_lid_contacts_at_26deg": 4,
+    "pairs": [
+      [
+        "P1_c1",
+        "P2_c16",
+        0.0075
+      ],
+      [
+        "P1_c1",
+        "P2_c16",
+        0.0075
+      ],
+      [
+        "P1_c1",
+        "P2_c16",
+        0.0192
+      ],
+      [
+        "P1_c1",
+        "P2_c16",
+        0.0192
+      ]
+    ]
+  },
+  "verdict": "ARTEFACT CONFIRMED \u2014 the parts clear (0 mm\u00b3) while their convex proxies collide",
+  "guard": "Suppression is scoped to cross-class pairs between NAMED intended-contact classes (mech = pin/bore ring-of-wedges; seat = lid-on-box seating + floor + flange). The TRAVEL class is never suppressed: travel is measured on base\u2194mover SEAT-class contacts, which stay live at every angle \u2014 that is the path a real lid-vs-box interference takes, and it is exactly what fires at 0.63 mm in the no-stop fold-over. See the LIMITATION note in REVIEW.md."
+}

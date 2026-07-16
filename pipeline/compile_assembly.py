@@ -68,8 +68,27 @@ def compile_assembly(plan) -> CompiledAssembly:
                 if pc.provenance == "hardware" and pc.source_element == e.id:
                     pieces[pc.id] = _Piece(cr.pin_solid, {}, pc.params)
 
+    # PASSIVE FEATURES last (D-ONT-4 / the carve-order rule: motion → fasteners → features). A
+    # feature CONSTRAINS geometry that already exists — a stop_flange caps a rotation, so the hinge
+    # axis it caps must be compiled before it. Features that cap a motion receive that axis.
+    feat_order = sorted(plan.features, key=lambda f: CARVE_RANK.get(f.card_ref, 9))
+    stop_angles = {}
+    for f in feat_order:
+        binds = [b for b in plan.bindings if b.element_id == f.id]
+        card = CARD_REGISTRY[f.card_ref]
+        ax = next(iter(axes.values()), None)        # the motion axis this feature constrains
+        cr = card.carve(pieces, f, binds, axis=ax)
+        cr_parts = getattr(cr, "parts", None) or cr["parts"]
+        for pid, solid in cr_parts.items():
+            if pid in pieces:
+                pieces[pid] = _Piece(solid, pieces[pid].anchors, pieces[pid].params)
+        tags[f.id] = dict(getattr(cr, "tags", None) or cr.get("tags", {}))
+        if getattr(cr, "stop_angle_deg", None) is not None:
+            stop_angles[f.id] = cr.stop_angle_deg
+
     parts = {pid: pc.part for pid, pc in pieces.items()}
     return CompiledAssembly(parts=parts, tags=tags, axes=axes,
-                            order=[e.id for e in order],
-                            meta={"n_elements": len(order),
+                            order=[e.id for e in order] + [f.id for f in feat_order],
+                            meta={"n_elements": len(order), "n_features": len(feat_order),
+                                  "stop_angles_deg": stop_angles,
                                   "hardware_pieces": [p.id for p in plan.pieces if p.provenance == "hardware"]})
