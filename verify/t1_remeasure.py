@@ -44,6 +44,29 @@ def remeasure_hook(hook_solid, dims, undercut_measured_mm: float) -> dict:
     return {"L": L_meas, "h": h_meas, "b": b_meas, "y": y_meas}
 
 
+def remeasure_hinge(tags: dict, axis_dir=(1.0, 0.0, 0.0)) -> dict:
+    """Measure pin_d, pin_len, bore_d, knuckle_od from the COMPILED hinge tags via each solid's
+    bounding box (a cylinder BREP has only seam vertices, so a vertex-extent undercounts its
+    diameter — the bbox is the honest cross measure). The hinge axis is world +X here, so the box's
+    axial size is the length and the larger of the two cross sizes is the diameter."""
+    ax = np.array(axis_dir, float); ax /= np.linalg.norm(ax)
+    axis_i = int(np.argmax(np.abs(ax)))          # which world axis the hinge runs along (X here)
+    cross = [i for i in range(3) if i != axis_i]
+
+    def sizes(solid):
+        bb = solid.bounding_box()
+        return [bb.size.X, bb.size.Y, bb.size.Z]
+
+    def diam(solid):
+        s = sizes(solid); return max(s[cross[0]], s[cross[1]])
+
+    m = {"pin_d": diam(tags["pin"]), "pin_len": sizes(tags["pin"])[axis_i],
+         "bore_d": diam(tags["bore"])}
+    kn = next(v for k, v in tags.items() if k.startswith("knuckle_"))
+    m["knuckle_od"] = diam(kn)
+    return m
+
+
 def check_drift(dims, measured: dict, ir_params: dict | None = None) -> Remeasurement:
     """Compare the geometry-measured L/h/b/y against the IR. The IR reference is ⑤'s RESOLVED
     parameters (ir_params) — NOT the compiled HookDims. That distinction is the whole point: if the
@@ -53,7 +76,7 @@ def check_drift(dims, measured: dict, ir_params: dict | None = None) -> Remeasur
     the dims fallback exists only for direct unit tests with no resolve step."""
     ir = ir_params or {"L": dims.L, "h": dims.h_root, "b": dims.b, "y": dims.y}
     rows, ok_all = [], True
-    for k in ("L", "h", "b", "y"):
+    for k in ir:
         drift = abs(ir[k] - measured[k])
         ok = drift <= DRIFT_TOL
         ok_all = ok_all and ok
