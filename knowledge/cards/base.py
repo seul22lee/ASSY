@@ -147,16 +147,44 @@ def _pin_hinge_imposes() -> list:
 
 
 class PinHingeCard(MechanicalElementCard):
+    """Interleaved-knuckle pin hinge (MECHSYNTH §3.3), formalizing M0's proven assets. R1 was
+    retired on this geometry (D18: ring-of-wedges preserved the bore where CoACD swallowed it).
+    Geometry/derivations live in knowledge/cards/pin_hinge.py (host-agnostic per D-GEN-1).
+
+    NOTE — the pin is a THIRD, separate piece the card cannot yet EMIT (DRAFT D-ONT-11,
+    element-generated pieces). carve() adds knuckles/bores/chamfers to the two bound mounts and
+    returns the loose pin geometry + dims; the pin is NOT fused into a knuckle (that seizes the
+    hinge — the M0 lesson). Until D-ONT-11 is ruled, the caller declares the pin as a plan Piece.
+    """
     card_id = "pin_hinge"
     has_functional_clearance = True  # the pin/bore rotational clearance (§3.3)
     ports = [_p("axis", "axis"), _p("mount_A", "face"), _p("mount_B", "face")]
     requires = {}
     imposes = _pin_hinge_imposes()  # §3.3: pin insertion path must be open (V-08)
     param_bounds = {"pin_d": (2.0, 6.0, "mm"), "knuckle_w": (4.0, 12.0, "mm"),
-                    "clearance": (0.2, 0.4, "mm")}
+                    "knuckle_n": (3.0, 5.0, "count"), "clearance": (0.2, 0.4, "mm")}
+    # §3.3 placement rules (M0-cited; the derivations in pin_hinge.py enforce them).
+    placement_rules = [
+        "bore_d = pin_d + clearance  [§3.3: rotational clearance = print clearance]",
+        "knuckle_od = pin_d + 2·knuckle_wall  [M0 hinge_box]",
+        "lid-edge chamfer length >= pin_d/2 + clearance  [§3.3: pin lead-in]",
+        "edge_margin (= face_len/2 − stack_w/2) >= knuckle_w  [§3.3]",
+        "knuckle_n ∈ {3,5}; box takes even (outer) knuckles, lid odd (inner)  [M0 interleave]",
+        "bore keep-out radius = bore_d/2 + clearance: nothing but knuckles inside it  [M0 D18]",
+    ]
 
-    def collision_hint(self, inst):  # required by D18/D21; geometry deferred
-        _not_yet()
+    def carve(self, host_parts, inst, bindings):
+        """Add interleaved knuckles + shared bore to the two mounts, chamfer the lid, build the loose
+        pin (DRAFT D-ONT-11 — no Piece home yet). Delegates to pin_hinge geometry (host-agnostic)."""
+        from knowledge.cards.pin_hinge import carve as _carve
+        return _carve(host_parts, inst, bindings)
+
+    def collision_hint(self, inst):
+        """Card-supplied ring-of-wedges per knuckle (D18/D21): the ONLY pathway that preserved the
+        M0 bore (128% retention; CoACD swallowed it). Inner faces circumscribe the bore → never
+        pinch the pin."""
+        from knowledge.cards.pin_hinge import collision_primitives
+        return collision_primitives(inst)
 
 
 def _snap_hook_imposes() -> list:
