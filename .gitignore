@@ -17,3 +17,7 @@ __pycache__/
 # NOTE: review artifacts are explicitly NOT ignored — *.png, *.mp4, *.md, and the
 # verdict/report JSONs (ladder_verdict.json, probe_verdict.json, coacd_pinion.json) are
 # checked in. If a specific STL ever needs review, whitelist it: `!path/to/keep.stl`.
+
+# MuJoCo runtime log (regenerable)
+MUJOCO_LOG.TXT
+**/MUJOCO_LOG.TXT

@@ -1,0 +1,30 @@
+{
+  "premise": "D-M1-4 (ii) preset route assumes a preset_v2 makes the gear pass P-GEAR in-bounds",
+  "result": "FALSE \u2014 no viable preset_v2",
+  "headline_cells_full_pgear": {
+    "v1 frozen (dt=5e-4), m=2": "0/5",
+    "v1 frozen (dt=5e-4), m=4": "0/5",
+    "preset param: softer solref 0.005, m=4 @ frozen": "1/5",
+    "finer dt=1e-4 (frozen/5), m=4": "1/5",
+    "finer dt=2e-5 (frozen/25), m=2": "0/5",
+    "finer dt=2e-5 (frozen/25), m=4": "0/5"
+  },
+  "recorded_sweeps": {
+    "module sweep @ frozen dt (full P-GEAR)": {
+      "m=2": "0/5",
+      "m=3": "0/5",
+      "m=4": "0/5",
+      "m=5": "0/5",
+      "m=6": "0/5"
+    },
+    "preset-param search @ frozen (m=4, best of solref/solimp/impratio/cone)": "1/5",
+    "finer standing dt (m=4, full P-GEAR)": {
+      "1e-4": "1/5",
+      "5e-5": "0/5",
+      "2e-5": "0/5"
+    }
+  },
+  "root_cause": "contact FORMULATION: MuJoCo convex-facet contact cannot stably do tangent gear-tooth rolling + backlash-reversal impact at any preset parameter or standing timestep tested (down to frozen/25). Consistent with MuJoCo shipping an analytic SDF gear (D21-forbidden for our compiled-geometry philosophy).",
+  "note": "R2a (geometry conjugate) remains RETIRED \u2014 the forward roll shows ratio -0.501. R2b is a formulation limit, NOT a tunable preset. Preset UNTOUCHED (R5).",
+  "recommendation": "G-H fork (not an AI call): (A) a contact-representation change \u2014 a rolling pitch-cylinder proxy for the transmission kinematics + wedge teeth only for backlash/limit checks; or (B) accept gears are not P-GEAR-verifiable in this rig and the rack_pinion card carries a standing 'R2b-open' flag (geometry + formula verified; contact-sim verification deferred). No preset change is adopted \u2014 there is no candidate that works."
+}

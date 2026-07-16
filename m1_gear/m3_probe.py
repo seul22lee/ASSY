@@ -29,9 +29,10 @@ import gear_mjcf
 import p_gear
 
 OUT = Path(__file__).parent / "out"
-FROZEN, RETRY = 5e-4, 2.5e-4
+FROZEN, RETRY = 5e-4, 2.5e-4              # RETRY = frozen/2 = the in-bounds line (D-M1-4 rule)
 # clean-start operating cd (0 initial penetration, G-CONV (b) pass) + drive gain per module.
-CFG = {2: dict(op_cd=36.0, kv=5e-5), 3: dict(op_cd=54.2, kv=2e-4), 4: dict(op_cd=72.6, kv=4e-4)}
+CFG = {2: dict(op_cd=36.0, kv=5e-5), 3: dict(op_cd=54.2, kv=2e-4), 4: dict(op_cd=72.6, kv=4e-4),
+       5: dict(op_cd=90.7, kv=6e-4), 6: dict(op_cd=109.0, kv=9e-4)}
 DT_SWEEP = [5e-4, 2.5e-4, 1e-4, 5e-5, 2e-5]
 
 
@@ -51,6 +52,18 @@ def frozen_trace(xml, meta, kv):
     return v, series
 
 
+def confirm_5seed(mod, cfg, dt):
+    """P-GEAR 5-seed confirmation at a specific dt (the in-bounds check for the D-M1-4 rule)."""
+    xml, meta = gear_mjcf.build("involute", 4, tag=f"confirm_m{mod}", module=float(mod),
+                                op_cd=cfg["op_cd"], seat_deg=0.3)
+    npass = 0
+    for s in range(5):
+        v, _, _ = p_gear.run_gear(mujoco.MjModel.from_xml_path(str(xml)), meta, dt=dt, omega=3.0,
+                                  n_rev=1.0, seed=s, kv=cfg["kv"])
+        npass += v.passed()
+    return npass
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     rows, traces = {}, {}
@@ -63,54 +76,61 @@ def main():
                      "frozen_diverged": v.diverged, "frozen_ratio": v.ratio,
                      "max_stable_dt": sdt, "frozen_over_stable": (FROZEN / sdt) if sdt else None}
         traces[mod] = series
-        print(f"m={mod}: frozen dt diverged={v.diverged} (ratio {v.ratio:+.3f}); "
-              f"max stable dt={sdt:.0e} (frozen/{FROZEN/sdt:.0f})" if sdt else
-              f"m={mod}: frozen diverged={v.diverged}; no stable dt in sweep")
+        msg = (f"max stable dt={sdt:.0e} (frozen/{FROZEN/sdt:.0f})" if sdt else "no stable dt in sweep")
+        print(f"m={mod}: frozen dt diverged={v.diverged} (ratio {v.ratio:+.3f}); {msg}")
 
-    # --- 5-seed probe at m=3 (the sanctioned criterion) ---
-    xml3, meta3 = gear_mjcf.build("involute", 4, tag="probe_m3_seeds", module=3.0,
-                                  op_cd=CFG[3]["op_cd"], seat_deg=0.3)
-    npass = 0
-    for s in range(5):
-        v, _, _ = p_gear.run_gear(mujoco.MjModel.from_xml_path(str(xml3)), meta3, dt=FROZEN,
-                                  omega=3.0, n_rev=1.0, seed=s, kv=CFG[3]["kv"])
-        npass += v.passed()
-    m3_verdict = {"seeds_pass": npass, "n_seeds": 5, "pass": npass >= 4}
-    print(f"m=3 sanctioned probe: {npass}/5 @ frozen dt -> {'PASS' if npass>=4 else 'FAIL'}")
+    # --- PRE-DECLARED D-M1-4 rule: the SMALLEST m<=6 stable at dt >= frozen/2 retires R2b ---
+    in_bounds = sorted(m for m in CFG if rows[m]["max_stable_dt"] and rows[m]["max_stable_dt"] >= RETRY)
+    decision = {"rule": "D-M1-4: smallest m<=6 with max_stable_dt >= frozen/2 (2.5e-4) retires R2b",
+                "in_bounds_modules": in_bounds}
+    if in_bounds:
+        m_ret = in_bounds[0]
+        dt_conf = rows[m_ret]["max_stable_dt"]
+        npass = confirm_5seed(m_ret, CFG[m_ret], dt_conf)
+        decision.update({"outcome": "R2b RETIRED (geometry-side)", "retiring_module": m_ret,
+                         "confirm_dt": dt_conf, "confirm_5seed": f"{npass}/5",
+                         "confirmed": npass >= 4, "module_bounds": [m_ret, 6]})
+        print(f"\n==> D-M1-4: m={m_ret} stable at frozen/{FROZEN/dt_conf:.0f} (in-bounds); "
+              f"5-seed confirm {npass}/5 -> {'R2b RETIRES, bounds [%d,6]' % m_ret if npass>=4 else 'NOT confirmed'}")
+    else:
+        decision.update({"outcome": "geometry route EXHAUSTED within usable envelope (m<=6) -> "
+                         "preset-amendment procedure (R5)", "module_bounds": "provisional [3,4] holds; "
+                         "no m<=6 reaches in-bounds"})
+        print("\n==> D-M1-4: no m<=6 reaches frozen/2 -> geometry route EXHAUSTED; open preset route (R5)")
 
-    # --- figure ---
-    fig, ax = plt.subplots(1, 2, figsize=(12, 4.6))
-    # left: pinion ω at frozen dt, all three modules diverge
-    for mod, c in zip((2, 3, 4), ("#c53030", "#dd6b20", "#805ad5")):
+    # --- 5-point figure ---
+    mods = sorted(CFG)
+    fig, ax = plt.subplots(1, 2, figsize=(12, 4.8))
+    cmap = plt.cm.viridis(np.linspace(0, 0.85, len(mods)))
+    for mod, c in zip(mods, cmap):
         s = traces[mod]
-        ax[0].plot(s["t"], s["omega_pin"], color=c, lw=1.1, label=f"m={mod}")
+        ax[0].plot(s["t"], s["omega_pin"], color=c, lw=1.0, label=f"m={mod}")
     ax[0].axhline(3.0, ls="--", c="#888", lw=0.8)
-    ax[0].set_title("At the FROZEN dt=5e-4: every module diverges\n(m=4 rolls conjugately longer, "
-                    "then blows up)", fontsize=9.5)
-    ax[0].set_xlabel("t (s)"); ax[0].set_ylabel("pinion ω (rad/s)"); ax[0].legend(fontsize=8); ax[0].grid(alpha=.25)
-    # right: max stable dt vs module (the mitigation trend)
-    mods = [2, 3, 4]; sdts = [rows[m]["max_stable_dt"] for m in mods]
+    ax[0].set_title("Pinion ω at the FROZEN dt=5e-4 by module\n(larger module rolls conjugately "
+                    "longer before blow-up)", fontsize=9.5)
+    ax[0].set_xlabel("t (s)"); ax[0].set_ylabel("pinion ω (rad/s)"); ax[0].legend(fontsize=8, ncol=2); ax[0].grid(alpha=.25)
+    sdts = [rows[m]["max_stable_dt"] for m in mods]
     ax[1].plot(mods, sdts, "o-", color="#2b6cb0", lw=2, ms=8)
     for m, s in zip(mods, sdts):
-        ax[1].annotate(f"frozen/{FROZEN/s:.0f}", (m, s), textcoords="offset points", xytext=(6, 6), fontsize=8)
-    ax[1].axhline(FROZEN, ls="--", c="#22543d", lw=1, label="frozen dt (in-bounds target)")
-    ax[1].axhline(RETRY, ls=":", c="#dd6b20", lw=1, label="§6.4 retry (frozen/2, still in-bounds)")
-    ax[1].set_yscale("log"); ax[1].set_xticks(mods)
-    ax[1].set_title("Mitigation trend: max stable dt relaxes with module\n(monotonic — but not yet "
-                    "in-bounds by m=4; extrapolates to m≈5–6)", fontsize=9.5)
+        ax[1].annotate(f"frozen/{FROZEN/s:.0f}", (m, s), textcoords="offset points", xytext=(5, 6), fontsize=7.5)
+    ax[1].axhline(FROZEN, ls="--", c="#22543d", lw=1, label="frozen dt (fully in-bounds)")
+    ax[1].axhspan(RETRY, FROZEN * 3, color="#c6f6d5", alpha=0.4)
+    ax[1].axhline(RETRY, ls=":", c="#dd6b20", lw=1.2, label="in-bounds line = frozen/2 (§6.4 retry)")
+    ax[1].set_yscale("log"); ax[1].set_xticks(mods); ax[1].set_ylim(1e-5, 8e-4)
+    ttl = (f"R2b RETIRES at m={in_bounds[0]} (bounds [{in_bounds[0]},6])" if in_bounds
+           else "geometry route EXHAUSTED (m≤6) → preset route")
+    ax[1].set_title(f"Max stable dt vs module — {ttl}", fontsize=9.5)
     ax[1].set_xlabel("module m (z=12 fixed)"); ax[1].set_ylabel("max stable dt (s, log)")
     ax[1].legend(fontsize=8, loc="lower right"); ax[1].grid(alpha=.25, which="both")
-    fig.suptitle(f"R2b mitigation probe — larger module (D-M1-2/D-M1-3): m=3 sanctioned probe "
-                 f"{'PASS' if m3_verdict['pass'] else 'FAILS'} ({npass}/5 at frozen dt)",
-                 fontsize=11, y=1.02)
+    fig.suptitle("R2b bounded extrapolation probe (D-M1-4, pre-declared rule) — "
+                 + ("RETIRED geometry-side" if in_bounds else "route exhausted → preset amendment"),
+                 fontsize=11, y=1.01)
     fig.tight_layout(); fig.savefig(OUT / "probe_verdict.png", dpi=140, bbox_inches="tight"); plt.close(fig)
 
-    verdict = {"sanctioned_probe_module": 3, "m3_5seed": m3_verdict, "per_module": rows,
-               "conclusion": "FAIL at m=3 (0/5 at frozen dt); module mitigation monotonic but not "
-                             "in-bounds by m=4; recommend continuing geometry-side (m=5-6) before "
-                             "preset amendment; preset UNTOUCHED (R5)"}
+    verdict = {"rule": "D-M1-4 (pre-declared)", "per_module": rows, "decision": decision}
     (OUT / "probe_verdict.json").write_text(json.dumps(verdict, indent=2, default=float))
     print("wrote probe_verdict.png + probe_verdict.json")
+    return decision
 
 
 if __name__ == "__main__":
