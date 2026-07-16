@@ -1,38 +1,65 @@
 {
-  "sanctioned_probe_module": 3,
-  "m3_5seed": {
-    "seeds_pass": 0,
-    "n_seeds": 5,
-    "pass": false
-  },
+  "decision_row": "D-M1-4 (rule) / D-M1-5 (outcome)",
+  "compile_hash": "582243c",
+  "criterion": "sanctioned = 5 seeds, FROZEN dt, full P-GEAR (fwd+rev), pass >=4/5",
   "per_module": {
     "2": {
       "module": 2,
       "op_cd": 36.0,
       "backlash_realised_mm": 0.2,
-      "frozen_diverged": true,
+      "seeds_pass_frozen": 0,
+      "n_seeds": 5,
+      "sanctioned_pass": false,
       "frozen_ratio": 0.0,
-      "max_stable_dt": 2e-05,
-      "frozen_over_stable": 25.0
+      "frozen_diverged_seeds": 5,
+      "max_stable_dt_forward_lenient": 2e-05
     },
     "3": {
       "module": 3,
       "op_cd": 54.2,
       "backlash_realised_mm": 0.346,
-      "frozen_diverged": true,
+      "seeds_pass_frozen": 0,
+      "n_seeds": 5,
+      "sanctioned_pass": false,
       "frozen_ratio": 0.0,
-      "max_stable_dt": 5e-05,
-      "frozen_over_stable": 10.0
+      "frozen_diverged_seeds": 5,
+      "max_stable_dt_forward_lenient": 5e-05
     },
     "4": {
       "module": 4,
       "op_cd": 72.6,
       "backlash_realised_mm": 0.637,
-      "frozen_diverged": true,
+      "seeds_pass_frozen": 0,
+      "n_seeds": 5,
+      "sanctioned_pass": false,
       "frozen_ratio": -0.5017,
-      "max_stable_dt": 0.0001,
-      "frozen_over_stable": 5.0
+      "frozen_diverged_seeds": 5,
+      "max_stable_dt_forward_lenient": 0.0001
+    },
+    "5": {
+      "module": 5,
+      "op_cd": 90.7,
+      "backlash_realised_mm": 0.71,
+      "seeds_pass_frozen": 0,
+      "n_seeds": 5,
+      "sanctioned_pass": false,
+      "frozen_ratio": -0.4978,
+      "frozen_diverged_seeds": 5,
+      "max_stable_dt_forward_lenient": 5e-05
+    },
+    "6": {
+      "module": 6,
+      "op_cd": 109.0,
+      "backlash_realised_mm": 0.928,
+      "seeds_pass_frozen": 0,
+      "n_seeds": 5,
+      "sanctioned_pass": false,
+      "frozen_ratio": 0.0,
+      "frozen_diverged_seeds": 5,
+      "max_stable_dt_forward_lenient": null
     }
   },
-  "conclusion": "FAIL at m=3 (0/5 at frozen dt); module mitigation monotonic but not in-bounds by m=4; recommend continuing geometry-side (m=5-6) before preset amendment; preset UNTOUCHED (R5)"
+  "any_sanctioned_pass": false,
+  "lenient_in_bounds_modules": [],
+  "conclusion": "Sanctioned probe m=2..6 (5 seeds, frozen preset, full P-GEAR fwd+rev): ALL 0/5 \u2014 no module passes. Even the lenient forward-only max_stable_dt reaches at most frozen/5 (m=4), still short of the in-bounds line frozen/2; and it does NOT survive the full protocol. D-M1-4 rule outcome = (ii): no m<=6 in-bounds -> preset route -> D-M1-5: no viable preset_v2 -> R2b FORMULATION-DEEP, NO card, module bounds provisional [3,4]. R2a stays retired (conjugate roll). Preset UNTOUCHED (R5)."
 }

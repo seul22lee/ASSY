@@ -7,10 +7,12 @@ fork it forces; no card, per the pre-declared rule and the honest finding.
 
 ## What ran, in order
 
-**1. R2b bounded module probe (D-M1-4, pre-declared rule).** Probed m=5, m=6 (z=12, frozen preset,
-5 seeds), extending the trend. Under the probe's `max_stable_dt` metric the trend looked
-non-monotonic (peak at m=4, frozen/5). `probe_verdict.png` — **but that metric is lenient
-(forward-only, 0.5 rev, 1 seed) and is SUPERSEDED** by the full-P-GEAR result below.
+**1. R2b bounded module probe (D-M1-4, pre-declared rule).** m=2..6 (z=12, frozen preset) run as
+**full sanctioned probes: 5 seeds each, full P-GEAR (fwd+rev)**. `probe_verdict.png` (5 points,
+compile-hashed): **every module 0/5 — none passes.** The right panel carries the lenient
+forward-only `max_stable_dt` as *context only* (peaks at m=4=frozen/5, still below the frozen/2
+in-bounds line); it is explicitly NOT the criterion and does not survive the full protocol. (History:
+the m=5/m=6 sanctioned probes were only completed on the G-H HOLD below; see G-H findings.)
 
 **2. Preset-amendment procedure (D-M1-4 outcome ii).** The rule fired outcome (ii) — no m≤6 reached
 the in-bounds line (frozen/2). I opened the preset route and searched for a `preset_v2`.
@@ -64,6 +66,26 @@ Either way the frozen preset is not touched, and the card is not built until you
 `probe_verdict.png` (lenient-metric module trend, **superseded**) · `probe_verdict.json` ·
 `r2b_frozen_vs_fine.png` (what R2b looks like). Decision text: D-M1-4 (rule) + D-M1-5 (outcome) in
 `DECISIONS_LOG.md`.
+
+## G-H findings
+
+**Verdict artifact lagged the decision record (caught by human review — figure point-count).** At
+first m7 sign-off, `probe_verdict.{png,json}` was the stale **3-point (m=2/3/4)** version with
+conclusion "FAIL at m=3"; the 5-point version was never persisted to disk. Worse, **m=5 and m=6 had
+never been run as sanctioned probes at all** — only a 1-seed frozen trace + a lenient forward-only
+sweep — so the D-M1-5 claim "m∈{2..6} = 0/5 each" was over-stated for m=5/m=6 until this HOLD. Both
+are now fixed: the sanctioned 5-seed full-P-GEAR probes for m=5/m=6 are run (0/5 each), and m7 carries
+the real 5-point `probe_verdict` (the 3-point stays in `m1_gear/out/` as the historical FAIL record).
+The conclusion is unchanged (all 0/5 → R2b formulation-deep), but the evidence now actually backs it.
+
+**Proposed guard (the freshness rule extended from stale renders to verdict JSONs).** Every verdict
+JSON carries the **decision-row ID it supports** and a **compile hash** (both now present:
+`decision_row`, `compile_hash`). REVIEW generation should cross-check, at minimum:
+(a) the decision-row ID in the artifact matches the milestone's active decision row;
+(b) the artifact's `compile_hash` equals the committing HEAD (a stale hash = a lagged artifact);
+(c) a shape assertion tied to the claim (here: `per_module` covers every module the conclusion
+names — the exact check that would have caught the 3-point/5-point mismatch mechanically).
+A REVIEW that references a verdict file failing (a)–(c) should refuse to render / flag loudly.
 
 ## G-H checklist
 
