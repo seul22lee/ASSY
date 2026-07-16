@@ -20,9 +20,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from ontology.schema import (Anchor, Behavior, Binding, Criterion, DesignPlan, ElementInstance,
-                             FeatureInstance, Function, HostTemplate, MotionSpec, Observable,
-                             Parameter, Piece, VerificationProtocol)
+from ontology.schema import (Anchor, AssemblyRule, Behavior, Binding, Criterion, DesignPlan,
+                             ElementInstance, FeatureInstance, Function, HostTemplate, MotionSpec,
+                             Observable, Parameter, Piece, VerificationProtocol)
 
 TASKS = Path(__file__).parent
 
@@ -399,6 +399,94 @@ def snap_panel() -> DesignPlan:
         protocols=[pr_mate, pr_sep, pr_sweep], material="PETG")
 
 
+def anchor_easy() -> DesignPlan:
+    """The EASY ANCHOR (MECHSYNTH §8.1) — the pipeline's first MULTI-ELEMENT assembly: a box + lid
+    with a pin_hinge (E1, rear) AND a snap_hook latch (E2, front). Carries the D-ONT-11 hardware pin
+    (P3) and both D-ONT-12 AssemblyRules (snap_hook's latch-vs-lid-sweep EXCLUSION + the
+    hook/edge_margin RESOURCE budget on the shared rim). This is what a post-④ plan looks like."""
+    box_shell = HostTemplate(template_ref="box_shell",
+        params={"box_l": 80.0, "box_w": 60.0, "box_h": 40.0, "wall": 2.0},
+        anchors=[Anchor(name="rear_top_edge", kind="edge"), Anchor(name="rear_wall_outer", kind="face"),
+                 Anchor(name="front_wall_inner", kind="face"), Anchor(name="rim_top", kind="face")])
+    lid_panel = HostTemplate(template_ref="lid_panel", params={"lid_t": 3.0},
+        anchors=[Anchor(name="rear_edge_underside", kind="face"),
+                 Anchor(name="front_edge_underside", kind="face"),
+                 Anchor(name="free_edge_mid", kind="point")])
+
+    pieces = [
+        Piece(id="P1", role="base", template_ref="box_shell", is_base=True, params=dict(box_shell.params)),
+        Piece(id="P2", role="lid", template_ref="lid_panel", params={**lid_panel.params, "rim_length": 80.0}),
+        Piece(id="P3", role="pin", provenance="hardware", source_element="E1",
+              params={"pin_d": 4.0, "pin_len": 30.6}),   # D-ONT-11 hardware pin
+    ]
+    elements = [
+        ElementInstance(id="E1", card_ref="pin_hinge", host_pieces=["P1", "P2"],
+                        params={"pin_d": 4.0, "knuckle_w": 8.0, "knuckle_n": 3, "clearance": 0.30,
+                                "edge_margin": 27.7}),   # edge_margin ⑤-resolved (named for AR2)
+        ElementInstance(id="E2", card_ref="snap_hook_cantilever", host_pieces=["P2", "P1"],
+                        params={"L_mm": 12.0, "b_mm": 8.0, "y_mm": 1.5, "n_hooks": 1,
+                                "design_type": 2, "alpha_in_deg": 30.0, "alpha_out_deg": 45.0}),
+    ]
+    bindings = [
+        Binding(element_id="E1", port="axis", piece_id="P1", anchor="rear_top_edge",
+                mate="coincident_axis", offset_params={"face_len": 80.0}),
+        Binding(element_id="E1", port="mount_A", piece_id="P1", anchor="rear_wall_outer", mate="flush_face"),
+        Binding(element_id="E1", port="mount_B", piece_id="P2", anchor="rear_edge_underside", mate="flush_face"),
+        # the latch: beam on the lid FRONT edge, catch window in the box FRONT wall
+        Binding(element_id="E2", port="beam_root", piece_id="P2", anchor="front_edge_underside",
+                mate="on_face_uv", offset_params={"u": 0.5, "v": 0.5}),
+        Binding(element_id="E2", port="catch_window", piece_id="P1", anchor="front_wall_inner",
+                mate="offset_face", offset_params={"undercut_dir": "inward"}),
+    ]
+    # D-ONT-12 AssemblyRules — first-class, provenance-tagged, referents named in the IR (D13)
+    assembly_rules = [
+        AssemblyRule(id="AR1", kind="exclusion", provenance="card:snap_hook_cantilever",
+                     subjects=["E2", "E1"], predicate={"excluded": "E2", "sweep_of": "E1"},
+                     citation="MECHSYNTH §5.2 / M0 B4 (latch ∉ lid sweep)"),
+        AssemblyRule(id="AR2", kind="resource", provenance="task",
+                     subjects=["E2.L_mm", "E1.edge_margin", "P2.rim_length"],
+                     predicate={"contributors": ["E2.L_mm", "E1.edge_margin"],
+                                "budget": "P2.rim_length", "op": "<="},
+                     citation="shared front-rim budget: hook length + hinge edge_margin ≤ rim"),
+    ]
+    # protocols: P-HINGE (V-A + V-B) for the hinge; PR-LATCH (formula) for the snap
+    crit = [Criterion(name="opens", observable="theta_max_deg", op=">=", threshold=90.0, unit="deg"),
+            Criterion(name="pin_radial_retention", observable="pin_radial_max_mm", op="<=", threshold=0.40, unit="mm"),
+            Criterion(name="settles_closed", observable="theta_final_deg", op="<=", threshold=5.0, unit="deg"),
+            Criterion(name="no_travel_interference", observable="pen_travel_mm", op="<=", threshold=0.20, unit="mm")]
+    p_hinge_va = VerificationProtocol(id="P-HINGE-VA", verifies="B1", mode="V-A", seeds=5, seed_pass=4,
+        actuation={"kind": "follower_force_ramp", "F_open_N": 0.15, "point": "free_edge_mid"}, criteria=crit)
+    p_hinge_vb = VerificationProtocol(id="P-HINGE-VB", verifies="B1", mode="V-B", seeds=5, seed_pass=4,
+        actuation={"kind": "follower_force_ramp", "F_open_N": 0.11, "point": "free_edge_mid",
+                   "release_at_theta_deg": 95.0}, criteria=crit)
+    pr_latch = VerificationProtocol(id="PR-LATCH", verifies="B4", mode=None, actuation={"kind": "formula_recheck"},
+        criteria=[Criterion(name="hand_closeable", observable="mating_force_total_N", op="<=", threshold=80.0, unit="N"),
+                  Criterion(name="retention_floor", observable="retention_force_N", op=">=", threshold=15.0, unit="N")])
+    pr_sweep = VerificationProtocol(id="PR-SWEEP", verifies="B5", mode=None, actuation={"kind": "tier0_sweep"},
+        criteria=[Criterion(name="no_defect_interference", observable="pen_travel_mm", op="<=", threshold=0.20, unit="mm")])
+    behaviors = [
+        Behavior(id="B1", phase="use", motion=MotionSpec(kind="rotation", axis_hint="horizontal_rear",
+                 range_value=90.0, range_unit="deg", bound="min"), realized_by="E1", verified_by="P-HINGE-VB"),
+        Behavior(id="B2", phase="assembly", motion=MotionSpec(kind="translation", axis_hint="along_hinge_axis"),
+                 imposed_by="E1", imposed_by_card="pin_hinge"),   # hinge pin-insertion path
+        Behavior(id="B4", phase="static", motion=MotionSpec(kind="snap_event", event_force_window_N=(15.0, 60.0)),
+                 realized_by="E2", verified_by="PR-LATCH"),
+        Behavior(id="B5", phase="use", motion=MotionSpec(kind="fixed"),
+                 imposed_by="E2", imposed_by_card="snap_hook_cantilever", verified_by="PR-SWEEP"),  # sweep clearance (AR1's face)
+        Behavior(id="B6", phase="assembly", motion=MotionSpec(kind="translation"),
+                 imposed_by="E2", imposed_by_card="snap_hook_cantilever"),   # hook insertion path
+    ]
+    parameters = [Parameter(name="pin_d", value=4.0, unit="mm", lo=2.0, hi=6.0, resolved_by="user"),
+                  Parameter(name="clearance", value=0.30, unit="mm", lo=0.2, hi=0.4, resolved_by="rule")]
+    return DesignPlan(task_id="anchor_easy",
+        command="A small hinged box whose lid latches shut at the front. Plastic, 3D printing.",
+        functions=[Function(verb="allow_access", object="contents", qualifier="repeated open/close"),
+                   Function(verb="secure", object="lid", qualifier="latch shut, hand-releasable")],
+        behaviors=behaviors, pieces=pieces, templates=[box_shell, lid_panel], elements=elements,
+        bindings=bindings, assembly_rules=assembly_rules, parameters=parameters,
+        protocols=[p_hinge_va, p_hinge_vb, pr_latch, pr_sweep], material="PETG")
+
+
 def main() -> None:
     from ontology.validators import validate_all
 
@@ -407,6 +495,7 @@ def main() -> None:
         "m0_hinge_box_stop.json": m0_hinge_box("stop"),
         "snap_panel.json": snap_panel(),
         "snap_starter.json": snap_starter(),
+        "anchor_easy.json": anchor_easy(),
     }
     # snap_panel is the D-GEN-5 negative-test fixture: it deliberately binds a window catch to a
     # retained board, so V-14 must reject it at ④ (the earliest guard). Recorded as expected, not a
