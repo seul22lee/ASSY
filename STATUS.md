@@ -19,6 +19,7 @@ is the index over them. **No milestone folders are ever moved or renamed** — h
 | M8 | [`m8_pin_hinge_easy/`](m8_pin_hinge_easy/) | **B-track**: `pin_hinge` + `stop_flange` cards, the **multi-element Easy anchor** (box + lid + hardware pin + snap latch) compiled and verified t0→t1→t2, and the **D20 no-stop/stop pair**. | ✅ **Benchmark PASS** (t0 ARs · t1 0 mm drift · V-A 5/5 · V-B 5/5). D20 demo golden `anchor_easy_nostop` = **EXPECTED_FAIL** (V-B 1/5, folds over). An earlier V-B PASS was **retracted** (D-M8-4) — it rested on an invented stop; the rule is now mechanized as a build error. |
 
 | M9 | [`m9_llm_stages/`](m9_llm_stages/) | **E-track 1 + frontier follow-up**: LLM stages ①–④, the KG narrowing, the grader, and the command→IR→physics run on **two models** (local qwen3-coder + Gemini). | ✅ **The loop closes, and scales.** Local qwen: ①②③④ PASS → V-B **0/5 folds over** (omits the stop). Frontier Gemini: declares the stop, **V-B 4/5 PASS** — machine-made, physics-verified. **Bindings-blindness (0.18) is a small-model artefact** — Gemini 6/6 (D-E-8). D-E-2/-5/-7 CONFIRMED & FIXED; generated IRs now validate_all CLEAN. |
+| M10 | [`m10_slide_rail/`](m10_slide_rail/) | **D-track 1**: the `slide_rail` card (§3.5, T-rail retaining slide, all-boxes) + the P-SLIDE physics — Hard-anchor prerequisite #1. | ✅ Card built (§3.5 rule chain, carve, collision_hint, verification); fixture CLEAN. **P-SLIDE V-A 5/5 PASS** (required). **V-B G-CONV settling-transient — recorded, not tuned (R2b precedent)**; observed-not-gated slide works (s_max 60.5, off-axis 2.03°). Alignment ontology gap flagged **D-E-10 DRAFT**. |
 ## Current system state
 
 **The full loop is demonstrated end-to-end (M9):** a one-sentence command → LLM stages ①–④ →
@@ -37,9 +38,10 @@ code's. Its IR compiled and ran — and V-B caught the design flaw it contained.
 **Built and green (suite 54/54):**
 - **Ontology/IR** — `DesignPlan` with pieces (provenance functional/hardware), elements, features,
   behaviours, protocols, **AssemblyRules**; validators V-01…V-16.
-- **Cards** — `snap_hook_cantilever` (Bayer), `pin_hinge` (formalizes M0's hinge), `stop_flange`
-  (PassiveFeature: a rotation ceiling, real flange geometry); the card API carries
-  `provides_pieces` (hardware) and `interaction_rules` (AssemblyRules).
+- **Cards** — `snap_hook_cantilever` (Bayer), `pin_hinge` (M0 hinge), `stop_flange` (rotation
+  ceiling), `slide_rail` (§3.5 T-rail retaining slide, all-boxes); `rack_pinion` deferred (R2b). The
+  card API carries `provides_pieces` (hardware), `interaction_rules` (AssemblyRules), and
+  `verification()` (P-HINGE/PR-LATCH/PR-SWEEP/P-SLIDE — protocols are card knowledge, D5).
 - **Templates** — `box_shell`, `lid_panel`, `flat_panel_mount`, `retained_board`; template collision
   hints for the seating load path (D14 inset).
 - **Pipeline** — stages ①–④ (LLM: `s1_intent`/`s2_behavior`/`s3_decompose`/`s4_interface` +

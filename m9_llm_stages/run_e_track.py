@@ -10,12 +10,22 @@ Run:  ./bin/py m9_llm_stages/run_e_track.py [N] [--seedless]
 from __future__ import annotations
 
 import json
+import os
 import sys
 import time
 import traceback
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+# API economy (D-E-9): the dev loop defaults to the LOCAL qwen backend; Gemini (the recorded/
+# benchmark backend, D-E-8) is opt-in via --frontier. Set BEFORE importing the pipeline, because
+# llm_client reads MECHSYNTH_LLM_BACKEND at import. An explicit env var still wins.
+_FRONTIER = "--frontier" in sys.argv
+if "MECHSYNTH_LLM_BACKEND" not in os.environ:
+    os.environ["MECHSYNTH_LLM_BACKEND"] = "gemini" if _FRONTIER else "ollama"
+if _FRONTIER and not os.environ.get("MECHSYNTH_LLM_MODEL") and os.environ["MECHSYNTH_LLM_BACKEND"] == "ollama":
+    pass
 
 from ontology.schema import DesignPlan
 from pipeline import s1_intent, s2_behavior, s3_decompose, s4_interface
@@ -149,7 +159,10 @@ def run_once(i: int, temperature: float, tag: str = "") -> dict:
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    n = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1].isdigit() else 3
+    # API economy (D-E-9): N=1 for dev (schema-constrained runs are near-deterministic — the
+    # variance study showed all 3 identical); pass N explicitly (e.g. 3) for a RECORDED scorecard.
+    n_args = [a for a in sys.argv[1:] if a.isdigit()]
+    n = int(n_args[0]) if n_args else 1
     runs = []
     for i in range(1, n + 1):
         # temperature 0 would make N=3 identical and measure nothing; the brief asks for variance,

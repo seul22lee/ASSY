@@ -533,6 +533,72 @@ def anchor_easy(variant: str = "stop") -> DesignPlan:
         protocols=[p_hinge_va, p_hinge_vb, pr_latch, pr_sweep], material="PETG")
 
 
+
+
+def slide_fixture() -> DesignPlan:
+    """Minimal two-piece slide_rail fixture (D-track / §3.5): a base with a T-rail + a carriage that
+    captures it. Reproduces the §3.5 constraint chain numerically (engagement ≥ 0.35·stroke, the
+    drawer-width equality) on the smallest geometry that exercises P-SLIDE. One element (E1
+    slide_rail), two functional pieces (P1 base[base], P2 carriage[mover])."""
+    slide_base = HostTemplate(template_ref="slide_base",
+        params={"base_l": 120.0, "base_w": 40.0, "base_t": 3.0},
+        anchors=[Anchor(name="rail_face", kind="face"), Anchor(name="travel_edge", kind="axis")])
+    slide_carriage = HostTemplate(template_ref="slide_carriage",
+        params={"car_l": 24.0, "car_w": 30.0, "car_t": 3.0, "car_z": 3.0},
+        anchors=[Anchor(name="groove_face", kind="face")])
+    pieces = [
+        Piece(id="P1", role="base", template_ref="slide_base", is_base=True,
+              params=dict(slide_base.params)),
+        Piece(id="P2", role="carriage", template_ref="slide_carriage",
+              params=dict(slide_carriage.params)),
+    ]
+    elements = [ElementInstance(id="E1", card_ref="slide_rail", host_pieces=["P1", "P2"],
+                                params={"rail_w": 8.0, "rail_h": 8.0, "clearance": 0.35,
+                                        "stroke": 60.0})]
+    bindings = [
+        Binding(element_id="E1", port="rail_mount", piece_id="P1", anchor="rail_face",
+                mate="flush_face"),
+        Binding(element_id="E1", port="carriage_mount", piece_id="P2", anchor="groove_face",
+                mate="flush_face"),
+        Binding(element_id="E1", port="travel_axis", piece_id="P1", anchor="travel_edge",
+                mate="coincident_axis"),
+    ]
+    # B1: the slide REALIZES the extraction travel (use-phase translation, stroke floor)
+    behaviors = [
+        Behavior(id="B1", phase="use", motion=MotionSpec(kind="translation", axis_hint="horizontal",
+                 range_value=60.0, range_unit="mm", bound="min"), realized_by="E1",
+                 verified_by="P-SLIDE-VB-E1"),
+    ]
+    parameters = [Parameter(name="stroke", value=60.0, unit="mm", lo=10.0, hi=400.0,
+                            resolved_by="user"),
+                  Parameter(name="clearance", value=0.35, unit="mm", lo=0.25, hi=0.45,
+                            resolved_by="rule")]
+    # card-sourced (D5): the slide's imposed behaviours (B2 assembly-insertion, B3 travel-keepout)
+    # and its P-SLIDE protocols, exactly as ④ would attach them — kept here so the golden is
+    # self-consistent (V-08/V-01 clean) without hand-authoring card knowledge.
+    from knowledge.cards.base import CARD_REGISTRY as _C
+    card = _C["slide_rail"]
+    n = len(behaviors)
+    for tmpl in card.imposes:
+        n += 1
+        behaviors.append(Behavior(id=f"B{n}", phase=getattr(tmpl.phase, "value", tmpl.phase),
+                                  motion=MotionSpec(kind=getattr(tmpl.motion.kind, "value",
+                                                                 tmpl.motion.kind)),
+                                  imposed_by="E1", imposed_by_card="slide_rail"))
+    plan = DesignPlan(task_id="slide_fixture",
+        command="A drawer that slides out on a rail and stays on it. Plastic, 3D printing.",
+        functions=[Function(verb="guide", object="drawer", qualifier="slide out 60 mm and back"),
+                   Function(verb="allow_access", object="contents", qualifier="pull-out drawer")],
+        behaviors=behaviors, pieces=pieces, templates=[slide_base, slide_carriage],
+        elements=elements, bindings=bindings, parameters=parameters)
+    for pr in card.verification(plan, elements[0]):
+        plan.protocols.append(pr)
+        b = next((x for x in plan.behaviors if x.id == pr.verifies), None)
+        if b is not None and not b.verified_by:
+            b.verified_by = pr.id
+    return plan
+
+
 def main() -> None:
     from ontology.validators import validate_all
 
@@ -548,6 +614,7 @@ def main() -> None:
         # the D20 demonstration golden: same plan, F1/B3 removed, nothing else. Validator-CLEAN (a
         # stop-less design is a legal IR); its *verdict* is an expected FAIL — see `expected_verdict_fail`.
         "anchor_easy_nostop.json": anchor_easy("nostop"),
+        "slide_fixture.json": slide_fixture(),
     }
     # EXPECTED_FAIL at the VERDICT level (distinct from `expected` below, which is validator-level):
     # these goldens are legal IRs whose physics verdict must FAIL, and are kept as live regression

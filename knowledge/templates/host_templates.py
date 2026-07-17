@@ -180,5 +180,34 @@ def retained_board(**params) -> TemplateResult:
     return TemplateResult(part=part, anchors=anchors, params={**p, "board_l": bl})
 
 
+
+
+def slide_base(**params) -> TemplateResult:
+    """Minimal slide fixture host — a flat base plate the rail grows on (§3.5 / D-track fixture).
+    Anchors: `rail_face` (top face, where the T-rail grows, +Z) + `travel_edge` (the +X travel axis)."""
+    p = {"base_l": 120.0, "base_w": 40.0, "base_t": 3.0, **params}
+    L, W, T = p["base_l"], p["base_w"], p["base_t"]
+    part = Box(L, W, T, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    anchors = {
+        "rail_face": AnchorGeom("rail_face", "face", (0.0, 0.0, T), (0, 0, 1)),
+        "travel_edge": AnchorGeom("travel_edge", "axis", (0.0, 0.0, T), (1, 0, 0)),
+    }
+    return TemplateResult(part=part, anchors=anchors, params=p)
+
+
+def slide_carriage(**params) -> TemplateResult:
+    """Minimal slide fixture carriage — the moving block whose groove captures the rail. The groove
+    is CARVED by the card; this template is just the mount host. Anchor `groove_face` (underside)."""
+    p = {"car_l": 24.0, "car_w": 30.0, "car_t": 3.0, "car_z": 3.0, **params}
+    # a thin top plate the carriage body hangs from (kept minimal — the card grows the real groove)
+    part = Location((0, 0, p["car_z"])) * Box(p["car_l"], p["car_w"], p["car_t"],
+                                              align=(Align.CENTER, Align.CENTER, Align.MIN))
+    anchors = {
+        "groove_face": AnchorGeom("groove_face", "face", (0.0, 0.0, p["car_z"]), (0, 0, -1)),
+    }
+    return TemplateResult(part=part, anchors=anchors, params={**p, "box_h": p["car_z"]})
+
+
 TEMPLATES = {"box_shell": box_shell, "lid_panel": lid_panel,
+             "slide_base": slide_base, "slide_carriage": slide_carriage,
              "flat_panel_mount": flat_panel_mount, "retained_board": retained_board}

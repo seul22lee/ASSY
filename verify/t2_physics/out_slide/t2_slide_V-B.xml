@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<mujoco model="t2_slide_V-B">
+  <compiler angle="radian" meshdir="assets" autolimits="true"/>
+  <option timestep="0.0005" integrator="implicitfast" cone="elliptic" impratio="10"/>
+  <visual>
+    <headlight ambient="0.5 0.5 0.5" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2"/>
+    <global offwidth="1280" offheight="960" azimuth="140" elevation="-20"/>
+  </visual>
+  <default>
+    <geom solref="0.001 1.0" solimp="0.99 0.9999 0.0001" friction="0.3 0.005 0.0001" condim="4" density="0"/>
+  </default>
+  <asset>
+    <material name="base" rgba="0.35 0.65 0.85 1"/>
+    <material name="mover" rgba="0.95 0.62 0.25 1"/>
+    <material name="hardware" rgba="0.8 0.8 0.85 1"/>
+    <material name="other" rgba="0.6 0.75 0.6 1"/>
+    <mesh name="P1_vis" file="slide_P1_vis.stl"/>
+    <mesh name="P2_vis" file="slide_P2_vis.stl"/>
+  </asset>
+  <worldbody>
+    <light pos="0.15 -0.25 0.4" dir="-0.3 0.5 -1" directional="true" diffuse="0.5 0.5 0.5"/>
+    <camera name="iso" pos="0.125 -0.125 0.115" xyaxes="0.707 0.707 0 -0.38 0.38 0.84"/>
+    <body name="P1" pos="0 0 0">
+      <inertial pos="0.000209845 0.000000000 0.002878238" mass="0.023530560" fullinertia="0.000002656125 0.000025351920 0.000027615348 0.000000000000 -0.000000027759 -0.000000000000"/>
+      <geom name="P1_vis" type="mesh" mesh="P1_vis" contype="0" conaffinity="0" group="2" material="base"/>
+      <geom name="P1_c0" type="box" pos="0.000000000 0.000000000 0.005000000" size="0.042000000 0.002000000 0.002000000" group="3" material="base" contype="2" conaffinity="2"/>
+      <geom name="P1_c1" type="box" pos="0.000000000 0.000000000 0.009000000" size="0.042000000 0.004000000 0.002000000" group="3" material="base" contype="2" conaffinity="2"/>
+      <geom name="P1_c2" type="box" pos="0.040500000 0.000000000 0.008000000" size="0.001500000 0.004000000 0.005000000" group="3" material="base" contype="2" conaffinity="2"/>
+      <site name="axis_ref" pos="0.000000000 0.000000000 0.003000000" size="0.0012" rgba="0.1 0.9 0.2 1"/>
+    </body>
+    <body name="P2" pos="0 0 0">
+      <freejoint name="P2_free"/>
+      <inertial pos="-0.016555498 0.000000000 0.007076432" mass="0.005782113" fullinertia="0.000000358771 0.000001752079 0.000001954547 -0.000000000000 0.000000222632 0.000000000000"/>
+      <geom name="P2_vis" type="mesh" mesh="P2_vis" contype="0" conaffinity="0" group="2" material="mover"/>
+      <geom name="P2_c0" type="box" pos="-0.031500000 0.000000000 0.012500000" size="0.010300000 0.003800000 0.001500000" group="3" material="mover" contype="2" conaffinity="2"/>
+      <geom name="P2_c1" type="box" pos="-0.031500000 0.005850000 0.009000000" size="0.010300000 0.001500000 0.002000000" group="3" material="mover" contype="2" conaffinity="2"/>
+      <geom name="P2_c2" type="box" pos="-0.031500000 -0.005850000 0.009000000" size="0.010300000 0.001500000 0.002000000" group="3" material="mover" contype="2" conaffinity="2"/>
+      <geom name="P2_c3" type="box" pos="-0.031500000 0.003350000 0.006475000" size="0.010300000 0.001000000 0.000175000" group="3" material="mover" contype="2" conaffinity="2"/>
+      <geom name="P2_c4" type="box" pos="-0.031500000 -0.003350000 0.006475000" size="0.010300000 0.001000000 0.000175000" group="3" material="mover" contype="2" conaffinity="2"/>
+      <site name="pin_center" pos="0.000000000 0.000000000 0.003000000" size="0.0012" rgba="0.9 0.1 0.9 1"/>
+    </body>
+  </worldbody>
+</mujoco>

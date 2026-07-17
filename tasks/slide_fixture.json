@@ -1,0 +1,279 @@
+{
+  "task_id": "slide_fixture",
+  "command": "A drawer that slides out on a rail and stays on it. Plastic, 3D printing.",
+  "functions": [
+    {
+      "verb": "guide",
+      "object": "drawer",
+      "qualifier": "slide out 60 mm and back"
+    },
+    {
+      "verb": "allow_access",
+      "object": "contents",
+      "qualifier": "pull-out drawer"
+    }
+  ],
+  "behaviors": [
+    {
+      "id": "B1",
+      "phase": "use",
+      "motion": {
+        "kind": "translation",
+        "axis_hint": "horizontal",
+        "range_value": 60.0,
+        "range_unit": "mm",
+        "bound": "min",
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "load": null,
+      "realized_by": "E1",
+      "imposed_by": null,
+      "verified_by": "P-SLIDE-VB-E1",
+      "imposed_by_card": null
+    },
+    {
+      "id": "B2",
+      "phase": "assembly",
+      "motion": {
+        "kind": "translation",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "load": null,
+      "realized_by": null,
+      "imposed_by": "E1",
+      "verified_by": null,
+      "imposed_by_card": "slide_rail"
+    },
+    {
+      "id": "B3",
+      "phase": "use",
+      "motion": {
+        "kind": "fixed",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "load": null,
+      "realized_by": null,
+      "imposed_by": "E1",
+      "verified_by": "PR-KEEPOUT-E1",
+      "imposed_by_card": "slide_rail"
+    }
+  ],
+  "pieces": [
+    {
+      "id": "P1",
+      "role": "base",
+      "provenance": "functional",
+      "template_ref": "slide_base",
+      "source_element": null,
+      "params": {
+        "base_l": 120.0,
+        "base_w": 40.0,
+        "base_t": 3.0
+      },
+      "is_base": true
+    },
+    {
+      "id": "P2",
+      "role": "carriage",
+      "provenance": "functional",
+      "template_ref": "slide_carriage",
+      "source_element": null,
+      "params": {
+        "car_l": 24.0,
+        "car_w": 30.0,
+        "car_t": 3.0,
+        "car_z": 3.0
+      },
+      "is_base": false
+    }
+  ],
+  "templates": [
+    {
+      "template_ref": "slide_base",
+      "anchors": [
+        {
+          "name": "rail_face",
+          "kind": "face"
+        },
+        {
+          "name": "travel_edge",
+          "kind": "axis"
+        }
+      ],
+      "params": {
+        "base_l": 120.0,
+        "base_w": 40.0,
+        "base_t": 3.0
+      }
+    },
+    {
+      "template_ref": "slide_carriage",
+      "anchors": [
+        {
+          "name": "groove_face",
+          "kind": "face"
+        }
+      ],
+      "params": {
+        "car_l": 24.0,
+        "car_w": 30.0,
+        "car_t": 3.0,
+        "car_z": 3.0
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "E1",
+      "card_ref": "slide_rail",
+      "params": {
+        "rail_w": 8.0,
+        "rail_h": 8.0,
+        "clearance": 0.35,
+        "stroke": 60.0
+      },
+      "host_pieces": [
+        "P1",
+        "P2"
+      ]
+    }
+  ],
+  "features": [],
+  "bindings": [
+    {
+      "element_id": "E1",
+      "port": "rail_mount",
+      "piece_id": "P1",
+      "anchor": "rail_face",
+      "mate": "flush_face",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E1",
+      "port": "carriage_mount",
+      "piece_id": "P2",
+      "anchor": "groove_face",
+      "mate": "flush_face",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E1",
+      "port": "travel_axis",
+      "piece_id": "P1",
+      "anchor": "travel_edge",
+      "mate": "coincident_axis",
+      "offset_params": {}
+    }
+  ],
+  "assembly_rules": [],
+  "parameters": [
+    {
+      "name": "stroke",
+      "value": 60.0,
+      "unit": "mm",
+      "lo": 10.0,
+      "hi": 400.0,
+      "resolved_by": "user",
+      "citation": null
+    },
+    {
+      "name": "clearance",
+      "value": 0.35,
+      "unit": "mm",
+      "lo": 0.25,
+      "hi": 0.45,
+      "resolved_by": "rule",
+      "citation": null
+    }
+  ],
+  "protocols": [
+    {
+      "id": "P-SLIDE-VA-E1",
+      "verifies": "B1",
+      "actuation": {
+        "kind": "force_ramp_axial"
+      },
+      "criteria": [
+        {
+          "name": "reaches_stroke",
+          "observable": "stroke_mm",
+          "op": ">=",
+          "threshold": 60.0,
+          "unit": "mm"
+        },
+        {
+          "name": "tracks_straight",
+          "observable": "offaxis_rot_deg",
+          "op": "<=",
+          "threshold": 3.0,
+          "unit": "deg"
+        }
+      ],
+      "observables": [],
+      "mode": "V-A",
+      "seeds": 5,
+      "seed_pass": 4
+    },
+    {
+      "id": "P-SLIDE-VB-E1",
+      "verifies": "B1",
+      "actuation": {
+        "kind": "force_ramp_axial"
+      },
+      "criteria": [
+        {
+          "name": "reaches_stroke",
+          "observable": "stroke_mm",
+          "op": ">=",
+          "threshold": 60.0,
+          "unit": "mm"
+        },
+        {
+          "name": "tracks_straight",
+          "observable": "offaxis_rot_deg",
+          "op": "<=",
+          "threshold": 3.0,
+          "unit": "deg"
+        }
+      ],
+      "observables": [],
+      "mode": "V-B",
+      "seeds": 5,
+      "seed_pass": 4
+    },
+    {
+      "id": "PR-KEEPOUT-E1",
+      "verifies": "B3",
+      "actuation": {
+        "kind": "tier0_sweep"
+      },
+      "criteria": [
+        {
+          "name": "no_travel_intrusion",
+          "observable": "offaxis_rot_deg",
+          "op": "<=",
+          "threshold": 3.0,
+          "unit": "deg"
+        }
+      ],
+      "observables": [],
+      "mode": null,
+      "seeds": 5,
+      "seed_pass": 4
+    }
+  ],
+  "material": "PETG",
+  "variant": null,
+  "stage_log": []
+}

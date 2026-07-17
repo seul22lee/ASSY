@@ -110,7 +110,7 @@ def assert_sourced(hints: dict, plan) -> None:
 
 def build_mjcf(parts: dict, hints: dict, axis: dict, base_pid: str, mover_pid: str,
                pin_pid: str, mode: str, meshdir: Path, roles: dict, tag: str,
-               tip_point=None, latch_point=None, plan=None):
+               tip_point=None, latch_point=None, plan=None, joint_kind="hinge"):
     """parts: {pid: build123d Solid}; hints: {pid: [collision prim dicts]}; axis: {point,dir} in mm;
     roles: {pid: 'base'|'mover'|'hardware'|'other'}. Emits MJCF for `mode` ('V-A'|'V-B')."""
     meshdir.mkdir(parents=True, exist_ok=True)
@@ -152,8 +152,23 @@ def build_mjcf(parts: dict, hints: dict, axis: dict, base_pid: str, mover_pid: s
         # joints per mode / role (D23: base welded in V-B; V-A welds base, hinges the mover)
         if mode == "V-A":
             if role == "mover":
-                ET.SubElement(body, "joint", name="hinge", type="hinge", axis=_v(ax_dir),
-                              pos=_v(ax_pt), damping="0.002", range="-0.02 1.92", limited="true")
+                if joint_kind == "slide":
+                    # P-SLIDE (§6.3): a declared PRISMATIC joint along the travel axis. V-A REQUIRED.
+                    # Like the hinge's declared joint, this supplies constraints the geometry may not
+                    # (retention against off-axis/lift, AND the travel-limit stop) — so V-B
+                    # (contact-only) is the real test. Range = [−eps, stroke]: the joint models the
+                    # physical stop the T-rail's stop-tab provides in V-B; without a limit a prismatic
+                    # joint just accelerates forever under a constant push.
+                    strk_m = float(axis.get("stroke_mm", 60.0)) * MM
+                    # frictionloss = a slide's real Coulomb friction: a released drawer holds its
+                    # position (§6.3 back-drift) instead of coasting/rebounding off a frictionless
+                    # stop. A physical property of the mechanism, not a preset knob.
+                    ET.SubElement(body, "joint", name="slide", type="slide", axis=_v(ax_dir),
+                                  pos=_v(ax_pt), damping="0.05", frictionloss="0.15",
+                                  range=f"-0.002 {strk_m + 0.002:.5f}", limited="true")
+                else:
+                    ET.SubElement(body, "joint", name="hinge", type="hinge", axis=_v(ax_dir),
+                                  pos=_v(ax_pt), damping="0.002", range="-0.02 1.92", limited="true")
             # base + hardware(pin): welded / visual-only (joint replaces the pin in V-A)
         else:  # V-B
             if role == "base":

@@ -308,12 +308,15 @@ def call_structured(*, ir, stage: str, gate: str, prompt: str, schema: dict, par
         if attempt == MAX_RETRIES:
             break
         # repair turn: the model is told, verbatim, which rule it broke. No paraphrase — a
-        # paraphrase is a place for the error to drift.
+        # paraphrase is a place for the error to drift. API economy: feed back only the FIRST 3
+        # errors (fixing the first few usually clears the rest, and it caps prompt growth per retry).
+        shown = errors[:3]
+        more = f"  (+{len(errors) - 3} more, hidden to cap prompt growth)" if len(errors) > 3 else ""
         convo = (f"{prompt}\n\n"
                  f"# YOUR PREVIOUS ANSWER WAS REJECTED (attempt {attempt + 1}/{MAX_RETRIES})\n"
                  f"You produced:\n{raw}\n\n"
-                 f"The validator rejected it with these EXACT errors:\n"
-                 + "\n".join(f"  - {e}" for e in errors) +
+                 f"The validator rejected it with these errors (first 3 shown):\n"
+                 + "\n".join(f"  - {e}" for e in shown) + more +
                  "\n\nFix ONLY what these errors name and answer again. Same JSON schema. "
                  "Do not restate the errors; return the corrected object.")
 
@@ -329,8 +332,10 @@ def _sha(s: str) -> str:
 
 
 def stage_log_summary(ir) -> dict:
-    """Per-stage call/retry counts — the headline of the audit trail."""
+    """Per-stage call/retry/token counts — the headline of the audit trail. `_total` makes per-run
+    cost visible at a glance (API economy: tokens are the meter)."""
     out: dict = {}
+    total_calls = total_tokens = 0
     for r in ir.stage_log:
         st = r.get("stage", "?")
         e = out.setdefault(st, {"calls": 0, "retries": 0, "ok": False, "tokens": 0})
@@ -338,4 +343,7 @@ def stage_log_summary(ir) -> dict:
         e["retries"] = max(e["retries"], r.get("attempt", 0))
         e["ok"] = e["ok"] or r.get("ok", False)
         e["tokens"] += r.get("eval_tokens", 0)
+        total_calls += 1
+        total_tokens += r.get("eval_tokens", 0)
+    out["_total"] = {"calls": total_calls, "eval_tokens": total_tokens}
     return out
