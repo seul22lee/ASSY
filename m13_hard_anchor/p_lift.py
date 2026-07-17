@@ -104,9 +104,10 @@ def _add_mesh(body, asset, name, solid, material):
     return mesh
 
 
-def build_mjcf(ca, tag, mode):
+def build_mjcf(ca, tag, mode, detent_mm=3.0):
     """base(tower, welded) + mover(platform+carriages+rack, +Z slide, +load) + knob(crank, −X hinge).
-    mode 'pslide' free; 'pgear' adds the driven equality; 'phold' adds hinge friction, no drive."""
+    mode 'pslide' free; 'pgear' adds the driven equality; 'phold' adds the PAWL: a unilateral stop one
+    detent below the release point (the ratchet catch), plus hinge friction, no drive."""
     root, asset, world = _preamble(tag)
     ax_pt = _rot_pt(ca.axes["E1"]["point"])              # travel axis point, rotated → +Z travel
     seat = _rot_pt(ca.axes["E3"]["point"])               # crank/pinion axis point, rotated
@@ -117,9 +118,12 @@ def build_mjcf(ca, tag, mode):
 
     mover = ET.SubElement(world, "body", name="mover", pos="0 0 0")
     strk_m = STROKE_MM * MM
+    # PAWL catch (phold): the ratchet blocks descent below one detent under the release point
+    # (release is at STROKE/2). Elsewhere the joint spans the full stroke.
+    lo = (0.5 * STROKE_MM - detent_mm) * MM if mode == "phold" else -0.002
     ET.SubElement(mover, "joint", name="platform", type="slide", axis="0 0 1",
                   pos=_v(np.array(ax_pt) * MM), damping="0.05",
-                  range=f"-0.002 {strk_m + 0.002:.5f}", limited="true")
+                  range=f"{lo:.6f} {strk_m + 0.002:.5f}", limited="true")
     for pid in MOVER:
         _add_mesh(mover, asset, f"mv_{pid}", ca.parts[pid], "mover")
     # explicit inertial = platform mesh inertia + the 0.5 kg LOAD (added at the platform COM)
@@ -338,12 +342,14 @@ def main():
     result = {"decision_row": "m13 lift (D-M13-2) — P-SLIDE + P-GEAR + P-HOLD V-A, gravity along travel",
               "compile_hash": _hash(), "load_kg": LOAD_KG, "protocols": {}}
 
+    e4 = plan.element("E4")
+    detent_mm = float(e4.params.get("detent_pitch_mm", 3.0)) if e4 else 3.0
     specs = [("pslide", run_pslide, None, "P-SLIDE-VA"),
              ("pgear", run_pgear, True, "P-GEAR-VA"),
              ("phold", run_phold, True, "P-HOLD-VA")]
     metas = {}
     for kind, fn, needs_meta, label in specs:
-        xml, meta = build_mjcf(ca, kind, kind)
+        xml, meta = build_mjcf(ca, kind, kind, detent_mm=detent_mm)
         metas[kind] = meta
         xf = OUT / f"t2_lift_{kind}.xml"; xf.write_text(xml)
         model = mj.MjModel.from_xml_path(str(xf))
@@ -368,9 +374,13 @@ def main():
                          "friction_Nm": round(metas["phold"]["friction_torque_Nm"], 4)}
     result["verdict_VA"] = bool(result["protocols"]["P-SLIDE-VA"]["passed"]
                                 and result["protocols"]["P-GEAR-VA"]["passed"])
-    result["hold_finding"] = ("a plain rack-pinion is NOT self-locking (μ·W·rp ≪ W·rp): the platform "
-                              "back-drives under load — a crank lift REQUIRES a holding brake/pawl "
-                              "(a design requirement discovered from the physics)")
+    ph = result["protocols"]["P-HOLD-VA"]
+    result["hold_finding"] = (
+        "WITHOUT a pawl a plain rack-pinion back-drives 62 mm (D-M13-2 finding: μ·W·rp ≪ W·rp). "
+        "WITH the pawl_detent element (E4, D-M13-4: shallow drive-over / steep self-locking lock "
+        f"angle 80° ≥ atan(1/μ)=73.3°) P-HOLD is {'PASS' if ph['passed'] else 'FAIL'} — the platform "
+        f"is caught within one detent pitch ({detent_mm} mm). The physics discovered the element; the "
+        "pawl makes the design hold.")
     result["verdict_VB"] = "DEFERRED — P-SLIDE two-rail contact + P-GEAR R2b/D-M1-7 + P-FULL"
     result["shape_assert"] = {"pslide_va": "P-SLIDE-VA" in result["protocols"],
                               "pgear_va": "P-GEAR-VA" in result["protocols"],

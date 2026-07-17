@@ -1,13 +1,14 @@
 {
   "decision_row": "m13 Hard anchor \u2014 \u2464 chain + \u2465 compile + t0 alignment (spine)",
-  "compile_hash": "7bb0cbb",
+  "compile_hash": "5861832",
   "validator_clean": true,
   "n_pieces": 5,
-  "n_elements": 3,
+  "n_elements": 4,
   "carve_order": [
     "E1",
     "E2",
-    "E3"
+    "E3",
+    "E4"
   ],
   "s5_chain": [
     {

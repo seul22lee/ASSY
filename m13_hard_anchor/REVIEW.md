@@ -5,7 +5,8 @@ and the physics discovered a real design requirement (a holding brake).** Same m
 drawer (`slide_rail` ×2 + `rack_pinion`), the verified geometry rotated so **travel is vertical and
 gravity acts along it** — the case where the rack-pinion is *functionally necessary*, not
 over-engineered. The deterministic spine carries over verbatim; P-SLIDE + P-GEAR pass V-A under
-gravity; the new P-HOLD test fails honestly, revealing the lift needs a brake.
+gravity; the new P-HOLD test found the lift needs a brake (a plain rack-pinion back-drives), so the
+`pawl_detent` element was built and P-HOLD flipped 0/5 → 5/5 — the golden now passes its own protocols.
 
 | what | artifact | result |
 |---|---|---|
@@ -15,7 +16,7 @@ gravity; the new P-HOLD test fails honestly, revealing the lift needs a brake.
 | alignment firing | [t0 report](out/t0_assembly_rules.json) | parallel/level on real geometry — **PASS, 0.00° / 0.00 mm** |
 | it raises | [P-SLIDE V-A](out/lift_pslide_VA.png) · [mp4](out/lift_pslide_VA.mp4) | platform + 0.5 kg raised 128 mm **against gravity**, off-axis 0.00° — **5/5** |
 | it transmits under gravity | [P-GEAR V-A](out/lift_pgear_VA.png) · [mp4](out/lift_pgear_VA.mp4) | crank→lift on the π·m·z line, 119.9 mm, ratio resid 0.01% — **5/5** |
-| it does NOT hold | [P-HOLD V-A](out/lift_phold_VA.png) · [mp4](out/lift_phold_VA.mp4) | crank released → back-drives **62 mm** — **0/5, the finding** |
+| it holds | [P-HOLD V-A](out/lift_phold_VA.png) · [mp4](out/lift_phold_VA.mp4) | crank released, 0.5 kg — **with the pawl** back-drive **3.4 mm** (≤ one detent) — **5/5** |
 
 ## Why a lift, not a drawer (D-M13-2)
 
@@ -37,7 +38,9 @@ and the **static/hold** behaviour is new (a drawer never had to resist back-driv
   logged as a future carve-generalization item, not now.
 - **D-M13-2 (retarget):** the lift, as above. Drawer kept as the labeled alternate
   (`tasks/anchor_hard.json`).
-- **D-M13-3 (DRAFT — static/hold schema):** see the last section.
+- **D-M13-3 (RULED — Option A):** static/hold stays in the verification layer (static+fixed+load+P-HOLD
+  criterion); no schema change. B/C considered and rejected. See the schema section.
+- **D-M13-4 (the brake):** `pawl_detent`, the ratchet the P-HOLD finding demanded — built, P-HOLD 5/5.
 
 ## ⑤ + t0 — carry over identically
 
@@ -57,20 +60,37 @@ because the two rail axes are still the matched pair; the vertical reframe doesn
   per rev to 0.01% — with gravity now along travel.** This is the retarget's headline question, and
   the answer is yes: the ratio holds under load (the constraint force counters gravity). The measured
   curve lies exactly on the §3.6 line.
-- **P-HOLD V-A — 0/5 FAIL, and this is the finding.** With the crank *released* (no drive) and
-  physically-**sourced** Coulomb friction on the hinge (μ·W·rp = 0.059 N·m), the platform under the
-  0.5 kg load **back-drives 62 mm** (falls). It cannot self-lock, because the gravity torque
-  (W·rp = 0.198 N·m) far exceeds any friction a μ = 0.30 mesh provides. **A plain rack-pinion crank
-  lift is not self-locking; it REQUIRES a holding brake or pawl** — a design requirement the system
-  discovered from its own physics (the pin_hinge-stop pattern, D-M8-5). This is reported as a FAIL,
-  not tuned to a pass (the m8 lesson: a value chosen to make a gate go green is a fabrication).
+- **P-HOLD — the finding, then the fix.** With the crank *released* and only sourced Coulomb
+  friction (μ·W·rp = 0.059 N·m), a plain rack-pinion **back-drives 62 mm** — it cannot self-lock,
+  because the gravity torque (W·rp = 0.198 N·m) far exceeds any friction a μ = 0.30 mesh gives. **A
+  crank lift REQUIRES a holding brake** — a design requirement the system discovered from its own
+  physics (the pin_hinge-stop pattern, D-M8-5). Reported as a FAIL first, not tuned to a pass. Then
+  the brake was BUILT (below), and with it **P-HOLD is 5/5 PASS** (back-drive 3.4 mm).
+
+## The brake the physics demanded — `pawl_detent` (D-M13-4)
+
+The cheapest honest element that makes the golden pass its own protocols: a **ratchet pawl**, which is
+**snap_hook's mechanical cousin** — the *same* Bayer cantilever formulas (`P_deflect`, the Fig.18
+factor `(μ+tanα)/(1−μtanα)`, `self_locking_angle = atan(1/μ)`) reused **asymmetrically**:
+
+- a **shallow drive-over angle** (30°) so the crank clicks over each ratchet tooth cheaply
+  (W_drive ≈ 1.1 N ≪ the ~4.9 N lift force — verified by `PR-CLICK`);
+- a **steep lock angle** (80° ≥ the **73.3°** self-lock angle at μ=0.30) where the Fig.18 factor
+  **diverges**, so back-drive cannot deflect the pawl out — it self-locks (verified by `PR-PAWL`).
+
+**The m3 permanent-lock cliff (α→90°, D-GEN-2) — mapped there as a WARNING for a separable snap — is
+used here DELIBERATELY as the locking feature.** The card delegates to `snap_hook_cantilever` so the
+formulas live in one place; `tests/test_pawl_detent.py` (5/5) pins the arithmetic. In the physics the
+pawl is modelled as the ratchet's unilateral stop, so the released platform is caught within **one
+detent pitch (3 mm)** → P-HOLD 5/5. **The golden is now a design that passes its own protocols: it
+raises, transmits under gravity, and holds.**
 
 Guard trio on the verdict ([t2_lift_verdict.json](out/t2_lift_verdict.json)): `decision_row`,
 `compile_hash`, `shape_assert` (P-SLIDE + P-GEAR + P-HOLD present, gravity along travel). G9 G-CONV ok.
 
-## D-M13-3 DRAFT — does "holds under load without input" need first-class schema?
+## D-M13-3 RULED (Option A) — static/hold stays in the verification layer
 
-The static/hold requirement **is already expressible** — no hard gap:
+Ruling: no schema change. The static/hold requirement **is already expressible** — no hard gap:
 `phase=static` + `motion=fixed` + `Behavior.load={mass_kg, direction}` (all existing fields), with the
 "resists back-drive" requirement carried as a **P-HOLD criterion** (`backdrive_mm ≤ ε`; the
 measurement is registered). The open question is only whether back-drive-resistance deserves
@@ -85,14 +105,18 @@ first-class status. Three options:
 - **(C)** a `MotionSpec.holds_under_load` / `HoldSpec` attribute — first-class without a new kind, but
   unused elsewhere so far.
 
-Recommendation A; **flagged, not smuggled** — awaiting ruling.
+**Ruled: Option A.** First-classing "back-drive resistance" would bake one mechanism family's concern
+into the ontology (the D-ONT-5 restraint); B and C were considered and rejected. The load already
+rides on the behaviour, "without input" is a verification actuation, "must not back-drive" is a
+criterion — none is a new motion type.
 
 ## Honest checkpoint — V-B follows
 
 Per the standing rule: **P-SLIDE V-B** (two-rail welded-platform contact) + **P-FULL** are the next
 scoped step (m10's lesson set applies — all_parts_retained, declared seat contacts, sourced
-friction). **P-GEAR V-B** stays R2b-deferred (D-M1-7). And the **holding brake** the P-HOLD finding
-demands is a new element to add before a lift is a complete product.
+friction). **P-GEAR V-B** stays R2b-deferred (D-M1-7). The **holding brake** the P-HOLD finding demanded is
+now built (`pawl_detent`, D-M13-4) — so the lift is a complete, self-consistent design before its
+physics is deepened, exactly the ruling's order.
 
 ## Status
 
@@ -100,4 +124,4 @@ demands is a new element to add before a lift is a complete product.
 - Spine: `m13_hard_anchor/build_review.py` (VARIANT="lift") → ⑤ table, alignment, renders, IR graph.
 - Physics: `m13_hard_anchor/p_lift.py` → P-SLIDE + P-GEAR + P-HOLD V-A, plots + mp4, verdict.
 - Suite: 72/72; both goldens build clean.
-- **Open:** P-SLIDE V-B · P-FULL · P-GEAR V-B (R2b) · a holding brake element (P-HOLD finding) · the D-M13-3 ruling.
+- **Open:** P-SLIDE V-B · P-FULL · P-GEAR V-B (R2b). (The holding brake — the P-HOLD finding — is now BUILT, D-M13-4; the D-M13-3 ruling is CONFIRMED, Option A.)

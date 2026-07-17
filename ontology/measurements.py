@@ -62,6 +62,8 @@ _M = [
     # --- P-HOLD (D-M13-2 lift): back-drive under load when the crank is released --------
     Measurement("backdrive_mm", "mm", "P-HOLD",
                 "platform drop under gravity+load with the crank released (self-locking test)"),
+    Measurement("pawl_drive_N", "N", "PR-PAWL",
+                "pawl click-over (drive-through) force during lift = P*fig18(alpha_drive)"),
 ]
 
 MEASUREMENTS: dict[str, Measurement] = {m.name: m for m in _M}

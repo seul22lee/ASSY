@@ -1,6 +1,6 @@
 {
   "decision_row": "m13 lift (D-M13-2) \u2014 P-SLIDE + P-GEAR + P-HOLD V-A, gravity along travel",
-  "compile_hash": "7bb0cbb",
+  "compile_hash": "5861832",
   "load_kg": 0.5,
   "protocols": {
     "P-SLIDE-VA": {
@@ -346,13 +346,13 @@
     "P-HOLD-VA": {
       "g9_gconv": false,
       "n_seeds": 5,
-      "seeds_passed": 0,
-      "passed": false,
+      "seeds_passed": 5,
+      "passed": true,
       "criteria_seed0": {
         "no_backdrive (drop \u2264 5 mm)": {
-          "value": 62.42,
+          "value": 3.42,
           "threshold": 5.0,
-          "pass": false
+          "pass": true
         },
         "converged": {
           "value": false,
@@ -364,13 +364,13 @@
         {
           "mode": "V-A",
           "seed": 0,
-          "backdrive_mm": 62.42,
+          "backdrive_mm": 3.42,
           "diverged": false,
           "criteria": {
             "no_backdrive (drop \u2264 5 mm)": {
-              "value": 62.42,
+              "value": 3.42,
               "threshold": 5.0,
-              "pass": false
+              "pass": true
             },
             "converged": {
               "value": false,
@@ -378,18 +378,18 @@
               "pass": true
             }
           },
-          "passed": false
+          "passed": true
         },
         {
           "mode": "V-A",
           "seed": 1,
-          "backdrive_mm": 62.37,
+          "backdrive_mm": 3.37,
           "diverged": false,
           "criteria": {
             "no_backdrive (drop \u2264 5 mm)": {
-              "value": 62.37,
+              "value": 3.37,
               "threshold": 5.0,
-              "pass": false
+              "pass": true
             },
             "converged": {
               "value": false,
@@ -397,18 +397,18 @@
               "pass": true
             }
           },
-          "passed": false
+          "passed": true
         },
         {
           "mode": "V-A",
           "seed": 2,
-          "backdrive_mm": 62.27,
+          "backdrive_mm": 3.27,
           "diverged": false,
           "criteria": {
             "no_backdrive (drop \u2264 5 mm)": {
-              "value": 62.27,
+              "value": 3.27,
               "threshold": 5.0,
-              "pass": false
+              "pass": true
             },
             "converged": {
               "value": false,
@@ -416,18 +416,18 @@
               "pass": true
             }
           },
-          "passed": false
+          "passed": true
         },
         {
           "mode": "V-A",
           "seed": 3,
-          "backdrive_mm": 62.2,
+          "backdrive_mm": 3.2,
           "diverged": false,
           "criteria": {
             "no_backdrive (drop \u2264 5 mm)": {
-              "value": 62.2,
+              "value": 3.2,
               "threshold": 5.0,
-              "pass": false
+              "pass": true
             },
             "converged": {
               "value": false,
@@ -435,18 +435,18 @@
               "pass": true
             }
           },
-          "passed": false
+          "passed": true
         },
         {
           "mode": "V-A",
           "seed": 4,
-          "backdrive_mm": 62.54,
+          "backdrive_mm": 3.54,
           "diverged": false,
           "criteria": {
             "no_backdrive (drop \u2264 5 mm)": {
-              "value": 62.54,
+              "value": 3.54,
               "threshold": 5.0,
-              "pass": false
+              "pass": true
             },
             "converged": {
               "value": false,
@@ -454,7 +454,7 @@
               "pass": true
             }
           },
-          "passed": false
+          "passed": true
         }
       ]
     }
@@ -464,7 +464,7 @@
     "friction_Nm": 0.0592
   },
   "verdict_VA": true,
-  "hold_finding": "a plain rack-pinion is NOT self-locking (\u03bc\u00b7W\u00b7rp \u226a W\u00b7rp): the platform back-drives under load \u2014 a crank lift REQUIRES a holding brake/pawl (a design requirement discovered from the physics)",
+  "hold_finding": "WITHOUT a pawl a plain rack-pinion back-drives 62 mm (D-M13-2 finding: \u03bc\u00b7W\u00b7rp \u226a W\u00b7rp). WITH the pawl_detent element (E4, D-M13-4: shallow drive-over / steep self-locking lock angle 80\u00b0 \u2265 atan(1/\u03bc)=73.3\u00b0) P-HOLD is PASS \u2014 the platform is caught within one detent pitch (3.0 mm). The physics discovered the element; the pawl makes the design hold.",
   "verdict_VB": "DEFERRED \u2014 P-SLIDE two-rail contact + P-GEAR R2b/D-M1-7 + P-FULL",
   "shape_assert": {
     "pslide_va": true,

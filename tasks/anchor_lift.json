@@ -102,9 +102,9 @@
         "mass_kg": 0.5,
         "direction": "-z"
       },
-      "realized_by": "E3",
+      "realized_by": "E4",
       "imposed_by": null,
-      "verified_by": "P-HOLD-E3",
+      "verified_by": "PR-PAWL-E4",
       "imposed_by_card": null
     },
     {
@@ -196,6 +196,24 @@
       "imposed_by": "E3",
       "verified_by": null,
       "imposed_by_card": "rack_pinion"
+    },
+    {
+      "id": "B10",
+      "phase": "use",
+      "motion": {
+        "kind": "fixed",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "load": null,
+      "realized_by": null,
+      "imposed_by": "E4",
+      "verified_by": "PR-CLICK-E4",
+      "imposed_by_card": "pawl_detent"
     }
   ],
   "pieces": [
@@ -295,6 +313,10 @@
         {
           "name": "knob_mount",
           "kind": "axis"
+        },
+        {
+          "name": "pawl_mount",
+          "kind": "face"
         },
         {
           "name": "floor",
@@ -439,6 +461,23 @@
         "P5",
         "P4"
       ]
+    },
+    {
+      "id": "E4",
+      "card_ref": "pawl_detent",
+      "params": {
+        "L_mm": 14.0,
+        "b_mm": 5.0,
+        "h_mm": 1.0,
+        "alpha_drive_deg": 30.0,
+        "alpha_lock_deg": 80.0,
+        "detent_pitch_mm": 3.0,
+        "detent_depth_mm": 1.0
+      },
+      "host_pieces": [
+        "P1",
+        "P4"
+      ]
     }
   ],
   "features": [],
@@ -510,6 +549,22 @@
     {
       "element_id": "E3",
       "port": "mesh_line",
+      "piece_id": "P4",
+      "anchor": "rack_line",
+      "mate": "coincident_axis",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E4",
+      "port": "pawl_mount",
+      "piece_id": "P1",
+      "anchor": "pawl_mount",
+      "mate": "flush_face",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E4",
+      "port": "ratchet_line",
       "piece_id": "P4",
       "anchor": "rack_line",
       "mate": "coincident_axis",
@@ -746,12 +801,18 @@
       "seed_pass": 4
     },
     {
-      "id": "P-HOLD-E3",
+      "id": "PR-PAWL-E4",
       "verifies": "B_HOLD",
       "actuation": {
         "kind": "release_and_watch",
         "load_kg": 0.5,
-        "note": "crank released (no drive); a plain rack-pinion is generally NOT self-locking, so this tests whether friction alone holds the load"
+        "self_locks": true,
+        "W_drive_N": 1.99,
+        "self_lock_angle_deg": 73.3,
+        "alpha_lock_deg": 80.0,
+        "drive_over_budget_N": 8.91,
+        "drive_over_in_budget": true,
+        "note": "self-locks at alpha_lock>=atan(1/mu); catches within one detent pitch"
       },
       "criteria": [
         {
@@ -764,6 +825,27 @@
       ],
       "observables": [],
       "mode": "V-A",
+      "seeds": 5,
+      "seed_pass": 4
+    },
+    {
+      "id": "PR-CLICK-E4",
+      "verifies": "B10",
+      "actuation": {
+        "kind": "formula_recheck",
+        "source": "Bayer p.14 drive-over"
+      },
+      "criteria": [
+        {
+          "name": "drive_over_in_budget",
+          "observable": "pawl_drive_N",
+          "op": "<=",
+          "threshold": 8.91,
+          "unit": "N"
+        }
+      ],
+      "observables": [],
+      "mode": null,
       "seeds": 5,
       "seed_pass": 4
     }

@@ -312,6 +312,9 @@ def cabinet_shell(**params) -> TemplateResult:
         "rail_axis_L": AnchorGeom("rail_axis_L", "axis", (0.0, -rg / 2, t), (1, 0, 0)),
         "rail_axis_R": AnchorGeom("rail_axis_R", "axis", (0.0, rg / 2, t), (1, 0, 0)),
         "knob_mount": AnchorGeom("knob_mount", "face", (D / 2 - 24.0, ky, H), (0, 0, 1)),
+        # pawl bracket: near the rack (rack_pinion lays it at y=rp inboard of the pinion); the spring
+        # arm reaches -Y to catch the ratchet. D-M13-4 (physics-discovered hold element #2).
+        "pawl_mount": AnchorGeom("pawl_mount", "face", (D / 2 - 24.0, 42.0, 36.0), (0, -1, 0)),
         "floor": AnchorGeom("floor", "face", (0.0, 0.0, t), (0, 0, 1)),
     }
     return TemplateResult(part=part, anchors=anchors, params=p)

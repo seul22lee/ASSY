@@ -25,10 +25,10 @@
     <camera name="iso" pos="0.34 -0.40 0.30" xyaxes="0.76 0.65 0 -0.32 0.37 0.87"/>
     <body name="base" pos="0 0 0">
       <geom name="tower" type="mesh" mesh="tower" material="base"/>
-      <inertial pos="-0.043595183 0.000000000 -0.010198240" mass="0.526450560" fullinertia="0.003372166125 0.002700809627 0.002024325589 -0.000000000000 -0.000008243441 -0.000000000000"/>
+      <inertial pos="-0.043593676 0.000006666 -0.010181348" mass="0.526553748" fullinertia="0.003373054322 0.002701582504 0.002024453138 -0.000000026919 -0.000008311804 -0.000000302476"/>
     </body>
     <body name="mover" pos="0 0 0">
-      <joint name="platform" type="slide" axis="0 0 1" pos="-0.004000000 -0.040000000 0.000000000" damping="0.05" range="-0.002 0.12200" limited="true"/>
+      <joint name="platform" type="slide" axis="0 0 1" pos="-0.004000000 -0.040000000 0.000000000" damping="0.05" range="0.057000 0.12200" limited="true"/>
       <geom name="mv_P2" type="mesh" mesh="mv_P2" material="mover"/>
       <geom name="mv_P3" type="mesh" mesh="mv_P3" material="mover"/>
       <geom name="mv_P4" type="mesh" mesh="mv_P4" material="mover"/>

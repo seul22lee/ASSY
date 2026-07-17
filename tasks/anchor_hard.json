@@ -267,6 +267,10 @@
           "kind": "axis"
         },
         {
+          "name": "pawl_mount",
+          "kind": "face"
+        },
+        {
           "name": "floor",
           "kind": "face"
         }

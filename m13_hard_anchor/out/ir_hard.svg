@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1130" height="848" font-family="monospace" viewBox="0 0 1130 848">
-<rect width="1130" height="848" fill="#fbfdff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1130" height="924" font-family="monospace" viewBox="0 0 1130 924">
+<rect width="1130" height="924" fill="#fbfdff"/>
 <defs><marker id="arw" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#4a5568"/></marker><marker id="arwN" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#e53e3e"/></marker></defs>
-<text x="20" y="24" font-size="15" font-weight="bold" fill="#1a202c">Hard anchor — anchor_hard @ 7bb0cbb</text>
+<text x="20" y="24" font-size="15" font-weight="bold" fill="#1a202c">Hard anchor — anchor_hard @ 5861832</text>
 <text x="40" y="74" font-size="10" font-weight="bold" fill="#718096">PIECES</text>
 <text x="250" y="74" font-size="10" font-weight="bold" fill="#718096">ELEMENTS / FEATURES</text>
 <text x="470" y="74" font-size="10" font-weight="bold" fill="#718096">BEHAVIORS</text>
@@ -29,9 +29,9 @@
 <line x1="620" y1="259.0" x2="700" y2="563.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
 <rect x="623.1" y="375.68" width="61.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
 <text x="653.6" y="384.68" font-size="8" fill="#4a5568" text-anchor="middle">verified_by</text>
-<line x1="400" y1="259.0" x2="470" y2="335.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
-<rect x="406.4" y="279.92" width="46.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
-<text x="429.4" y="288.92" font-size="8" fill="#4a5568" text-anchor="middle">realizes</text>
+<line x1="400" y1="335.0" x2="470" y2="335.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
+<rect x="406.4" y="324.0" width="46.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="429.4" y="333.0" font-size="8" fill="#4a5568" text-anchor="middle">realizes</text>
 <line x1="620" y1="335.0" x2="700" y2="639.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
 <rect x="623.1" y="451.68" width="61.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
 <text x="653.6" y="460.68" font-size="8" fill="#4a5568" text-anchor="middle">verified_by</text>
@@ -56,6 +56,12 @@
 <line x1="400" y1="259.0" x2="470" y2="715.0" stroke="#718096" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
 <rect x="408.9" y="439.52" width="41.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
 <text x="429.4" y="448.52" font-size="8" fill="#4a5568" text-anchor="middle">imposes</text>
+<line x1="400" y1="335.0" x2="470" y2="791.0" stroke="#718096" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
+<rect x="408.9" y="515.52" width="41.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="429.4" y="524.52" font-size="8" fill="#4a5568" text-anchor="middle">imposes</text>
+<line x1="620" y1="791.0" x2="700" y2="715.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
+<rect x="623.1" y="748.08" width="61.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="653.6" y="757.08" font-size="8" fill="#4a5568" text-anchor="middle">verified_by</text>
 <line x1="250" y1="107.0" x2="190" y2="107.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
 <rect x="196.8" y="96.0" width="56.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
 <text x="224.8" y="105.0" font-size="8" fill="#4a5568" text-anchor="middle">rail_mount</text>
@@ -83,6 +89,12 @@
 <line x1="250" y1="259.0" x2="190" y2="335.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
 <rect x="199.3" y="279.92" width="51.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
 <text x="224.8" y="288.92" font-size="8" fill="#4a5568" text-anchor="middle">mesh_line</text>
+<line x1="250" y1="335.0" x2="190" y2="107.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
+<rect x="196.8" y="228.24" width="56.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="224.8" y="237.24" font-size="8" fill="#4a5568" text-anchor="middle">pawl_mount</text>
+<line x1="250" y1="335.0" x2="190" y2="335.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
+<rect x="191.8" y="324.0" width="66.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="224.8" y="333.0" font-size="8" fill="#4a5568" text-anchor="middle">ratchet_line</text>
 <line x1="940" y1="107.0" x2="400" y2="107.0" stroke="#718096" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
 <rect x="690.2" y="96.0" width="46.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
 <text x="713.2" y="105.0" font-size="8" fill="#4a5568" text-anchor="middle">parallel</text>
@@ -97,6 +109,7 @@
 <rect x="250" y="84" width="150" height="46" rx="6" fill="#c6f6d5" stroke="#38a169" stroke-width="1.5"/><text x="325.0" y="102" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">E1</text><text x="325.0" y="116" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">slide_rail</text>
 <rect x="250" y="160" width="150" height="46" rx="6" fill="#c6f6d5" stroke="#38a169" stroke-width="1.5"/><text x="325.0" y="178" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">E2</text><text x="325.0" y="192" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">slide_rail</text>
 <rect x="250" y="236" width="150" height="46" rx="6" fill="#c6f6d5" stroke="#38a169" stroke-width="1.5"/><text x="325.0" y="254" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">E3</text><text x="325.0" y="268" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">rack_pinion</text>
+<rect x="250" y="312" width="150" height="46" rx="6" fill="#c6f6d5" stroke="#38a169" stroke-width="1.5"/><text x="325.0" y="330" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">E4</text><text x="325.0" y="344" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">pawl_detent</text>
 <rect x="470" y="84" width="150" height="46" rx="6" fill="#bee3f8" stroke="#3182ce" stroke-width="1.5"/><text x="545.0" y="102" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B1 · use</text><text x="545.0" y="116" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">translation ≥120mm</text>
 <rect x="470" y="160" width="150" height="46" rx="6" fill="#bee3f8" stroke="#3182ce" stroke-width="1.5"/><text x="545.0" y="178" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B2 · use</text><text x="545.0" y="192" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">translation ≥120mm</text>
 <rect x="470" y="236" width="150" height="46" rx="6" fill="#bee3f8" stroke="#3182ce" stroke-width="1.5"/><text x="545.0" y="254" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B3 · use</text><text x="545.0" y="268" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">rot_to_trans ≥120mm</text>
@@ -106,6 +119,7 @@
 <rect x="470" y="540" width="150" height="46" rx="6" fill="#fed7aa" stroke="#dd6b20" stroke-width="1.5"/><text x="545.0" y="558" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B7 · assembly</text><text x="545.0" y="572" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">translation</text>
 <rect x="470" y="616" width="150" height="46" rx="6" fill="#bee3f8" stroke="#3182ce" stroke-width="1.5"/><text x="545.0" y="634" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B8 · use</text><text x="545.0" y="648" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">fixed</text>
 <rect x="470" y="692" width="150" height="46" rx="6" fill="#fed7aa" stroke="#dd6b20" stroke-width="1.5"/><text x="545.0" y="710" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B9 · assembly</text><text x="545.0" y="724" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">translation</text>
+<rect x="470" y="768" width="150" height="46" rx="6" fill="#bee3f8" stroke="#3182ce" stroke-width="1.5"/><text x="545.0" y="786" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B10 · use</text><text x="545.0" y="800" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">fixed</text>
 <rect x="700" y="84" width="150" height="46" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="1.5"/><text x="775.0" y="102" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">P-SLIDE-VA-E1</text><text x="775.0" y="116" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">2 gates / 0 obs</text>
 <rect x="700" y="160" width="150" height="46" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="1.5"/><text x="775.0" y="178" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">P-SLIDE-VB-E1</text><text x="775.0" y="192" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">2 gates / 0 obs</text>
 <rect x="700" y="236" width="150" height="46" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="1.5"/><text x="775.0" y="254" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">PR-KEEPOUT-E1</text><text x="775.0" y="268" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">1 gates / 0 obs</text>
@@ -113,16 +127,17 @@
 <rect x="700" y="388" width="150" height="46" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="1.5"/><text x="775.0" y="406" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">P-SLIDE-VB-E2</text><text x="775.0" y="420" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">2 gates / 0 obs</text>
 <rect x="700" y="464" width="150" height="46" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="1.5"/><text x="775.0" y="482" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">PR-KEEPOUT-E2</text><text x="775.0" y="496" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">1 gates / 0 obs</text>
 <rect x="700" y="540" width="150" height="46" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="1.5"/><text x="775.0" y="558" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">P-GEAR-VA-E3</text><text x="775.0" y="572" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">1 gates / 0 obs</text>
-<rect x="700" y="616" width="150" height="46" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="1.5"/><text x="775.0" y="634" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">P-HOLD-E3</text><text x="775.0" y="648" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">1 gates / 0 obs</text>
+<rect x="700" y="616" width="150" height="46" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="1.5"/><text x="775.0" y="634" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">PR-PAWL-E4</text><text x="775.0" y="648" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">1 gates / 0 obs</text>
+<rect x="700" y="692" width="150" height="46" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="1.5"/><text x="775.0" y="710" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">PR-CLICK-E4</text><text x="775.0" y="724" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">1 gates / 0 obs</text>
 <polygon points="940,107.0 1015.0,84 1090,107.0 1015.0,130" fill="#fefcbf" stroke="#b7791f" stroke-width="1.5"/><text x="950" y="111.0" font-size="12" fill="#b7791f">&#9878;</text><text x="1015.0" y="102" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">AR1  alignment</text><text x="1015.0" y="116" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">provenance: task</text>
-<rect x="20" y="822" width="14" height="14" fill="#bee3f8" stroke="#3182ce"/><text x="38" y="833" font-size="9" fill="#4a5568">use</text>
-<rect x="68.0" y="822" width="14" height="14" fill="#fed7aa" stroke="#dd6b20"/><text x="86.0" y="833" font-size="9" fill="#4a5568">assembly</text>
-<rect x="146.0" y="822" width="14" height="14" fill="#e2e8f0" stroke="#718096"/><text x="164.0" y="833" font-size="9" fill="#4a5568">static</text>
-<rect x="212.0" y="822" width="14" height="14" fill="#c6f6d5" stroke="#38a169"/><text x="230.0" y="833" font-size="9" fill="#4a5568">element</text>
-<rect x="284.0" y="822" width="14" height="14" fill="#fefcbf" stroke="#d69e2e"/><text x="302.0" y="833" font-size="9" fill="#4a5568">feature (hexagon)</text>
-<rect x="416.0" y="822" width="14" height="14" fill="#cbd5e0" stroke="#2d3748"/><text x="434.0" y="833" font-size="9" fill="#4a5568">hardware piece [HW]</text>
-<rect x="560.0" y="822" width="14" height="14" fill="#fefcbf" stroke="#b7791f"/><text x="578.0" y="833" font-size="9" fill="#4a5568">AssemblyRule (rhombus)</text>
-<line x1="728.0" y1="829" x2="752.0" y2="829" stroke="#718096" stroke-width="1.4"/><text x="756.0" y="833" font-size="9" fill="#4a5568">realizes</text>
-<line x1="818.0" y1="829" x2="842.0" y2="829" stroke="#718096" stroke-width="1.4" stroke-dasharray="5,4"/><text x="846.0" y="833" font-size="9" fill="#4a5568">imposes</text>
-<line x1="910.0" y1="824" x2="910.0" y2="831" stroke="#4a5568" stroke-width="1.4"/><line x1="904.0" y1="831" x2="916.0" y2="831" stroke="#4a5568" stroke-width="1.4"/><line x1="906.0" y1="834" x2="914.0" y2="834" stroke="#4a5568" stroke-width="1.4"/><text x="922.0" y="833" font-size="9" fill="#4a5568">= base</text>
+<rect x="20" y="898" width="14" height="14" fill="#bee3f8" stroke="#3182ce"/><text x="38" y="909" font-size="9" fill="#4a5568">use</text>
+<rect x="68.0" y="898" width="14" height="14" fill="#fed7aa" stroke="#dd6b20"/><text x="86.0" y="909" font-size="9" fill="#4a5568">assembly</text>
+<rect x="146.0" y="898" width="14" height="14" fill="#e2e8f0" stroke="#718096"/><text x="164.0" y="909" font-size="9" fill="#4a5568">static</text>
+<rect x="212.0" y="898" width="14" height="14" fill="#c6f6d5" stroke="#38a169"/><text x="230.0" y="909" font-size="9" fill="#4a5568">element</text>
+<rect x="284.0" y="898" width="14" height="14" fill="#fefcbf" stroke="#d69e2e"/><text x="302.0" y="909" font-size="9" fill="#4a5568">feature (hexagon)</text>
+<rect x="416.0" y="898" width="14" height="14" fill="#cbd5e0" stroke="#2d3748"/><text x="434.0" y="909" font-size="9" fill="#4a5568">hardware piece [HW]</text>
+<rect x="560.0" y="898" width="14" height="14" fill="#fefcbf" stroke="#b7791f"/><text x="578.0" y="909" font-size="9" fill="#4a5568">AssemblyRule (rhombus)</text>
+<line x1="728.0" y1="905" x2="752.0" y2="905" stroke="#718096" stroke-width="1.4"/><text x="756.0" y="909" font-size="9" fill="#4a5568">realizes</text>
+<line x1="818.0" y1="905" x2="842.0" y2="905" stroke="#718096" stroke-width="1.4" stroke-dasharray="5,4"/><text x="846.0" y="909" font-size="9" fill="#4a5568">imposes</text>
+<line x1="910.0" y1="900" x2="910.0" y2="907" stroke="#4a5568" stroke-width="1.4"/><line x1="904.0" y1="907" x2="916.0" y2="907" stroke="#4a5568" stroke-width="1.4"/><line x1="906.0" y1="910" x2="914.0" y2="910" stroke="#4a5568" stroke-width="1.4"/><text x="922.0" y="909" font-size="9" fill="#4a5568">= base</text>
 </svg>

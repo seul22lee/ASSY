@@ -724,7 +724,8 @@ def anchor_hard(variant: str = "drawer") -> DesignPlan:
                 "rail_gap": rail_gap, "knob_y": seat_y},
         anchors=[Anchor(name=n, kind=k) for n, k in
                  [("rail_mount_L", "face"), ("rail_mount_R", "face"), ("rail_axis_L", "axis"),
-                  ("rail_axis_R", "axis"), ("knob_mount", "axis"), ("floor", "face")]])
+                  ("rail_axis_R", "axis"), ("knob_mount", "axis"), ("pawl_mount", "face"),
+                  ("floor", "face")]])
     carr = {pid: HostTemplate(template_ref="slide_carriage",
                               params={"car_l": 24.0, "car_w": 30.0, "car_t": 3.0, "car_z": 3.0},
                               anchors=[Anchor(name="groove_face", kind="face")]) for pid in ("P2", "P3")}
@@ -755,6 +756,12 @@ def anchor_hard(variant: str = "drawer") -> DesignPlan:
                         params={"module": m, "z_pinion": z, "pressure_angle_deg": 20.0,
                                 "face_w": 8.0, "backlash": 0.20, "stroke": stroke}),
     ]
+    if variant == "lift":
+        # E4 pawl_detent — the physics-discovered HOLD element (D-M13-4). Mounts on the tower (P1),
+        # catches the rack on the platform (P4). Asymmetric Bayer angles: shallow drive, steep lock.
+        elements.append(ElementInstance(id="E4", card_ref="pawl_detent", host_pieces=["P1", "P4"],
+                        params={"L_mm": 14.0, "b_mm": 5.0, "h_mm": 1.0, "alpha_drive_deg": 30.0,
+                                "alpha_lock_deg": 80.0, "detent_pitch_mm": 3.0, "detent_depth_mm": 1.0}))
     bindings = [
         Binding(element_id="E1", port="rail_mount", piece_id="P1", anchor="rail_mount_L", mate="flush_face"),
         Binding(element_id="E1", port="carriage_mount", piece_id="P2", anchor="groove_face", mate="flush_face"),
@@ -766,6 +773,11 @@ def anchor_hard(variant: str = "drawer") -> DesignPlan:
         Binding(element_id="E3", port="rack_mount", piece_id="P4", anchor="rack_mount", mate="flush_face"),
         Binding(element_id="E3", port="mesh_line", piece_id="P4", anchor="rack_line", mate="coincident_axis"),
     ]
+    if variant == "lift":
+        bindings.append(Binding(element_id="E4", port="pawl_mount", piece_id="P1",
+                                anchor="pawl_mount", mate="flush_face"))
+        bindings.append(Binding(element_id="E4", port="ratchet_line", piece_id="P4",
+                                anchor="rack_line", mate="coincident_axis"))
     # AR1 alignment (D-E-10) — its FIRST real firing: the two rail travel axes parallel + level.
     assembly_rules = [
         AssemblyRule(id="AR1", kind="alignment", provenance="task",
@@ -796,7 +808,7 @@ def anchor_hard(variant: str = "drawer") -> DesignPlan:
     if lift:
         behaviors.append(Behavior(id="B_HOLD", phase="static",
                  motion=MotionSpec(kind="fixed", axis_hint="vertical"),
-                 load={"mass_kg": 0.5, "direction": "-z"}, realized_by="E3"))
+                 load={"mass_kg": 0.5, "direction": "-z"}, realized_by="E4"))
     # card-sourced imposed behaviours (V-08), per instance, BEFORE construction (pydantic copies list)
     from knowledge.cards.base import CARD_REGISTRY as _C
     n = len(behaviors)
@@ -837,18 +849,6 @@ def anchor_hard(variant: str = "drawer") -> DesignPlan:
             b = next((x for x in plan.behaviors if x.id == pr.verifies), None)
             if b is not None and not b.verified_by:
                 b.verified_by = pr.id
-    # P-HOLD (lift only): the static/hold protocol — release the crank, load the platform, gate on
-    # back-drive. mode="V-A" (a declared-joint test with sourced joint friction), criterion in mm.
-    if lift:
-        hold_b = next(b for b in plan.behaviors if b.id == "B_HOLD")
-        plan.protocols.append(VerificationProtocol(
-            id="P-HOLD-E3", verifies="B_HOLD", mode="V-A", seeds=5, seed_pass=4,
-            actuation={"kind": "release_and_watch", "load_kg": 0.5,
-                       "note": "crank released (no drive); a plain rack-pinion is generally NOT "
-                               "self-locking, so this tests whether friction alone holds the load"},
-            criteria=[Criterion(name="no_backdrive", observable="backdrive_mm", op="<=",
-                                threshold=5.0, unit="mm")], observables=[]))
-        hold_b.verified_by = "P-HOLD-E3"
     return plan
 
 
