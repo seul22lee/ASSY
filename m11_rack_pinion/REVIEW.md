@@ -57,6 +57,13 @@ module so *the geometry it produces is the geometry the verifier can actually si
   the card is D18-complete.
 - **verification** = P-GEAR **V-A only**, with the V-B reversal gap NAMED in the protocol.
 
+![tooth profile](out/tooth_profile.png)
+
+The tooth geometry at the card's own scale (m=5, z=12, 20° pressure angle): the **involute** pinion
+flanks (orange) with the pitch circle rp=30 and addendum/root circles, meshing the **straight-flanked
+rack** (green) whose pitch line coincides with the pinion's at y=−rp. The straight rack flank is the
+involute's z→∞ limit — exactly conjugate, not an approximation.
+
 ![compiled assembly](out/assembly_static.png)
 
 The compiled fixture: the orange involute pinion (rotating body) meshing with the green rack bar (the
