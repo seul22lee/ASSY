@@ -1,0 +1,701 @@
+[
+  {
+    "run": 1,
+    "command": "Design a small box whose lid opens and closes and latches shut. Plastic, for 3D printing.",
+    "backend": {
+      "backend": "ollama",
+      "model": "qwen3-coder:latest",
+      "base_url": "http://localhost:11434",
+      "api_key_from_env": false,
+      "max_retries": 3
+    },
+    "temperature": 0.0,
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "failure": null,
+    "llm_stages_passed": true,
+    "retry_counts": {
+      "s1": 0,
+      "s2": 2,
+      "s3": 0,
+      "s4": 0
+    },
+    "score": {
+      "axes": [
+        {
+          "axis": "\u2460 functions (by verb)",
+          "matched": [
+            "secure"
+          ],
+          "missing": [
+            "allow_access"
+          ],
+          "spurious": [
+            "position"
+          ],
+          "wrong_field": [],
+          "recall": 0.5,
+          "precision": 0.5,
+          "f1": 0.5
+        },
+        {
+          "axis": "\u2461 behaviors (by phase+motion.kind)",
+          "matched": [
+            [
+              "use",
+              "rotation"
+            ],
+            [
+              "use",
+              "fixed"
+            ],
+            [
+              "assembly",
+              "translation"
+            ],
+            [
+              "assembly",
+              "translation"
+            ]
+          ],
+          "missing": [
+            [
+              "static",
+              "snap_event"
+            ],
+            [
+              "use",
+              "rotation"
+            ]
+          ],
+          "spurious": [
+            [
+              "static",
+              "fixed"
+            ],
+            [
+              "use",
+              "snap_event"
+            ],
+            [
+              "assembly",
+              "rotation"
+            ],
+            [
+              "assembly",
+              "snap_event"
+            ]
+          ],
+          "wrong_field": [],
+          "recall": 0.667,
+          "precision": 0.5,
+          "f1": 0.571
+        },
+        {
+          "axis": "\u2462 pieces (by template_ref)",
+          "matched": [
+            "box_shell",
+            "lid_panel"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2462/\u2463 hardware pieces (by role, D-ONT-11)",
+          "matched": [
+            "pin"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2463 elements (by card_ref)",
+          "matched": [
+            "pin_hinge",
+            "snap_hook_cantilever"
+          ],
+          "missing": [
+            "stop_flange"
+          ],
+          "spurious": [],
+          "wrong_field": [],
+          "recall": 0.667,
+          "precision": 1.0,
+          "f1": 0.8
+        },
+        {
+          "axis": "\u2463 bindings (by card_ref+port+anchor)",
+          "matched": [
+            [
+              "pin_hinge",
+              "axis",
+              "rear_top_edge"
+            ]
+          ],
+          "missing": [
+            [
+              "pin_hinge",
+              "mount_A",
+              "rear_wall_outer"
+            ],
+            [
+              "snap_hook_cantilever",
+              "catch_window",
+              "front_wall_inner"
+            ],
+            [
+              "snap_hook_cantilever",
+              "beam_root",
+              "front_edge_underside"
+            ],
+            [
+              "stop_flange",
+              "contact",
+              "stop_flange_face"
+            ],
+            [
+              "pin_hinge",
+              "mount_B",
+              "rear_edge_underside"
+            ]
+          ],
+          "spurious": [
+            [
+              "snap_hook_cantilever",
+              "beam_root",
+              "rim_underside_right"
+            ],
+            [
+              "snap_hook_cantilever",
+              "catch_window",
+              "side_wall_right"
+            ],
+            [
+              "pin_hinge",
+              "mount_B",
+              "side_wall_left"
+            ],
+            [
+              "pin_hinge",
+              "mount_A",
+              "rim_underside_left"
+            ]
+          ],
+          "wrong_field": [],
+          "recall": 0.167,
+          "precision": 0.2,
+          "f1": 0.182
+        }
+      ],
+      "stop_axis": {
+        "axis": "physics_implied_requirement (stop_flange)",
+        "in_golden": true,
+        "in_llm_ir": false,
+        "llm_has_rotation_ceiling": true,
+        "missed": true,
+        "note": "The command never mentions a stop; the golden carries one because PHYSICS showed 'opens>=90 AND returns closed' is unsatisfiable without it (D-M8-5). Not scored as a field mismatch: an IR without it is still valid, and its t2 fold-over is the benchmark's own point (D20)."
+      },
+      "validators": {
+        "clean": false,
+        "violations": [
+          "V-01: use-phase behavior 'B2' has no verified_by",
+          "V-01: use-phase behavior 'B3' has no verified_by",
+          "V-01: use-phase behavior 'B8' has no verified_by"
+        ],
+        "rules_hit": [
+          "V-01"
+        ]
+      },
+      "macro_f1": 0.676
+    },
+    "downstream": {
+      "s5_resolve": "PASS",
+      "s6_compile": "PASS (3 parts)",
+      "t0_assembly_rules": "n/a (no AssemblyRules in IR)",
+      "t2_physics": {
+        "V-A": "5/5",
+        "V-B": "0/5"
+      },
+      "t2_verdict": false
+    },
+    "wall_s": 36.1
+  },
+  {
+    "run": 2,
+    "command": "Design a small box whose lid opens and closes and latches shut. Plastic, for 3D printing.",
+    "backend": {
+      "backend": "ollama",
+      "model": "qwen3-coder:latest",
+      "base_url": "http://localhost:11434",
+      "api_key_from_env": false,
+      "max_retries": 3
+    },
+    "temperature": 0.6,
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "failure": null,
+    "llm_stages_passed": true,
+    "retry_counts": {
+      "s1": 0,
+      "s2": 2,
+      "s3": 0,
+      "s4": 0
+    },
+    "score": {
+      "axes": [
+        {
+          "axis": "\u2460 functions (by verb)",
+          "matched": [
+            "secure"
+          ],
+          "missing": [
+            "allow_access"
+          ],
+          "spurious": [
+            "position"
+          ],
+          "wrong_field": [],
+          "recall": 0.5,
+          "precision": 0.5,
+          "f1": 0.5
+        },
+        {
+          "axis": "\u2461 behaviors (by phase+motion.kind)",
+          "matched": [
+            [
+              "use",
+              "rotation"
+            ],
+            [
+              "use",
+              "fixed"
+            ],
+            [
+              "assembly",
+              "translation"
+            ],
+            [
+              "assembly",
+              "translation"
+            ]
+          ],
+          "missing": [
+            [
+              "static",
+              "snap_event"
+            ],
+            [
+              "use",
+              "rotation"
+            ]
+          ],
+          "spurious": [
+            [
+              "static",
+              "fixed"
+            ],
+            [
+              "use",
+              "snap_event"
+            ],
+            [
+              "assembly",
+              "rotation"
+            ],
+            [
+              "assembly",
+              "snap_event"
+            ]
+          ],
+          "wrong_field": [],
+          "recall": 0.667,
+          "precision": 0.5,
+          "f1": 0.571
+        },
+        {
+          "axis": "\u2462 pieces (by template_ref)",
+          "matched": [
+            "box_shell",
+            "lid_panel"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2462/\u2463 hardware pieces (by role, D-ONT-11)",
+          "matched": [
+            "pin"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2463 elements (by card_ref)",
+          "matched": [
+            "pin_hinge",
+            "snap_hook_cantilever"
+          ],
+          "missing": [
+            "stop_flange"
+          ],
+          "spurious": [],
+          "wrong_field": [],
+          "recall": 0.667,
+          "precision": 1.0,
+          "f1": 0.8
+        },
+        {
+          "axis": "\u2463 bindings (by card_ref+port+anchor)",
+          "matched": [
+            [
+              "pin_hinge",
+              "axis",
+              "rear_top_edge"
+            ]
+          ],
+          "missing": [
+            [
+              "pin_hinge",
+              "mount_A",
+              "rear_wall_outer"
+            ],
+            [
+              "snap_hook_cantilever",
+              "catch_window",
+              "front_wall_inner"
+            ],
+            [
+              "snap_hook_cantilever",
+              "beam_root",
+              "front_edge_underside"
+            ],
+            [
+              "stop_flange",
+              "contact",
+              "stop_flange_face"
+            ],
+            [
+              "pin_hinge",
+              "mount_B",
+              "rear_edge_underside"
+            ]
+          ],
+          "spurious": [
+            [
+              "snap_hook_cantilever",
+              "beam_root",
+              "rim_underside_right"
+            ],
+            [
+              "snap_hook_cantilever",
+              "catch_window",
+              "side_wall_right"
+            ],
+            [
+              "pin_hinge",
+              "mount_B",
+              "side_wall_left"
+            ],
+            [
+              "pin_hinge",
+              "mount_A",
+              "rim_underside_left"
+            ]
+          ],
+          "wrong_field": [],
+          "recall": 0.167,
+          "precision": 0.2,
+          "f1": 0.182
+        }
+      ],
+      "stop_axis": {
+        "axis": "physics_implied_requirement (stop_flange)",
+        "in_golden": true,
+        "in_llm_ir": false,
+        "llm_has_rotation_ceiling": true,
+        "missed": true,
+        "note": "The command never mentions a stop; the golden carries one because PHYSICS showed 'opens>=90 AND returns closed' is unsatisfiable without it (D-M8-5). Not scored as a field mismatch: an IR without it is still valid, and its t2 fold-over is the benchmark's own point (D20)."
+      },
+      "validators": {
+        "clean": false,
+        "violations": [
+          "V-01: use-phase behavior 'B2' has no verified_by",
+          "V-01: use-phase behavior 'B3' has no verified_by",
+          "V-01: use-phase behavior 'B8' has no verified_by"
+        ],
+        "rules_hit": [
+          "V-01"
+        ]
+      },
+      "macro_f1": 0.676
+    },
+    "downstream": {
+      "s5_resolve": "PASS",
+      "s6_compile": "PASS (3 parts)",
+      "t0_assembly_rules": "n/a (no AssemblyRules in IR)",
+      "t2_physics": {
+        "V-A": "5/5",
+        "V-B": "0/5"
+      },
+      "t2_verdict": false
+    },
+    "wall_s": 35.2
+  },
+  {
+    "run": 3,
+    "command": "Design a small box whose lid opens and closes and latches shut. Plastic, for 3D printing.",
+    "backend": {
+      "backend": "ollama",
+      "model": "qwen3-coder:latest",
+      "base_url": "http://localhost:11434",
+      "api_key_from_env": false,
+      "max_retries": 3
+    },
+    "temperature": 0.6,
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "failure": null,
+    "llm_stages_passed": true,
+    "retry_counts": {
+      "s1": 0,
+      "s2": 2,
+      "s3": 0,
+      "s4": 0
+    },
+    "score": {
+      "axes": [
+        {
+          "axis": "\u2460 functions (by verb)",
+          "matched": [
+            "secure"
+          ],
+          "missing": [
+            "allow_access"
+          ],
+          "spurious": [
+            "position"
+          ],
+          "wrong_field": [],
+          "recall": 0.5,
+          "precision": 0.5,
+          "f1": 0.5
+        },
+        {
+          "axis": "\u2461 behaviors (by phase+motion.kind)",
+          "matched": [
+            [
+              "use",
+              "rotation"
+            ],
+            [
+              "use",
+              "fixed"
+            ],
+            [
+              "assembly",
+              "translation"
+            ],
+            [
+              "assembly",
+              "translation"
+            ]
+          ],
+          "missing": [
+            [
+              "static",
+              "snap_event"
+            ],
+            [
+              "use",
+              "rotation"
+            ]
+          ],
+          "spurious": [
+            [
+              "static",
+              "fixed"
+            ],
+            [
+              "use",
+              "snap_event"
+            ],
+            [
+              "assembly",
+              "rotation"
+            ],
+            [
+              "assembly",
+              "snap_event"
+            ]
+          ],
+          "wrong_field": [],
+          "recall": 0.667,
+          "precision": 0.5,
+          "f1": 0.571
+        },
+        {
+          "axis": "\u2462 pieces (by template_ref)",
+          "matched": [
+            "box_shell",
+            "lid_panel"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2462/\u2463 hardware pieces (by role, D-ONT-11)",
+          "matched": [
+            "pin"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2463 elements (by card_ref)",
+          "matched": [
+            "pin_hinge",
+            "snap_hook_cantilever"
+          ],
+          "missing": [
+            "stop_flange"
+          ],
+          "spurious": [],
+          "wrong_field": [],
+          "recall": 0.667,
+          "precision": 1.0,
+          "f1": 0.8
+        },
+        {
+          "axis": "\u2463 bindings (by card_ref+port+anchor)",
+          "matched": [
+            [
+              "pin_hinge",
+              "axis",
+              "rear_top_edge"
+            ]
+          ],
+          "missing": [
+            [
+              "pin_hinge",
+              "mount_A",
+              "rear_wall_outer"
+            ],
+            [
+              "snap_hook_cantilever",
+              "catch_window",
+              "front_wall_inner"
+            ],
+            [
+              "snap_hook_cantilever",
+              "beam_root",
+              "front_edge_underside"
+            ],
+            [
+              "stop_flange",
+              "contact",
+              "stop_flange_face"
+            ],
+            [
+              "pin_hinge",
+              "mount_B",
+              "rear_edge_underside"
+            ]
+          ],
+          "spurious": [
+            [
+              "snap_hook_cantilever",
+              "beam_root",
+              "rim_underside_right"
+            ],
+            [
+              "snap_hook_cantilever",
+              "catch_window",
+              "side_wall_right"
+            ],
+            [
+              "pin_hinge",
+              "mount_B",
+              "side_wall_left"
+            ],
+            [
+              "pin_hinge",
+              "mount_A",
+              "rim_underside_left"
+            ]
+          ],
+          "wrong_field": [],
+          "recall": 0.167,
+          "precision": 0.2,
+          "f1": 0.182
+        }
+      ],
+      "stop_axis": {
+        "axis": "physics_implied_requirement (stop_flange)",
+        "in_golden": true,
+        "in_llm_ir": false,
+        "llm_has_rotation_ceiling": true,
+        "missed": true,
+        "note": "The command never mentions a stop; the golden carries one because PHYSICS showed 'opens>=90 AND returns closed' is unsatisfiable without it (D-M8-5). Not scored as a field mismatch: an IR without it is still valid, and its t2 fold-over is the benchmark's own point (D20)."
+      },
+      "validators": {
+        "clean": false,
+        "violations": [
+          "V-01: use-phase behavior 'B2' has no verified_by",
+          "V-01: use-phase behavior 'B3' has no verified_by",
+          "V-01: use-phase behavior 'B8' has no verified_by"
+        ],
+        "rules_hit": [
+          "V-01"
+        ]
+      },
+      "macro_f1": 0.676
+    },
+    "downstream": {
+      "s5_resolve": "PASS",
+      "s6_compile": "PASS (3 parts)",
+      "t0_assembly_rules": "n/a (no AssemblyRules in IR)",
+      "t2_physics": {
+        "V-A": "5/5",
+        "V-B": "0/5"
+      },
+      "t2_verdict": false
+    },
+    "wall_s": 34.7
+  }
+]

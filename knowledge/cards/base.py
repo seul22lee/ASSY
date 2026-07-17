@@ -21,6 +21,8 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Optional
 
+from ontology.schema import Citation
+
 if TYPE_CHECKING:
     from ontology.schema import Behavior, Port
 
@@ -186,6 +188,21 @@ class PinHingeCard(MechanicalElementCard):
     """
     card_id = "pin_hinge"
     has_functional_clearance = True  # the pin/bore rotational clearance (§3.3)
+    selection_notes = (
+        "Use when one piece must ROTATE about a FIXED AXIS relative to another, repeatedly and "
+        "through a large angle (a lid, a door, a flap). Realizes a use-phase rotation.\n"
+        "Trade-offs: needs a loose PIN (a hardware piece the card provides, D-ONT-11) — a part "
+        "count a snap-fit does not pay. Rotational clearance is the print clearance, so the fit is "
+        "loose by design. IMPOSES an assembly constraint: the pin-insertion path must stay open "
+        "along the axis (§3.3), which constrains where else you may put material.\n"
+        "CAUTION — an over-centre lid (one whose CoM crosses the axis past ~90°) will FOLD FLAT "
+        "under gravity unless a stop is added: physics showed 'opens >=90 AND returns closed' is "
+        "unsatisfiable without one, so pair with the stop_flange PassiveFeature (D-M8-5).\n"
+        "Do NOT use for straight-line travel (see slide_rail) or for a fasten-once joint (see "
+        "snap_hook_cantilever).")
+    citations = [Citation(doc="MECHSYNTH_SPEC_v0.1", section="§3.3 Card 1 — pin_hinge"),
+                 Citation(doc="M0 hinge box (proven rig)", section="P-HINGE V-A/V-B"),
+                 Citation(doc="DECISIONS_LOG", section="D-M8-5 (stop is a physics-derived requirement)")]
     ports = [_p("axis", "axis"), _p("mount_A", "face"), _p("mount_B", "face")]
     requires = {}
     imposes = _pin_hinge_imposes()  # §3.3: pin insertion path must be open (V-08)
@@ -253,6 +270,21 @@ class SnapHookCantileverCard(MechanicalElementCard):
     """
     card_id = "snap_hook_cantilever"
     has_functional_clearance = True  # SNAPFIT §12 A1 (supersedes MECHSYNTH §3.4)
+    selection_notes = (
+        "Use when two pieces must FASTEN to each other by hand — a cantilever beam deflects over a "
+        "catch and snaps back, giving a tactile/audible click and a defined separation force. "
+        "Realizes an assembly-phase snap_event and a static-phase retention.\n"
+        "Trade-offs: NO added parts (the beam is moulded into the piece) — cheaper than a pin hinge "
+        "on part count. But it is ELASTIC: a rigid-body engine cannot express the deflection (D3), "
+        "so it is verified by Bayer formulas (Tier1) + geometry (Tier0), NOT by physics.\n"
+        "IMPOSES two constraints: an assembly insertion path for the hook, and a use-phase "
+        "clearance — the latch must lie OUTSIDE the swept volume of any rotating host it shares a "
+        "piece with (the AssemblyRule it contributes, D-ONT-12).\n"
+        "Do NOT use to realize continuous motion — it holds parts together, it does not move them.")
+    citations = [Citation(doc="BASF/Bayer Snap-Fit Design Guide", section="p.5 Fig.1 (cantilever); "
+                                                                        "p.9 Table 1 (y_perm, P)"),
+                 Citation(doc="SNAPFIT_STARTER_v0", section="§2 (authoritative for the snap task)"),
+                 Citation(doc="MECHSYNTH_SPEC_v0.1", section="§3.4 Card 2")]
     ports = [_p("beam_root", "face"),      # grows from the lid rim underside
              _p("catch_window", "face")]   # window/undercut lip in the box side wall
     requires = {"eps_allow_pct": (">=", 3.0)}  # material must sustain the snap-fit strain
@@ -299,6 +331,15 @@ class SnapHookCantileverCard(MechanicalElementCard):
 class SlideRailCard(MechanicalElementCard):
     card_id = "slide_rail"
     has_functional_clearance = True  # rail/carriage sliding clearance (§3.5)
+    selection_notes = (
+        "Use when a piece must TRANSLATE along a straight axis (a drawer, a tray). Realizes a "
+        "use-phase translation.\n"
+        "Trade-offs: engagement_len >= 0.35*stroke or the carriage racks and jams under moment "
+        "load (§3.5); that engagement eats depth the payload wanted. The rail/carriage clearance "
+        "is a functional clearance a generic mesh approximation destroys, so the card must supply "
+        "its own collision decomposition (D18).\n"
+        "Do NOT use for rotation (see pin_hinge).")
+    citations = [Citation(doc="MECHSYNTH_SPEC_v0.1", section="§3.5 Card 3 — slide_rail")]
     ports = [_p("rail_mount", "face"), _p("carriage_mount", "face"), _p("travel_axis", "axis")]
 
     def collision_hint(self, inst):
@@ -308,6 +349,19 @@ class SlideRailCard(MechanicalElementCard):
 class RackPinionCard(MechanicalElementCard):
     card_id = "rack_pinion"
     has_functional_clearance = True  # tooth-flank backlash (§3.6, D21)
+    selection_notes = (
+        "Use when ROTATION must be converted to TRANSLATION at a defined ratio (a knob that drives "
+        "a drawer). Realizes a use-phase transmission.\n"
+        "Trade-offs: the most part-hungry option here, and it carries a STANDING R2b-OPEN FLAG — "
+        "contact-only (V-B) BIDIRECTIONAL meshing is NOT stable in the rigid rig: the "
+        "backlash-crossing impact on reversal diverges at the frozen preset, and no module size or "
+        "preset parameter fixes it (it is a contact-FORMULATION limit, D-M1-5/-7). Forward meshing "
+        "IS demonstrable. So a rack_pinion design can only be verified V-A (declared-shaft ratio); "
+        "its contact-level verification is deferred. Module bounds [3.0,4.0] are provisional and "
+        "driven by simulation stability, not mechanics.\n"
+        "Prefer a simpler element if the task does not genuinely need ratio'd rotation→translation.")
+    citations = [Citation(doc="MECHSYNTH_SPEC_v0.1", section="§3.6 Card 4 — rack_pinion"),
+                 Citation(doc="DECISIONS_LOG", section="D-M1-1/-5/-7 (R2a retired, R2b frozen)")]
     ports = [_p("pinion_axis", "axis"), _p("rack_mount", "face"), _p("mesh_line", "edge")]
 
     def collision_hint(self, inst):
@@ -359,6 +413,9 @@ class StopFlangeCard(PassiveFeatureCard):
         return collision_primitives(inst, lid_params, axis)
     selection_notes = ("Use when a hinged lid must not fold past a set angle. Cheapest stop: a "
                        "flange on the moving piece landing on a fixed wall — no added part.")
+    citations = [Citation(doc="MECHSYNTH_SPEC_v0.1", section="§3.3 (stop_flange companion)"),
+                 Citation(doc="M0 hinge box", section="stop variant — stop_angle_deg by scan"),
+                 Citation(doc="DECISIONS_LOG", section="D20 / D-M8-2 (stopping by contact)")]
 
 
 # card_ref -> card instance. Validators look up ports/requires/imposes/card_class here.
