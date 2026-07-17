@@ -65,11 +65,59 @@ def check_exclusion(ar, excluded_solid, static_solid, axis_pt, axis_dir,
     return ok, detail, free_peak
 
 
+
+def check_alignment(plan, ar, tol_deg=1.0, tol_level_mm=0.5) -> tuple[bool, str]:
+    """D-E-10: the two (or more) named travel axes must be PARALLEL (directions equal within
+    tol_deg) and, if `level`, at the same height (mount-plane Z equal within tol_level_mm). Each axis
+    referent is 'E.port' → resolved to that binding's anchor frame on the compiled geometry. This is
+    the falsifiable t0 form of 'the drawer's two rails must line up': a skewed or stepped pair fails.
+
+    Returns (ok, detail). No LLM, no physics — pure frame comparison, exactly what a first-class
+    instance↔instance constraint should reduce to (the whole point of option A over a shared datum,
+    which would make the relation unfalsifiable)."""
+    import numpy as np
+    from knowledge.templates import TEMPLATES
+    p_ = ar.predicate or {}
+    axes = p_.get("axes") or []
+    frames = []
+    for ref in axes:
+        eid, port = ref.split(".", 1)
+        b = next((x for x in plan.bindings if x.element_id == eid and x.port == port), None)
+        if b is None:
+            return False, f"alignment: axis referent {ref!r} has no matching binding"
+        piece = plan.piece(b.piece_id)
+        tr = TEMPLATES.get(piece.template_ref)
+        # instantiate with the PIECE's params (skew/step live there) — not defaults, or a skewed
+        # rail would read as aligned. The compiled anchor frame is what the requirement is about.
+        kw = {k: v for k, v in (piece.params or {}).items() if isinstance(v, (int, float))}
+        anc = tr(**kw).anchors.get(b.anchor) if tr else None
+        if anc is None:
+            return False, f"alignment: anchor {b.anchor!r} on {b.piece_id} not found"
+        frames.append((np.array(anc.normal, float), np.array(anc.position, float)))
+    d0 = frames[0][0] / (np.linalg.norm(frames[0][0]) or 1.0)
+    worst_ang, worst_dz = 0.0, 0.0
+    for (d, pos) in frames[1:]:
+        dn = d / (np.linalg.norm(d) or 1.0)
+        ang = np.degrees(np.arccos(min(1.0, abs(float(dn @ d0)))))   # unsigned angle between axes
+        worst_ang = max(worst_ang, ang)
+        worst_dz = max(worst_dz, abs(float(pos[2] - frames[0][1][2])))
+    ok_par = worst_ang <= tol_deg
+    ok_lvl = (worst_dz <= tol_level_mm) if p_.get("level") else True
+    ok = ok_par and ok_lvl
+    lvl = f", level Δz {worst_dz:.2f} mm (tol {tol_level_mm})" if p_.get("level") else ""
+    detail = (f"{p_.get('relation')}: max axis angle {worst_ang:.2f}° (tol {tol_deg}°){lvl} → "
+              f"{'ALIGNED' if ok else 'MISALIGNED'}")
+    return ok, detail
+
+
 def evaluate(plan, ar, compiled: dict, axis: dict) -> dict:
     """Dispatch one AssemblyRule to its typed checker. `compiled` = {element_id: {tag: Solid}} +
     {'parts': {pid: Solid}}; `axis` = {point, dir} (mm)."""
     if ar.kind == "resource":
         ok, detail = check_resource(plan, ar)
+        return {"id": ar.id, "kind": ar.kind, "provenance": ar.provenance, "ok": ok, "detail": detail}
+    if ar.kind == "alignment":
+        ok, detail = check_alignment(plan, ar)
         return {"id": ar.id, "kind": ar.kind, "provenance": ar.provenance, "ok": ok, "detail": detail}
     # exclusion: the excluded element's compiled geometry vs the static base
     exc = ar.predicate["excluded"]

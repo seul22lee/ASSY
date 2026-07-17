@@ -1,6 +1,6 @@
 {
   "decision_row": "D-track P-SLIDE on compiled slide_fixture",
-  "compile_hash": "1764f18",
+  "compile_hash": "1ad2d0f",
   "stroke_mm": 60.0,
   "modes": {
     "V-A": {
@@ -40,7 +40,7 @@
         "passed": true,
         "criteria_seed0": {
           "reaches_stroke (s_max >= stroke)": {
-            "value": 65.85,
+            "value": 65.8,
             "threshold": 60.0,
             "pass": true
           },
@@ -60,7 +60,7 @@
             "pass": true
           },
           "back_drift after stop <= 5 mm": {
-            "value": 3.98,
+            "value": 3.93,
             "threshold": 5.0,
             "pass": true
           }
@@ -74,95 +74,13 @@
             "derailed": false,
             "part_lost": false,
             "n_bodies_watched": 1,
-            "s_max_mm": 65.8548367142169,
+            "s_max_mm": 65.80458318006364,
             "s_settled_mm": 61.87260766253616,
-            "back_drift_mm": 3.98222905168074,
+            "back_drift_mm": 3.9319755175274835,
             "offaxis_max_deg": 0.0,
             "criteria": {
               "reaches_stroke (s_max >= stroke)": {
-                "value": 65.85,
-                "threshold": 60.0,
-                "pass": true
-              },
-              "tracks_straight (off-axis <= 3 deg)": {
-                "value": 0.0,
-                "threshold": 3.0,
-                "pass": true
-              },
-              "no_derail": {
-                "value": false,
-                "threshold": false,
-                "pass": true
-              },
-              "all_parts_retained": {
-                "value": false,
-                "threshold": false,
-                "pass": true
-              },
-              "back_drift after stop <= 5 mm": {
-                "value": 3.98,
-                "threshold": 5.0,
-                "pass": true
-              }
-            },
-            "passed": true
-          },
-          {
-            "ran": true,
-            "mode": "V-A",
-            "seed": 1,
-            "diverged": false,
-            "derailed": false,
-            "part_lost": false,
-            "n_bodies_watched": 1,
-            "s_max_mm": 65.8610209117404,
-            "s_settled_mm": 61.89763567506037,
-            "back_drift_mm": 3.9633852366800255,
-            "offaxis_max_deg": 0.0,
-            "criteria": {
-              "reaches_stroke (s_max >= stroke)": {
-                "value": 65.86,
-                "threshold": 60.0,
-                "pass": true
-              },
-              "tracks_straight (off-axis <= 3 deg)": {
-                "value": 0.0,
-                "threshold": 3.0,
-                "pass": true
-              },
-              "no_derail": {
-                "value": false,
-                "threshold": false,
-                "pass": true
-              },
-              "all_parts_retained": {
-                "value": false,
-                "threshold": false,
-                "pass": true
-              },
-              "back_drift after stop <= 5 mm": {
-                "value": 3.96,
-                "threshold": 5.0,
-                "pass": true
-              }
-            },
-            "passed": true
-          },
-          {
-            "ran": true,
-            "mode": "V-A",
-            "seed": 2,
-            "diverged": false,
-            "derailed": false,
-            "part_lost": false,
-            "n_bodies_watched": 1,
-            "s_max_mm": 65.87329518955909,
-            "s_settled_mm": 61.94767757315059,
-            "back_drift_mm": 3.925617616408495,
-            "offaxis_max_deg": 0.0,
-            "criteria": {
-              "reaches_stroke (s_max >= stroke)": {
-                "value": 65.87,
+                "value": 65.8,
                 "threshold": 60.0,
                 "pass": true
               },
@@ -192,18 +110,18 @@
           {
             "ran": true,
             "mode": "V-A",
-            "seed": 3,
+            "seed": 1,
             "diverged": false,
             "derailed": false,
             "part_lost": false,
             "n_bodies_watched": 1,
-            "s_max_mm": 65.8903839553869,
-            "s_settled_mm": 61.982870166571715,
-            "back_drift_mm": 3.90751378881518,
+            "s_max_mm": 65.81175992494113,
+            "s_settled_mm": 61.89763567506037,
+            "back_drift_mm": 3.914124249880757,
             "offaxis_max_deg": 0.0,
             "criteria": {
               "reaches_stroke (s_max >= stroke)": {
-                "value": 65.89,
+                "value": 65.81,
                 "threshold": 60.0,
                 "pass": true
               },
@@ -233,18 +151,18 @@
           {
             "ran": true,
             "mode": "V-A",
-            "seed": 4,
+            "seed": 2,
             "diverged": false,
             "derailed": false,
             "part_lost": false,
             "n_bodies_watched": 1,
-            "s_max_mm": 65.83965356342678,
-            "s_settled_mm": 61.811388778885984,
-            "back_drift_mm": 4.028264784540795,
+            "s_max_mm": 65.82632742018433,
+            "s_settled_mm": 61.94767757315059,
+            "back_drift_mm": 3.878649847033735,
             "offaxis_max_deg": 0.0,
             "criteria": {
               "reaches_stroke (s_max >= stroke)": {
-                "value": 65.84,
+                "value": 65.83,
                 "threshold": 60.0,
                 "pass": true
               },
@@ -264,7 +182,89 @@
                 "pass": true
               },
               "back_drift after stop <= 5 mm": {
-                "value": 4.03,
+                "value": 3.88,
+                "threshold": 5.0,
+                "pass": true
+              }
+            },
+            "passed": true
+          },
+          {
+            "ran": true,
+            "mode": "V-A",
+            "seed": 3,
+            "diverged": false,
+            "derailed": false,
+            "part_lost": false,
+            "n_bodies_watched": 1,
+            "s_max_mm": 65.98688378354542,
+            "s_settled_mm": 61.982870166571715,
+            "back_drift_mm": 4.004013616973708,
+            "offaxis_max_deg": 0.0,
+            "criteria": {
+              "reaches_stroke (s_max >= stroke)": {
+                "value": 65.99,
+                "threshold": 60.0,
+                "pass": true
+              },
+              "tracks_straight (off-axis <= 3 deg)": {
+                "value": 0.0,
+                "threshold": 3.0,
+                "pass": true
+              },
+              "no_derail": {
+                "value": false,
+                "threshold": false,
+                "pass": true
+              },
+              "all_parts_retained": {
+                "value": false,
+                "threshold": false,
+                "pass": true
+              },
+              "back_drift after stop <= 5 mm": {
+                "value": 4.0,
+                "threshold": 5.0,
+                "pass": true
+              }
+            },
+            "passed": true
+          },
+          {
+            "ran": true,
+            "mode": "V-A",
+            "seed": 4,
+            "diverged": false,
+            "derailed": false,
+            "part_lost": false,
+            "n_bodies_watched": 1,
+            "s_max_mm": 65.78696783728579,
+            "s_settled_mm": 61.811388778885984,
+            "back_drift_mm": 3.975579058399802,
+            "offaxis_max_deg": 0.0,
+            "criteria": {
+              "reaches_stroke (s_max >= stroke)": {
+                "value": 65.79,
+                "threshold": 60.0,
+                "pass": true
+              },
+              "tracks_straight (off-axis <= 3 deg)": {
+                "value": 0.0,
+                "threshold": 3.0,
+                "pass": true
+              },
+              "no_derail": {
+                "value": false,
+                "threshold": false,
+                "pass": true
+              },
+              "all_parts_retained": {
+                "value": false,
+                "threshold": false,
+                "pass": true
+              },
+              "back_drift after stop <= 5 mm": {
+                "value": 3.98,
                 "threshold": 5.0,
                 "pass": true
               }
@@ -318,7 +318,7 @@
             "pass": true
           },
           "tracks_straight (off-axis <= 3 deg)": {
-            "value": 1.342,
+            "value": 1.289,
             "threshold": 3.0,
             "pass": true
           },
@@ -333,7 +333,7 @@
             "pass": true
           },
           "back_drift after stop <= 5 mm": {
-            "value": 2.75,
+            "value": 1.29,
             "threshold": 5.0,
             "pass": true
           }
@@ -347,10 +347,10 @@
             "derailed": false,
             "part_lost": false,
             "n_bodies_watched": 1,
-            "s_max_mm": 60.49320399395696,
-            "s_settled_mm": 57.74354279876541,
-            "back_drift_mm": 2.7496611951915497,
-            "offaxis_max_deg": 1.341547058159001,
+            "s_max_mm": 60.48899886376511,
+            "s_settled_mm": 59.19498966441461,
+            "back_drift_mm": 1.294009199350505,
+            "offaxis_max_deg": 1.2891417595406574,
             "criteria": {
               "reaches_stroke (s_max >= stroke)": {
                 "value": 60.49,
@@ -358,7 +358,7 @@
                 "pass": true
               },
               "tracks_straight (off-axis <= 3 deg)": {
-                "value": 1.342,
+                "value": 1.289,
                 "threshold": 3.0,
                 "pass": true
               },
@@ -373,7 +373,7 @@
                 "pass": true
               },
               "back_drift after stop <= 5 mm": {
-                "value": 2.75,
+                "value": 1.29,
                 "threshold": 5.0,
                 "pass": true
               }
@@ -388,10 +388,10 @@
             "derailed": false,
             "part_lost": false,
             "n_bodies_watched": 1,
-            "s_max_mm": 60.493204814636115,
-            "s_settled_mm": 57.84842209034685,
-            "back_drift_mm": 2.6447827242892643,
-            "offaxis_max_deg": 1.34154702543059,
+            "s_max_mm": 60.48900271630118,
+            "s_settled_mm": 59.263184372388984,
+            "back_drift_mm": 1.225818343912195,
+            "offaxis_max_deg": 1.2891422078467227,
             "criteria": {
               "reaches_stroke (s_max >= stroke)": {
                 "value": 60.49,
@@ -399,7 +399,7 @@
                 "pass": true
               },
               "tracks_straight (off-axis <= 3 deg)": {
-                "value": 1.342,
+                "value": 1.289,
                 "threshold": 3.0,
                 "pass": true
               },
@@ -414,7 +414,7 @@
                 "pass": true
               },
               "back_drift after stop <= 5 mm": {
-                "value": 2.64,
+                "value": 1.23,
                 "threshold": 5.0,
                 "pass": true
               }
@@ -429,10 +429,10 @@
             "derailed": false,
             "part_lost": false,
             "n_bodies_watched": 1,
-            "s_max_mm": 60.493264514557886,
-            "s_settled_mm": 58.04817079921162,
-            "back_drift_mm": 2.4450937153462675,
-            "offaxis_max_deg": 1.3415470622671013,
+            "s_max_mm": 60.48902892628096,
+            "s_settled_mm": 59.39335307562777,
+            "back_drift_mm": 1.095675850653187,
+            "offaxis_max_deg": 1.2891417322197918,
             "criteria": {
               "reaches_stroke (s_max >= stroke)": {
                 "value": 60.49,
@@ -440,7 +440,7 @@
                 "pass": true
               },
               "tracks_straight (off-axis <= 3 deg)": {
-                "value": 1.342,
+                "value": 1.289,
                 "threshold": 3.0,
                 "pass": true
               },
@@ -455,7 +455,7 @@
                 "pass": true
               },
               "back_drift after stop <= 5 mm": {
-                "value": 2.45,
+                "value": 1.1,
                 "threshold": 5.0,
                 "pass": true
               }
@@ -470,10 +470,10 @@
             "derailed": false,
             "part_lost": false,
             "n_bodies_watched": 1,
-            "s_max_mm": 60.49326466422637,
-            "s_settled_mm": 58.18638484414227,
-            "back_drift_mm": 2.306879820084106,
-            "offaxis_max_deg": 1.3415470559125873,
+            "s_max_mm": 60.48902944069465,
+            "s_settled_mm": 59.477060739850764,
+            "back_drift_mm": 1.0119687008438873,
+            "offaxis_max_deg": 1.2891417903686633,
             "criteria": {
               "reaches_stroke (s_max >= stroke)": {
                 "value": 60.49,
@@ -481,7 +481,7 @@
                 "pass": true
               },
               "tracks_straight (off-axis <= 3 deg)": {
-                "value": 1.342,
+                "value": 1.289,
                 "threshold": 3.0,
                 "pass": true
               },
@@ -496,7 +496,7 @@
                 "pass": true
               },
               "back_drift after stop <= 5 mm": {
-                "value": 2.31,
+                "value": 1.01,
                 "threshold": 5.0,
                 "pass": true
               }
@@ -511,10 +511,10 @@
             "derailed": false,
             "part_lost": false,
             "n_bodies_watched": 1,
-            "s_max_mm": 60.49326442182481,
-            "s_settled_mm": 57.4742035330304,
-            "back_drift_mm": 3.0190608887944137,
-            "offaxis_max_deg": 1.3415470652775348,
+            "s_max_mm": 60.48902805021536,
+            "s_settled_mm": 59.01304598197896,
+            "back_drift_mm": 1.475982068236398,
+            "offaxis_max_deg": 1.2891416298148892,
             "criteria": {
               "reaches_stroke (s_max >= stroke)": {
                 "value": 60.49,
@@ -522,7 +522,7 @@
                 "pass": true
               },
               "tracks_straight (off-axis <= 3 deg)": {
-                "value": 1.342,
+                "value": 1.289,
                 "threshold": 3.0,
                 "pass": true
               },
@@ -537,7 +537,7 @@
                 "pass": true
               },
               "back_drift after stop <= 5 mm": {
-                "value": 3.02,
+                "value": 1.48,
                 "threshold": 5.0,
                 "pass": true
               }

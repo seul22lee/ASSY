@@ -110,7 +110,8 @@ def assert_sourced(hints: dict, plan) -> None:
 
 def build_mjcf(parts: dict, hints: dict, axis: dict, base_pid: str, mover_pid: str,
                pin_pid: str, mode: str, meshdir: Path, roles: dict, tag: str,
-               tip_point=None, latch_point=None, plan=None, joint_kind="hinge"):
+               tip_point=None, latch_point=None, plan=None, joint_kind="hinge",
+               slide_friction_N=None):
     """parts: {pid: build123d Solid}; hints: {pid: [collision prim dicts]}; axis: {point,dir} in mm;
     roles: {pid: 'base'|'mover'|'hardware'|'other'}. Emits MJCF for `mode` ('V-A'|'V-B')."""
     meshdir.mkdir(parents=True, exist_ok=True)
@@ -160,11 +161,13 @@ def build_mjcf(parts: dict, hints: dict, axis: dict, base_pid: str, mover_pid: s
                     # physical stop the T-rail's stop-tab provides in V-B; without a limit a prismatic
                     # joint just accelerates forever under a constant push.
                     strk_m = float(axis.get("stroke_mm", 60.0)) * MM
-                    # frictionloss = a slide's real Coulomb friction: a released drawer holds its
-                    # position (§6.3 back-drift) instead of coasting/rebounding off a frictionless
-                    # stop. A physical property of the mechanism, not a preset knob.
+                    # frictionloss = the slide's real Coulomb friction, PHYSICALLY SOURCED by the
+                    # caller as μ·N (PETG.mu_friction × the carriage weight) — the same μ the frozen
+                    # contact preset gives V-B, so V-A models what V-B feels. A material property, not
+                    # an invented number (the m8 lesson: a value chosen to pass a gate is a fabrication).
+                    fl = slide_friction_N if slide_friction_N is not None else 0.0
                     ET.SubElement(body, "joint", name="slide", type="slide", axis=_v(ax_dir),
-                                  pos=_v(ax_pt), damping="0.05", frictionloss="0.15",
+                                  pos=_v(ax_pt), damping="0.05", frictionloss=f"{fl:.5f}",
                                   range=f"-0.002 {strk_m + 0.002:.5f}", limited="true")
                 else:
                     ET.SubElement(body, "joint", name="hinge", type="hinge", axis=_v(ax_dir),

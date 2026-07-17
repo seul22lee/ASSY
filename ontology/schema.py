@@ -243,12 +243,17 @@ class AssemblyRule(_Base):
                  ("the latch must lie outside the lid's swept volume"; the M0 B4 heritage)
       resource   a shared budget                 — predicate {"contributors": [<ref>,...],
                  "budget": <ref>, "op": "<="}  ("hook length + hinge edge_margin ≤ rim length")
+      alignment  an instance↔instance POSE relation — predicate {"axes": [<elem.port>, <elem.port>],
+                 "relation": "parallel", "level": true}  ("two drawer rails must be parallel and at
+                 the same height"). D-E-10: a pose relation is neither a negative volume (exclusion)
+                 nor a scalar budget (resource); it relates two elements' bound axis frames, checked
+                 at t0 by comparing them. Falsifiable — a skewed pair fails.
 
     Provenance (D-ONT-12 c) records WHO imposed it — a card's `interaction_rules` knowledge, a
     template, or the task — so a rule never appears from thin air.
     """
     id: str
-    kind: Literal["exclusion", "resource"]
+    kind: Literal["exclusion", "resource", "alignment"]
     provenance: str            # "card:<card_id>" | "template:<ref>" | "task"
     subjects: list[str]        # named IR referents: element/feature/piece ids, "E.port", "P.name"
     predicate: dict            # kind-typed payload (V-16 validates); its referents ⊆ subjects

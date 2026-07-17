@@ -73,7 +73,7 @@ P-SLIDE now carries an **`all_parts_retained`** criterion that watches EVERY non
 the actuated one) — a body that drops or strays off the travel axis fails the gate. So a genuinely
 lost part now fires, and the criterion passes here (one carriage, retained).
 
-## DRAFT (D-E-10) — the alignment ontology gap, for your ruling
+## D-E-10 — the alignment ontology gap: RULED (Option A) and IMPLEMENTED
 
 The Hard anchor's drawer runs on **two** slide_rail instances that must be **parallel and level**.
 That is an **instance↔instance** constraint (E_left ∥ E_right, same height) — a relationship between
@@ -92,17 +92,20 @@ directions must be equal, their mount planes coplanar). Three options:
 | B | **a shared datum both rails bind to** | introduce a `datum`/reference feature; both rails' `travel_axis` bind to it, so parallelism is *by construction* (they reference the same axis) rather than checked. | new ontology entity (datum) + binding semantics; parallelism becomes unfalsifiable (can't be violated → can't be a graded requirement). Loses the "physics discovers the requirement" property. |
 | C | **`resource` with an angle/offset budget** | encode as Σ|axis-angle-difference| ≤ ε and Σ|height-difference| ≤ ε, reusing the existing `resource` kind. | no new kind, but abuses `resource` (it's a *pose* relation, not a shared budget) — the predicate would misname what it checks, the m8-class error of a label that lies about its content. |
 
-**Recommendation: A (`alignment` kind).** It is the honest first-class form: the constraint IS a
-relation between two elements, AssemblyRule IS the instance↔instance home (D-ONT-12), and a t0
-checker comparing the two axis frames makes it *checkable and falsifiable* (a mis-aligned pair fails,
-the way a physics-derived requirement should). B makes it unfalsifiable; C makes `resource` lie about
-what it holds. Flagged as DRAFT — **your ruling** before it lands (not smuggled, per the brief).
+**Ruled: Option A, and implemented.** `AssemblyRule.kind` gains **`alignment`**; **V-16** validates
+its predicate (≥2 axis referents, relation ∈ {parallel, collinear}, each referent a D13 subject); a
+t0 checker **`check_alignment`** resolves each `E.travel_axis` to its bound anchor frame and compares
+directions (parallel within tol) + heights (level within tol). It is falsifiable, which was the whole
+argument for A over B: `tests/test_alignment_rule.py` (4/4) shows two parallel/level rails PASS, a **5°
+skewed pair FAILS** (the negative test), a stepped pair FAILS when `level` is required, and V-16
+rejects a one-axis predicate. Both IR renderers show the alignment kind (parity guard holds). A
+`slide_base_dual` template (two axis anchors, `skew_deg`/`step_mm`) is the test host. The Hard anchor
+can now state "the drawer's two rails must be parallel and level" as a first-class, checkable rule.
 
 ## Decisions
 
 **D-E-9** (API economy — logged separately) · **D-D-1** slide_rail card built (T-rail, all-boxes,
-§3.5 chain; V-A 5/5, V-B 5/5 after the disjoint-carriage fix) · **D-E-10 DRAFT** the alignment ontology gap
-(three options, recommend the `alignment` AssemblyRule kind).
+§3.5 chain; V-A 5/5, V-B 5/5 after the disjoint-carriage fix) · **D-E-10 CONFIRMED (Option A)** the `alignment` AssemblyRule kind — implemented (V-16 + t0 check_alignment + skew/step negative tests).
 
 Suite **54/54**.
 

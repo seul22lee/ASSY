@@ -80,6 +80,9 @@ def assembly_rule_edges(plan) -> list[tuple]:
         roles = {}
         if ar.kind == "exclusion":
             roles = {pred.get("excluded"): "excluded", pred.get("sweep_of"): "sweep_of"}
+        elif ar.kind == "alignment":
+            for a in pred.get("axes", []):
+                roles[a] = pred.get("relation", "aligns")
         elif ar.kind == "resource":
             for c in pred.get("contributors", []):
                 roles[c] = f"{c.split('.', 1)[1]} (+)" if "." in c else "contributor"

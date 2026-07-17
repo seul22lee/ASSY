@@ -348,6 +348,17 @@ def v16(plan: DesignPlan) -> list[Violation]:
                 if r and r not in ar.subjects:
                     out.append(Violation("V-16", f"exclusion rule '{ar.id}' referent '{r}' not in "
                                                   f"subjects (D13)"))
+        elif ar.kind == "alignment":
+            # D-E-10: two (or more) axis referents + a relation; level is optional bool. Every axis
+            # referent must be a subject (D13), so t0 can resolve each to a bound anchor frame.
+            axes = p.get("axes") or []
+            if len(axes) < 2 or p.get("relation") not in ("parallel", "collinear"):
+                out.append(Violation("V-16", f"alignment rule '{ar.id}' needs axes[>=2] and "
+                                              f"relation ∈ {{parallel,collinear}}"))
+            for r in axes:
+                if r not in ar.subjects:
+                    out.append(Violation("V-16", f"alignment rule '{ar.id}' axis referent '{r}' "
+                                                  f"not in subjects (D13)"))
         elif ar.kind == "resource":
             contribs, budget = p.get("contributors") or [], p.get("budget")
             if not contribs or budget is None or p.get("op") not in ("<=", "<"):

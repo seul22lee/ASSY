@@ -34,8 +34,24 @@ from tasks.build_goldens import slide_fixture
 from verify.t2_physics.mjcf import build_mjcf
 from verify.t2_physics.runner import _hash, g9_gconv
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "m0"))
+from step2mjcf import DENSITY, MM  # PETG density + mm→m (R5-frozen)  # noqa: E402
+from knowledge.materials import PETG  # noqa: E402
+
+G = 9.81
+
+
+def _slide_friction_N(mover_part) -> float:
+    """The V-A slide joint's Coulomb friction, PHYSICALLY SOURCED: μ·N = PETG.mu_friction × the
+    carriage weight (mass·g). This is the SAME μ the frozen contact preset applies to V-B, so V-A's
+    declared joint feels the friction V-B's contacts do — not an invented value chosen to pass a
+    gate. mass = volume·density (the mesh mass MuJoCo will compute)."""
+    vol_m3 = float(mover_part.volume) * (MM ** 3)
+    mass = vol_m3 * DENSITY
+    return PETG.mu_friction * mass * G
+
 N_SEEDS, SEED_PASS, FPS = 5, 4, 60
-F_MAX, T_RAMP, T_SETTLE = 0.6, 2.0, 1.5   # axial ramp out (overcome friction), release, settle
+F_MAX, T_RAMP, T_SETTLE = 0.3, 2.0, 1.5   # gentle axial ramp (avoid slamming the soft end-stop)
 T_HOLD = T_REV = 0.0
 T_END = T_RAMP + T_SETTLE
 OFFAXIS_LIMIT, BACKDRIFT_LIMIT = 3.0, 5.0                         # deg, mm (§6.3)
@@ -208,8 +224,10 @@ def main():
               "stroke_mm": stroke, "modes": {}}
     for mode in ("V-A", "V-B"):
         axis = dict(ca.axes["E1"]); axis["stroke_mm"] = stroke
+        fric = _slide_friction_N(ca.parts["P2"])
         xml, meta = build_mjcf(parts, hints, axis, "P1", "P2", "P2", mode,
-                               out / "assets", roles, "slide", plan=plan, joint_kind="slide")
+                               out / "assets", roles, "slide", plan=plan, joint_kind="slide",
+                               slide_friction_N=fric)
         xf = out / f"t2_slide_{mode}.xml"; xf.write_text(xml)
         model = mj.MjModel.from_xml_path(str(xf))
         gok, checks = g9_gconv(model)

@@ -208,6 +208,29 @@ def slide_carriage(**params) -> TemplateResult:
     return TemplateResult(part=part, anchors=anchors, params={**p, "box_h": p["car_z"]})
 
 
+
+
+def slide_base_dual(**params) -> TemplateResult:
+    """A base carrying TWO parallel rails (the Hard-anchor drawer form) — the alignment test host
+    (D-E-10). Two travel-axis anchors rail_L / rail_R; `skew_deg` tilts rail_R's axis and `step_mm`
+    raises it, so a skewed/stepped pair can be constructed and MUST fail check_alignment."""
+    import math
+    p = {"base_l": 120.0, "base_w": 80.0, "base_t": 3.0, "rail_gap": 60.0,
+         "skew_deg": 0.0, "step_mm": 0.0, **params}
+    L, W, T = p["base_l"], p["base_w"], p["base_t"]
+    part = Box(L, W, T, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    th = math.radians(p["skew_deg"])
+    anchors = {
+        "rail_L": AnchorGeom("rail_L", "axis", (0.0, -p["rail_gap"] / 2, T), (1, 0, 0)),
+        "rail_R": AnchorGeom("rail_R", "axis", (0.0, p["rail_gap"] / 2, T + p["step_mm"]),
+                             (math.cos(th), math.sin(th), 0.0)),
+        "face_L": AnchorGeom("face_L", "face", (0.0, -p["rail_gap"] / 2, T), (0, 0, 1)),
+        "face_R": AnchorGeom("face_R", "face", (0.0, p["rail_gap"] / 2, T + p["step_mm"]), (0, 0, 1)),
+    }
+    return TemplateResult(part=part, anchors=anchors, params=p)
+
+
 TEMPLATES = {"box_shell": box_shell, "lid_panel": lid_panel,
              "slide_base": slide_base, "slide_carriage": slide_carriage,
+             "slide_base_dual": slide_base_dual,
              "flat_panel_mount": flat_panel_mount, "retained_board": retained_board}

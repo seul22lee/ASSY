@@ -25,7 +25,7 @@
       <geom name="P1_vis" type="mesh" mesh="P1_vis" contype="0" conaffinity="0" group="2" material="base"/>
     </body>
     <body name="P2" pos="0 0 0">
-      <joint name="slide" type="slide" axis="1.000000000 0.000000000 0.000000000" pos="0.000000000 0.000000000 0.003000000" damping="0.05" frictionloss="0.15" range="-0.002 0.06200" limited="true"/>
+      <joint name="slide" type="slide" axis="1.000000000 0.000000000 0.000000000" pos="0.000000000 0.000000000 0.003000000" damping="0.05" frictionloss="0.00894" range="-0.002 0.06200" limited="true"/>
       <inertial pos="-0.031500000 -0.000000000 0.009402155" mass="0.003038913" fullinertia="0.000000116326 0.000000153127 0.000000186559 -0.000000000000 -0.000000000000 -0.000000000000"/>
       <geom name="P2_vis" type="mesh" mesh="P2_vis" contype="0" conaffinity="0" group="2" material="mover"/>
     </body>
