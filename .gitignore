@@ -21,3 +21,14 @@ __pycache__/
 # MuJoCo runtime log (regenerable)
 MUJOCO_LOG.TXT
 **/MUJOCO_LOG.TXT
+
+# --- SECRETS — never committed. ------------------------------------------------
+# API keys live ONLY in .env (untracked, local). .env.example documents the names
+# with NO values and IS tracked. Added before any key existed, so there was never a
+# window in which a pasted key could be committed.
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+secrets.json
