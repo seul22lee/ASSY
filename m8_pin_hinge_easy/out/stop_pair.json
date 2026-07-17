@@ -2,17 +2,17 @@
   "decision_row": "D-M8-2 (stop variant pair \u2014 D20 demonstration)",
   "B3_ceiling_deg": 120.05,
   "baseline": {
-    "theta_max_deg": 272.3729,
-    "seeds_passed": 0,
+    "theta_max_deg": 272.0579,
+    "seeds_passed": 1,
     "verdict": false,
     "reading": "no stop declared \u21d2 none exists \u21d2 lid folds over (the finding)"
   },
   "stop": {
-    "theta_max_deg": 124.4009,
-    "seeds_passed": 4,
+    "theta_max_deg": 124.4458,
+    "seeds_passed": 5,
     "verdict": true,
     "first_reaches_ceiling_s": 0.924,
-    "overshoot_deg": 4.350899999999996,
+    "overshoot_deg": 4.395800000000008,
     "reading": "flange bottoms out on the box rear wall \u2014 arrest BY CONTACT"
   }
 }

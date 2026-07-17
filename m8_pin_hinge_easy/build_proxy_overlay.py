@@ -61,10 +61,11 @@ def proxy_contacts_at(plan, ca, hints, deg):
     Poses the free lid at `deg` about the hinge axis and reports the box↔lid contact pairs."""
     merged = {pid: [{**p, "cclass": "seat", "owner": None} for p in prims]
               for pid, prims in hints.items()}          # collapse mech/seat → one class
+    merged["P3"] = []   # the pin rides with the mech class; drop it so this isolates box↔lid
     roles = {"P1": "base", "P2": "mover", "P3": "hardware"}
     xml, meta = build_mjcf({p: ca.parts[p] for p in ("P1", "P2", "P3")}, merged, ca.axes["E1"],
                            "P1", "P2", "P3", "V-B", T2 / "assets", roles, "easy",
-                           tip_point=(0.0, 30.0, 40.0))
+                           tip_point=(0.0, 30.0, 40.0), plan=plan)
     f = T2 / "_merged26.xml"; f.write_text(xml)
     m = mj.MjModel.from_xml_path(str(f)); d = mj.MjData(m); f.unlink()
     mover = mj.mj_name2id(m, mj.mjtObj.mjOBJ_BODY, "P2")

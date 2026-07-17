@@ -19,39 +19,34 @@ from verify.t2_physics.runner import t2
 
 
 def build_hints(plan, ca):
-    """t2 collision hints = template seating prims + card hints, per piece (D-ONT-11 provenance)."""
+    """t2 collision hints = template seating prims + card hints, per piece — every prim carrying the
+    `source` its producer stamped (D-M8-4; build_mjcf refuses anything unsourced).
+
+    Nothing is built HERE. The driver only ROUTES what the cards and templates emit: card prims carry
+    an `owner` (A → base host, B → mover host, pin → the hardware piece the element provides), and
+    template prims go to the piece whose template_ref produced them. That is deliberate — the
+    retracted open-stop was driver-built geometry, and a driver that cannot author prims cannot
+    repeat that mistake.
+    """
     bp = plan.piece("P1").params
     lp = {**plan.piece("P2").params, "box_h": bp["box_h"]}
-    e1 = plan.element("E1")
-    wedges = CARD_REGISTRY["pin_hinge"].collision_hint(e1)          # ring-of-wedges, owner A/B
     axis = ca.axes["E1"]
-    ap = axis["point"]                                              # mm, on the axis
-    p3 = plan.piece("P3").params
-    pin_r, pin_len = p3["pin_d"] / 2.0, p3["pin_len"]
-    # the pin: a cylinder along the world axis (+X). local +Z → +X via euler (0,90,0).
-    pin_cyl = {"type": "cylinder", "frame": "world", "pos": tuple(ap), "cclass": "mech",
-               "size": (pin_r, pin_len / 2.0), "euler_world": (0.0, 90.0, 0.0)}
-    # NO invented open-stop. An end stop must come from the IR (a stop_flange PassiveFeature whose
-    # imposed B3-class rotation limit V-08 registers) and be REAL geometry in the carve — never a
-    # collision prim conjured in the physics driver. The baseline anchor_easy has no stop_flange, so
-    # it HAS no stop: past 90° the over-centre lid folds right over, and that fold-over is the
-    # finding (M0 hinge_box: "no stop: the lid is free to fold flat. That is the finding.") — V-B
-    # exists precisely to expose it, so suppressing it would defeat the mode's whole purpose.
-    hints = {
-        "P1": box_shell_collision(**bp) + [w for w in wedges if w.get("owner") == "A"],
-        "P2": lid_panel_collision(**lp) + [w for w in wedges if w.get("owner") == "B"],
-        "P3": [pin_cyl],
-    }
-    # PassiveFeature collision, straight from the IR: a stop_flange in the plan means real carved
-    # flange geometry on its host, so its (exact, box) proxy joins that piece's hints. If the plan
-    # declares no feature, no stop geometry exists and none is added — the fold-over stands.
+    owner_pid = {"A": "P1", "B": "P2", "pin": "P3"}
+
+    hints = {"P1": box_shell_collision(**bp), "P2": lid_panel_collision(**lp), "P3": []}
+    # MechanicalElement hints (the hinge: ring-of-wedges + the pin it provides, D-ONT-11)
+    for e in plan.elements:
+        prims = CARD_REGISTRY[e.card_ref].collision_hint(e)
+        for prim in prims or []:
+            pid = owner_pid.get(prim.get("owner"))
+            if pid:
+                hints[pid].append(prim)
+    # PassiveFeature hints (the stop_flange, when the plan declares one)
     for f in plan.features:
-        card = CARD_REGISTRY[f.card_ref]
         host = next(b.piece_id for b in plan.bindings if b.element_id == f.id)
         host_params = lp if host == "P2" else plan.piece(host).params
-        prims = card.collision_hint(f, host_params, axis)
-        if prims:
-            hints[host] = hints.get(host, []) + prims
+        prims = CARD_REGISTRY[f.card_ref].collision_hint(f, host_params, axis)
+        hints[host] = hints.get(host, []) + list(prims or [])
     return hints
 
 
@@ -71,7 +66,7 @@ def stop_angle_from_ir(plan) -> float:
 
 def main():
     variant = sys.argv[2] if len(sys.argv) > 2 else None
-    plan = anchor_easy(variant=variant) if variant else anchor_easy()
+    plan = anchor_easy(variant) if variant else anchor_easy()
     ca = compile_assembly(plan)
     hints = build_hints(plan, ca)
     roles = {"P1": "base", "P2": "mover", "P3": "hardware"}
@@ -85,12 +80,16 @@ def main():
     protrusion = 3.0                                               # PROTRUDE (pin_hinge PROTRUDE)
 
     stop_deg = stop_angle_from_ir(plan)
-    tag = f"easy_{plan.variant}" if plan.variant else "easy"
+    # the BENCHMARK (stop) is plain "easy"; the D20 demo is tagged by its variant
+    tag = "easy" if plan.variant == "stop" else f"easy_{plan.variant}"
     print(f"variant={plan.variant or 'baseline (no stop)'}  stop_angle_from_IR={stop_deg}")
     out = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("verify/t2_physics/out_easy")
     res = t2(parts, hints, ca.axes["E1"], roles, ["V-A", "V-B"], out,
              "P1", "P2", "P3", tag, tip_point=tip, latch_point=latch,
-             clearance=clearance, protrusion=protrusion, stop_angle_deg=stop_deg,
+             clearance=clearance, protrusion=protrusion, stop_angle_deg=stop_deg, plan=plan,
+             expected_fail=("expected: fold-over, no angular limit — the lid has no stop_flange, so "
+                            "past 90° the over-centre lid folds flat (D20 demo golden)"
+                            if plan.variant == "nostop" else ""),
              decision_row="stage-⑨ P-HINGE on compiled Easy anchor")
 
     for mode, e in res["modes"].items():

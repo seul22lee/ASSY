@@ -54,9 +54,63 @@ def _ring_world(prim, loc_pts):
     return pos, R, prim
 
 
+class UnsourcedCollisionPrim(ValueError):
+    """A collision primitive that traces to no declared source. **This is a BUILD ERROR, not a
+    warning** (D-M8-4).
+
+    The rule exists because m8 shipped a "designed open-stop" that was pure fabrication: a prim
+    conjured in the physics driver with no solid in the compiled STEP and no entity in the IR. It
+    made a failing V-B go green, and nothing in the toolchain objected. Physics may only ever
+    simulate geometry the design actually declares — so every collision geom must name a source that
+    resolves to a declared IR entity:
+
+        card:<card_ref>@<inst_id>   an element/feature's own collision_hint (the instance must exist
+                                    in the plan, with that card_ref)
+        template:<template_ref>     host geometry (some piece in the plan must use that template)
+        fixture:D23                 the base-weld boundary condition
+
+    A prim with no `source`, or a source naming an entity the plan does not declare, cannot be
+    emitted. Inventing geometry now requires forging a provenance that the IR would have to back —
+    a deliberate act, not an oversight.
+    """
+
+
+def declared_sources(plan) -> set[str]:
+    """Every collision-geom source this plan legitimately authorizes (D-M8-4)."""
+    src = {"fixture:D23"}
+    for e in getattr(plan, "elements", []):
+        src.add(f"card:{e.card_ref}@{e.id}")
+    for f in getattr(plan, "features", []):
+        src.add(f"card:{f.card_ref}@{f.id}")
+    for p in getattr(plan, "pieces", []):
+        if getattr(p, "template_ref", None):
+            src.add(f"template:{p.template_ref}")
+    return src
+
+
+def assert_sourced(hints: dict, plan) -> None:
+    """Refuse any collision geom that does not trace to a declared source. Called by build_mjcf
+    before a single geom is emitted — the mechanized form of D-M8-4."""
+    ok = declared_sources(plan)
+    for pid, prims in (hints or {}).items():
+        for i, prim in enumerate(prims or []):
+            s = prim.get("source")
+            where = f"{pid}[{i}] ({prim.get('type', '?')}, role_hint={prim.get('role_hint')})"
+            if not s:
+                raise UnsourcedCollisionPrim(
+                    f"collision geom {where} declares NO source. Every collision geom must trace to "
+                    f"a card collision_hint, a template hint, or the D23 fixture (D-M8-4). A prim "
+                    f"with no declared source is geometry the design does not contain.")
+            if s not in ok:
+                raise UnsourcedCollisionPrim(
+                    f"collision geom {where} claims source '{s}', which resolves to NO declared IR "
+                    f"entity (D-M8-4). Authorized sources for this plan: {sorted(ok)}. Physics may "
+                    f"only simulate geometry the IR declares.")
+
+
 def build_mjcf(parts: dict, hints: dict, axis: dict, base_pid: str, mover_pid: str,
                pin_pid: str, mode: str, meshdir: Path, roles: dict, tag: str,
-               tip_point=None, latch_point=None):
+               tip_point=None, latch_point=None, plan=None):
     """parts: {pid: build123d Solid}; hints: {pid: [collision prim dicts]}; axis: {point,dir} in mm;
     roles: {pid: 'base'|'mover'|'hardware'|'other'}. Emits MJCF for `mode` ('V-A'|'V-B')."""
     meshdir.mkdir(parents=True, exist_ok=True)
@@ -64,6 +118,14 @@ def build_mjcf(parts: dict, hints: dict, axis: dict, base_pid: str, mover_pid: s
     ax_dir = np.array(axis["dir"], float); ax_dir /= np.linalg.norm(ax_dir)
 
     root = ET.Element("mujoco", model=f"t2_{tag}_{mode}")
+    # D-M8-4, mechanized: nothing is emitted until every collision geom names a declared source.
+    # `plan` is required — provenance cannot be checked against a plan we were not given.
+    if plan is None:
+        raise UnsourcedCollisionPrim(
+            "build_mjcf requires `plan`: collision-geom provenance cannot be verified without the "
+            "IR to check against (D-M8-4).")
+    assert_sourced(hints, plan)
+
     ET.SubElement(root, "compiler", angle="radian", meshdir=meshdir.name, autolimits="true")
     ET.SubElement(root, "option", timestep="0.0005", integrator="implicitfast",
                   cone="elliptic", impratio="10")   # FROZEN (R5)

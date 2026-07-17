@@ -94,4 +94,5 @@ def collision_primitives(inst, lid_params: dict, axis) -> list:
     F1's imposed B3 limit); it is not a stop conjured in the physics driver."""
     (cx, cy, cz), (sx, sy, sz) = _flange_box(inst, lid_params, axis["point"])
     return [{"type": "box", "frame": "world", "pos": (cx, cy, cz),
-             "size": (sx / 2, sy / 2, sz / 2), "role_hint": "stop_flange"}]
+             "size": (sx / 2, sy / 2, sz / 2), "role_hint": "stop_flange",
+             "source": f"card:stop_flange@{inst.id}"}]

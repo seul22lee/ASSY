@@ -33,7 +33,7 @@ def _b3_ceiling() -> float:
     """Read the declared ceiling FROM THE IR (B3, imposed by F1) — never hardcode it here; the
     number is F1's solved stop_angle and must travel with the plan."""
     from tasks.build_goldens import anchor_easy
-    b3 = next(b for b in anchor_easy(variant="stop").behaviors if b.id == "B3")
+    b3 = next(b for b in anchor_easy("stop").behaviors if b.id == "B3")
     return float(b3.motion.range_value)
 
 
@@ -48,9 +48,10 @@ def series(tag, mode="V-B"):
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    base, stop = series("easy"), series("easy_stop")
-    vb = {t: json.loads((T2 / f"t2_{t}_verdict.json").read_text())["modes"]["V-B"]["p_hinge"]
-          for t in ("easy", "easy_stop")}
+    base, stop = series("easy_nostop"), series("easy")
+    raw = {t: json.loads((T2 / f"t2_{t}_verdict.json").read_text()) for t in ("easy_nostop", "easy")}
+    vb = {("easy" if t == "easy_nostop" else "easy_stop"): r["modes"]["V-B"]["p_hinge"]
+          for t, r in raw.items()}   # local keys: "easy"=baseline/nostop demo, "easy_stop"=benchmark
 
     fig, axes = plt.subplots(2, 1, figsize=(9, 7.6), sharex=True,
                              gridspec_kw={"height_ratios": [3, 1]})

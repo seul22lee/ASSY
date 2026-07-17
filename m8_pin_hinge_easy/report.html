@@ -67,10 +67,10 @@ declared rather than the shape we built.</p>
  snap latch teeth seat in the box's catch window (front, right), in a single cut.</div>
 
 <h3>IR graph</h3>
-<div class="ir"><svg xmlns="http://www.w3.org/2000/svg" width="1130" height="544" font-family="monospace" viewBox="0 0 1130 544">
-<rect width="1130" height="544" fill="#fbfdff"/>
+<div class="ir"><svg xmlns="http://www.w3.org/2000/svg" width="1130" height="620" font-family="monospace" viewBox="0 0 1130 620">
+<rect width="1130" height="620" fill="#fbfdff"/>
 <defs><marker id="arw" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#4a5568"/></marker><marker id="arwN" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#e53e3e"/></marker></defs>
-<text x="20" y="24" font-size="15" font-weight="bold" fill="#1a202c">anchor_easy — IR  (compile 1f2eb47)</text>
+<text x="20" y="24" font-size="15" font-weight="bold" fill="#1a202c">anchor_easy — BENCHMARK IR: F1 stop_flange + B3 limit  (compile ff6f812)</text>
 <text x="40" y="74" font-size="10" font-weight="bold" fill="#718096">PIECES</text>
 <text x="250" y="74" font-size="10" font-weight="bold" fill="#718096">ELEMENTS / FEATURES</text>
 <text x="470" y="74" font-size="10" font-weight="bold" fill="#718096">BEHAVIORS</text>
@@ -103,6 +103,12 @@ declared rather than the shape we built.</p>
 <line x1="400" y1="183.0" x2="470" y2="411.0" stroke="#718096" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
 <rect x="408.9" y="267.76" width="41.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
 <text x="429.4" y="276.76" font-size="8" fill="#4a5568" text-anchor="middle">imposes</text>
+<line x1="400" y1="259.0" x2="470" y2="487.0" stroke="#718096" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
+<rect x="408.9" y="343.76" width="41.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="429.4" y="352.76" font-size="8" fill="#4a5568" text-anchor="middle">imposes</text>
+<line x1="620" y1="487.0" x2="700" y2="183.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
+<rect x="623.1" y="348.32" width="61.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="653.6" y="357.32" font-size="8" fill="#4a5568" text-anchor="middle">verified_by</text>
 <line x1="250" y1="107.0" x2="190" y2="107.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
 <rect x="211.8" y="96.0" width="26.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
 <text x="224.8" y="105.0" font-size="8" fill="#4a5568" text-anchor="middle">axis</text>
@@ -118,6 +124,9 @@ declared rather than the shape we built.</p>
 <line x1="250" y1="183.0" x2="190" y2="107.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
 <rect x="191.8" y="140.08" width="66.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
 <text x="224.8" y="149.08" font-size="8" fill="#4a5568" text-anchor="middle">catch_window</text>
+<line x1="250" y1="259.0" x2="190" y2="183.0" stroke="#718096" stroke-width="1.2" marker-end="url(#arw)"/>
+<rect x="204.3" y="216.08" width="41.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
+<text x="224.8" y="225.08" font-size="8" fill="#4a5568" text-anchor="middle">contact</text>
 <line x1="250" y1="107.0" x2="190" y2="259.0" stroke="#718096" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
 <rect x="201.8" y="159.84" width="46.0" height="12" rx="3" fill="#ffffff" fill-opacity="0.88"/>
 <text x="224.8" y="168.84" font-size="8" fill="#4a5568" text-anchor="middle">provides</text>
@@ -144,27 +153,29 @@ declared rather than the shape we built.</p>
 <rect x="40" y="236" width="150" height="46" rx="6" fill="#cbd5e0" stroke="#2d3748" stroke-width="1.5"/><text x="115.0" y="254" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">P3  pin</text><text x="115.0" y="268" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">hardware &lt; E1</text><rect x="164" y="239" width="22" height="12" rx="2" fill="#2d3748"/><text x="175" y="248" font-size="8" font-family="monospace" fill="#e2e8f0" text-anchor="middle" font-weight="bold">HW</text>
 <rect x="250" y="84" width="150" height="46" rx="6" fill="#c6f6d5" stroke="#38a169" stroke-width="1.5"/><text x="325.0" y="102" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">E1</text><text x="325.0" y="116" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">pin_hinge</text>
 <rect x="250" y="160" width="150" height="46" rx="6" fill="#c6f6d5" stroke="#38a169" stroke-width="1.5"/><text x="325.0" y="178" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">E2</text><text x="325.0" y="192" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">snap_hook_cantilever</text>
+<polygon points="262,236 388,236 400,259.0 388,282 262,282 250,259.0" fill="#fefcbf" stroke="#d69e2e" stroke-width="1.5"/><text x="325.0" y="254" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">F1</text><text x="325.0" y="268" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">stop_flange</text>
 <rect x="470" y="84" width="150" height="46" rx="6" fill="#bee3f8" stroke="#3182ce" stroke-width="1.5"/><text x="545.0" y="102" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B1 · use</text><text x="545.0" y="116" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">rotation ≥90°</text>
 <rect x="470" y="160" width="150" height="46" rx="6" fill="#fed7aa" stroke="#dd6b20" stroke-width="1.5"/><text x="545.0" y="178" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B2 · assembly</text><text x="545.0" y="192" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">translation</text>
 <rect x="470" y="236" width="150" height="46" rx="6" fill="#e2e8f0" stroke="#718096" stroke-width="1.5"/><text x="545.0" y="254" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B4 · static</text><text x="545.0" y="268" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">snap_event [15,60]N</text>
 <rect x="470" y="312" width="150" height="46" rx="6" fill="#bee3f8" stroke="#3182ce" stroke-width="1.5"/><text x="545.0" y="330" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B5 · use</text><text x="545.0" y="344" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">fixed</text>
 <rect x="470" y="388" width="150" height="46" rx="6" fill="#fed7aa" stroke="#dd6b20" stroke-width="1.5"/><text x="545.0" y="406" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B6 · assembly</text><text x="545.0" y="420" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">translation</text>
+<rect x="470" y="464" width="150" height="46" rx="6" fill="#bee3f8" stroke="#3182ce" stroke-width="1.5"/><text x="545.0" y="482" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">B3 · use</text><text x="545.0" y="496" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">rotation limit 120°</text>
 <rect x="700" y="84" width="150" height="46" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="1.5"/><text x="775.0" y="102" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">P-HINGE-VA</text><text x="775.0" y="116" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">4 gates / 0 obs</text>
 <rect x="700" y="160" width="150" height="46" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="1.5"/><text x="775.0" y="178" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">P-HINGE-VB</text><text x="775.0" y="192" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">4 gates / 0 obs</text>
 <rect x="700" y="236" width="150" height="46" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="1.5"/><text x="775.0" y="254" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">PR-LATCH</text><text x="775.0" y="268" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">2 gates / 0 obs</text>
 <rect x="700" y="312" width="150" height="46" rx="6" fill="#ffffff" stroke="#805ad5" stroke-width="1.5"/><text x="775.0" y="330" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">PR-SWEEP</text><text x="775.0" y="344" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">1 gates / 0 obs</text>
 <polygon points="940,107.0 1015.0,84 1090,107.0 1015.0,130" fill="#fefcbf" stroke="#b7791f" stroke-width="1.5"/><text x="950" y="111.0" font-size="12" fill="#b7791f">&#9878;</text><text x="1015.0" y="102" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">AR1  exclusion</text><text x="1015.0" y="116" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">&lt; snap_hook_cantilever.interaction_rules</text>
 <polygon points="940,183.0 1015.0,160 1090,183.0 1015.0,206" fill="#fefcbf" stroke="#b7791f" stroke-width="1.5"/><text x="950" y="187.0" font-size="12" fill="#b7791f">&#9878;</text><text x="1015.0" y="178" font-size="11" font-family="monospace" font-weight="bold" fill="#1a202c" text-anchor="middle">AR2  resource</text><text x="1015.0" y="192" font-size="9.5" font-family="monospace" font-weight="normal" fill="#4a5568" text-anchor="middle">provenance: task</text>
-<rect x="20" y="518" width="14" height="14" fill="#bee3f8" stroke="#3182ce"/><text x="38" y="529" font-size="9" fill="#4a5568">use</text>
-<rect x="68.0" y="518" width="14" height="14" fill="#fed7aa" stroke="#dd6b20"/><text x="86.0" y="529" font-size="9" fill="#4a5568">assembly</text>
-<rect x="146.0" y="518" width="14" height="14" fill="#e2e8f0" stroke="#718096"/><text x="164.0" y="529" font-size="9" fill="#4a5568">static</text>
-<rect x="212.0" y="518" width="14" height="14" fill="#c6f6d5" stroke="#38a169"/><text x="230.0" y="529" font-size="9" fill="#4a5568">element</text>
-<rect x="284.0" y="518" width="14" height="14" fill="#fefcbf" stroke="#d69e2e"/><text x="302.0" y="529" font-size="9" fill="#4a5568">feature (hexagon)</text>
-<rect x="416.0" y="518" width="14" height="14" fill="#cbd5e0" stroke="#2d3748"/><text x="434.0" y="529" font-size="9" fill="#4a5568">hardware piece [HW]</text>
-<rect x="560.0" y="518" width="14" height="14" fill="#fefcbf" stroke="#b7791f"/><text x="578.0" y="529" font-size="9" fill="#4a5568">AssemblyRule (rhombus)</text>
-<line x1="728.0" y1="525" x2="752.0" y2="525" stroke="#718096" stroke-width="1.4"/><text x="756.0" y="529" font-size="9" fill="#4a5568">realizes</text>
-<line x1="818.0" y1="525" x2="842.0" y2="525" stroke="#718096" stroke-width="1.4" stroke-dasharray="5,4"/><text x="846.0" y="529" font-size="9" fill="#4a5568">imposes</text>
-<line x1="910.0" y1="520" x2="910.0" y2="527" stroke="#4a5568" stroke-width="1.4"/><line x1="904.0" y1="527" x2="916.0" y2="527" stroke="#4a5568" stroke-width="1.4"/><line x1="906.0" y1="530" x2="914.0" y2="530" stroke="#4a5568" stroke-width="1.4"/><text x="922.0" y="529" font-size="9" fill="#4a5568">= base</text>
+<rect x="20" y="594" width="14" height="14" fill="#bee3f8" stroke="#3182ce"/><text x="38" y="605" font-size="9" fill="#4a5568">use</text>
+<rect x="68.0" y="594" width="14" height="14" fill="#fed7aa" stroke="#dd6b20"/><text x="86.0" y="605" font-size="9" fill="#4a5568">assembly</text>
+<rect x="146.0" y="594" width="14" height="14" fill="#e2e8f0" stroke="#718096"/><text x="164.0" y="605" font-size="9" fill="#4a5568">static</text>
+<rect x="212.0" y="594" width="14" height="14" fill="#c6f6d5" stroke="#38a169"/><text x="230.0" y="605" font-size="9" fill="#4a5568">element</text>
+<rect x="284.0" y="594" width="14" height="14" fill="#fefcbf" stroke="#d69e2e"/><text x="302.0" y="605" font-size="9" fill="#4a5568">feature (hexagon)</text>
+<rect x="416.0" y="594" width="14" height="14" fill="#cbd5e0" stroke="#2d3748"/><text x="434.0" y="605" font-size="9" fill="#4a5568">hardware piece [HW]</text>
+<rect x="560.0" y="594" width="14" height="14" fill="#fefcbf" stroke="#b7791f"/><text x="578.0" y="605" font-size="9" fill="#4a5568">AssemblyRule (rhombus)</text>
+<line x1="728.0" y1="601" x2="752.0" y2="601" stroke="#718096" stroke-width="1.4"/><text x="756.0" y="605" font-size="9" fill="#4a5568">realizes</text>
+<line x1="818.0" y1="601" x2="842.0" y2="601" stroke="#718096" stroke-width="1.4" stroke-dasharray="5,4"/><text x="846.0" y="605" font-size="9" fill="#4a5568">imposes</text>
+<line x1="910.0" y1="596" x2="910.0" y2="603" stroke="#4a5568" stroke-width="1.4"/><line x1="904.0" y1="603" x2="916.0" y2="603" stroke="#4a5568" stroke-width="1.4"/><line x1="906.0" y1="606" x2="914.0" y2="606" stroke="#4a5568" stroke-width="1.4"/><text x="922.0" y="605" font-size="9" fill="#4a5568">= base</text>
 </svg></div>
 <div class="cap">P3 renders as hardware provenance (steel, 🔩, “hardware ← E1”, dashed provides
  edge); AR1/AR2 render as rhombus AssemblyRule nodes with kind-labeled edges.</div>
@@ -188,8 +199,8 @@ drift. The IR reference is ⑤'s resolved value, not the compiled dims (the pane
    <p class="sub">5/5 seeds pass. The joint IS the hinge; the
     ring-of-wedge collisions are skipped (they jam a convex approximation of the joint).</p></div>
  <div><h3 style="margin-top:0">V-B — contact-only (DoF from geometry)</h3>
-   <table><tr><th>criterion</th><th>value</th><th>thr</th><th></th></tr><tr class='pass'><td>theta_max >= 90 deg</td><td class='num'>272.37</td><td class='num'>≤ 90.0</td><td>ok</td></tr><tr class='fail'><td>travel interference (non-intended) <= 0.2 mm</td><td class='num'>0.6316</td><td class='num'>≤ 0.2</td><td>FAIL</td></tr><tr class='pass'><td>settles closed: theta_final <= 5 deg, no bounce-open</td><td class='num'>2.28</td><td class='num'>≤ 5.0</td><td>ok</td></tr><tr class='pass'><td>pin retention: radial <= clearance+0.1</td><td class='num'>0.2242</td><td class='num'>≤ 0.4</td><td>ok</td></tr><tr class='pass'><td>pin retention: axial <= protrusion</td><td class='num'>0.0289</td><td class='num'>≤ 3.0</td><td>ok</td></tr><tr class='pass'><td>pin/bore interface <= clearance</td><td class='num'>0.0786</td><td class='num'>≤ 0.3</td><td>ok</td></tr></table>
-   <p class="sub">0/5 seeds pass. The DoF emerges from the pin in the
+   <table><tr><th>criterion</th><th>value</th><th>thr</th><th></th></tr><tr class='pass'><td>theta_max >= 90 deg</td><td class='num'>272.06</td><td class='num'>≤ 90.0</td><td>ok</td></tr><tr class='fail'><td>travel interference (non-intended) <= 0.2 mm</td><td class='num'>0.4135</td><td class='num'>≤ 0.2</td><td>FAIL</td></tr><tr class='pass'><td>settles closed: theta_final <= 5 deg, no bounce-open</td><td class='num'>2.02</td><td class='num'>≤ 5.0</td><td>ok</td></tr><tr class='pass'><td>pin retention: radial <= clearance+0.1</td><td class='num'>0.2242</td><td class='num'>≤ 0.4</td><td>ok</td></tr><tr class='pass'><td>pin retention: axial <= protrusion</td><td class='num'>0.0237</td><td class='num'>≤ 3.0</td><td>ok</td></tr><tr class='pass'><td>pin/bore interface <= clearance</td><td class='num'>0.0623</td><td class='num'>≤ 0.3</td><td>ok</td></tr></table>
+   <p class="sub">1/5 seeds pass. The DoF emerges from the pin in the
     bored knuckle; a designed open-stop (the lug hard-stop) arrests it at ~107°.</p></div>
 </div>
 
@@ -211,12 +222,15 @@ drift. The IR reference is ⑤'s resolved value, not the compiled dims (the pane
 </div>
 
 <h2>⑦ D20 — the no-stop / stop pair (stopping BY CONTACT)</h2>
+<div class="na" style="border-left:4px solid #b7791f;background:#fffbeb;padding:8px 12px;border-radius:6px;margin:8px 0">
+<b>EXPECTED_FAIL — regression target:</b> expected: fold-over, no angular limit — the lid has no stop_flange, so past 90° the over-centre lid folds flat (D20 demo golden)
+</div>
 <p>Same assembly, same seed, same preset. The <b>only</b> difference: the stop variant's IR carries
 <b>F1</b> (a <span class="mono">stop_flange</span> PassiveFeature) and the <b>B3</b> rotation LIMIT it
 imposes (<span class="mono">bound=max</span>, ≤120.05°, registered per V-08), which compiles to a real
 flange solid on the lid. <b>V-A passes both — only V-B separates them.</b></p>
-<table><tr><th></th><th>baseline</th><th>stop variant</th></tr>
-<tr><td>V-B seeds</td><td class="num">0/5 — FAIL</td><td class="num">4/5 — PASS</td></tr>
+<table><tr><th></th><th>anchor_easy_nostop.json <span class="sub">(D20 demo)</span></th><th>anchor_easy.json <span class="sub">(BENCHMARK)</span></th></tr>
+<tr><td>V-B seeds</td><td class="num">1/5 — FAIL <span class="sub">(expected)</span></td><td class="num">5/5 — PASS</td></tr>
 <tr><td>θ max</td><td class="num">272°</td><td class="num">124°</td></tr>
 <tr><td>reading</td><td>the lid <b>folds right over</b> — that is the finding, reported not fixed</td>
 <td>the flange bottoms out on the box's own rear wall — <b>arrest BY CONTACT</b></td></tr></table>
@@ -224,9 +238,9 @@ flange solid on the lid. <b>V-A passes both — only V-B separates them.</b></p>
 <div class="cap">Identical until the flange engages (~0.9 s). Red blows through over-centre and
 folded-flat to 272° (with the travel spike as it sweeps the box); green arrests at the B3 ceiling.</div>
 <div class="grid">
- <div><video controls muted loop src="out/t2_easy_V-B.mp4"></video><div class="cap">baseline V-B —
-   folds over.</div></div>
- <div><video controls muted loop src="out/t2_easy_stop_V-B.mp4"></video><div class="cap">stop V-B —
+ <div><video controls muted loop src="out/t2_easy_nostop_V-B.mp4"></video><div class="cap">D20 demo (nostop) V-B —
+   folds over. EXPECTED_FAIL.</div></div>
+ <div><video controls muted loop src="out/t2_easy_V-B.mp4"></video><div class="cap">BENCHMARK (stop) V-B —
    arrests at the flange, then closes and seats.</div></div>
 </div>
 
@@ -248,11 +262,11 @@ covered instead at the PARTS level (t0's AR1 sweep + the boolean above).</p>
 <p><span class="verdict PASS">PASS</span>&nbsp; t0 AssemblyRules
 all PASS · t1 PASS
 (0 drift) · V-A 5/5 baseline + 5/5 stop ·
-<b>V-B 0/5 baseline (folds over — the finding)</b> vs
-<b>4/5 stop (arrests by contact)</b>.
+<b>V-B 1/5 baseline (folds over — the finding)</b> vs
+<b>5/5 stop (arrests by contact)</b>.
 The compiled Easy anchor opens, releases and re-seats with the pin retained; and the stop_flange
 variant demonstrates D20 end-to-end — V-A cannot tell the two designs apart, V-B can.</p>
-<p class="sub">Guard trio on every verdict JSON: decision_row + compile_hash (1f2eb47)
+<p class="sub">Guard trio on every verdict JSON: decision_row + compile_hash (ff6f812)
 + shape assertion.</p>
 
 </body></html>

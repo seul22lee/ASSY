@@ -59,7 +59,7 @@ SEAT_PEN_LIMIT = 0.3       # mm — intended closing-seat compliance (observable
 def t2(parts: dict, hints: dict, axis: dict, roles: dict, modes: list, out_dir: Path,
        base_pid: str, mover_pid: str, pin_pid: str, tag: str, tip_point=None, latch_point=None,
        clearance: float = 0.2, protrusion: float = 3.0, stop_angle_deg: float = float("inf"),
-       decision_row: str = "", record: bool = True) -> dict:
+       decision_row: str = "", record: bool = True, plan=None, expected_fail: str = "") -> dict:
     """Run Tier2 for the assigned modes on a COMPILED assembly. `parts` = {pid: Solid} (⑥ output);
     `hints` = {pid: collision prims}; `axis` = {point,dir} mm; `roles` = {pid: base|mover|hardware}.
     `tip_point` = the mover's free-edge point (mm, mover frame) where the follower force acts;
@@ -70,9 +70,13 @@ def t2(parts: dict, hints: dict, axis: dict, roles: dict, modes: list, out_dir: 
     result = {"decision_row": decision_row or "stage-⑨ t2", "compile_hash": _hash(),
               "tag": tag, "clearance_mm": clearance, "protrusion_mm": protrusion,
               "modes": {}, "shape_assert": {}}
+    if expected_fail:
+        # the snap_panel EXPECTED_FAIL pattern, one tier down: a legal IR whose VERDICT must fail,
+        # kept as a live regression target rather than deleted.
+        result["expected_fail"] = expected_fail
     for mode in modes:
         xml, meta = build_mjcf(parts, hints, axis, base_pid, mover_pid, pin_pid, mode, meshdir,
-                               roles, tag, tip_point=tip_point, latch_point=latch_point)
+                               roles, tag, tip_point=tip_point, latch_point=latch_point, plan=plan)
         xf = out_dir / f"t2_{tag}_{mode}.xml"; xf.write_text(xml)
         model = mujoco.MjModel.from_xml_path(str(xf))
         gok, checks = g9_gconv(model)

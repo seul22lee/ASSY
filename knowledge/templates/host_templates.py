@@ -48,21 +48,24 @@ HOOK_INSET = 3.0
 COLLISION_EPS = 0.2  # mm
 
 
-def _bx(cx, cy, cz, sx, sy, sz, frame="world"):
-    """A box collision primitive: centre (mm) + FULL extents (mm) → half-extents at emit time."""
+def _bx(cx, cy, cz, sx, sy, sz, frame="world", source=None):
+    """A box collision primitive: centre (mm) + FULL extents (mm) → half-extents at emit time.
+    `source` (D-M8-4) names the declared host template this geom traces to; the MJCF layer refuses
+    any collision geom whose source does not resolve to a declared IR entity."""
     return {"type": "box", "frame": frame, "pos": (cx, cy, cz),
-            "size": (sx / 2, sy / 2, sz / 2)}
+            "size": (sx / 2, sy / 2, sz / 2), "source": source}
 
 
 def box_shell_collision(**params) -> list:
     """Floor + four walls (M0 primitives_for box_shell). Static host — no COLLISION_EPS inset."""
     p = {**BOX_DEFAULTS, **params}
     L, W, H, wall = p["box_l"], p["box_w"], p["box_h"], p["wall"]
-    return [_bx(0, 0, wall / 2, L, W, wall),                        # floor
-            _bx(0, -(W - wall) / 2, H / 2, L, wall, H),             # rear wall
-            _bx(0, (W - wall) / 2, H / 2, L, wall, H),              # front wall
-            _bx(-(L - wall) / 2, 0, H / 2, wall, W - 2 * wall, H),  # left wall
-            _bx((L - wall) / 2, 0, H / 2, wall, W - 2 * wall, H)]   # right wall
+    src = "template:box_shell"
+    return [_bx(0, 0, wall / 2, L, W, wall, source=src),                        # floor
+            _bx(0, -(W - wall) / 2, H / 2, L, wall, H, source=src),             # rear wall
+            _bx(0, (W - wall) / 2, H / 2, L, wall, H, source=src),              # front wall
+            _bx(-(L - wall) / 2, 0, H / 2, wall, W - 2 * wall, H, source=src),  # left wall
+            _bx((L - wall) / 2, 0, H / 2, wall, W - 2 * wall, H, source=src)]   # right wall
 
 
 def lid_panel_collision(**params) -> list:
@@ -73,7 +76,7 @@ def lid_panel_collision(**params) -> list:
     L, W, lid_t = p["box_l"], p["box_w"], p["lid_t"]
     H = p.get("box_h", BOX_DEFAULTS["box_h"])
     e = COLLISION_EPS
-    return [_bx(0, 0, H + lid_t / 2, L - 2 * e, W - 2 * e, lid_t)]
+    return [_bx(0, 0, H + lid_t / 2, L - 2 * e, W - 2 * e, lid_t, source="template:lid_panel")]
 
 
 TEMPLATE_COLLISION = {"box_shell": box_shell_collision, "lid_panel": lid_panel_collision}

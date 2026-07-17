@@ -1,15 +1,15 @@
 {
   "decision_row": "stage-\u2468 P-HINGE on compiled Easy anchor",
   "compile_hash": "ff6f812",
-  "tag": "easy",
+  "tag": "easy_nostop",
   "clearance_mm": 0.3,
   "protrusion_mm": 3.0,
   "modes": {
     "V-A": {
-      "xml": "t2_easy_V-A.xml",
+      "xml": "t2_easy_nostop_V-A.xml",
       "masses_kg": {
         "P1": 0.04004079363414436,
-        "P2": 0.019079695079431025,
+        "P2": 0.018945589040157057,
         "P3": 0.00048754511368091736
       },
       "g9_gconv": true,
@@ -22,7 +22,7 @@
         [
           "(a) P2: mass > 0",
           true,
-          "19.08 g"
+          "18.95 g"
         ],
         [
           "(a) P3: mass > 0",
@@ -42,7 +42,7 @@
         [
           "(c) at rest 1 s under gravity",
           true,
-          "max drift 0.000 mm/mrad, peak |v| 0.1088"
+          "max drift 0.000 mm/mrad, peak |v| 0.1090"
         ]
       ],
       "p_hinge": {
@@ -52,7 +52,7 @@
         "passed": true,
         "criteria_seed0": {
           "theta_max >= 90 deg": {
-            "value": 112.38,
+            "value": 112.41,
             "threshold": 90.0,
             "pass": true
           },
@@ -62,7 +62,7 @@
             "pass": true
           },
           "settles closed: theta_final <= 5 deg, no bounce-open": {
-            "value": 2.81,
+            "value": 2.98,
             "threshold": 5.0,
             "pass": true
           }
@@ -73,20 +73,20 @@
             "mode": "V-A",
             "seed": 0,
             "diverged": false,
-            "theta_max_deg": 112.38351197290044,
-            "theta_final_deg": 4.395789857055132e-06,
+            "theta_max_deg": 112.41180878509662,
+            "theta_final_deg": 4.035549533173086e-06,
             "pin_radial_max_mm": 0.0,
             "pin_axial_max_mm": 0.0,
             "pen_travel_mm": 0.0,
-            "pen_seat_mm": 0.14024270993214286,
+            "pen_seat_mm": 0.19444548590392183,
             "pen_interface_mm": 0.0,
             "pen_stop_mm": 0.0,
-            "bounce_open_deg": 2.805593593357916,
+            "bounce_open_deg": 2.9837049490721967,
             "pin_radial_impact_mm": 0.0,
             "pen_interface_impact_mm": 0.0,
             "criteria": {
               "theta_max >= 90 deg": {
-                "value": 112.38,
+                "value": 112.41,
                 "threshold": 90.0,
                 "pass": true
               },
@@ -96,7 +96,7 @@
                 "pass": true
               },
               "settles closed: theta_final <= 5 deg, no bounce-open": {
-                "value": 2.81,
+                "value": 2.98,
                 "threshold": 5.0,
                 "pass": true
               }
@@ -108,20 +108,20 @@
             "mode": "V-A",
             "seed": 1,
             "diverged": false,
-            "theta_max_deg": 112.38351197290044,
-            "theta_final_deg": 4.395789857055132e-06,
+            "theta_max_deg": 112.41180878509662,
+            "theta_final_deg": 4.035549533173086e-06,
             "pin_radial_max_mm": 0.0,
             "pin_axial_max_mm": 0.0,
             "pen_travel_mm": 0.0,
-            "pen_seat_mm": 0.14024270993214286,
+            "pen_seat_mm": 0.19444548590392183,
             "pen_interface_mm": 0.0,
             "pen_stop_mm": 0.0,
-            "bounce_open_deg": 2.805593593357916,
+            "bounce_open_deg": 2.9837049490721967,
             "pin_radial_impact_mm": 0.0,
             "pen_interface_impact_mm": 0.0,
             "criteria": {
               "theta_max >= 90 deg": {
-                "value": 112.38,
+                "value": 112.41,
                 "threshold": 90.0,
                 "pass": true
               },
@@ -131,7 +131,7 @@
                 "pass": true
               },
               "settles closed: theta_final <= 5 deg, no bounce-open": {
-                "value": 2.81,
+                "value": 2.98,
                 "threshold": 5.0,
                 "pass": true
               }
@@ -143,20 +143,20 @@
             "mode": "V-A",
             "seed": 2,
             "diverged": false,
-            "theta_max_deg": 112.38351197290044,
-            "theta_final_deg": 4.395789857055132e-06,
+            "theta_max_deg": 112.41180878509662,
+            "theta_final_deg": 4.035549533173086e-06,
             "pin_radial_max_mm": 0.0,
             "pin_axial_max_mm": 0.0,
             "pen_travel_mm": 0.0,
-            "pen_seat_mm": 0.14024270993214286,
+            "pen_seat_mm": 0.19444548590392183,
             "pen_interface_mm": 0.0,
             "pen_stop_mm": 0.0,
-            "bounce_open_deg": 2.805593593357916,
+            "bounce_open_deg": 2.9837049490721967,
             "pin_radial_impact_mm": 0.0,
             "pen_interface_impact_mm": 0.0,
             "criteria": {
               "theta_max >= 90 deg": {
-                "value": 112.38,
+                "value": 112.41,
                 "threshold": 90.0,
                 "pass": true
               },
@@ -166,7 +166,7 @@
                 "pass": true
               },
               "settles closed: theta_final <= 5 deg, no bounce-open": {
-                "value": 2.81,
+                "value": 2.98,
                 "threshold": 5.0,
                 "pass": true
               }
@@ -178,20 +178,20 @@
             "mode": "V-A",
             "seed": 3,
             "diverged": false,
-            "theta_max_deg": 112.38351197290044,
-            "theta_final_deg": 4.395789857055132e-06,
+            "theta_max_deg": 112.41180878509662,
+            "theta_final_deg": 4.035549533173086e-06,
             "pin_radial_max_mm": 0.0,
             "pin_axial_max_mm": 0.0,
             "pen_travel_mm": 0.0,
-            "pen_seat_mm": 0.14024270993214286,
+            "pen_seat_mm": 0.19444548590392183,
             "pen_interface_mm": 0.0,
             "pen_stop_mm": 0.0,
-            "bounce_open_deg": 2.805593593357916,
+            "bounce_open_deg": 2.9837049490721967,
             "pin_radial_impact_mm": 0.0,
             "pen_interface_impact_mm": 0.0,
             "criteria": {
               "theta_max >= 90 deg": {
-                "value": 112.38,
+                "value": 112.41,
                 "threshold": 90.0,
                 "pass": true
               },
@@ -201,7 +201,7 @@
                 "pass": true
               },
               "settles closed: theta_final <= 5 deg, no bounce-open": {
-                "value": 2.81,
+                "value": 2.98,
                 "threshold": 5.0,
                 "pass": true
               }
@@ -213,20 +213,20 @@
             "mode": "V-A",
             "seed": 4,
             "diverged": false,
-            "theta_max_deg": 112.38351197290044,
-            "theta_final_deg": 4.395789857055132e-06,
+            "theta_max_deg": 112.41180878509662,
+            "theta_final_deg": 4.035549533173086e-06,
             "pin_radial_max_mm": 0.0,
             "pin_axial_max_mm": 0.0,
             "pen_travel_mm": 0.0,
-            "pen_seat_mm": 0.14024270993214286,
+            "pen_seat_mm": 0.19444548590392183,
             "pen_interface_mm": 0.0,
             "pen_stop_mm": 0.0,
-            "bounce_open_deg": 2.805593593357916,
+            "bounce_open_deg": 2.9837049490721967,
             "pin_radial_impact_mm": 0.0,
             "pen_interface_impact_mm": 0.0,
             "criteria": {
               "theta_max >= 90 deg": {
-                "value": 112.38,
+                "value": 112.41,
                 "threshold": 90.0,
                 "pass": true
               },
@@ -236,7 +236,7 @@
                 "pass": true
               },
               "settles closed: theta_final <= 5 deg, no bounce-open": {
-                "value": 2.81,
+                "value": 2.98,
                 "threshold": 5.0,
                 "pass": true
               }
@@ -244,15 +244,15 @@
             "passed": true
           }
         ],
-        "video": "t2_easy_V-A.mp4",
-        "plot": "t2_easy_V-A.png"
+        "video": "t2_easy_nostop_V-A.mp4",
+        "plot": "t2_easy_nostop_V-A.png"
       }
     },
     "V-B": {
-      "xml": "t2_easy_V-B.xml",
+      "xml": "t2_easy_nostop_V-B.xml",
       "masses_kg": {
         "P1": 0.04004079363414436,
-        "P2": 0.019079695079431025,
+        "P2": 0.018945589040157057,
         "P3": 0.00048754511368091736
       },
       "g9_gconv": true,
@@ -265,7 +265,7 @@
         [
           "(a) P2: mass > 0",
           true,
-          "19.08 g"
+          "18.95 g"
         ],
         [
           "(a) P3: mass > 0",
@@ -291,21 +291,21 @@
       "p_hinge": {
         "ran": true,
         "n_seeds": 5,
-        "seeds_passed": 5,
-        "passed": true,
+        "seeds_passed": 1,
+        "passed": false,
         "criteria_seed0": {
           "theta_max >= 90 deg": {
-            "value": 124.45,
+            "value": 272.06,
             "threshold": 90.0,
             "pass": true
           },
           "travel interference (non-intended) <= 0.2 mm": {
-            "value": 0.0,
+            "value": 0.4135,
             "threshold": 0.2,
-            "pass": true
+            "pass": false
           },
           "settles closed: theta_final <= 5 deg, no bounce-open": {
-            "value": 2.64,
+            "value": 2.02,
             "threshold": 5.0,
             "pass": true
           },
@@ -315,12 +315,12 @@
             "pass": true
           },
           "pin retention: axial <= protrusion": {
-            "value": 0.0294,
+            "value": 0.0237,
             "threshold": 3.0,
             "pass": true
           },
           "pin/bore interface <= clearance": {
-            "value": 0.0316,
+            "value": 0.0623,
             "threshold": 0.3,
             "pass": true
           }
@@ -331,30 +331,30 @@
             "mode": "V-B",
             "seed": 0,
             "diverged": false,
-            "theta_max_deg": 124.4458012495543,
-            "theta_final_deg": 1.2850004364549143e-05,
+            "theta_max_deg": 272.05789174340174,
+            "theta_final_deg": 1.3062888540941216e-05,
             "pin_radial_max_mm": 0.22418525496179656,
-            "pin_axial_max_mm": 0.029357817630260595,
-            "pen_travel_mm": 0.0,
-            "pen_seat_mm": 0.4877091662329245,
-            "pen_interface_mm": 0.03159178548382905,
-            "pen_stop_mm": 0.04954077670635292,
-            "bounce_open_deg": 2.6444977130192866,
-            "pin_radial_impact_mm": 0.258159970255467,
-            "pen_interface_impact_mm": 0.10073146296042261,
+            "pin_axial_max_mm": 0.023727722297031257,
+            "pen_travel_mm": 0.4134630534852964,
+            "pen_seat_mm": 0.5523053019569462,
+            "pen_interface_mm": 0.062302860773249744,
+            "pen_stop_mm": 0.0,
+            "bounce_open_deg": 2.021443573569103,
+            "pin_radial_impact_mm": 0.0,
+            "pen_interface_impact_mm": 0.0,
             "criteria": {
               "theta_max >= 90 deg": {
-                "value": 124.45,
+                "value": 272.06,
                 "threshold": 90.0,
                 "pass": true
               },
               "travel interference (non-intended) <= 0.2 mm": {
-                "value": 0.0,
+                "value": 0.4135,
                 "threshold": 0.2,
-                "pass": true
+                "pass": false
               },
               "settles closed: theta_final <= 5 deg, no bounce-open": {
-                "value": 2.64,
+                "value": 2.02,
                 "threshold": 5.0,
                 "pass": true
               },
@@ -364,62 +364,62 @@
                 "pass": true
               },
               "pin retention: axial <= protrusion": {
-                "value": 0.0294,
+                "value": 0.0237,
                 "threshold": 3.0,
                 "pass": true
               },
               "pin/bore interface <= clearance": {
-                "value": 0.0316,
+                "value": 0.0623,
                 "threshold": 0.3,
                 "pass": true
               }
             },
-            "passed": true
+            "passed": false
           },
           {
             "ran": true,
             "mode": "V-B",
             "seed": 1,
             "diverged": false,
-            "theta_max_deg": 124.32092639145003,
-            "theta_final_deg": 1.2752417331294674e-05,
-            "pin_radial_max_mm": 0.21392284515840684,
-            "pin_axial_max_mm": 0.022657486646132076,
-            "pen_travel_mm": 0.0,
-            "pen_seat_mm": 0.9031626581768312,
-            "pen_interface_mm": 0.029762566679382093,
-            "pen_stop_mm": 0.08368283699577485,
-            "bounce_open_deg": 2.252020419055975,
-            "pin_radial_impact_mm": 0.24971386789319042,
-            "pen_interface_impact_mm": 0.08265063926492106,
+            "theta_max_deg": 271.74703064891116,
+            "theta_final_deg": 1.2681244886451247e-05,
+            "pin_radial_max_mm": 0.250628413692021,
+            "pin_axial_max_mm": 0.018190773057733756,
+            "pen_travel_mm": 0.06920831121441058,
+            "pen_seat_mm": 1.3620519261693596,
+            "pen_interface_mm": 0.07068708783481943,
+            "pen_stop_mm": 0.0,
+            "bounce_open_deg": 3.7380613682596358,
+            "pin_radial_impact_mm": 0.0,
+            "pen_interface_impact_mm": 0.0,
             "criteria": {
               "theta_max >= 90 deg": {
-                "value": 124.32,
+                "value": 271.75,
                 "threshold": 90.0,
                 "pass": true
               },
               "travel interference (non-intended) <= 0.2 mm": {
-                "value": 0.0,
+                "value": 0.0692,
                 "threshold": 0.2,
                 "pass": true
               },
               "settles closed: theta_final <= 5 deg, no bounce-open": {
-                "value": 2.25,
+                "value": 3.74,
                 "threshold": 5.0,
                 "pass": true
               },
               "pin retention: radial <= clearance+0.1": {
-                "value": 0.2139,
+                "value": 0.2506,
                 "threshold": 0.4,
                 "pass": true
               },
               "pin retention: axial <= protrusion": {
-                "value": 0.0227,
+                "value": 0.0182,
                 "threshold": 3.0,
                 "pass": true
               },
               "pin/bore interface <= clearance": {
-                "value": 0.0298,
+                "value": 0.0707,
                 "threshold": 0.3,
                 "pass": true
               }
@@ -431,154 +431,154 @@
             "mode": "V-B",
             "seed": 2,
             "diverged": false,
-            "theta_max_deg": 124.35760765627336,
-            "theta_final_deg": 1.293408478478096e-05,
-            "pin_radial_max_mm": 0.22498579199028332,
-            "pin_axial_max_mm": 0.016577293102337378,
-            "pen_travel_mm": 0.0,
-            "pen_seat_mm": 0.3403658098468751,
-            "pen_interface_mm": 0.03264761523750378,
-            "pen_stop_mm": 0.035553360198650005,
-            "bounce_open_deg": 2.7857295879883814,
-            "pin_radial_impact_mm": 0.2565338945425938,
-            "pen_interface_impact_mm": 0.07607712526507414,
+            "theta_max_deg": 272.9184582450457,
+            "theta_final_deg": 1.2696267102460133e-05,
+            "pin_radial_max_mm": 0.23931202436452673,
+            "pin_axial_max_mm": 0.03514656403341609,
+            "pen_travel_mm": 1.0338258510941403,
+            "pen_seat_mm": 1.151860632669045,
+            "pen_interface_mm": 0.07809045315510234,
+            "pen_stop_mm": 0.0,
+            "bounce_open_deg": 2.7651032914692903,
+            "pin_radial_impact_mm": 0.0,
+            "pen_interface_impact_mm": 0.0,
             "criteria": {
               "theta_max >= 90 deg": {
-                "value": 124.36,
+                "value": 272.92,
                 "threshold": 90.0,
                 "pass": true
               },
               "travel interference (non-intended) <= 0.2 mm": {
-                "value": 0.0,
+                "value": 1.0338,
                 "threshold": 0.2,
-                "pass": true
+                "pass": false
               },
               "settles closed: theta_final <= 5 deg, no bounce-open": {
-                "value": 2.79,
+                "value": 2.77,
                 "threshold": 5.0,
                 "pass": true
               },
               "pin retention: radial <= clearance+0.1": {
-                "value": 0.225,
+                "value": 0.2393,
                 "threshold": 0.4,
                 "pass": true
               },
               "pin retention: axial <= protrusion": {
-                "value": 0.0166,
+                "value": 0.0351,
                 "threshold": 3.0,
                 "pass": true
               },
               "pin/bore interface <= clearance": {
-                "value": 0.0326,
+                "value": 0.0781,
                 "threshold": 0.3,
                 "pass": true
               }
             },
-            "passed": true
+            "passed": false
           },
           {
             "ran": true,
             "mode": "V-B",
             "seed": 3,
             "diverged": false,
-            "theta_max_deg": 125.1937284701255,
-            "theta_final_deg": 1.284877841932405e-05,
-            "pin_radial_max_mm": 0.21223056791343534,
-            "pin_axial_max_mm": 0.012379874699554788,
-            "pen_travel_mm": 0.0,
-            "pen_seat_mm": 0.6528502392655294,
-            "pen_interface_mm": 0.03380257235519199,
-            "pen_stop_mm": 0.12078365368102983,
-            "bounce_open_deg": 2.4414885187464876,
-            "pin_radial_impact_mm": 0.2655886425925701,
-            "pen_interface_impact_mm": 0.09095755654262086,
+            "theta_max_deg": 272.07006495208765,
+            "theta_final_deg": 1.2819377344833245e-05,
+            "pin_radial_max_mm": 0.2481608706029241,
+            "pin_axial_max_mm": 0.014010582757546628,
+            "pen_travel_mm": 0.44151594999751875,
+            "pen_seat_mm": 0.8658235337735938,
+            "pen_interface_mm": 0.07292834616843827,
+            "pen_stop_mm": 0.0,
+            "bounce_open_deg": 2.9998715179030753,
+            "pin_radial_impact_mm": 0.0,
+            "pen_interface_impact_mm": 0.0,
             "criteria": {
               "theta_max >= 90 deg": {
-                "value": 125.19,
+                "value": 272.07,
                 "threshold": 90.0,
                 "pass": true
               },
               "travel interference (non-intended) <= 0.2 mm": {
-                "value": 0.0,
+                "value": 0.4415,
                 "threshold": 0.2,
-                "pass": true
+                "pass": false
               },
               "settles closed: theta_final <= 5 deg, no bounce-open": {
-                "value": 2.44,
+                "value": 3.0,
                 "threshold": 5.0,
                 "pass": true
               },
               "pin retention: radial <= clearance+0.1": {
-                "value": 0.2122,
+                "value": 0.2482,
                 "threshold": 0.4,
                 "pass": true
               },
               "pin retention: axial <= protrusion": {
-                "value": 0.0124,
+                "value": 0.014,
                 "threshold": 3.0,
                 "pass": true
               },
               "pin/bore interface <= clearance": {
-                "value": 0.0338,
+                "value": 0.0729,
                 "threshold": 0.3,
                 "pass": true
               }
             },
-            "passed": true
+            "passed": false
           },
           {
             "ran": true,
             "mode": "V-B",
             "seed": 4,
             "diverged": false,
-            "theta_max_deg": 124.60819426252142,
-            "theta_final_deg": 1.2811370684489786e-05,
-            "pin_radial_max_mm": 0.21691826099331676,
-            "pin_axial_max_mm": 0.016857599348844034,
-            "pen_travel_mm": 0.0,
-            "pen_seat_mm": 0.9187084586247294,
-            "pen_interface_mm": 0.029177127742682534,
-            "pen_stop_mm": 0.05629154027795343,
-            "bounce_open_deg": 2.2291420800463317,
-            "pin_radial_impact_mm": 0.2610905052527329,
-            "pen_interface_impact_mm": 0.09791892425531218,
+            "theta_max_deg": 272.0629973662433,
+            "theta_final_deg": 1.3147420672079791e-05,
+            "pin_radial_max_mm": 0.24125667748935392,
+            "pin_axial_max_mm": 0.01828413642128982,
+            "pen_travel_mm": 0.40259982791500476,
+            "pen_seat_mm": 0.3535880038389522,
+            "pen_interface_mm": 0.09802776400760664,
+            "pen_stop_mm": 0.0,
+            "bounce_open_deg": 2.1904107855125075,
+            "pin_radial_impact_mm": 0.0,
+            "pen_interface_impact_mm": 0.0,
             "criteria": {
               "theta_max >= 90 deg": {
-                "value": 124.61,
+                "value": 272.06,
                 "threshold": 90.0,
                 "pass": true
               },
               "travel interference (non-intended) <= 0.2 mm": {
-                "value": 0.0,
+                "value": 0.4026,
                 "threshold": 0.2,
-                "pass": true
+                "pass": false
               },
               "settles closed: theta_final <= 5 deg, no bounce-open": {
-                "value": 2.23,
+                "value": 2.19,
                 "threshold": 5.0,
                 "pass": true
               },
               "pin retention: radial <= clearance+0.1": {
-                "value": 0.2169,
+                "value": 0.2413,
                 "threshold": 0.4,
                 "pass": true
               },
               "pin retention: axial <= protrusion": {
-                "value": 0.0169,
+                "value": 0.0183,
                 "threshold": 3.0,
                 "pass": true
               },
               "pin/bore interface <= clearance": {
-                "value": 0.0292,
+                "value": 0.098,
                 "threshold": 0.3,
                 "pass": true
               }
             },
-            "passed": true
+            "passed": false
           }
         ],
-        "video": "t2_easy_V-B.mp4",
-        "plot": "t2_easy_V-B.png"
+        "video": "t2_easy_nostop_V-B.mp4",
+        "plot": "t2_easy_nostop_V-B.png"
       }
     }
   },
@@ -590,5 +590,6 @@
       "V-B": 5
     }
   },
-  "verdict": true
+  "expected_fail": "expected: fold-over, no angular limit \u2014 the lid has no stop_flange, so past 90\u00b0 the over-centre lid folds flat (D20 demo golden)",
+  "verdict": false
 }

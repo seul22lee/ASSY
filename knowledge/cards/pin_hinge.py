@@ -225,10 +225,19 @@ RING_SECTORS = 16
 
 
 def collision_primitives(inst, face_len: float = 40.0) -> list:
-    """Convex ring-of-wedges per knuckle so the BORE survives MJCF conversion (D18/D21). Canonical
-    (axis = local +X); the compile step places them by the same anchor frame carve() used. Inner
-    faces circumscribe the bore (r/cos(π/M)) so they never pinch the pin — the M0 rule."""
+    """Convex ring-of-wedges per knuckle so the BORE survives MJCF conversion (D18/D21), PLUS the
+    pin cylinder itself. Canonical (axis = local +X); the compile step places them by the same anchor
+    frame carve() used. Inner faces circumscribe the bore (r/cos(π/M)) so they never pinch the pin —
+    the M0 rule.
+
+    Every prim is stamped with `source` (D-M8-4): the MJCF layer REFUSES any collision geom that does
+    not trace to a declared IR entity. The pin is emitted HERE, by the card that provides it
+    (D-ONT-11), rather than hand-built in a physics driver — driver-side geometry with no card and no
+    IR entity behind it is precisely the fabrication that rule exists to stop.
+    `owner` routes each prim to its body: A → the base host, B → the mover host, pin → the hardware
+    piece the element provides."""
     g = dims_from(inst.params, face_len)
+    src = f"card:pin_hinge@{inst.id}"
     r_in = (g.bore_d / 2) / math.cos(math.pi / RING_SECTORS)   # circumscribe → never intrude on pin
     r_out = g.knuckle_r
     rc, half_radial = (r_in + r_out) / 2, (r_out - r_in) / 2
@@ -238,9 +247,14 @@ def collision_primitives(inst, face_len: float = 40.0) -> list:
         cx, w = (x0 + x1) / 2, x1 - x0
         for k in range(RING_SECTORS):
             phi = 2 * math.pi * k / RING_SECTORS
-            prims.append({"type": "box", "tag": f"knuckle_{owner}", "owner": owner,
+            prims.append({"type": "box", "tag": f"knuckle_{owner}", "owner": owner, "source": src,
                           "pos": (cx, rc * math.cos(phi), rc * math.sin(phi)),
                           "size": (w / 2, half_radial, half_tang), "euler": (phi, 0.0, 0.0)})
+    # the pin: a cylinder ON the axis (local +X). MuJoCo's cylinder is canonical about local +Z, so
+    # the local euler rotates Z→X before the axis frame is applied.
+    prims.append({"type": "cylinder", "tag": "pin", "owner": "pin", "source": src,
+                  "pos": (0.0, 0.0, 0.0), "size": (g.pin_d / 2, g.pin_len / 2),
+                  "euler": (0.0, math.pi / 2, 0.0)})
     return prims
 
 

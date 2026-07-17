@@ -399,20 +399,28 @@ def snap_panel() -> DesignPlan:
         protocols=[pr_mate, pr_sep, pr_sweep], material="PETG")
 
 
-def anchor_easy(variant: str | None = None) -> DesignPlan:
+def anchor_easy(variant: str = "stop") -> DesignPlan:
     """The EASY ANCHOR (MECHSYNTH §8.1) — the pipeline's first MULTI-ELEMENT assembly: a box + lid
     with a pin_hinge (E1, rear) AND a snap_hook latch (E2, front). Carries the D-ONT-11 hardware pin
     (P3) and both D-ONT-12 AssemblyRules (snap_hook's latch-vs-lid-sweep EXCLUSION + the
     hook/edge_margin RESOURCE budget on the shared rim). This is what a post-④ plan looks like.
 
-    variant=None ("baseline"): NO end stop. Past 90° the over-centre lid folds right over — and that
-    fold-over is THE FINDING (M0: "no stop: the lid is free to fold flat"), reported as an overtravel
-    observable, never engineered away.
-    variant="stop": adds ONLY F1 (a stop_flange PassiveFeature on the lid) + B3 (the use-phase
-    rotation LIMIT it imposes, bound="max" ≤108.85°, registered per V-08) + its binding. Zero other
-    changes — so the pair isolates exactly what a stop buys, and B3's ceiling is checkable geometry
-    (the flange), not an assertion. Per D-ONT-4 the overtravel observable is PROMOTED to a criterion
-    whenever the stop is present."""
+    variant="stop" (DEFAULT — the benchmark golden, tasks/anchor_easy.json): carries F1 (a
+    stop_flange PassiveFeature on the lid) + B3 (the use-phase rotation LIMIT it imposes,
+    bound="max", ceiling DERIVED from this box's own axis by the card's formula, registered per
+    V-08) + its binding. Per D-ONT-4 the overtravel observable is PROMOTED to a criterion.
+
+    **Why the stop is in the benchmark (D-M8-5):** honest V-B proved the §8.1 spec — "opens ≥90°
+    AND returns closed" — is PHYSICALLY UNSATISFIABLE for this over-centre lid without a stop. Past
+    90° gravity pulls the lid further open, so it folds flat; there is no actuation that satisfies
+    both clauses on a stop-less design. The stop is therefore not a convenience: it is a design
+    REQUIREMENT the system DISCOVERED from its own physics, and the benchmark must carry it.
+
+    variant="nostop" (tasks/anchor_easy_nostop.json — the D20 demonstration golden): the same plan
+    with F1/B3 removed and NOTHING else changed. Its V-B verdict is an honest, EXPECTED FAIL —
+    "fold-over, no angular limit" — kept as a live regression target (the snap_panel EXPECTED_FAIL
+    pattern). It is what proves V-A cannot tell the two designs apart while V-B can (D20)."""
+    assert variant in ("stop", "nostop"), variant
     box_shell = HostTemplate(template_ref="box_shell",
         params={"box_l": 80.0, "box_w": 60.0, "box_h": 40.0, "wall": 2.0},
         anchors=[Anchor(name="rear_top_edge", kind="edge"), Anchor(name="rear_wall_outer", kind="face"),
@@ -533,13 +541,27 @@ def main() -> None:
         "m0_hinge_box_stop.json": m0_hinge_box("stop"),
         "snap_panel.json": snap_panel(),
         "snap_starter.json": snap_starter(),
-        "anchor_easy.json": anchor_easy(),
+        # D-M8-5 GOLDEN SWAP: the BENCHMARK anchor carries the stop. Honest V-B proved the §8.1
+        # spec ("opens ≥90° AND returns closed") is physically UNSATISFIABLE for this over-centre
+        # lid without one — a design requirement the system discovered from its own physics.
+        "anchor_easy.json": anchor_easy("stop"),
+        # the D20 demonstration golden: same plan, F1/B3 removed, nothing else. Validator-CLEAN (a
+        # stop-less design is a legal IR); its *verdict* is an expected FAIL — see `expected_verdict_fail`.
+        "anchor_easy_nostop.json": anchor_easy("nostop"),
+    }
+    # EXPECTED_FAIL at the VERDICT level (distinct from `expected` below, which is validator-level):
+    # these goldens are legal IRs whose physics verdict must FAIL, and are kept as live regression
+    # targets rather than deleted (the snap_panel pattern, applied one tier down).
+    expected_verdict_fail = {
+        "anchor_easy_nostop.json": "expected: fold-over, no angular limit — V-B 0/5 (D20 demo)",
     }
     # snap_panel is the D-GEN-5 negative-test fixture: it deliberately binds a window catch to a
     # retained board, so V-14 must reject it at ④ (the earliest guard). Recorded as expected, not a
     # build failure. It is still written — the m6 close-out RUNS it (run_snap does not re-validate,
     # so it reaches ⑥/Tier0, demonstrating the downstream guards too — defense in depth).
     expected = {"snap_panel.json": "V-14"}
+    for fname, why in expected_verdict_fail.items():
+        print(f"  note: {fname} is an EXPECTED_FAIL regression target — {why}")
     for fname, plan in goldens.items():
         viols = validate_all(plan)
         exp = expected.get(fname)

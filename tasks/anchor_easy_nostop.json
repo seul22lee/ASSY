@@ -106,24 +106,6 @@
       "imposed_by": "E2",
       "verified_by": null,
       "imposed_by_card": "snap_hook_cantilever"
-    },
-    {
-      "id": "B3",
-      "phase": "use",
-      "motion": {
-        "kind": "rotation",
-        "axis_hint": "horizontal_rear",
-        "range_value": 120.05,
-        "range_unit": "deg",
-        "bound": "max",
-        "transmission": null,
-        "event_force_window_N": null
-      },
-      "load": null,
-      "realized_by": null,
-      "imposed_by": "F1",
-      "verified_by": "P-HINGE-VB",
-      "imposed_by_card": "stop_flange"
     }
   ],
   "pieces": [
@@ -149,7 +131,6 @@
       "source_element": null,
       "params": {
         "lid_t": 3.0,
-        "stop_flange_r": 8.0,
         "rim_length": 80.0
       },
       "is_base": false
@@ -209,15 +190,10 @@
         {
           "name": "free_edge_mid",
           "kind": "point"
-        },
-        {
-          "name": "stop_flange_face",
-          "kind": "face"
         }
       ],
       "params": {
-        "lid_t": 3.0,
-        "stop_flange_r": 8.0
+        "lid_t": 3.0
       }
     }
   ],
@@ -255,20 +231,7 @@
       ]
     }
   ],
-  "features": [
-    {
-      "id": "F1",
-      "card_ref": "stop_flange",
-      "params": {
-        "stop_flange_r": 8.0,
-        "flange_w": 8.0,
-        "stop_angle": 120.05
-      },
-      "host_pieces": [
-        "P2"
-      ]
-    }
-  ],
+  "features": [],
   "bindings": [
     {
       "element_id": "E1",
@@ -315,16 +278,6 @@
       "mate": "offset_face",
       "offset_params": {
         "undercut_dir": "inward"
-      }
-    },
-    {
-      "element_id": "F1",
-      "port": "contact",
-      "piece_id": "P2",
-      "anchor": "stop_flange_face",
-      "mate": "offset_face",
-      "offset_params": {
-        "rearward_of_axis": true
       }
     }
   ],
@@ -520,6 +473,6 @@
     }
   ],
   "material": "PETG",
-  "variant": "stop",
+  "variant": "nostop",
   "stage_log": []
 }

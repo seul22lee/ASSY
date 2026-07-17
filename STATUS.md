@@ -16,7 +16,7 @@ is the index over them. **No milestone folders are ever moved or renamed** — h
 | M5 | [`m5_resolve_t0/`](m5_resolve_t0/) | Stage-⑤ resolution + Tier0 three-way + Tier1 re-measure. | ✅ APPROVED — resolved params carry citations; COMPILE_DRIFT guard closes the blind spot. |
 | M6 | [`m6_ms_closeout/`](m6_ms_closeout/) | The **snap-fit-only track (M-S)** end-to-end: IR → ⑤ → ⑥ → t0 → t1. | ✅ Close-out of the single-element snap pipeline. |
 | M7 | [`m7_rack_pinion/`](m7_rack_pinion/) | `rack_pinion` card attempt under R2b. | ⚠️ **Card NOT built** — R2b routing exhausted both routes; it is a formulation limit, deferred to a `preset_v2`-time decision (D-M1-4/-5/-8). |
-| M8 | [`m8_pin_hinge_easy/`](m8_pin_hinge_easy/) | **B-track**: `pin_hinge` card + the **multi-element Easy anchor** (box + lid + hardware pin + snap latch), compiled and verified t0→t1→t2; `stop_flange` cardified and the **D20 no-stop/stop pair**. | ✅ t0 ARs PASS · t1 0 mm drift · V-A 5/5. **V-B: baseline 0/5 — the lid FOLDS OVER (the finding, reported not fixed); stop variant 4/5 PASS — stops BY CONTACT.** An earlier “V-B PASS” was **retracted** (D-M8-4): it rested on an invented stop. |
+| M8 | [`m8_pin_hinge_easy/`](m8_pin_hinge_easy/) | **B-track**: `pin_hinge` + `stop_flange` cards, the **multi-element Easy anchor** (box + lid + hardware pin + snap latch) compiled and verified t0→t1→t2, and the **D20 no-stop/stop pair**. | ✅ **Benchmark PASS** (t0 ARs · t1 0 mm drift · V-A 5/5 · V-B 5/5). D20 demo golden `anchor_easy_nostop` = **EXPECTED_FAIL** (V-B 1/5, folds over). An earlier V-B PASS was **retracted** (D-M8-4) — it rested on an invented stop; the rule is now mechanized as a build error. |
 
 ## Current system state
 
@@ -28,7 +28,7 @@ is the index over them. **No milestone folders are ever moved or renamed** — h
   two **first-class AssemblyRules** (D-ONT-12) evaluated on the compiled geometry, verified through
   physics in both V-A (declared joint) and V-B (DoF from geometry alone).
 
-**Built and green (suite 41/41):**
+**Built and green (suite 46/46):**
 - **Ontology/IR** — `DesignPlan` with pieces (provenance functional/hardware), elements, features,
   behaviours, protocols, **AssemblyRules**; validators V-01…V-16.
 - **Cards** — `snap_hook_cantilever` (Bayer), `pin_hinge` (formalizes M0's hinge), `stop_flange`
@@ -36,20 +36,23 @@ is the index over them. **No milestone folders are ever moved or renamed** — h
   `provides_pieces` (hardware) and `interaction_rules` (AssemblyRules).
 - **Templates** — `box_shell`, `lid_panel`, `flat_panel_mount`, `retained_board`; template collision
   hints for the seating load path (D14 inset).
-- **Pipeline** — stage-⑤ resolve, stage-⑥ `compile_assembly` (motion-before-fasteners).
+- **Pipeline** — stage-⑤ resolve, stage-⑥ `compile_assembly` (motion → fasteners → passive features).
 - **Verify** — t0 (`t0_static` three-way + `assembly_rules`), t1 (`t1_remeasure`, COMPILE_DRIFT),
-  t2 (`t2_physics`: G-CONV + P-HINGE V-A/V-B, the frozen preset R5, guard trio on verdicts).
+  t2 (`t2_physics`: G-CONV + P-HINGE V-A/V-B, the frozen preset R5, guard trio on verdicts,
+  collision-provenance gate).
 
 **Known limitations / open items:**
 - **R2b** (gear contact-only meshing) is FROZEN — a MuJoCo convex-facet contact-formulation limit;
   gear V-B verification is deferred to a `preset_v2`-time decision. Mitigation queue in
   `m1_gear/out/r2b_note.md`: (1) larger module — exhausted; (2) versioned preset — no candidate;
   (3) **[deferred] PhysX 5 SDF backend** (D-M1-8).
-- **Easy-anchor pin/bore fit is marginal** — the stop variant's V-B is 4/5 (one seed nicks the
-  operation-phase interface limit); flagged honestly in the per-seed record.
-- **The baseline Easy anchor has no end stop** — by design it declares none, so its lid folds flat
-  past over-centre (V-B 0/5). This is a reported finding, not an open bug; the `stop` variant shows
-  what a `stop_flange` buys. Only V-B separates them — V-A's declared joint `range` hides it (D20).
+- **Collision provenance is enforced (D-M8-4)** — every collision geom must trace to a declared IR
+  entity (card / template / D23 fixture); an unsourced prim is a BUILD ERROR. The physics driver
+  cannot author geometry, only route what cards and templates emit.
+- **A stop is a DISCOVERED requirement, not an option (D-M8-5).** Honest V-B proved "opens ≥90° AND
+  returns closed" is unsatisfiable for an over-centre lid with no stop, so the benchmark golden
+  carries one. `anchor_easy_nostop` is kept as the D20 demo/EXPECTED_FAIL: V-A passes both designs
+  5/5, only V-B separates them.
 - **Standing rule (D-M8-4):** a physics collision prim may only proxy REAL carved geometry the IR
   declares. A prim with no solid and no IR entity behind it voids any verdict resting on it.
 

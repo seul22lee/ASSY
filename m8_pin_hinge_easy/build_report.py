@@ -31,15 +31,16 @@ def _crit_rows(criteria):
 
 def main():
     t2 = json.loads((OUT / "t2_easy_verdict.json").read_text())
-    t2s = json.loads((OUT / "t2_easy_stop_verdict.json").read_text())
+    t2n = json.loads((OUT / "t2_easy_nostop_verdict.json").read_text())   # D20 demo (EXPECTED_FAIL)
     t1 = json.loads((OUT / "t1_easy_verdict.json").read_text())
     ars = json.loads((OUT / "t0_assembly_rules.json").read_text())
     pair = json.loads((OUT / "stop_pair.json").read_text())
     art = json.loads((OUT / "proxy_artifact.json").read_text())
     ir_svg = (OUT / "ir_easy.svg").read_text()
 
-    va, vb = t2["modes"]["V-A"]["p_hinge"], t2["modes"]["V-B"]["p_hinge"]
-    vas, vbs = t2s["modes"]["V-A"]["p_hinge"], t2s["modes"]["V-B"]["p_hinge"]
+    # t2  = the BENCHMARK golden (stop: F1+B3).  t2n = the D20 demo golden (nostop, EXPECTED_FAIL).
+    vas, vbs = t2["modes"]["V-A"]["p_hinge"], t2["modes"]["V-B"]["p_hinge"]      # benchmark
+    va, vb = t2n["modes"]["V-A"]["p_hinge"], t2n["modes"]["V-B"]["p_hinge"]      # demo
     b3 = pair["B3_ceiling_deg"]
     a26 = art["parts_authority"]["interference_mm3_at_26deg"]
     acon = art["proxies_authority"]["box_lid_contacts_at_26deg"]
@@ -89,8 +90,10 @@ def main():
                        f"<td class='num'>{i}</td><td class='num'>{m}</td><td class='num'>{dr}</td>"
                        f"<td>{'ok' if ok else 'DRIFT'}</td></tr>")
 
+    # the BENCHMARK must pass outright; the demo's V-B FAIL is EXPECTED (D20) and does not gate.
     verdict = (t1["verdict"] and all(a["ok"] for a in ars)
-               and va["passed"] and vas["passed"] and vbs["passed"])
+               and vas["passed"] and vbs["passed"] and va["passed"])
+    exp_fail = t2n.get("expected_fail", "")
     vbadge = "PASS" if verdict else "FAIL"
 
     html = f"""<!doctype html><html><head><meta charset="utf-8">
@@ -208,12 +211,15 @@ drift. The IR reference is ⑤'s resolved value, not the compiled dims (the pane
 </div>
 
 <h2>⑦ D20 — the no-stop / stop pair (stopping BY CONTACT)</h2>
+<div class="na" style="border-left:4px solid #b7791f;background:#fffbeb;padding:8px 12px;border-radius:6px;margin:8px 0">
+<b>EXPECTED_FAIL — regression target:</b> {exp_fail}
+</div>
 <p>Same assembly, same seed, same preset. The <b>only</b> difference: the stop variant's IR carries
 <b>F1</b> (a <span class="mono">stop_flange</span> PassiveFeature) and the <b>B3</b> rotation LIMIT it
 imposes (<span class="mono">bound=max</span>, ≤{b3}°, registered per V-08), which compiles to a real
 flange solid on the lid. <b>V-A passes both — only V-B separates them.</b></p>
-<table><tr><th></th><th>baseline</th><th>stop variant</th></tr>
-<tr><td>V-B seeds</td><td class="num">{vb['seeds_passed']}/5 — FAIL</td><td class="num">{vbs['seeds_passed']}/5 — PASS</td></tr>
+<table><tr><th></th><th>anchor_easy_nostop.json <span class="sub">(D20 demo)</span></th><th>anchor_easy.json <span class="sub">(BENCHMARK)</span></th></tr>
+<tr><td>V-B seeds</td><td class="num">{vb['seeds_passed']}/5 — FAIL <span class="sub">(expected)</span></td><td class="num">{vbs['seeds_passed']}/5 — PASS</td></tr>
 <tr><td>θ max</td><td class="num">{bt:.0f}°</td><td class="num">{st:.0f}°</td></tr>
 <tr><td>reading</td><td>the lid <b>folds right over</b> — that is the finding, reported not fixed</td>
 <td>the flange bottoms out on the box's own rear wall — <b>arrest BY CONTACT</b></td></tr></table>
@@ -221,9 +227,9 @@ flange solid on the lid. <b>V-A passes both — only V-B separates them.</b></p>
 <div class="cap">Identical until the flange engages (~0.9 s). Red blows through over-centre and
 folded-flat to 272° (with the travel spike as it sweeps the box); green arrests at the B3 ceiling.</div>
 <div class="grid">
- <div><video controls muted loop src="out/t2_easy_V-B.mp4"></video><div class="cap">baseline V-B —
-   folds over.</div></div>
- <div><video controls muted loop src="out/t2_easy_stop_V-B.mp4"></video><div class="cap">stop V-B —
+ <div><video controls muted loop src="out/t2_easy_nostop_V-B.mp4"></video><div class="cap">D20 demo (nostop) V-B —
+   folds over. EXPECTED_FAIL.</div></div>
+ <div><video controls muted loop src="out/t2_easy_V-B.mp4"></video><div class="cap">BENCHMARK (stop) V-B —
    arrests at the flange, then closes and seats.</div></div>
 </div>
 
