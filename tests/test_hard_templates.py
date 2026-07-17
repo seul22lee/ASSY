@@ -24,8 +24,7 @@ from knowledge.templates import TEMPLATES, TEMPLATE_COLLISION
 REQUIRED = {
     "cabinet_shell": ["rail_mount_L", "rail_mount_R", "rail_axis_L", "rail_axis_R",
                       "knob_mount", "floor"],
-    "drawer_tray": ["carriage_mount_L", "carriage_mount_R", "travel_axis_L", "travel_axis_R",
-                    "rack_mount", "front_pull"],
+    "drawer_tray": ["rack_mount", "front_pull", "carriage_seat_L", "carriage_seat_R"],
     "knob_shaft": ["mount_axis", "shaft_seat", "grip_face"],
     "rack_bar": ["mount_face", "rack_line"],
 }
@@ -55,30 +54,32 @@ def test_knob_shaft_is_one_connected_solid():
 
 
 def test_cabinet_rails_are_a_matched_level_pair():
-    """The two rail axes are the alignment rule's subjects: SAME height (level), MIRRORED in X, and
-    both run along +Y (parallel travel). If these disagree, the alignment rule can never pass."""
+    """The two rail axes are the alignment rule's subjects: SAME height (level), MIRRORED in Y, and
+    both run along +X (parallel travel — the pull-out direction). If these disagree, the alignment
+    rule can never pass."""
     a = TEMPLATES["cabinet_shell"]().anchors
     L, R = a["rail_axis_L"], a["rail_axis_R"]
     assert abs(L.position[2] - R.position[2]) < 1e-9, "rails must be LEVEL (equal z)"
-    assert abs(L.position[0] + R.position[0]) < 1e-9, "rails must be mirrored in X"
-    assert L.normal == (0, 1, 0) and R.normal == (0, 1, 0), "both rails travel along +Y (parallel)"
+    assert abs(L.position[1] + R.position[1]) < 1e-9, "rails must be mirrored in Y"
+    assert L.normal == (1, 0, 0) and R.normal == (1, 0, 0), "both rails travel along +X (parallel)"
 
 
-def test_drawer_carriage_pair_matches_cabinet_rail_height():
-    """The drawer's carriage anchors are a matched L/R pair and its travel axes run along +Y, so
-    they can pair with the cabinet rails under the alignment rule."""
+def test_drawer_carriage_seats_are_a_matched_level_pair():
+    """The drawer's two carriage seats are a matched L/R pair (mirrored in Y, level), matching the
+    cabinet's two floor rails so the drawer rides both."""
     a = TEMPLATES["drawer_tray"]().anchors
-    L, R = a["travel_axis_L"], a["travel_axis_R"]
-    assert abs(L.position[2] - R.position[2]) < 1e-9, "carriage anchors must be level"
-    assert abs(L.position[0] + R.position[0]) < 1e-9, "carriage anchors must be mirrored in X"
-    assert L.normal == (0, 1, 0) and R.normal == (0, 1, 0)
+    L, R = a["carriage_seat_L"], a["carriage_seat_R"]
+    assert abs(L.position[2] - R.position[2]) < 1e-9, "carriage seats must be level"
+    assert abs(L.position[1] + R.position[1]) < 1e-9, "carriage seats must be mirrored in Y"
+    assert L.normal == (0, 0, -1) and R.normal == (0, 0, -1)
 
 
 def test_rack_mount_is_underside_and_front_pull_is_front():
-    """rack_mount faces DOWN (−Z, the rack bar bolts under the drawer); front_pull faces +Y (front)."""
+    """rack_mount faces DOWN (−Z, the rack bar bolts under the drawer); front_pull faces +X (the
+    pull-out front)."""
     a = TEMPLATES["drawer_tray"]().anchors
     assert a["rack_mount"].normal == (0, 0, -1), "rack_mount must face the underside (−Z)"
-    assert a["front_pull"].normal == (0, 1, 0), "front_pull must face the front (+Y)"
+    assert a["front_pull"].normal == (1, 0, 0), "front_pull must face the front (+X)"
 
 
 def test_collision_hints_present_and_sourced():
@@ -94,7 +95,7 @@ def test_collision_hints_present_and_sourced():
 if __name__ == "__main__":
     fns = [test_all_templates_instantiate_valid, test_every_required_anchor_exists,
            test_knob_shaft_is_one_connected_solid, test_cabinet_rails_are_a_matched_level_pair,
-           test_drawer_carriage_pair_matches_cabinet_rail_height,
+           test_drawer_carriage_seats_are_a_matched_level_pair,
            test_rack_mount_is_underside_and_front_pull_is_front,
            test_collision_hints_present_and_sourced]
     for f in fns:

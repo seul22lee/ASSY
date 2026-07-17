@@ -675,6 +675,139 @@ def rack_pinion_fixture() -> DesignPlan:
     return plan
 
 
+def anchor_hard() -> DesignPlan:
+    """THE HARD ANCHOR (MECHSYNTH §8.2) — a rack-pinion drawer cabinet. The pipeline's second
+    benchmark and its first MULTI-CARD MECHANISM: two `slide_rail` instances (the drawer's two rails)
+    + one `rack_pinion` (the knob→drawer transmission), with the **alignment** AssemblyRule firing
+    for the first time on real geometry (the two rails must be parallel + level).
+
+    Frame (m13 correction — see m13_hard_anchor/REVIEW.md): +X = FRONT (pull-out). Two FLOOR rails
+    run +X at ±rail_gap/2 (matched height = the alignment subjects); a vertical +Z knob's pinion
+    meshes an +X rack under the drawer. This reuses the PROVEN m10/m11 carves verbatim.
+
+    Composition note (D-D-1 replace-semantics): `slide_rail.carve` REPLACES its mover piece, so it
+    cannot also BE the drawer. Each rail therefore owns its own carriage piece (P2/P3, slide_carriage);
+    the drawer_tray (P4) is a plain tray welded to both carriages at physics time. `rack_pinion.carve`
+    UNIONS the pinion into the knob (P5) and the rack into the rack_bar (P6).
+
+    §8.2 constraint chain (⑤ resolves; each number derived, see the s5 table in the runner):
+      drawer_w   = cab_inner_w − 2(rail_w+cl) = 132 − 2·8.35 = 115.30 mm
+      L_rack    ≥ stroke + πmz/4            = 120 + 47.12    = 167.12 mm
+      axis_off   = rack_pitchline + d/2       (= rp = 30 mm; the mesh offset)
+      engagement ≥ 0.35·stroke              = 42 mm
+    Stroke is SCALED from the §8.2 nominal 300 mm to **120 mm**: the m12 desktop cabinet is 200 mm
+    deep, so a 300 mm extension would pull the drawer clean out; 120 mm keeps ≥45 mm engaged."""
+    m, z, stroke = 5.0, 12, 120.0
+    rail_w, rail_h, cl, wall, cab_w = 8.0, 8.0, 0.35, 4.0, 140.0
+    rp = m * z / 2.0
+    tpr = math.pi * m * z
+    cab_inner_w = cab_w - 2 * wall
+    drawer_w = cab_inner_w - 2 * (rail_w + cl)                 # §8.2 → 115.30
+    L_rack = stroke + tpr / 4.0                                # §8.2 → 167.12
+    rail_gap, seat_x, seat_y, seat_z = 80.0, 76.0, 60.0, 30.0
+    rack_cy = seat_y - rp                                      # rack pitch line, rp inboard of pinion
+
+    cabinet = HostTemplate(template_ref="cabinet_shell",
+        params={"cab_d": 200.0, "cab_w": cab_w, "cab_h": 90.0, "wall": wall,
+                "rail_gap": rail_gap, "knob_y": seat_y},
+        anchors=[Anchor(name=n, kind=k) for n, k in
+                 [("rail_mount_L", "face"), ("rail_mount_R", "face"), ("rail_axis_L", "axis"),
+                  ("rail_axis_R", "axis"), ("knob_mount", "axis"), ("floor", "face")]])
+    carr = {pid: HostTemplate(template_ref="slide_carriage",
+                              params={"car_l": 24.0, "car_w": 30.0, "car_t": 3.0, "car_z": 3.0},
+                              anchors=[Anchor(name="groove_face", kind="face")]) for pid in ("P2", "P3")}
+    tray = HostTemplate(template_ref="drawer_tray",
+        params={"tray_d": 150.0, "tray_w": round(drawer_w, 2), "tray_h": 42.0, "floor_z": 16.0},
+        anchors=[Anchor(name="rack_mount", kind="face"), Anchor(name="rack_line", kind="edge"),
+                 Anchor(name="front_pull", kind="face"), Anchor(name="carriage_seat_L", kind="face"),
+                 Anchor(name="carriage_seat_R", kind="face")])
+    knob = HostTemplate(template_ref="knob_shaft",
+        params={"seat_x": seat_x, "seat_y": seat_y, "seat_z": seat_z, "top_z": 90.0},
+        anchors=[Anchor(name=n, kind="axis") for n in ("shaft_seat", "mount_axis", "grip_face")])
+
+    pieces = [
+        Piece(id="P1", role="base", template_ref="cabinet_shell", is_base=True, params=dict(cabinet.params)),
+        Piece(id="P2", role="carriage_L", template_ref="slide_carriage", params=dict(carr["P2"].params)),
+        Piece(id="P3", role="carriage_R", template_ref="slide_carriage", params=dict(carr["P3"].params)),
+        Piece(id="P4", role="drawer", template_ref="drawer_tray", params=dict(tray.params)),
+        Piece(id="P5", role="knob", template_ref="knob_shaft", params=dict(knob.params)),
+    ]
+    elements = [
+        ElementInstance(id="E1", card_ref="slide_rail", host_pieces=["P1", "P2"],
+                        params={"rail_w": rail_w, "rail_h": rail_h, "clearance": cl, "stroke": stroke}),
+        ElementInstance(id="E2", card_ref="slide_rail", host_pieces=["P1", "P3"],
+                        params={"rail_w": rail_w, "rail_h": rail_h, "clearance": cl, "stroke": stroke}),
+        # E3 rack_pinion — §8.2 "rack integrated into the drawer" branch (both golden): the rack
+        # carves into the drawer underside (P4), not a separate rack_bar. Knob (P5) carries the pinion.
+        ElementInstance(id="E3", card_ref="rack_pinion", host_pieces=["P5", "P4"],
+                        params={"module": m, "z_pinion": z, "pressure_angle_deg": 20.0,
+                                "face_w": 8.0, "backlash": 0.20, "stroke": stroke}),
+    ]
+    bindings = [
+        Binding(element_id="E1", port="rail_mount", piece_id="P1", anchor="rail_mount_L", mate="flush_face"),
+        Binding(element_id="E1", port="carriage_mount", piece_id="P2", anchor="groove_face", mate="flush_face"),
+        Binding(element_id="E1", port="travel_axis", piece_id="P1", anchor="rail_axis_L", mate="coincident_axis"),
+        Binding(element_id="E2", port="rail_mount", piece_id="P1", anchor="rail_mount_R", mate="flush_face"),
+        Binding(element_id="E2", port="carriage_mount", piece_id="P3", anchor="groove_face", mate="flush_face"),
+        Binding(element_id="E2", port="travel_axis", piece_id="P1", anchor="rail_axis_R", mate="coincident_axis"),
+        Binding(element_id="E3", port="pinion_axis", piece_id="P5", anchor="shaft_seat", mate="coincident_axis"),
+        Binding(element_id="E3", port="rack_mount", piece_id="P4", anchor="rack_mount", mate="flush_face"),
+        Binding(element_id="E3", port="mesh_line", piece_id="P4", anchor="rack_line", mate="coincident_axis"),
+    ]
+    # AR1 alignment (D-E-10) — its FIRST real firing: the two rail travel axes parallel + level.
+    assembly_rules = [
+        AssemblyRule(id="AR1", kind="alignment", provenance="task",
+                     subjects=["E1.travel_axis", "E2.travel_axis"],
+                     predicate={"axes": ["E1.travel_axis", "E2.travel_axis"],
+                                "relation": "parallel", "level": True},
+                     citation="§8.2: the drawer's two rails must be parallel and level"),
+    ]
+    # realized use behaviours: each rail carries the drawer travel; the rack_pinion the transmission.
+    behaviors = [
+        Behavior(id="B1", phase="use", motion=MotionSpec(kind="translation", axis_hint="horizontal",
+                 range_value=stroke, range_unit="mm", bound="min"), realized_by="E1"),
+        Behavior(id="B2", phase="use", motion=MotionSpec(kind="translation", axis_hint="horizontal",
+                 range_value=stroke, range_unit="mm", bound="min"), realized_by="E2"),
+        Behavior(id="B3", phase="use", motion=MotionSpec(kind="rot_to_trans", axis_hint="horizontal",
+                 range_value=stroke, range_unit="mm", bound="min",
+                 transmission={"mm_per_rev": round(tpr, 3), "pitch_radius_mm": rp, "kind": "rack_pinion"}),
+                 realized_by="E3"),
+    ]
+    # card-sourced imposed behaviours (V-08), per instance, BEFORE construction (pydantic copies list)
+    from knowledge.cards.base import CARD_REGISTRY as _C
+    n = len(behaviors)
+    for e in elements:
+        for tmpl in _C[e.card_ref].imposes:
+            n += 1
+            behaviors.append(Behavior(id=f"B{n}", phase=getattr(tmpl.phase, "value", tmpl.phase),
+                                      motion=MotionSpec(kind=getattr(tmpl.motion.kind, "value", tmpl.motion.kind)),
+                                      imposed_by=e.id, imposed_by_card=e.card_ref))
+    parameters = [
+        Parameter(name="stroke", value=stroke, unit="mm", lo=20.0, hi=400.0, resolved_by="user"),
+        Parameter(name="drawer_w", value=round(drawer_w, 2), unit="mm", lo=0.0, hi=cab_inner_w,
+                  resolved_by="rule"),
+        Parameter(name="L_rack", value=round(L_rack, 2), unit="mm", lo=0.0, hi=400.0, resolved_by="rule"),
+        Parameter(name="module", value=m, unit="mm", lo=5.0, hi=6.0, resolved_by="rule"),
+    ]
+    plan = DesignPlan(task_id="anchor_hard",
+        command=("Design a desktop cabinet whose drawer slides out when you turn the knob. "
+                 "The drawer should extend about 300 mm."),
+        functions=[Function(verb="allow_access", object="contents", qualifier="pull-out drawer"),
+                   Function(verb="convert", object="motion", qualifier="knob rotation to drawer travel"),
+                   Function(verb="guide", object="drawer", qualifier="two parallel rails")],
+        behaviors=behaviors, pieces=pieces,
+        templates=[cabinet, carr["P2"], carr["P3"], tray, knob],
+        elements=elements, bindings=bindings, assembly_rules=assembly_rules, parameters=parameters)
+    # attach card verification protocols exactly as ④ would (P-SLIDE per rail, P-GEAR for the pinion)
+    for e in elements:
+        for pr in _C[e.card_ref].verification(plan, e):
+            plan.protocols.append(pr)
+            b = next((x for x in plan.behaviors if x.id == pr.verifies), None)
+            if b is not None and not b.verified_by:
+                b.verified_by = pr.id
+    return plan
+
+
 def main() -> None:
     from ontology.validators import validate_all
 
@@ -692,6 +825,7 @@ def main() -> None:
         "anchor_easy_nostop.json": anchor_easy("nostop"),
         "slide_fixture.json": slide_fixture(),
         "rack_pinion_fixture.json": rack_pinion_fixture(),
+        "anchor_hard.json": anchor_hard(),
     }
     # EXPECTED_FAIL at the VERDICT level (distinct from `expected` below, which is validator-level):
     # these goldens are legal IRs whose physics verdict must FAIL, and are kept as live regression

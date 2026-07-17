@@ -140,10 +140,15 @@ def carve(pieces: dict, inst, bindings) -> SlideCarve:
     axis_anchor = _anchor(pieces, ax)
 
     z0 = float(rail_anchor["point"][2])          # base mount face height
-    rail = _rail_solid(g, z0)
+    # host-agnostic PLACEMENT: the rail sits at the mount anchor's X/Y (not just its height). For the
+    # single-rail m10 fixture the anchor is at the origin → offset (0,0), so m10 is unchanged; for a
+    # multi-rail host (the Hard anchor's two floor rails at ±rail_gap/2) each rail lands at its own
+    # anchor. Travel stays local +X (the anchor's travel_axis dir; both fixtures use +X).
+    ox, oy = float(rail_anchor["point"][0]), float(rail_anchor["point"][1])
+    rail = Pos(ox, oy, 0) * _rail_solid(g, z0)
     carriage = _carriage_solid(g, z0)
     # carriage starts fully engaged at the −X (closed) end of the rail
-    carriage = Pos(-(g.rail_len / 2 - g.engagement_len / 2), 0, 0) * carriage
+    carriage = Pos(ox - (g.rail_len / 2 - g.engagement_len / 2), oy, 0) * carriage
 
     parts, tags = dict(pieces_as_solids(pieces)), {}
     parts[rb.piece_id] = parts[rb.piece_id] + rail
