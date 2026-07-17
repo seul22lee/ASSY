@@ -1,0 +1,1028 @@
+[
+  {
+    "run": 1,
+    "command": "Design a small box whose lid opens and closes and latches shut. Plastic, for 3D printing.",
+    "backend": {
+      "backend": "gemini",
+      "model": "gemini-3.1-pro-preview",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta",
+      "api_key_from_env": true,
+      "max_retries": 3
+    },
+    "tag": "gemini",
+    "temperature": 0.0,
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "failure": {
+      "reached": "s2",
+      "class": "gate_failure_after_retries",
+      "error": "StageFailure[s2/G2]: LLM could not satisfy G2 after 3 repair retries; last errors: \u00a74-\u2461: use-phase behaviour B2 (rotation) must have a fully populated MotionSpec: range_value + range_unit + bound.; G2 expectation: no static-phase behaviour with motion.kind in ['fixed', 'snap_event']. the lid must stay shut \u2014 a static-phase hold"
+    },
+    "llm_stages_passed": false,
+    "retry_counts": {
+      "s1": 0,
+      "s2": 3
+    },
+    "score": {
+      "axes": [
+        {
+          "axis": "\u2460 functions (by verb)",
+          "matched": [
+            "secure",
+            "allow_access"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2461 behaviors (by phase+motion.kind)",
+          "matched": [],
+          "missing": [
+            [
+              "use",
+              "rotation"
+            ],
+            [
+              "use",
+              "rotation"
+            ],
+            [
+              "assembly",
+              "translation"
+            ],
+            [
+              "assembly",
+              "translation"
+            ],
+            [
+              "static",
+              "snap_event"
+            ],
+            [
+              "use",
+              "fixed"
+            ]
+          ],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 0.0,
+          "precision": 1.0,
+          "f1": 0.0
+        },
+        {
+          "axis": "\u2462 pieces (by template_ref)",
+          "matched": [],
+          "missing": [
+            "box_shell",
+            "lid_panel"
+          ],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 0.0,
+          "precision": 1.0,
+          "f1": 0.0
+        },
+        {
+          "axis": "\u2462/\u2463 hardware pieces (by role, D-ONT-11)",
+          "matched": [],
+          "missing": [
+            "pin"
+          ],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 0.0,
+          "precision": 1.0,
+          "f1": 0.0
+        },
+        {
+          "axis": "\u2463 elements (by card_ref)",
+          "matched": [],
+          "missing": [
+            "pin_hinge",
+            "snap_hook_cantilever",
+            "stop_flange"
+          ],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 0.0,
+          "precision": 1.0,
+          "f1": 0.0
+        },
+        {
+          "axis": "\u2463 bindings (by card_ref+port+anchor)",
+          "matched": [],
+          "missing": [
+            [
+              "pin_hinge",
+              "axis",
+              "rear_top_edge"
+            ],
+            [
+              "pin_hinge",
+              "mount_A",
+              "rear_wall_outer"
+            ],
+            [
+              "pin_hinge",
+              "mount_B",
+              "rear_edge_underside"
+            ],
+            [
+              "snap_hook_cantilever",
+              "beam_root",
+              "front_edge_underside"
+            ],
+            [
+              "snap_hook_cantilever",
+              "catch_window",
+              "front_wall_inner"
+            ],
+            [
+              "stop_flange",
+              "contact",
+              "stop_flange_face"
+            ]
+          ],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 0.0,
+          "precision": 1.0,
+          "f1": 0.0
+        }
+      ],
+      "alias_scoring": true,
+      "alias_reasons": {
+        "allow_access ~ position": "For an opening lid, 'allow_access: contents' (the user-level affordance) and 'position: lid' (the physical placement that provides it) name the same design decision from two legitimate viewpoints; the subset offers both and does not disambiguate. Charging the difference to the model would score our vocabulary's ambiguity as its error."
+      },
+      "stop_axis": {
+        "axis": "physics_implied_requirement (stop_flange)",
+        "in_golden": true,
+        "in_llm_ir": false,
+        "llm_has_rotation_ceiling": false,
+        "missed": true,
+        "note": "The command never mentions a stop; the golden carries one because PHYSICS showed 'opens>=90 AND returns closed' is unsatisfiable without it (D-M8-5). Not scored as a field mismatch: an IR without it is still valid, and its t2 fold-over is the benchmark's own point (D20)."
+      },
+      "validators": {
+        "clean": true,
+        "violations": [],
+        "rules_hit": []
+      },
+      "macro_f1": 0.167,
+      "macro_f1_alias": 0.167,
+      "macro_f1_strict": 0.167,
+      "axes_strict": [
+        {
+          "axis": "\u2460 functions (by verb)",
+          "matched": [
+            "secure",
+            "allow_access"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2461 behaviors (by phase+motion.kind)",
+          "matched": [],
+          "missing": [
+            [
+              "use",
+              "rotation"
+            ],
+            [
+              "use",
+              "rotation"
+            ],
+            [
+              "assembly",
+              "translation"
+            ],
+            [
+              "assembly",
+              "translation"
+            ],
+            [
+              "static",
+              "snap_event"
+            ],
+            [
+              "use",
+              "fixed"
+            ]
+          ],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 0.0,
+          "precision": 1.0,
+          "f1": 0.0
+        },
+        {
+          "axis": "\u2462 pieces (by template_ref)",
+          "matched": [],
+          "missing": [
+            "box_shell",
+            "lid_panel"
+          ],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 0.0,
+          "precision": 1.0,
+          "f1": 0.0
+        },
+        {
+          "axis": "\u2462/\u2463 hardware pieces (by role, D-ONT-11)",
+          "matched": [],
+          "missing": [
+            "pin"
+          ],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 0.0,
+          "precision": 1.0,
+          "f1": 0.0
+        },
+        {
+          "axis": "\u2463 elements (by card_ref)",
+          "matched": [],
+          "missing": [
+            "pin_hinge",
+            "snap_hook_cantilever",
+            "stop_flange"
+          ],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 0.0,
+          "precision": 1.0,
+          "f1": 0.0
+        },
+        {
+          "axis": "\u2463 bindings (by card_ref+port+anchor)",
+          "matched": [],
+          "missing": [
+            [
+              "pin_hinge",
+              "axis",
+              "rear_top_edge"
+            ],
+            [
+              "pin_hinge",
+              "mount_A",
+              "rear_wall_outer"
+            ],
+            [
+              "pin_hinge",
+              "mount_B",
+              "rear_edge_underside"
+            ],
+            [
+              "snap_hook_cantilever",
+              "beam_root",
+              "front_edge_underside"
+            ],
+            [
+              "snap_hook_cantilever",
+              "catch_window",
+              "front_wall_inner"
+            ],
+            [
+              "stop_flange",
+              "contact",
+              "stop_flange_face"
+            ]
+          ],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 0.0,
+          "precision": 1.0,
+          "f1": 0.0
+        }
+      ],
+      "alias_delta": 0.0
+    },
+    "downstream": {},
+    "wall_s": 69.5
+  },
+  {
+    "run": 2,
+    "command": "Design a small box whose lid opens and closes and latches shut. Plastic, for 3D printing.",
+    "backend": {
+      "backend": "gemini",
+      "model": "gemini-3.1-pro-preview",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta",
+      "api_key_from_env": true,
+      "max_retries": 3
+    },
+    "tag": "gemini",
+    "temperature": 0.6,
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "failure": null,
+    "llm_stages_passed": true,
+    "retry_counts": {
+      "s1": 0,
+      "s2": 1,
+      "s3": 0,
+      "s4": 1
+    },
+    "score": {
+      "axes": [
+        {
+          "axis": "\u2460 functions (by verb)",
+          "matched": [
+            "secure",
+            "allow_access"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2461 behaviors (by phase+motion.kind)",
+          "matched": [
+            [
+              "assembly",
+              "translation"
+            ],
+            [
+              "assembly",
+              "translation"
+            ],
+            [
+              "use",
+              "fixed"
+            ],
+            [
+              "use",
+              "rotation"
+            ],
+            [
+              "static",
+              "snap_event"
+            ]
+          ],
+          "missing": [
+            [
+              "use",
+              "rotation"
+            ]
+          ],
+          "spurious": [
+            [
+              "assembly",
+              "snap_event"
+            ]
+          ],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 0.833,
+          "precision": 0.833,
+          "f1": 0.833
+        },
+        {
+          "axis": "\u2462 pieces (by template_ref)",
+          "matched": [
+            "box_shell",
+            "lid_panel"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2462/\u2463 hardware pieces (by role, D-ONT-11)",
+          "matched": [
+            "pin"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2463 elements (by card_ref)",
+          "matched": [
+            "stop_flange",
+            "snap_hook_cantilever",
+            "pin_hinge"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2463 bindings (by card_ref+port+anchor)",
+          "matched": [
+            [
+              "snap_hook_cantilever",
+              "catch_window",
+              "front_wall_inner"
+            ],
+            [
+              "snap_hook_cantilever",
+              "beam_root",
+              "front_edge_underside"
+            ],
+            [
+              "pin_hinge",
+              "mount_B",
+              "rear_edge_underside"
+            ],
+            [
+              "pin_hinge",
+              "mount_A",
+              "rear_wall_outer"
+            ],
+            [
+              "stop_flange",
+              "contact",
+              "stop_flange_face"
+            ],
+            [
+              "pin_hinge",
+              "axis",
+              "rear_top_edge"
+            ]
+          ],
+          "missing": [],
+          "spurious": [
+            [
+              "stop_flange",
+              "contact",
+              "rear_wall_outer"
+            ]
+          ],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 0.857,
+          "f1": 0.923
+        }
+      ],
+      "alias_scoring": true,
+      "alias_reasons": {
+        "allow_access ~ position": "For an opening lid, 'allow_access: contents' (the user-level affordance) and 'position: lid' (the physical placement that provides it) name the same design decision from two legitimate viewpoints; the subset offers both and does not disambiguate. Charging the difference to the model would score our vocabulary's ambiguity as its error."
+      },
+      "stop_axis": {
+        "axis": "physics_implied_requirement (stop_flange)",
+        "in_golden": true,
+        "in_llm_ir": true,
+        "llm_has_rotation_ceiling": false,
+        "missed": false,
+        "note": "The command never mentions a stop; the golden carries one because PHYSICS showed 'opens>=90 AND returns closed' is unsatisfiable without it (D-M8-5). Not scored as a field mismatch: an IR without it is still valid, and its t2 fold-over is the benchmark's own point (D20)."
+      },
+      "validators": {
+        "clean": true,
+        "violations": [],
+        "rules_hit": []
+      },
+      "macro_f1": 0.959,
+      "macro_f1_alias": 0.959,
+      "macro_f1_strict": 0.959,
+      "axes_strict": [
+        {
+          "axis": "\u2460 functions (by verb)",
+          "matched": [
+            "secure",
+            "allow_access"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2461 behaviors (by phase+motion.kind)",
+          "matched": [
+            [
+              "assembly",
+              "translation"
+            ],
+            [
+              "assembly",
+              "translation"
+            ],
+            [
+              "use",
+              "fixed"
+            ],
+            [
+              "use",
+              "rotation"
+            ],
+            [
+              "static",
+              "snap_event"
+            ]
+          ],
+          "missing": [
+            [
+              "use",
+              "rotation"
+            ]
+          ],
+          "spurious": [
+            [
+              "assembly",
+              "snap_event"
+            ]
+          ],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 0.833,
+          "precision": 0.833,
+          "f1": 0.833
+        },
+        {
+          "axis": "\u2462 pieces (by template_ref)",
+          "matched": [
+            "box_shell",
+            "lid_panel"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2462/\u2463 hardware pieces (by role, D-ONT-11)",
+          "matched": [
+            "pin"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2463 elements (by card_ref)",
+          "matched": [
+            "stop_flange",
+            "snap_hook_cantilever",
+            "pin_hinge"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2463 bindings (by card_ref+port+anchor)",
+          "matched": [
+            [
+              "snap_hook_cantilever",
+              "catch_window",
+              "front_wall_inner"
+            ],
+            [
+              "snap_hook_cantilever",
+              "beam_root",
+              "front_edge_underside"
+            ],
+            [
+              "pin_hinge",
+              "mount_B",
+              "rear_edge_underside"
+            ],
+            [
+              "pin_hinge",
+              "mount_A",
+              "rear_wall_outer"
+            ],
+            [
+              "stop_flange",
+              "contact",
+              "stop_flange_face"
+            ],
+            [
+              "pin_hinge",
+              "axis",
+              "rear_top_edge"
+            ]
+          ],
+          "missing": [],
+          "spurious": [
+            [
+              "stop_flange",
+              "contact",
+              "rear_wall_outer"
+            ]
+          ],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 0.857,
+          "f1": 0.923
+        }
+      ],
+      "alias_delta": 0.0
+    },
+    "downstream": {
+      "s5_resolve": "PASS",
+      "s6_compile": "PASS (3 parts)",
+      "t0_assembly_rules": "n/a (no AssemblyRules in IR)",
+      "t2_physics": {
+        "V-A": "5/5",
+        "V-B": "4/5"
+      },
+      "t2_verdict": true
+    },
+    "wall_s": 107.1
+  },
+  {
+    "run": 3,
+    "command": "Design a small box whose lid opens and closes and latches shut. Plastic, for 3D printing.",
+    "backend": {
+      "backend": "gemini",
+      "model": "gemini-3.1-pro-preview",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta",
+      "api_key_from_env": true,
+      "max_retries": 3
+    },
+    "tag": "gemini",
+    "temperature": 0.6,
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "failure": null,
+    "llm_stages_passed": true,
+    "retry_counts": {
+      "s1": 0,
+      "s2": 1,
+      "s3": 0,
+      "s4": 2
+    },
+    "score": {
+      "axes": [
+        {
+          "axis": "\u2460 functions (by verb)",
+          "matched": [
+            "secure",
+            "allow_access"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2461 behaviors (by phase+motion.kind)",
+          "matched": [
+            [
+              "assembly",
+              "translation"
+            ],
+            [
+              "assembly",
+              "translation"
+            ],
+            [
+              "use",
+              "fixed"
+            ],
+            [
+              "use",
+              "rotation"
+            ],
+            [
+              "static",
+              "snap_event"
+            ]
+          ],
+          "missing": [
+            [
+              "use",
+              "rotation"
+            ]
+          ],
+          "spurious": [
+            [
+              "assembly",
+              "snap_event"
+            ]
+          ],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 0.833,
+          "precision": 0.833,
+          "f1": 0.833
+        },
+        {
+          "axis": "\u2462 pieces (by template_ref)",
+          "matched": [
+            "box_shell",
+            "lid_panel"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2462/\u2463 hardware pieces (by role, D-ONT-11)",
+          "matched": [
+            "pin"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2463 elements (by card_ref)",
+          "matched": [
+            "stop_flange",
+            "snap_hook_cantilever",
+            "pin_hinge"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2463 bindings (by card_ref+port+anchor)",
+          "matched": [
+            [
+              "snap_hook_cantilever",
+              "catch_window",
+              "front_wall_inner"
+            ],
+            [
+              "snap_hook_cantilever",
+              "beam_root",
+              "front_edge_underside"
+            ],
+            [
+              "pin_hinge",
+              "mount_B",
+              "rear_edge_underside"
+            ],
+            [
+              "pin_hinge",
+              "mount_A",
+              "rear_wall_outer"
+            ],
+            [
+              "stop_flange",
+              "contact",
+              "stop_flange_face"
+            ],
+            [
+              "pin_hinge",
+              "axis",
+              "rear_top_edge"
+            ]
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        }
+      ],
+      "alias_scoring": true,
+      "alias_reasons": {
+        "allow_access ~ position": "For an opening lid, 'allow_access: contents' (the user-level affordance) and 'position: lid' (the physical placement that provides it) name the same design decision from two legitimate viewpoints; the subset offers both and does not disambiguate. Charging the difference to the model would score our vocabulary's ambiguity as its error."
+      },
+      "stop_axis": {
+        "axis": "physics_implied_requirement (stop_flange)",
+        "in_golden": true,
+        "in_llm_ir": true,
+        "llm_has_rotation_ceiling": false,
+        "missed": false,
+        "note": "The command never mentions a stop; the golden carries one because PHYSICS showed 'opens>=90 AND returns closed' is unsatisfiable without it (D-M8-5). Not scored as a field mismatch: an IR without it is still valid, and its t2 fold-over is the benchmark's own point (D20)."
+      },
+      "validators": {
+        "clean": true,
+        "violations": [],
+        "rules_hit": []
+      },
+      "macro_f1": 0.972,
+      "macro_f1_alias": 0.972,
+      "macro_f1_strict": 0.972,
+      "axes_strict": [
+        {
+          "axis": "\u2460 functions (by verb)",
+          "matched": [
+            "secure",
+            "allow_access"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2461 behaviors (by phase+motion.kind)",
+          "matched": [
+            [
+              "assembly",
+              "translation"
+            ],
+            [
+              "assembly",
+              "translation"
+            ],
+            [
+              "use",
+              "fixed"
+            ],
+            [
+              "use",
+              "rotation"
+            ],
+            [
+              "static",
+              "snap_event"
+            ]
+          ],
+          "missing": [
+            [
+              "use",
+              "rotation"
+            ]
+          ],
+          "spurious": [
+            [
+              "assembly",
+              "snap_event"
+            ]
+          ],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 0.833,
+          "precision": 0.833,
+          "f1": 0.833
+        },
+        {
+          "axis": "\u2462 pieces (by template_ref)",
+          "matched": [
+            "box_shell",
+            "lid_panel"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2462/\u2463 hardware pieces (by role, D-ONT-11)",
+          "matched": [
+            "pin"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2463 elements (by card_ref)",
+          "matched": [
+            "stop_flange",
+            "snap_hook_cantilever",
+            "pin_hinge"
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        },
+        {
+          "axis": "\u2463 bindings (by card_ref+port+anchor)",
+          "matched": [
+            [
+              "snap_hook_cantilever",
+              "catch_window",
+              "front_wall_inner"
+            ],
+            [
+              "snap_hook_cantilever",
+              "beam_root",
+              "front_edge_underside"
+            ],
+            [
+              "pin_hinge",
+              "mount_B",
+              "rear_edge_underside"
+            ],
+            [
+              "pin_hinge",
+              "mount_A",
+              "rear_wall_outer"
+            ],
+            [
+              "stop_flange",
+              "contact",
+              "stop_flange_face"
+            ],
+            [
+              "pin_hinge",
+              "axis",
+              "rear_top_edge"
+            ]
+          ],
+          "missing": [],
+          "spurious": [],
+          "wrong_field": [],
+          "aliased": [],
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0
+        }
+      ],
+      "alias_delta": 0.0
+    },
+    "downstream": {
+      "s5_resolve": "PASS",
+      "s6_compile": "PASS (3 parts)",
+      "t0_assembly_rules": "n/a (no AssemblyRules in IR)",
+      "t2_physics": {
+        "V-A": "5/5",
+        "V-B": "4/5"
+      },
+      "t2_verdict": true
+    },
+    "wall_s": 128.4
+  }
+]

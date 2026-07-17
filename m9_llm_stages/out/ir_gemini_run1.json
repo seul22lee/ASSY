@@ -1,0 +1,101 @@
+{
+  "task_id": "llm_easy_gemini_run1",
+  "command": "Design a small box whose lid opens and closes and latches shut. Plastic, for 3D printing.",
+  "functions": [
+    {
+      "verb": "secure",
+      "object": "lid",
+      "qualifier": "shut"
+    },
+    {
+      "verb": "allow_access",
+      "object": "contents",
+      "qualifier": "opens and closes"
+    }
+  ],
+  "behaviors": [],
+  "pieces": [],
+  "templates": [],
+  "elements": [],
+  "features": [],
+  "bindings": [],
+  "assembly_rules": [],
+  "parameters": [],
+  "protocols": [],
+  "material": "PETG",
+  "variant": null,
+  "stage_log": [
+    {
+      "stage": "s1",
+      "attempt": 0,
+      "model": "gemini-3.1-pro-preview",
+      "prompt_sha256": "03f68b7cabf7a54a",
+      "prompt": "You map a design command onto FUNCTIONS from a controlled vocabulary.\n\n# The Functional Basis verb subset — you MUST choose verbs from this list ONLY\n  - secure [Support] — to fasten a part into a fixed position (a latch, a clip, a fastener)\n  - position [Support] — to place a part into a specific location or orientation\n  - stabilize [Support] — to prevent a part from changing position\n  - guide [Channel] — to direct the path of a part along a specific course\n  - transfer [Channel] — to move a part from one place to another\n  - export [Channel] — to send a part outside the system boundary\n  - import [Channel] — to bring a part in from outside the system boundary\n  - couple [Connect] — to join parts so they act as one\n  - actuate [Control Magnitude] — to commence the flow of energy/motion\n  - regulate [Control Magnitude] — to adjust the flow of energy/motion\n  - stop [Control Magnitude] — to cease the flow of energy/motion (an end stop, a limit)\n  - store [Provision] — to accumulate or contain a material\n  - supply [Provision] — to provide a material for use\n  - allow_access [Provision (domain extension)] — to make contained material reachable by a user on demand — the user-level affordance an opening lid/door provides. NOT canonical NIST; nearest canonical: Channel→Export / Provision→Supply (see NEAREST_NIST).  [domain extension; nearest canonical NIST: export, supply]\n\n# Rules\n- Output one function per distinct user-level purpose in the command. Usually 1-3.\n- `verb` MUST be exactly one of the vocabulary terms above (lowercase, as written).\n- `object` is the thing acted on, in the command's own words (e.g. \"lid\", \"contents\").\n- `qualifier` carries HOW/how-much: any quantity stated in the command (sizes, angles, counts,\n  forces) MUST appear in a qualifier verbatim. If the command states no quantity, use the\n  qualifier for the manner (\"repeated open/close\", \"hand-releasable\").\n- Describe the PURPOSE, not the mechanism. Do not name hinges, latches, or parts.\n\n# Worked example (a DIFFERENT task)\ncommand: \"Design a snap-lid box I can push shut and pull open by hand. Plastic, for 3D printing.\"\nanswer: {\n  \"functions\": [\n    {\n      \"verb\": \"secure\",\n      \"object\": \"lid\",\n      \"qualifier\": \"hold closed\"\n    },\n    {\n      \"verb\": \"allow_access\",\n      \"object\": \"contents\",\n      \"qualifier\": \"repeated hand open/close\"\n    }\n  ]\n}\n\n# Now solve this one\ncommand: \"Design a small box whose lid opens and closes and latches shut. Plastic, for 3D printing.\"\nAnswer with the JSON object only.",
+      "response_raw": "{\"functions\":[{\"verb\":\"secure\",\"object\":\"lid\",\"qualifier\":\"shut\"},{\"verb\":\"allow_access\",\"object\":\"contents\",\"qualifier\":\"opens and closes\"}]}",
+      "latency_s": 12.13,
+      "ok": true,
+      "validator_errors": [],
+      "eval_tokens": 34
+    },
+    {
+      "stage": "s2",
+      "attempt": 0,
+      "model": "gemini-3.1-pro-preview",
+      "prompt_sha256": "a7df0324dda11594",
+      "prompt": "You derive BEHAVIOURS (what physically happens) from FUNCTIONS (what the user wants).\n\n# Vocabulary — closed sets, choose only from these\nphase: assembly (putting the product together) | use (in normal operation) | static (holding a state)\nmotion.kind: rotation | translation | rot_to_trans | fixed | snap_event\n\n# Rules\n- A behaviour is a PHYSICAL fact, not a part. Never name a hinge/latch/screw — that is chosen later.\n- Every distinct phase of the product's life that a function implies gets its own behaviour:\n  think about (a) operating it, (b) it holding its state, (c) ASSEMBLING it in the first place.\n- use-phase motion MUST be fully populated: kind, axis_hint, and a range (`range_value` +\n  `range_unit` + `bound`: \"min\" = at least this much travel, \"max\" = a ceiling/limit).\n- kind=snap_event MUST carry `event_force_window_N` as [mate_force, separate_force] in newtons.\n- kind=rot_to_trans MUST carry a transmission.\n- ids are B1, B2, ...\n\n# Worked example (a DIFFERENT task)\nfunctions: [{\"verb\": \"secure\", \"object\": \"lid\", \"qualifier\": \"hold closed\"}, {\"verb\": \"allow_access\", \"object\": \"contents\", \"qualifier\": \"repeated hand open/close\"}]\nanswer: {\n  \"behaviors\": [\n    {\n      \"id\": \"B1\",\n      \"phase\": \"assembly\",\n      \"motion\": {\n        \"kind\": \"snap_event\",\n        \"event_force_window_N\": [\n          0.0,\n          80.0\n        ]\n      }\n    },\n    {\n      \"id\": \"B2\",\n      \"phase\": \"static\",\n      \"motion\": {\n        \"kind\": \"snap_event\",\n        \"event_force_window_N\": [\n          15.0,\n          60.0\n        ]\n      }\n    },\n    {\n      \"id\": \"B3\",\n      \"phase\": \"use\",\n      \"motion\": {\n        \"kind\": \"fixed\"\n      }\n    },\n    {\n      \"id\": \"B4\",\n      \"phase\": \"assembly\",\n      \"motion\": {\n        \"kind\": \"translation\",\n        \"axis_hint\": \"insertion_axis\"\n      }\n    }\n  ]\n}\n\n# Now solve this one\ncommand: \"Design a small box whose lid opens and closes and latches shut. Plastic, for 3D printing.\"\nfunctions: [{'verb': 'secure', 'object': 'lid', 'qualifier': 'shut'}, {'verb': 'allow_access', 'object': 'contents', 'qualifier': 'opens and closes'}]\nAnswer with the JSON object only.",
+      "response_raw": "{\"behaviors\":[{\"id\":\"B1\",\"phase\":\"assembly\",\"motion\":{\"kind\":\"snap_event\",\"event_force_window_N\":[20.0,60.0]}},{\"id\":\"B2\",\"phase\":\"use\",\"motion\":{\"kind\":\"rotation\",\"axis_hint\":\"hinge_axis\",\"range_value\":90.01}\n}\n]\n}",
+      "latency_s": 18.14,
+      "ok": false,
+      "validator_errors": [
+        "§4-②: use-phase behaviour B2 (rotation) must have a fully populated MotionSpec: range_value + range_unit + bound.",
+        "G2 expectation: no static-phase behaviour with motion.kind in ['fixed', 'snap_event']. the lid must stay shut — a static-phase hold"
+      ],
+      "eval_tokens": 81
+    },
+    {
+      "stage": "s2",
+      "attempt": 1,
+      "model": "gemini-3.1-pro-preview",
+      "prompt_sha256": "2bff4f413de5bd15",
+      "prompt": "You derive BEHAVIOURS (what physically happens) from FUNCTIONS (what the user wants).\n\n# Vocabulary — closed sets, choose only from these\nphase: assembly (putting the product together) | use (in normal operation) | static (holding a state)\nmotion.kind: rotation | translation | rot_to_trans | fixed | snap_event\n\n# Rules\n- A behaviour is a PHYSICAL fact, not a part. Never name a hinge/latch/screw — that is chosen later.\n- Every distinct phase of the product's life that a function implies gets its own behaviour:\n  think about (a) operating it, (b) it holding its state, (c) ASSEMBLING it in the first place.\n- use-phase motion MUST be fully populated: kind, axis_hint, and a range (`range_value` +\n  `range_unit` + `bound`: \"min\" = at least this much travel, \"max\" = a ceiling/limit).\n- kind=snap_event MUST carry `event_force_window_N` as [mate_force, separate_force] in newtons.\n- kind=rot_to_trans MUST carry a transmission.\n- ids are B1, B2, ...\n\n# Worked example (a DIFFERENT task)\nfunctions: [{\"verb\": \"secure\", \"object\": \"lid\", \"qualifier\": \"hold closed\"}, {\"verb\": \"allow_access\", \"object\": \"contents\", \"qualifier\": \"repeated hand open/close\"}]\nanswer: {\n  \"behaviors\": [\n    {\n      \"id\": \"B1\",\n      \"phase\": \"assembly\",\n      \"motion\": {\n        \"kind\": \"snap_event\",\n        \"event_force_window_N\": [\n          0.0,\n          80.0\n        ]\n      }\n    },\n    {\n      \"id\": \"B2\",\n      \"phase\": \"static\",\n      \"motion\": {\n        \"kind\": \"snap_event\",\n        \"event_force_window_N\": [\n          15.0,\n          60.0\n        ]\n      }\n    },\n    {\n      \"id\": \"B3\",\n      \"phase\": \"use\",\n      \"motion\": {\n        \"kind\": \"fixed\"\n      }\n    },\n    {\n      \"id\": \"B4\",\n      \"phase\": \"assembly\",\n      \"motion\": {\n        \"kind\": \"translation\",\n        \"axis_hint\": \"insertion_axis\"\n      }\n    }\n  ]\n}\n\n# Now solve this one\ncommand: \"Design a small box whose lid opens and closes and latches shut. Plastic, for 3D printing.\"\nfunctions: [{'verb': 'secure', 'object': 'lid', 'qualifier': 'shut'}, {'verb': 'allow_access', 'object': 'contents', 'qualifier': 'opens and closes'}]\nAnswer with the JSON object only.\n\n# YOUR PREVIOUS ANSWER WAS REJECTED (attempt 1/3)\nYou produced:\n{\"behaviors\":[{\"id\":\"B1\",\"phase\":\"assembly\",\"motion\":{\"kind\":\"snap_event\",\"event_force_window_N\":[20.0,60.0]}},{\"id\":\"B2\",\"phase\":\"use\",\"motion\":{\"kind\":\"rotation\",\"axis_hint\":\"hinge_axis\",\"range_value\":90.01}\n}\n]\n}\n\nThe validator rejected it with these EXACT errors:\n  - §4-②: use-phase behaviour B2 (rotation) must have a fully populated MotionSpec: range_value + range_unit + bound.\n  - G2 expectation: no static-phase behaviour with motion.kind in ['fixed', 'snap_event']. the lid must stay shut — a static-phase hold\n\nFix ONLY what these errors name and answer again. Same JSON schema. Do not restate the errors; return the corrected object.",
+      "response_raw": "{\"behaviors\":[{\"id\":\"B1\",\"phase\":\"assembly\",\"motion\":{\"kind\":\"snap_event\",\"event_force_window_N\":[20.0,60.0]}},{\"id\":\"B2\",\"phase\":\"use\",\"motion\":{\"kind\":\"rotation\",\"axis_hint\":\"hinge_axis\",\"range_value\":90.01}\n}\n]\n}",
+      "latency_s": 18.98,
+      "ok": false,
+      "validator_errors": [
+        "§4-②: use-phase behaviour B2 (rotation) must have a fully populated MotionSpec: range_value + range_unit + bound.",
+        "G2 expectation: no static-phase behaviour with motion.kind in ['fixed', 'snap_event']. the lid must stay shut — a static-phase hold"
+      ],
+      "eval_tokens": 81
+    },
+    {
+      "stage": "s2",
+      "attempt": 2,
+      "model": "gemini-3.1-pro-preview",
+      "prompt_sha256": "ca5bf6c945c24cc8",
+      "prompt": "You derive BEHAVIOURS (what physically happens) from FUNCTIONS (what the user wants).\n\n# Vocabulary — closed sets, choose only from these\nphase: assembly (putting the product together) | use (in normal operation) | static (holding a state)\nmotion.kind: rotation | translation | rot_to_trans | fixed | snap_event\n\n# Rules\n- A behaviour is a PHYSICAL fact, not a part. Never name a hinge/latch/screw — that is chosen later.\n- Every distinct phase of the product's life that a function implies gets its own behaviour:\n  think about (a) operating it, (b) it holding its state, (c) ASSEMBLING it in the first place.\n- use-phase motion MUST be fully populated: kind, axis_hint, and a range (`range_value` +\n  `range_unit` + `bound`: \"min\" = at least this much travel, \"max\" = a ceiling/limit).\n- kind=snap_event MUST carry `event_force_window_N` as [mate_force, separate_force] in newtons.\n- kind=rot_to_trans MUST carry a transmission.\n- ids are B1, B2, ...\n\n# Worked example (a DIFFERENT task)\nfunctions: [{\"verb\": \"secure\", \"object\": \"lid\", \"qualifier\": \"hold closed\"}, {\"verb\": \"allow_access\", \"object\": \"contents\", \"qualifier\": \"repeated hand open/close\"}]\nanswer: {\n  \"behaviors\": [\n    {\n      \"id\": \"B1\",\n      \"phase\": \"assembly\",\n      \"motion\": {\n        \"kind\": \"snap_event\",\n        \"event_force_window_N\": [\n          0.0,\n          80.0\n        ]\n      }\n    },\n    {\n      \"id\": \"B2\",\n      \"phase\": \"static\",\n      \"motion\": {\n        \"kind\": \"snap_event\",\n        \"event_force_window_N\": [\n          15.0,\n          60.0\n        ]\n      }\n    },\n    {\n      \"id\": \"B3\",\n      \"phase\": \"use\",\n      \"motion\": {\n        \"kind\": \"fixed\"\n      }\n    },\n    {\n      \"id\": \"B4\",\n      \"phase\": \"assembly\",\n      \"motion\": {\n        \"kind\": \"translation\",\n        \"axis_hint\": \"insertion_axis\"\n      }\n    }\n  ]\n}\n\n# Now solve this one\ncommand: \"Design a small box whose lid opens and closes and latches shut. Plastic, for 3D printing.\"\nfunctions: [{'verb': 'secure', 'object': 'lid', 'qualifier': 'shut'}, {'verb': 'allow_access', 'object': 'contents', 'qualifier': 'opens and closes'}]\nAnswer with the JSON object only.\n\n# YOUR PREVIOUS ANSWER WAS REJECTED (attempt 2/3)\nYou produced:\n{\"behaviors\":[{\"id\":\"B1\",\"phase\":\"assembly\",\"motion\":{\"kind\":\"snap_event\",\"event_force_window_N\":[20.0,60.0]}},{\"id\":\"B2\",\"phase\":\"use\",\"motion\":{\"kind\":\"rotation\",\"axis_hint\":\"hinge_axis\",\"range_value\":90.01}\n}\n]\n}\n\nThe validator rejected it with these EXACT errors:\n  - §4-②: use-phase behaviour B2 (rotation) must have a fully populated MotionSpec: range_value + range_unit + bound.\n  - G2 expectation: no static-phase behaviour with motion.kind in ['fixed', 'snap_event']. the lid must stay shut — a static-phase hold\n\nFix ONLY what these errors name and answer again. Same JSON schema. Do not restate the errors; return the corrected object.",
+      "response_raw": "{\"behaviors\":[{\"id\":\"B1\",\"phase\":\"assembly\",\"motion\":{\"kind\":\"snap_event\",\"event_force_window_N\":[20.0,60.0]}},{\"id\":\"B2\",\"phase\":\"use\",\"motion\":{\"kind\":\"rotation\",\"axis_hint\":\"hinge_axis\",\"range_value\":90.01}\n}\n]\n}",
+      "latency_s": 9.95,
+      "ok": false,
+      "validator_errors": [
+        "§4-②: use-phase behaviour B2 (rotation) must have a fully populated MotionSpec: range_value + range_unit + bound.",
+        "G2 expectation: no static-phase behaviour with motion.kind in ['fixed', 'snap_event']. the lid must stay shut — a static-phase hold"
+      ],
+      "eval_tokens": 81
+    },
+    {
+      "stage": "s2",
+      "attempt": 3,
+      "model": "gemini-3.1-pro-preview",
+      "prompt_sha256": "e8a78a5c170738f6",
+      "prompt": "You derive BEHAVIOURS (what physically happens) from FUNCTIONS (what the user wants).\n\n# Vocabulary — closed sets, choose only from these\nphase: assembly (putting the product together) | use (in normal operation) | static (holding a state)\nmotion.kind: rotation | translation | rot_to_trans | fixed | snap_event\n\n# Rules\n- A behaviour is a PHYSICAL fact, not a part. Never name a hinge/latch/screw — that is chosen later.\n- Every distinct phase of the product's life that a function implies gets its own behaviour:\n  think about (a) operating it, (b) it holding its state, (c) ASSEMBLING it in the first place.\n- use-phase motion MUST be fully populated: kind, axis_hint, and a range (`range_value` +\n  `range_unit` + `bound`: \"min\" = at least this much travel, \"max\" = a ceiling/limit).\n- kind=snap_event MUST carry `event_force_window_N` as [mate_force, separate_force] in newtons.\n- kind=rot_to_trans MUST carry a transmission.\n- ids are B1, B2, ...\n\n# Worked example (a DIFFERENT task)\nfunctions: [{\"verb\": \"secure\", \"object\": \"lid\", \"qualifier\": \"hold closed\"}, {\"verb\": \"allow_access\", \"object\": \"contents\", \"qualifier\": \"repeated hand open/close\"}]\nanswer: {\n  \"behaviors\": [\n    {\n      \"id\": \"B1\",\n      \"phase\": \"assembly\",\n      \"motion\": {\n        \"kind\": \"snap_event\",\n        \"event_force_window_N\": [\n          0.0,\n          80.0\n        ]\n      }\n    },\n    {\n      \"id\": \"B2\",\n      \"phase\": \"static\",\n      \"motion\": {\n        \"kind\": \"snap_event\",\n        \"event_force_window_N\": [\n          15.0,\n          60.0\n        ]\n      }\n    },\n    {\n      \"id\": \"B3\",\n      \"phase\": \"use\",\n      \"motion\": {\n        \"kind\": \"fixed\"\n      }\n    },\n    {\n      \"id\": \"B4\",\n      \"phase\": \"assembly\",\n      \"motion\": {\n        \"kind\": \"translation\",\n        \"axis_hint\": \"insertion_axis\"\n      }\n    }\n  ]\n}\n\n# Now solve this one\ncommand: \"Design a small box whose lid opens and closes and latches shut. Plastic, for 3D printing.\"\nfunctions: [{'verb': 'secure', 'object': 'lid', 'qualifier': 'shut'}, {'verb': 'allow_access', 'object': 'contents', 'qualifier': 'opens and closes'}]\nAnswer with the JSON object only.\n\n# YOUR PREVIOUS ANSWER WAS REJECTED (attempt 3/3)\nYou produced:\n{\"behaviors\":[{\"id\":\"B1\",\"phase\":\"assembly\",\"motion\":{\"kind\":\"snap_event\",\"event_force_window_N\":[20.0,60.0]}},{\"id\":\"B2\",\"phase\":\"use\",\"motion\":{\"kind\":\"rotation\",\"axis_hint\":\"hinge_axis\",\"range_value\":90.01}\n}\n]\n}\n\nThe validator rejected it with these EXACT errors:\n  - §4-②: use-phase behaviour B2 (rotation) must have a fully populated MotionSpec: range_value + range_unit + bound.\n  - G2 expectation: no static-phase behaviour with motion.kind in ['fixed', 'snap_event']. the lid must stay shut — a static-phase hold\n\nFix ONLY what these errors name and answer again. Same JSON schema. Do not restate the errors; return the corrected object.",
+      "response_raw": "{\n  \"behaviors\": [\n    {\n      \"id\": \"B1\",\n      \"phase\": \"assembly\",\n      \"motion\": {\n        \"kind\": \"snap_event\",\n        \"event_force_window_N\": [\n          20.0,\n          60.0\n        ]\n      }\n    },\n    {\n      \"id\": \"B2\",\n      \"phase\": \"use\",\n      \"motion\": {\n        \"kind\": \"rotation\",\n        \"axis_hint\": \"hinge_axis\",\n        \"range_value\": 90.01    \n      }\n    }\n  ]\n}",
+      "latency_s": 10.29,
+      "ok": false,
+      "validator_errors": [
+        "§4-②: use-phase behaviour B2 (rotation) must have a fully populated MotionSpec: range_value + range_unit + bound.",
+        "G2 expectation: no static-phase behaviour with motion.kind in ['fixed', 'snap_event']. the lid must stay shut — a static-phase hold"
+      ],
+      "eval_tokens": 150
+    }
+  ]
+}

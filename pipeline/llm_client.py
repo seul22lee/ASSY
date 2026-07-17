@@ -18,13 +18,16 @@ Three jobs, and nothing else:
      is not a research artifact, it is an anecdote.
 
 Backend: pluggable, selected by env, NEVER a hardcoded key.
-    MECHSYNTH_LLM_BACKEND  ollama (default) | openai_compat
-    MECHSYNTH_LLM_MODEL    default qwen3-coder:latest
-    MECHSYNTH_LLM_BASE_URL default http://localhost:11434
-    MECHSYNTH_LLM_API_KEY  read from env only, only used by openai_compat
-As of E-track-1 this environment has no frontier API key configured; the run uses local Ollama
-(qwen3-coder 30.5B Q4). Backend choice is one env var, so re-running against a frontier model needs
-no code change — see m9_llm_stages/REVIEW.md for why the model tier matters when reading scores.
+    MECHSYNTH_LLM_BACKEND  ollama (default) | gemini | openai_compat
+    MECHSYNTH_LLM_MODEL    default per backend
+    MECHSYNTH_LLM_BASE_URL default http://localhost:11434 (ollama)
+    GEMINI_API_KEY / GOOGLE_API_KEY   gemini, read from env or .env ONLY
+    MECHSYNTH_LLM_API_KEY  openai_compat, read from env only
+
+**Key handling.** Keys are read from the process env or a local `.env` (gitignored; `.env.example`
+documents the names with no values). A key is sent as an HTTP header and NEVER interpolated into a
+prompt — so it cannot reach `ir.stage_log`, which records prompts and responses verbatim.
+`backend_info()` reports only whether a key was found, never its value.
 """
 
 from __future__ import annotations
@@ -33,17 +36,88 @@ import hashlib
 import json
 import os
 import time
+import re
 import urllib.error
 import urllib.request
 from dataclasses import dataclass, field
+from pathlib import Path
 
 from pipeline.stage_failure import StageFailure
 
+def _load_dotenv(path: str = ".env") -> None:
+    """Load KEY=VALUE lines from a local .env into os.environ WITHOUT overriding a real env var.
+    Values are never logged, echoed, or returned. The file is gitignored (see .env.example)."""
+    f = Path(path)
+    if not f.exists():
+        return
+    for line in f.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        k, v = line.split("=", 1)
+        k, v = k.strip(), v.strip().strip('"').strip("'")
+        if k and v and k not in os.environ:
+            os.environ[k] = v
+
+
+_load_dotenv(str(Path(__file__).resolve().parents[1] / ".env"))
+
 MAX_RETRIES = 3          # §4: pydantic parse retries ≤ 3
-DEFAULT_MODEL = os.environ.get("MECHSYNTH_LLM_MODEL", "qwen3-coder:latest")
-DEFAULT_BASE = os.environ.get("MECHSYNTH_LLM_BASE_URL", "http://localhost:11434")
 BACKEND = os.environ.get("MECHSYNTH_LLM_BACKEND", "ollama")
+_MODEL_DEFAULTS = {"ollama": "qwen3-coder:latest", "gemini": "", "openai_compat": ""}
+DEFAULT_MODEL = os.environ.get("MECHSYNTH_LLM_MODEL") or _MODEL_DEFAULTS.get(BACKEND, "")
+DEFAULT_BASE = os.environ.get("MECHSYNTH_LLM_BASE_URL", "http://localhost:11434")
+GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta"
 REQUEST_TIMEOUT = int(os.environ.get("MECHSYNTH_LLM_TIMEOUT", "600"))
+
+
+def _gemini_key() -> str:
+    k = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+    if not k:
+        raise LLMBackendError(
+            "gemini backend selected but no GEMINI_API_KEY (or GOOGLE_API_KEY) is set. Put it in "
+            "the gitignored .env — see .env.example. Never hardcode it.")
+    return k
+
+
+def _gemini_pick_model() -> str:
+    """Pick the current PRO-TIER Gemini text model by ASKING the API, not by hardcoding a guess
+    that silently rots. The exact resolved string is logged into stage_log for every call.
+
+    Explicit over clever: a first attempt ranked on "contains 'pro'" and chose
+    `deep-research-pro-preview` — a different PRODUCT that happens to share the word. So the rule is
+    now a denylist of non-text/other-product families plus a version sort, and it is stated rather
+    than inferred. Set MECHSYNTH_LLM_MODEL to override and skip resolution entirely.
+    """
+    global _GEMINI_RESOLVED
+    if _GEMINI_RESOLVED:
+        return _GEMINI_RESOLVED
+    req = urllib.request.Request(f"{GEMINI_BASE}/models?key={_gemini_key()}")
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            models = json.load(r).get("models", [])
+    except Exception as e:
+        raise LLMBackendError(_redact(f"could not list Gemini models: {type(e).__name__}: {e}")) from e
+    names = [m["name"].split("/", 1)[-1] for m in models
+             if "generateContent" in (m.get("supportedGenerationMethods") or [])]
+    # not general text models / not the same product line
+    DENY = ("image", "tts", "audio", "vision", "embedding", "aqa", "customtools",
+            "deep-research", "lyria", "nano-banana", "robotics", "omni", "live")
+    pro = [n for n in names
+           if n.startswith("gemini-") and "-pro" in n and not any(d in n for d in DENY)]
+    if not pro:
+        raise LLMBackendError(f"no pro-tier Gemini text model exposes generateContent; saw {names[:15]}")
+
+    def version(n: str) -> float:
+        m = re.search(r"gemini-(\d+(?:\.\d+)?)", n)
+        return float(m.group(1)) if m else 0.0
+
+    # highest version wins; among equals prefer the shorter (plain) name over decorated variants.
+    _GEMINI_RESOLVED = sorted(pro, key=lambda n: (version(n), -len(n)), reverse=True)[0]
+    return _GEMINI_RESOLVED
+
+
+_GEMINI_RESOLVED = ""
 
 
 @dataclass
@@ -61,14 +135,34 @@ class CallRecord:
     eval_tokens: int = 0
 
     def as_log(self) -> dict:
+        # every string that lands in the audit file passes through _redact — the log is committed,
+        # so this is the last place a key could escape.
         return {"stage": self.stage, "attempt": self.attempt, "model": self.model,
-                "prompt_sha256": self.prompt_sha256, "prompt": self.prompt,
-                "response_raw": self.response_raw, "latency_s": round(self.latency_s, 2),
-                "ok": self.ok, "validator_errors": self.errors, "eval_tokens": self.eval_tokens}
+                "prompt_sha256": self.prompt_sha256, "prompt": _redact(self.prompt),
+                "response_raw": _redact(self.response_raw),
+                "latency_s": round(self.latency_s, 2), "ok": self.ok,
+                "validator_errors": [_redact(e) for e in self.errors],
+                "eval_tokens": self.eval_tokens}
 
 
 class LLMBackendError(RuntimeError):
     pass
+
+
+def _redact(text: str) -> str:
+    """Strip key material from anything that could be logged.
+
+    This is not paranoia — it is a real hole I opened: `_post` puts the URL in its error message,
+    and Gemini's URL carries `?key=...`. Those errors are recorded VERBATIM in `ir.stage_log`
+    (validator_errors), so an HTTP 400 would have written the key into a committed audit file.
+    Redact at the boundary where strings become loggable.
+    """
+    text = re.sub(r"([?&]key=)[^&\s\"']+", r"\1<REDACTED>", text)
+    for var in ("GEMINI_API_KEY", "GOOGLE_API_KEY", "MECHSYNTH_LLM_API_KEY"):
+        v = os.environ.get(var)
+        if v and len(v) > 8:
+            text = text.replace(v, "<REDACTED>")
+    return text
 
 
 def _post(url: str, payload: dict, timeout: int) -> dict:
@@ -81,13 +175,45 @@ def _post(url: str, payload: dict, timeout: int) -> dict:
         with urllib.request.urlopen(req, timeout=timeout) as r:
             return json.load(r)
     except urllib.error.HTTPError as e:
-        raise LLMBackendError(f"HTTP {e.code} from {url}: {e.read()[:300]!r}") from e
+        raise LLMBackendError(_redact(f"HTTP {e.code} from {url}: {e.read()[:300]!r}")) from e
     except Exception as e:
-        raise LLMBackendError(f"{type(e).__name__} calling {url}: {e}") from e
+        raise LLMBackendError(_redact(f"{type(e).__name__} calling {url}: {e}")) from e
+
+
+def _strip_unsupported(schema):
+    """Gemini's responseSchema is a strict OpenAPI subset: it rejects keys it does not know.
+    Same schema semantics, different dialect — the STAGES must not have to care which backend they
+    are talking to, so the translation lives here."""
+    if isinstance(schema, dict):
+        out = {}
+        for k, v in schema.items():
+            if k in ("additionalProperties", "$schema", "definitions", "default"):
+                continue
+            out[k] = _strip_unsupported(v)
+        return out
+    if isinstance(schema, list):
+        return [_strip_unsupported(v) for v in schema]
+    return schema
 
 
 def _call_backend(prompt: str, schema: dict, model: str, temperature: float) -> tuple[str, int]:
     """One raw generation, schema-constrained. Returns (text, eval_tokens)."""
+    if BACKEND == "gemini":
+        # Same contract as every other backend: schema-constrained JSON out, no free prose.
+        # The key rides in the URL/header, never in `prompt` — so it cannot reach stage_log.
+        d = _post(f"{GEMINI_BASE}/models/{model}:generateContent?key={_gemini_key()}", {
+            "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+            "generationConfig": {"temperature": temperature,
+                                 "responseMimeType": "application/json",
+                                 "responseSchema": _strip_unsupported(schema)},
+        }, REQUEST_TIMEOUT)
+        cands = d.get("candidates") or []
+        if not cands:
+            raise LLMBackendError(f"gemini returned no candidates: {str(d)[:200]}")
+        parts = cands[0].get("content", {}).get("parts") or [{}]
+        txt = "".join(p.get("text", "") for p in parts)
+        ntok = int(d.get("usageMetadata", {}).get("candidatesTokenCount", 0))
+        return txt, ntok
     if BACKEND == "ollama":
         d = _post(f"{DEFAULT_BASE}/api/chat", {
             "model": model, "messages": [{"role": "user", "content": prompt}],
@@ -107,10 +233,26 @@ def _call_backend(prompt: str, schema: dict, model: str, temperature: float) -> 
     raise LLMBackendError(f"unknown MECHSYNTH_LLM_BACKEND={BACKEND!r}")
 
 
+def resolve_model() -> str:
+    """The exact model string this run will use — resolved once, logged verbatim (never a guess)."""
+    if DEFAULT_MODEL:
+        return DEFAULT_MODEL
+    if BACKEND == "gemini":
+        return _gemini_pick_model()
+    raise LLMBackendError(f"no model configured for backend {BACKEND!r}; set MECHSYNTH_LLM_MODEL.")
+
+
 def backend_info() -> dict:
-    return {"backend": BACKEND, "model": DEFAULT_MODEL, "base_url": DEFAULT_BASE,
-            "api_key_from_env": bool(os.environ.get("MECHSYNTH_LLM_API_KEY")),
-            "max_retries": MAX_RETRIES}
+    """Never contains a key — only whether one was found."""
+    try:
+        model = resolve_model()
+    except LLMBackendError as e:
+        model = f"<unresolved: {e}>"
+    has_key = bool(os.environ.get("MECHSYNTH_LLM_API_KEY")
+                   or os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY"))
+    return {"backend": BACKEND, "model": model,
+            "base_url": GEMINI_BASE if BACKEND == "gemini" else DEFAULT_BASE,
+            "api_key_from_env": has_key, "max_retries": MAX_RETRIES}
 
 
 def call_structured(*, ir, stage: str, gate: str, prompt: str, schema: dict, parse,
@@ -125,7 +267,7 @@ def call_structured(*, ir, stage: str, gate: str, prompt: str, schema: dict, par
     satisfy the schema after being told exactly what it broke is a RESULT, not something to paper
     over with a hand-written fallback (that would be the m8 fabrication lesson, one layer up).
     """
-    model = model or DEFAULT_MODEL
+    model = model or resolve_model()
     convo = prompt
     last_errors: list[str] = []
 

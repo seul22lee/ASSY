@@ -141,6 +141,19 @@ def resolve_plan(plan, *, design_inputs=None, frequent=False, strategy="fixed_y"
     `strategy` (⑤ input): "fixed_y" (default) or "hold_retention" (D-GEN-2)."""
     di = {**DESIGN_INPUTS, **(design_inputs or {})}
     resolutions, params = {}, []
+    # D-E-7: PassiveFeatures resolve their params here too. ⑤ previously walked plan.elements only,
+    # so a feature the LLM legitimately selected reached ⑥ with params={} and the carve died on a
+    # KeyError. A card that can be SELECTED must be RESOLVABLE.
+    from knowledge.cards.base import CARD_REGISTRY as _CARDS
+    for ft in getattr(plan, "features", []):
+        card = _CARDS.get(ft.card_ref)
+        rp = getattr(card, "resolve_params", None)
+        if rp is None:
+            continue
+        try:
+            ft.params = {**(ft.params or {}), **(rp(plan, ft) or {})}
+        except NotImplementedError:
+            pass                     # a card without ⑤ knowledge stays honest; ⑥ will say so
     for el in plan.elements:
         if el.card_ref != "snap_hook_cantilever":
             continue

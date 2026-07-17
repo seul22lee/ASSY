@@ -68,7 +68,7 @@ def _inner(svg: str) -> str:
     return svg[svg.index(">", svg.index("<svg")) + 1: svg.rindex("</svg>")]
 
 
-def side_by_side(gold: DesignPlan, llm: DesignPlan, run: int) -> str:
+def side_by_side(gold: DesignPlan, llm: DesignPlan, run) -> str:
     left = to_svg(gold, new_ids=_delta_ids(gold, llm), new_edges=_delta_edges(gold, llm),
                   title=f"GOLDEN (anchor_easy[stop])   — red = the LLM MISSED it")
     right = to_svg(llm, new_ids=_delta_ids(llm, gold), new_edges=_delta_edges(llm, gold),
@@ -91,15 +91,18 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     gold = anchor_easy("stop")
     n = 0
-    for f in sorted(OUT.glob("ir_run*.json")):
-        run = int(re.search(r"ir_run(\d+)", f.name).group(1))
+    for f in sorted(OUT.glob("ir_*_run*.json")):
+        m = re.search(r"ir_(\w+)_run(\d+)", f.name)
+        tag, run = m.group(1), int(m.group(2))
         llm = DesignPlan.model_validate_json(f.read_text())
-        svg = side_by_side(gold, llm, run)
-        (OUT / f"ir_diff_run{run}.svg").write_text(svg)
+        if not llm.elements and not llm.behaviors:
+            print(f"  (skip {tag} run{run}: stage failed, no IR to diff)"); continue
+        svg = side_by_side(gold, llm, f"{tag} run {run}")
+        (OUT / f"ir_diff_{tag}_run{run}.svg").write_text(svg)
         miss_e = sorted(set(el_keys(gold)) - set(el_keys(llm)))
         spur_b = sorted(set(bd_keys(llm)) - set(bd_keys(gold)))
-        print(f"  ir_diff_run{run}.svg  — elements missed: {miss_e}  · spurious bindings: "
-              f"{len(spur_b)}")
+        print(f"  ir_diff_{tag}_run{run}.svg — elements missed: {miss_e or 'NONE ✓'} · "
+              f"spurious bindings: {len(spur_b)}")
         n += 1
     print(f"wrote {n} diff(s)")
 

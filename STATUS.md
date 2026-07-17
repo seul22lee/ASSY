@@ -18,7 +18,7 @@ is the index over them. **No milestone folders are ever moved or renamed** — h
 | M7 | [`m7_rack_pinion/`](m7_rack_pinion/) | `rack_pinion` card attempt under R2b. | ⚠️ **Card NOT built** — R2b routing exhausted both routes; it is a formulation limit, deferred to a `preset_v2`-time decision (D-M1-4/-5/-8). |
 | M8 | [`m8_pin_hinge_easy/`](m8_pin_hinge_easy/) | **B-track**: `pin_hinge` + `stop_flange` cards, the **multi-element Easy anchor** (box + lid + hardware pin + snap latch) compiled and verified t0→t1→t2, and the **D20 no-stop/stop pair**. | ✅ **Benchmark PASS** (t0 ARs · t1 0 mm drift · V-A 5/5 · V-B 5/5). D20 demo golden `anchor_easy_nostop` = **EXPECTED_FAIL** (V-B 1/5, folds over). An earlier V-B PASS was **retracted** (D-M8-4) — it rested on an invented stop; the rule is now mechanized as a build error. |
 
-| M9 | [`m9_llm_stages/`](m9_llm_stages/) | **E-track 1**: the LLM stages ①–④ (functions / behaviours / pieces / elements+bindings), the KG narrowing (§3.7), the grading harness, and the first fully-automatic command→IR→physics run (N=3). | ✅ **The loop closes.** ①②③④ PASS → ⑤ → ⑥ (3 parts) → t2 **V-A 5/5, V-B 0/5**: on an IR no human touched, the physics caught the missing stop (D-M8-5 rediscovered). macro F1 **0.676**; elements 0.80 vs bindings 0.18 — it knows *what*, not *where*. Local qwen3-coder-30B (no frontier key — D-E-6). |
+| M9 | [`m9_llm_stages/`](m9_llm_stages/) | **E-track 1 + frontier follow-up**: LLM stages ①–④, the KG narrowing, the grader, and the command→IR→physics run on **two models** (local qwen3-coder + Gemini). | ✅ **The loop closes, and scales.** Local qwen: ①②③④ PASS → V-B **0/5 folds over** (omits the stop). Frontier Gemini: declares the stop, **V-B 4/5 PASS** — machine-made, physics-verified. **Bindings-blindness (0.18) is a small-model artefact** — Gemini 6/6 (D-E-8). D-E-2/-5/-7 CONFIRMED & FIXED; generated IRs now validate_all CLEAN. |
 ## Current system state
 
 **The full loop is demonstrated end-to-end (M9):** a one-sentence command → LLM stages ①–④ →
@@ -65,11 +65,12 @@ code's. Its IR compiled and ran — and V-B caught the design flaw it contained.
   5/5, only V-B separates them.
 - **Standing rule (D-M8-4):** a physics collision prim may only proxy REAL carved geometry the IR
   declares. A prim with no solid and no IR entity behind it voids any verdict resting on it.
-- **No frontier LLM in this environment (D-E-6)** — E-track ran on local Ollama (qwen3-coder-30B-Q4;
-  ~30B is the ceiling here). Scores mean "this model + this scaffolding", not "LLM stages don't
-  work". A frontier re-run is one env var.
-- **`verification()` is unimplemented on every card (D-E-5 DRAFT)** — so no stage can emit
-  protocols and V-01 is unsatisfiable for any generated IR. A card-layer hole, not an LLM failure.
+- **Two backends wired (D-E-6/-8)** — local Ollama (qwen3-coder-30B) and Gemini
+  (`gemini-3.1-pro-preview`), selected by env var; keys in gitignored `.env`, `_redact`ed from logs.
+  Frontier passes physics; local folds over. Bindings-blindness is a small-model artefact, not a
+  design limit.
+- **`verification()` now implemented on the three anchor cards (D-E-5 FIXED)** — ④ attaches
+  protocols FROM the cards (D5), so generated IRs are `validate_all` CLEAN.
 - **§4-③'s six-template vocabulary is 2/6 implemented (D-E-3 DRAFT)** — the Hard anchor needs all
   four missing (`drawer_tray`, `cabinet_shell`, `knob_shaft`, `rack_bar`).
 

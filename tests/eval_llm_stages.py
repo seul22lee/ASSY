@@ -36,6 +36,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from ontology.functional_basis import ALIAS_REASON, ALIASES
 from ontology.validators import validate_all
 
 
@@ -47,6 +48,7 @@ class Axis:
     missing: list = field(default_factory=list)     # in golden, not in candidate
     spurious: list = field(default_factory=list)    # in candidate, not in golden
     wrong_field: list = field(default_factory=list)  # matched on key, disagreed on a field
+    aliased: list = field(default_factory=list)      # matched only via a DECLARED alias (D-E-2)
 
     @property
     def n_golden(self) -> int:
@@ -69,23 +71,39 @@ class Axis:
     def as_dict(self) -> dict:
         return {"axis": self.name, "matched": self.matched, "missing": self.missing,
                 "spurious": self.spurious, "wrong_field": self.wrong_field,
+                "aliased": self.aliased,
                 "recall": round(self.recall, 3), "precision": round(self.precision, 3),
                 "f1": round(self.f1, 3)}
 
 
-def _match(gold_keys, cand_keys, name) -> Axis:
+def _match(gold_keys, cand_keys, name, equiv=None) -> Axis:
     """Multiset match on a decision key. Duplicates count — two hooks is a different decision
-    from one hook."""
+    from one hook.
+
+    `equiv(a, b) -> bool` optionally admits DECLARED equivalences (D-E-2 aliases). Exact matches are
+    always taken first, so an alias can only ever rescue a key that had no exact partner — it can
+    never steal one. Alias-matched keys are recorded in `aliased` so the concession stays visible.
+    """
     g, c = Counter(gold_keys), Counter(cand_keys)
     ax = Axis(name)
-    for k in set(g) | set(c):
+    for k in set(g) & set(c):                       # exact first
         for _ in range(min(g[k], c[k])):
             ax.matched.append(k)
-        for _ in range(max(0, g[k] - c[k])):
-            ax.missing.append(k)
-        for _ in range(max(0, c[k] - g[k])):
-            ax.spurious.append(k)
+        g[k] -= min(g[k], c[k]); c[k] = 0
+    miss = [k for k, n in g.items() for _ in range(n)]
+    spur = [k for k, n in c.items() for _ in range(n)]
+    if equiv:
+        for gk in list(miss):
+            hit = next((sk for sk in spur if equiv(gk, sk)), None)
+            if hit is not None:
+                miss.remove(gk); spur.remove(hit)
+                ax.matched.append(gk); ax.aliased.append((gk, hit))
+    ax.missing, ax.spurious = miss, spur
     return ax
+
+
+def _verb_equiv(a, b) -> bool:
+    return b in ALIASES.get(a, ())
 
 
 def _k(x):
@@ -136,9 +154,12 @@ def stop_axis(gold, cand) -> dict:
                      "fold-over is the benchmark's own point (D20).")}
 
 
-def score(gold, cand) -> dict:
+def score(gold, cand, aliases: bool = True) -> dict:
+    """`aliases=True` admits D-E-2's declared vocabulary aliases at ①. Both numbers are always
+    reported (see `score_both`) — a scoring concession that is not shown is a scoring lie."""
+    eq = _verb_equiv if aliases else None
     axes = [
-        _match(fn_keys(gold), fn_keys(cand), "① functions (by verb)"),
+        _match(fn_keys(gold), fn_keys(cand), "① functions (by verb)", equiv=eq),
         _match(bh_keys(gold), bh_keys(cand), "② behaviors (by phase+motion.kind)"),
         _match(pc_keys(gold), pc_keys(cand), "③ pieces (by template_ref)"),
         _match(hw_keys(gold), hw_keys(cand), "③/④ hardware pieces (by role, D-ONT-11)"),
@@ -147,6 +168,8 @@ def score(gold, cand) -> dict:
     ]
     viols = validate_all(cand)
     return {"axes": [a.as_dict() for a in axes],
+            "alias_scoring": aliases,
+            "alias_reasons": {" ~ ".join(sorted(k)): v for k, v in ALIAS_REASON.items()},
             "stop_axis": stop_axis(gold, cand),
             "validators": {"clean": not viols,
                            "violations": [f"{v.rule}: {v.detail}" for v in viols],
@@ -162,7 +185,15 @@ def scorecard_md(sc: dict, title: str, extra: dict | None = None) -> str:
         L.append(f"| {a['axis']} | {len(a['matched'])} | {len(a['missing'])} | "
                  f"{len(a['spurious'])} | {a['recall']:.2f} | {a['precision']:.2f} | "
                  f"**{a['f1']:.2f}** |")
-    L += ["", f"**macro F1: {sc['macro_f1']:.3f}**", ""]
+    if "macro_f1_strict" in sc:
+        L += ["", f"**macro F1 — alias-aware: {sc['macro_f1_alias']:.3f} · strict: "
+                  f"{sc['macro_f1_strict']:.3f}** (D-E-2; delta {sc['alias_delta']:+.3f})", ""]
+    else:
+        L += ["", f"**macro F1: {sc['macro_f1']:.3f}**", ""]
+    for a in sc["axes"]:
+        if a.get("aliased"):
+            L.append(f"- `{a['axis']}` — matched via DECLARED ALIAS (D-E-2): "
+                     f"{[f'{g} ~ {c}' for g, c in a['aliased']]}")
     for a in sc["axes"]:
         if a["missing"] or a["spurious"]:
             L.append(f"- `{a['axis']}` — missing: `{a['missing']}` · spurious: `{a['spurious']}`")
@@ -228,3 +259,13 @@ if __name__ == "__main__":
         f()
     print(f"{len(fns)}/{len(fns)} passed  — scorer: golden==1.0, stop isolated to its own axis, "
           f"ids/order free")
+
+
+def score_both(gold, cand) -> dict:
+    """D-E-2: report BOTH numbers — strict (exact verb) and alias-aware. If they differ, the
+    difference IS the vocabulary's ambiguity, quantified, and it is shown rather than absorbed."""
+    strict, alias = score(gold, cand, aliases=False), score(gold, cand, aliases=True)
+    return {**alias,
+            "macro_f1_alias": alias["macro_f1"], "macro_f1_strict": strict["macro_f1"],
+            "axes_strict": strict["axes"],
+            "alias_delta": round(alias["macro_f1"] - strict["macro_f1"], 3)}

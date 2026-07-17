@@ -155,6 +155,7 @@ def _build(ir, d):
             b.imposed_by_card = card_of.get(a["imposed_by"])
     _register_imposed(out)
     _provide_hardware(out)
+    _attach_protocols(out)
     return out
 
 
@@ -194,6 +195,64 @@ def _provide_hardware(plan) -> list[str]:
             plan.pieces.append(Piece(id=pid, role=pp.role, provenance="hardware",
                                      source_element=inst.id, params={}))
             added.append(f"{pid} ({pp.role}) hardware <- {inst.id} [{inst.card_ref}]")
+    return added
+
+
+
+def _attach_protocols(plan) -> list[str]:
+    """D-E-5 / D5: attach each selected card's OWN VerificationProtocols. **Protocols are card
+    knowledge; the LLM never authors one.**
+
+    Which observables prove a hinge works, at what thresholds, in which modes — that is handbook and
+    M0 knowledge, and letting a language model invent a criterion would be exactly the fabrication
+    m8 was retracted for, one level up: a gate with no declaring source. So ④ ASKS THE CARD, at the
+    moment the card is selected, and the card answers from its own knowledge.
+
+    A PassiveFeature owns no protocol (it realizes nothing — V-08's class rule); it CONTRIBUTES a
+    criterion to whichever protocol already verifies the rotation it caps (`criterion_contribution`).
+    That is D-ONT-4's "verification contribution" made real: the stop does not get its own test, it
+    adds a question to an existing one.
+
+    Closes V-01 for generated IRs: every use-phase behaviour a card realizes now has a verified_by.
+    """
+    added = []
+    for inst in list(plan.elements):
+        card = CARD_REGISTRY.get(inst.card_ref)
+        if card is None:
+            continue
+        try:
+            prs = card.verification(plan, inst) or []
+        except NotImplementedError:
+            continue                       # a card without verification knowledge stays honest
+        for pr in prs:
+            if any(x.id == pr.id for x in plan.protocols):
+                continue
+            plan.protocols.append(pr)
+            b = next((x for x in plan.behaviors if x.id == pr.verifies), None)
+            if b is not None and not b.verified_by:
+                b.verified_by = pr.id
+            added.append(f"{pr.id} ({pr.mode or pr.actuation.get('kind')}) verifies {pr.verifies}")
+    # PassiveFeatures: promote their criterion onto the protocol that verifies the capped behaviour
+    for inst in list(plan.features):
+        card = CARD_REGISTRY.get(inst.card_ref)
+        contrib = getattr(card, "criterion_contribution", None)
+        if contrib is None:
+            continue
+        b3, crit = contrib(plan, inst)
+        if b3 is None:
+            continue
+        # the protocol verifying the SAME motion this feature caps (its host rotation)
+        host = next((pr for pr in plan.protocols
+                     if any(x.id == pr.verifies
+                            and getattr(x.motion.kind, "value", x.motion.kind)
+                            == getattr(b3.motion.kind, "value", b3.motion.kind)
+                            for x in plan.behaviors)), None)
+        if host is not None and not any(c.name == crit.name for c in host.criteria):
+            host.criteria.append(crit)
+            added.append(f"{inst.id} [{inst.card_ref}] contributes criterion "
+                         f"'{crit.name}' to {host.id} (D-ONT-4 promotion)")
+        if not b3.verified_by and host is not None:
+            b3.verified_by = host.id
     return added
 
 
