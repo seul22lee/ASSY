@@ -21,6 +21,7 @@ is the index over them. **No milestone folders are ever moved or renamed** — h
 | M9 | [`m9_llm_stages/`](m9_llm_stages/) | **E-track 1 + frontier follow-up**: LLM stages ①–④, the KG narrowing, the grader, and the command→IR→physics run on **two models** (local qwen3-coder + Gemini). | ✅ **The loop closes, and scales.** Local qwen: ①②③④ PASS → V-B **0/5 folds over** (omits the stop). Frontier Gemini: declares the stop, **V-B 4/5 PASS** — machine-made, physics-verified. **Bindings-blindness (0.18) is a small-model artefact** — Gemini 6/6 (D-E-8). D-E-2/-5/-7 CONFIRMED & FIXED; generated IRs now validate_all CLEAN. |
 | M10 | [`m10_slide_rail/`](m10_slide_rail/) | **D-track 1**: the `slide_rail` card (§3.5, T-rail retaining slide, all-boxes) + the P-SLIDE physics — Hard-anchor prerequisite #1. | ✅ Card built (§3.5 rule chain, carve, collision_hint, verification); fixture CLEAN. **P-SLIDE V-A 5/5 PASS** (required). **V-B 5/5 PASS** (contact-only; the geometry produces + retains the DoF). A G-H-caught disjoint-carriage geometry bug that had tripped V-B is fixed; P-SLIDE gained an all_parts_retained coverage criterion. Alignment ontology gap flagged **D-E-10 DRAFT** (since CONFIRMED Option A, implemented). |
 | M11 | [`m11_rack_pinion/`](m11_rack_pinion/) | **D-track 2**: the `rack_pinion` card (§3.6 amended, involute pinion + straight rack) + P-GEAR V-A — Hard-anchor prerequisite #2; retires M7's NOT-built. | ✅ Card built (§3.6 formulas self-derived + pinned 6/6; module bounds {5,6} with the WHY = contact-sim stability in selection_notes; carve reuses M1's involute; collision_hint = L3 flank-wedge decomposition). Fixture CLEAN. **P-GEAR V-A 5/5 PASS** (declared kinematic pair; rack reaches its 120 mm design stroke, matches the §3.6 formula to 0.01%). **V-B named-deferred** (R2b/D-M1-7) — carried in the verdict's `v_b_gap` + `shape_assert` (no V-B pass claimed). |
+| M12 | [`m12_templates/`](m12_templates/) | **D-track 3**: the four **Hard-anchor host templates** (`cabinet_shell`, `drawer_tray`, `knob_shaft`, `rack_bar`) + labelled anchor overlays. Templates only — the assembly is m13. | ✅ All four built, valid, one-solid (the knob's shaft+grip fuse). **Every m13 anchor declared + labelled NOW** so a later binding failure can't be blamed on a missing anchor: matched level rail/carriage L/R pairs (the alignment subjects), the pinion `shaft_seat`, the underside `rack_mount`. Collision hints self-sourced (D-M8-4). `test_hard_templates.py` 7/7. |
 ## Current system state
 
 **The full loop is demonstrated end-to-end (M9):** a one-sentence command → LLM stages ①–④ →
@@ -36,7 +37,7 @@ code's. Its IR compiled and ran — and V-B caught the design flaw it contained.
   two **first-class AssemblyRules** (D-ONT-12) evaluated on the compiled geometry, verified through
   physics in both V-A (declared joint) and V-B (DoF from geometry alone).
 
-**Built and green (suite 65/65):**
+**Built and green (suite 72/72):**
 - **Ontology/IR** — `DesignPlan` with pieces (provenance functional/hardware), elements, features,
   behaviours, protocols, **AssemblyRules**; validators V-01…V-16.
 - **Cards** — `snap_hook_cantilever` (Bayer), `pin_hinge` (M0 hinge), `stop_flange` (rotation
@@ -45,8 +46,9 @@ code's. Its IR compiled and ran — and V-B caught the design flaw it contained.
   carries `provides_pieces` (hardware), `interaction_rules` (AssemblyRules), and `verification()`
   (P-HINGE/PR-LATCH/PR-SWEEP/P-SLIDE/**P-GEAR** — protocols are card knowledge, D5).
 - **Templates** — `box_shell`, `lid_panel`, `flat_panel_mount`, `retained_board`, `slide_base`/
-  `slide_carriage`/`slide_base_dual`, `pinion_carrier`/`rack_carrier`; template collision hints for
-  the seating load path (D14 inset).
+  `slide_carriage`/`slide_base_dual`, `pinion_carrier`/`rack_carrier`, and the **Hard-anchor set**
+  `cabinet_shell`/`drawer_tray`/`knob_shaft`/`rack_bar` (M12); template collision hints for the
+  seating load path (D14 inset), each self-sourced (D-M8-4).
 - **Pipeline** — stages ①–④ (LLM: `s1_intent`/`s2_behavior`/`s3_decompose`/`s4_interface` +
   `llm_client` with structured output, validator-repair retries ≤3, and a verbatim `stage_log`
   audit); stage-⑤ resolve; stage-⑥ `compile_assembly` (motion → fasteners → passive features).

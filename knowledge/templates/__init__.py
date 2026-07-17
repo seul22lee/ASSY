@@ -8,7 +8,9 @@ by each card's carve() at compile time. Templates are the skeleton; carve is the
 
 from knowledge.templates.host_templates import (AnchorGeom, TemplateResult, box_shell,
                                                 lid_panel, flat_panel_mount, retained_board,
-                                                TEMPLATES)
+                                                cabinet_shell, drawer_tray, knob_shaft, rack_bar,
+                                                TEMPLATES, TEMPLATE_COLLISION)
 
 __all__ = ["AnchorGeom", "TemplateResult", "box_shell", "lid_panel", "flat_panel_mount",
-           "retained_board", "TEMPLATES"]
+           "retained_board", "cabinet_shell", "drawer_tray", "knob_shaft", "rack_bar",
+           "TEMPLATES", "TEMPLATE_COLLISION"]

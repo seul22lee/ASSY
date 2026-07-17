@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from build123d import Align, Box, Location, Part
+from build123d import Align, Box, Cylinder, Location, Part, Rotation
 
 
 @dataclass(frozen=True)
@@ -265,8 +265,205 @@ def rack_carrier(**params) -> TemplateResult:
     return TemplateResult(part=part, anchors=anchors, params=p)
 
 
+# =====================================================================================
+# The HARD ANCHOR host templates (MECHSYNTH §8.2 / D-track 3, m12). A hand-cranked drawer:
+# a cabinet with TWO parallel rails, a drawer tray riding them, a knob-shaft carrying the
+# pinion, and a rack bar fixed under the drawer. m12 builds ONLY the templates + their anchors;
+# m13 is the assembly. The point of this milestone: every anchor the m13 assembly will bind to
+# is DECLARED and LABELLED now, so a later binding failure cannot be blamed on a missing anchor.
+#
+# Shared frame: origin at the cabinet floor centre, +Z up, **+Y = FRONT** (the drawer pulls out
+# toward +Y; −Y is the rear wall). The drawer travels along Y; the two rails run front-to-back at
+# matched height `rail_z`. Units mm.
+# =====================================================================================
+
+CABINET_DEFAULTS = {"cab_w": 120.0, "cab_d": 140.0, "cab_h": 90.0, "wall": 4.0, "rail_z": 28.0,
+                    "boss_w": 16.0}
+
+
+def cabinet_shell(**params) -> TemplateResult:
+    """The Hard anchor's cabinet (is_base) — an open-FRONT box: floor + rear wall + two side walls +
+    top, open at +Y for the drawer. The two inner side walls carry the **rail-mount anchors as a
+    matched L/R pair at the SAME height `rail_z`** — these are exactly the subjects of the alignment
+    AssemblyRule (D-E-10): two travel axes that must be parallel AND level. A front bearing boss
+    carries the knob-shaft mount.
+
+    Anchors: `rail_mount_L/R` (inner side faces, ±X inward, z=rail_z) · `rail_axis_L/R` (the +Y
+    travel axes at those faces — the alignment subjects) · `knob_mount` (the front bearing-boss face,
+    +Y) · `floor` (the base seat, +Z)."""
+    p = {**CABINET_DEFAULTS, **params}
+    W, D, H, t, rz, bw = p["cab_w"], p["cab_d"], p["cab_h"], p["wall"], p["rail_z"], p["boss_w"]
+    floor = Box(W, D, t, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    rear = Location((0, -D / 2 + t / 2, t)) * Box(W, t, H - t,
+                                                  align=(Align.CENTER, Align.CENTER, Align.MIN))
+    left = Location((-W / 2 + t / 2, 0, t)) * Box(t, D, H - t,
+                                                  align=(Align.CENTER, Align.CENTER, Align.MIN))
+    right = Location((W / 2 - t / 2, 0, t)) * Box(t, D, H - t,
+                                                  align=(Align.CENTER, Align.CENTER, Align.MIN))
+    top = Location((0, 0, H - t)) * Box(W, D, t, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    # knob bearing boss on the FRONT, offset to the right so it does not block the drawer mouth
+    boss_x = W / 2 - t - bw / 2
+    boss = Location((boss_x, D / 2 - bw / 2, rz)) * Box(bw, bw, bw,
+                                                        align=(Align.CENTER, Align.CENTER, Align.CENTER))
+    part = floor + rear + left + right + top + boss
+    x_in = W / 2 - t
+    anchors = {
+        "rail_mount_L": AnchorGeom("rail_mount_L", "face", (-x_in, 0.0, rz), (1, 0, 0)),
+        "rail_mount_R": AnchorGeom("rail_mount_R", "face", (x_in, 0.0, rz), (-1, 0, 0)),
+        "rail_axis_L": AnchorGeom("rail_axis_L", "axis", (-x_in, 0.0, rz), (0, 1, 0)),
+        "rail_axis_R": AnchorGeom("rail_axis_R", "axis", (x_in, 0.0, rz), (0, 1, 0)),
+        "knob_mount": AnchorGeom("knob_mount", "face", (boss_x, D / 2, rz), (0, 1, 0)),
+        "floor": AnchorGeom("floor", "face", (0.0, 0.0, t), (0, 0, 1)),
+    }
+    return TemplateResult(part=part, anchors=anchors, params=p)
+
+
+def cabinet_shell_collision(**params) -> list:
+    """Static base (D23-weldable): floor + rear + two side walls + top + the knob boss. The drawer
+    rests on the rails (mechanism prims, card-owned); here we declare the CABINET's own bodies so the
+    seating load path (drawer-on-rail transferred into the walls) has geometry to bear on."""
+    p = {**CABINET_DEFAULTS, **params}
+    W, D, H, t, rz, bw = p["cab_w"], p["cab_d"], p["cab_h"], p["wall"], p["rail_z"], p["boss_w"]
+    s = "template:cabinet_shell"
+    boss_x = W / 2 - t - bw / 2
+    return [_bx(0, 0, t / 2, W, D, t, source=s),                                    # floor
+            _bx(0, -D / 2 + t / 2, t + (H - t) / 2, W, t, H - t, source=s),         # rear
+            _bx(-W / 2 + t / 2, 0, t + (H - t) / 2, t, D, H - t, source=s),         # left
+            _bx(W / 2 - t / 2, 0, t + (H - t) / 2, t, D, H - t, source=s),          # right
+            _bx(0, 0, H - t / 2, W, D, t, source=s),                                # top
+            _bx(boss_x, D / 2 - bw / 2, rz, bw, bw, bw, source=s)]                  # knob boss
+
+
+DRAWER_DEFAULTS = {"tray_w": 100.0, "tray_d": 130.0, "tray_h": 45.0, "wall": 3.0, "carr_z": 8.0}
+
+
+def drawer_tray(**params) -> TemplateResult:
+    """The drawer — an open-TOP tray riding the cabinet rails. Its OUTER side faces carry the
+    **carriage anchors as a matched L/R pair** (`carriage_mount_L/R`, at height `carr_z`) that mate
+    the cabinet's rails; the same faces carry the `travel_axis_L/R` axes the alignment rule pairs
+    with the cabinet's. The UNDERSIDE carries `rack_mount` (the rack bar bolts along the drawer
+    bottom centreline); the FRONT face carries `front_pull` (a knob/handle site).
+
+    Frame: tray floor at z=0, walls up to tray_h, open top. Same +Y=front convention as the cabinet."""
+    p = {**DRAWER_DEFAULTS, **params}
+    W, D, H, t, cz = p["tray_w"], p["tray_d"], p["tray_h"], p["wall"], p["carr_z"]
+    floor = Box(W, D, t, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    walls = Part()
+    for (cx, cy, sx, sy) in [(0, -D / 2 + t / 2, W, t), (0, D / 2 - t / 2, W, t),
+                             (-W / 2 + t / 2, 0, t, D), (W / 2 - t / 2, 0, t, D)]:
+        walls += Location((cx, cy, t)) * Box(sx, sy, H - t,
+                                             align=(Align.CENTER, Align.CENTER, Align.MIN))
+    part = floor + walls
+    anchors = {
+        "carriage_mount_L": AnchorGeom("carriage_mount_L", "face", (-W / 2, 0.0, cz), (-1, 0, 0)),
+        "carriage_mount_R": AnchorGeom("carriage_mount_R", "face", (W / 2, 0.0, cz), (1, 0, 0)),
+        "travel_axis_L": AnchorGeom("travel_axis_L", "axis", (-W / 2, 0.0, cz), (0, 1, 0)),
+        "travel_axis_R": AnchorGeom("travel_axis_R", "axis", (W / 2, 0.0, cz), (0, 1, 0)),
+        "rack_mount": AnchorGeom("rack_mount", "face", (0.0, 0.0, 0.0), (0, 0, -1)),
+        "front_pull": AnchorGeom("front_pull", "face", (0.0, D / 2, H / 2), (0, 1, 0)),
+    }
+    return TemplateResult(part=part, anchors=anchors, params=p)
+
+
+def drawer_tray_collision(**params) -> list:
+    """The moving drawer: its floor slab (rests on the rails) + four side walls. Inset by
+    COLLISION_EPS in X/Y (D14) so its faces do not tie with the rail/cabinet planes; the Z seating
+    plane (floor-on-rail) is left exact — the load path."""
+    p = {**DRAWER_DEFAULTS, **params}
+    W, D, H, t = p["tray_w"], p["tray_d"], p["tray_h"], p["wall"]
+    e = COLLISION_EPS
+    s = "template:drawer_tray"
+    out = [_bx(0, 0, t / 2, W - 2 * e, D - 2 * e, t, source=s)]                     # floor slab
+    for (cx, cy, sx, sy) in [(0, -D / 2 + t / 2, W, t), (0, D / 2 - t / 2, W, t),
+                             (-W / 2 + t / 2, 0, t, D), (W / 2 - t / 2, 0, t, D)]:
+        out.append(_bx(cx, cy, t + (H - t) / 2, sx - 2 * e, sy - 2 * e, H - t, source=s))
+    return out
+
+
+KNOB_DEFAULTS = {"shaft_d": 10.0, "shaft_len": 40.0, "grip_d": 28.0, "grip_t": 10.0,
+                 "seat_frac": 0.7}
+
+
+def knob_shaft(**params) -> TemplateResult:
+    """The hand knob — a shaft (axis along Y) with a grip disc at the +Y (outside) end. Its
+    `mount_axis` port anchors into the cabinet's `knob_mount` bearing (the shaft passes through it,
+    axis −Y into the cabinet); the pinion mounts on the shaft at `shaft_seat` (the rack_pinion card's
+    `pinion_axis` binds here). Frame: bearing plane at y=0; the shaft runs −Y into the cabinet to
+    the seat; the grip sits at +Y outside.
+
+    Anchors: `mount_axis` (bearing plane, −Y into cabinet) · `shaft_seat` (the pinion seat on the
+    shaft, +Y along the shaft) · `grip_face` (the outer grip, +Y)."""
+    p = {**KNOB_DEFAULTS, **params}
+    sd, sl, gd, gt, sf = p["shaft_d"], p["shaft_len"], p["grip_d"], p["grip_t"], p["seat_frac"]
+    ge = 6.0                                         # outside stub the shaft pokes past the bearing
+    # a CENTER cylinder along Z, rotated 90° about X → along Y centred at origin, then placed by
+    # centre. shaft spans y∈[−sl, ge] (−Y into the cabinet); grip overlaps its outer end (→1 solid).
+    shaft = Location((0, (-sl + ge) / 2, 0)) * (Rotation(90, 0, 0) * Cylinder(
+        radius=sd / 2, height=sl + ge, align=(Align.CENTER, Align.CENTER, Align.CENTER)))
+    grip = Location((0, ge - 2 + gt / 2, 0)) * (Rotation(90, 0, 0) * Cylinder(
+        radius=gd / 2, height=gt, align=(Align.CENTER, Align.CENTER, Align.CENTER)))
+    part = shaft + grip
+    y_seat = -sl * sf                                # pinion seat, inside the cabinet
+    y_grip = ge - 2 + gt                             # outer grip face
+    anchors = {
+        "mount_axis": AnchorGeom("mount_axis", "axis", (0.0, 0.0, 0.0), (0, -1, 0)),
+        "shaft_seat": AnchorGeom("shaft_seat", "axis", (0.0, y_seat, 0.0), (0, 1, 0)),
+        "grip_face": AnchorGeom("grip_face", "face", (0.0, y_grip, 0.0), (0, 1, 0)),
+    }
+    return TemplateResult(part=part, anchors=anchors, params=p)
+
+
+def knob_shaft_collision(**params) -> list:
+    """The knob: the shaft (a cylinder along Y) + the grip disc. Emitted as cylinder prims — the
+    shaft bears in the cabinet bearing, the grip is hand contact only."""
+    p = {**KNOB_DEFAULTS, **params}
+    sd, sl, gd, gt = p["shaft_d"], p["shaft_len"], p["grip_d"], p["grip_t"]
+    ge = 6.0
+    s = "template:knob_shaft"
+    return [{"type": "cylinder", "frame": "world", "pos": (0.0, (-sl + ge) / 2, 0.0),
+             "size": (sd / 2, (sl + ge) / 2), "euler_world": (90.0, 0.0, 0.0), "source": s},
+            {"type": "cylinder", "frame": "world", "pos": (0.0, ge - 2 + gt / 2, 0.0),
+             "size": (gd / 2, gt / 2), "euler_world": (90.0, 0.0, 0.0), "source": s}]
+
+
+RACK_BAR_DEFAULTS = {"bar_l": 140.0, "bar_w": 12.0, "bar_t": 8.0}
+
+
+def rack_bar(**params) -> TemplateResult:
+    """The rack's host strip — a bar running along Y (the drawer travel) into which the rack_pinion
+    card carves the rack teeth. Its top face (`mount_face`, +Z) bolts to the drawer underside
+    (`drawer_tray.rack_mount`); the teeth carve into the bottom, facing the pinion below. `rack_line`
+    marks the +Y tooth line the card lays teeth along.
+
+    Frame: bar centred on the origin, running along Y; top at z=+bar_t/2, bottom at −bar_t/2."""
+    p = {**RACK_BAR_DEFAULTS, **params}
+    L, w, t = p["bar_l"], p["bar_w"], p["bar_t"]
+    part = Box(w, L, t, align=(Align.CENTER, Align.CENTER, Align.CENTER))
+    anchors = {
+        "mount_face": AnchorGeom("mount_face", "face", (0.0, 0.0, t / 2), (0, 0, 1)),
+        "rack_line": AnchorGeom("rack_line", "axis", (0.0, 0.0, -t / 2), (0, 1, 0)),
+    }
+    return TemplateResult(part=part, anchors=anchors, params=p)
+
+
+def rack_bar_collision(**params) -> list:
+    """The rack bar body (the toothed strip). One box — the card's rack teeth are the mechanism
+    prims (carved later); this is the strip it bolts through."""
+    p = {**RACK_BAR_DEFAULTS, **params}
+    L, w, t = p["bar_l"], p["bar_w"], p["bar_t"]
+    return [_bx(0, 0, 0, w, L, t, source="template:rack_bar")]
+
+
+TEMPLATE_COLLISION.update({"cabinet_shell": cabinet_shell_collision,
+                           "drawer_tray": drawer_tray_collision,
+                           "knob_shaft": knob_shaft_collision,
+                           "rack_bar": rack_bar_collision})
+
+
 TEMPLATES = {"box_shell": box_shell, "lid_panel": lid_panel,
              "slide_base": slide_base, "slide_carriage": slide_carriage,
              "slide_base_dual": slide_base_dual,
              "pinion_carrier": pinion_carrier, "rack_carrier": rack_carrier,
+             "cabinet_shell": cabinet_shell, "drawer_tray": drawer_tray,
+             "knob_shaft": knob_shaft, "rack_bar": rack_bar,
              "flat_panel_mount": flat_panel_mount, "retained_board": retained_board}
