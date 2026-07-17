@@ -1,0 +1,274 @@
+{
+  "decision_row": "D-D-2 P-GEAR V-A on compiled rack_pinion_fixture (V-B DEFERRED, R2b/D-M1-7)",
+  "compile_hash": "21a0c77",
+  "card": "rack_pinion",
+  "element": "E1",
+  "params": {
+    "module": 5.0,
+    "z_pinion": 12.0,
+    "stroke": 120.0,
+    "backlash": 0.2
+  },
+  "rp_mm": 30.0,
+  "travel_per_rev_mm": 188.4956,
+  "g9_gconv": true,
+  "g9_checks": [
+    [
+      "(a) base: mass > 0",
+      true,
+      "25.85 g"
+    ],
+    [
+      "(a) pinion: mass > 0",
+      true,
+      "27.34 g"
+    ],
+    [
+      "(a) rack: mass > 0",
+      true,
+      "26.83 g"
+    ],
+    [
+      "(b) no initial penetration",
+      true,
+      "0.0000 mm at t=0"
+    ],
+    [
+      "(b) no contact-force blow-up after 1 step",
+      true,
+      "max constraint force 0.000e+00 N"
+    ],
+    [
+      "(c) at rest 1 s under gravity",
+      true,
+      "max drift 0.000 mm/mrad, peak |v| 0.0000"
+    ]
+  ],
+  "v_b_gap": "bidirectional contact meshing PENDING preset_v2 (R2b/D-M1-7); forward V-B demonstrable, reversal backlash-crossing diverges",
+  "modes": {
+    "V-A": {
+      "ran": true,
+      "n_seeds": 5,
+      "seeds_passed": 5,
+      "passed": true,
+      "criteria_seed0": {
+        "transmission_ratio (|s/(\u03b8\u00b7rp)\u22121| \u2264 5%)": {
+          "value": 0.0001,
+          "threshold": 0.05,
+          "pass": true
+        },
+        "matches_\u00a73.6_formula (|s/(tpr\u00b7rev)\u22121| \u2264 5%)": {
+          "value": 0.0001,
+          "threshold": 0.05,
+          "pass": true
+        },
+        "reaches_design_stroke": {
+          "value": 120.0,
+          "threshold": 120.0,
+          "pass": true
+        },
+        "converged (no blow-up)": {
+          "value": false,
+          "threshold": false,
+          "pass": true
+        }
+      },
+      "per_seed": [
+        {
+          "ran": true,
+          "mode": "V-A",
+          "seed": 0,
+          "diverged": false,
+          "revs_done": 0.637,
+          "theta_final_deg": 229.2,
+          "rack_travel_mm": 120.042,
+          "formula_travel_mm": 120.034,
+          "rack_len_mm": 167.124,
+          "stroke_mm": 120.0,
+          "ratio_residual": 0.0001,
+          "formula_residual": 0.0001,
+          "criteria": {
+            "transmission_ratio (|s/(\u03b8\u00b7rp)\u22121| \u2264 5%)": {
+              "value": 0.0001,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "matches_\u00a73.6_formula (|s/(tpr\u00b7rev)\u22121| \u2264 5%)": {
+              "value": 0.0001,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "reaches_design_stroke": {
+              "value": 120.0,
+              "threshold": 120.0,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "mode": "V-A",
+          "seed": 1,
+          "diverged": false,
+          "revs_done": 0.637,
+          "theta_final_deg": 229.2,
+          "rack_travel_mm": 120.034,
+          "formula_travel_mm": 120.034,
+          "rack_len_mm": 167.124,
+          "stroke_mm": 120.0,
+          "ratio_residual": 0.0,
+          "formula_residual": 0.0,
+          "criteria": {
+            "transmission_ratio (|s/(\u03b8\u00b7rp)\u22121| \u2264 5%)": {
+              "value": 0.0,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "matches_\u00a73.6_formula (|s/(tpr\u00b7rev)\u22121| \u2264 5%)": {
+              "value": 0.0,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "reaches_design_stroke": {
+              "value": 120.0,
+              "threshold": 120.0,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "mode": "V-A",
+          "seed": 2,
+          "diverged": false,
+          "revs_done": 0.637,
+          "theta_final_deg": 229.2,
+          "rack_travel_mm": 120.019,
+          "formula_travel_mm": 120.034,
+          "rack_len_mm": 167.124,
+          "stroke_mm": 120.0,
+          "ratio_residual": 0.0001,
+          "formula_residual": 0.0001,
+          "criteria": {
+            "transmission_ratio (|s/(\u03b8\u00b7rp)\u22121| \u2264 5%)": {
+              "value": 0.0001,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "matches_\u00a73.6_formula (|s/(tpr\u00b7rev)\u22121| \u2264 5%)": {
+              "value": 0.0001,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "reaches_design_stroke": {
+              "value": 120.0,
+              "threshold": 120.0,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "mode": "V-A",
+          "seed": 3,
+          "diverged": false,
+          "revs_done": 0.637,
+          "theta_final_deg": 229.2,
+          "rack_travel_mm": 120.009,
+          "formula_travel_mm": 120.034,
+          "rack_len_mm": 167.124,
+          "stroke_mm": 120.0,
+          "ratio_residual": 0.0002,
+          "formula_residual": 0.0002,
+          "criteria": {
+            "transmission_ratio (|s/(\u03b8\u00b7rp)\u22121| \u2264 5%)": {
+              "value": 0.0002,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "matches_\u00a73.6_formula (|s/(tpr\u00b7rev)\u22121| \u2264 5%)": {
+              "value": 0.0002,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "reaches_design_stroke": {
+              "value": 120.0,
+              "threshold": 120.0,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "mode": "V-A",
+          "seed": 4,
+          "diverged": false,
+          "revs_done": 0.637,
+          "theta_final_deg": 229.2,
+          "rack_travel_mm": 120.06,
+          "formula_travel_mm": 120.034,
+          "rack_len_mm": 167.124,
+          "stroke_mm": 120.0,
+          "ratio_residual": 0.0002,
+          "formula_residual": 0.0002,
+          "criteria": {
+            "transmission_ratio (|s/(\u03b8\u00b7rp)\u22121| \u2264 5%)": {
+              "value": 0.0002,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "matches_\u00a73.6_formula (|s/(tpr\u00b7rev)\u22121| \u2264 5%)": {
+              "value": 0.0002,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "reaches_design_stroke": {
+              "value": 120.1,
+              "threshold": 120.0,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "plot": "t2_rack_pinion_VA.png",
+      "video": "t2_rack_pinion_VA.mp4"
+    }
+  },
+  "verdict_VA": true,
+  "verdict_VB": "DEFERRED \u2014 pending preset_v2 (R2b/D-M1-7)",
+  "shape_assert": {
+    "va_present": true,
+    "vb_named_deferred": true,
+    "no_vb_pass_claimed": true
+  }
+}

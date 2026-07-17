@@ -15,6 +15,7 @@ session summary, NOT patched over silently.
 from __future__ import annotations
 
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -599,6 +600,81 @@ def slide_fixture() -> DesignPlan:
     return plan
 
 
+def rack_pinion_fixture() -> DesignPlan:
+    """Minimal rack&pinion fixture (§3.6 amended / D-track 2): a bearing-post carrier holding an
+    INVOLUTE pinion (M1's profile — the trapezoid is dead, D-M1-1) that drives a straight rack. One
+    element (E1 rack_pinion), two functional pieces (P1 pinion_carrier[base], P2 rack_carrier[mover]).
+
+    Realizes ONE use-phase rot_to_trans behaviour (B1): the pinion turns, the rack translates
+    `stroke` mm. The card's §3.6 formulas set the geometry; P-GEAR verifies the transmission V-A ONLY
+    (the standing R2b-open flag — bidirectional contact meshing is DEFERRED, D-M1-5/-7)."""
+    m, z, stroke = 5.0, 12, 120.0
+    axis_h = 45.0
+    pinion_carrier = HostTemplate(template_ref="pinion_carrier",
+        params={"base_l": 70.0, "base_w": 44.0, "base_t": 4.0, "axis_h": axis_h, "post_w": 14.0},
+        anchors=[Anchor(name="pinion_axis", kind="axis"), Anchor(name="mesh_line", kind="edge")])
+    rack_carrier = HostTemplate(template_ref="rack_carrier",
+        params={"module": m, "z_pinion": z, "axis_h": axis_h, "rail_l": 200.0,
+                "carrier_t": 5.0, "face_w": 8.0},
+        anchors=[Anchor(name="rack_mount", kind="face")])
+    pieces = [
+        Piece(id="P1", role="base", template_ref="pinion_carrier", is_base=True,
+              params=dict(pinion_carrier.params)),
+        Piece(id="P2", role="rack", template_ref="rack_carrier", params=dict(rack_carrier.params)),
+    ]
+    elements = [ElementInstance(id="E1", card_ref="rack_pinion", host_pieces=["P1", "P2"],
+                                params={"module": m, "z_pinion": z, "pressure_angle_deg": 20.0,
+                                        "face_w": 8.0, "backlash": 0.20, "stroke": stroke})]
+    bindings = [
+        Binding(element_id="E1", port="pinion_axis", piece_id="P1", anchor="pinion_axis",
+                mate="coincident_axis"),
+        Binding(element_id="E1", port="rack_mount", piece_id="P2", anchor="rack_mount",
+                mate="flush_face"),
+        Binding(element_id="E1", port="mesh_line", piece_id="P1", anchor="mesh_line",
+                mate="coincident_axis"),
+    ]
+    # travel_per_rev = π·m·z (§3.6 pitch circumference) — the transmission ratio the rot_to_trans
+    # behaviour carries (V-06). π·5·12 = 188.496 mm/rev; the pinion pitch radius rp = m·z/2 = 30 mm.
+    travel_per_rev = math.pi * m * z
+    behaviors = [
+        Behavior(id="B1", phase="use",
+                 motion=MotionSpec(kind="rot_to_trans", axis_hint="horizontal",
+                                   range_value=stroke, range_unit="mm", bound="min",
+                                   transmission={"mm_per_rev": round(travel_per_rev, 3),
+                                                 "pitch_radius_mm": m * z / 2.0,
+                                                 "kind": "rack_pinion"}),
+                 realized_by="E1"),
+    ]
+    parameters = [Parameter(name="module", value=m, unit="mm", lo=5.0, hi=6.0, resolved_by="rule"),
+                  Parameter(name="stroke", value=stroke, unit="mm", lo=20.0, hi=400.0,
+                            resolved_by="user")]
+    # card-sourced (D5): the imposed assembly behaviour, attached BEFORE construction (pydantic copies
+    # the list at build time) — so the mesh-insertion constraint the card imposes is registered (V-08).
+    from knowledge.cards.base import CARD_REGISTRY as _C
+    card = _C["rack_pinion"]
+    n = len(behaviors)
+    for tmpl in card.imposes:
+        n += 1
+        behaviors.append(Behavior(id=f"B{n}", phase=getattr(tmpl.phase, "value", tmpl.phase),
+                                  motion=MotionSpec(kind=getattr(tmpl.motion.kind, "value",
+                                                                 tmpl.motion.kind)),
+                                  imposed_by="E1", imposed_by_card="rack_pinion"))
+    plan = DesignPlan(task_id="rack_pinion_fixture",
+        command="A knob that drives a rack straight out and back. Plastic, 3D printing.",
+        functions=[Function(verb="convert", object="motion", qualifier="rotation to translation"),
+                   Function(verb="drive", object="rack", qualifier="linear travel from a knob")],
+        behaviors=behaviors, pieces=pieces, templates=[pinion_carrier, rack_carrier],
+        elements=elements, bindings=bindings, parameters=parameters)
+    # the P-GEAR V-A protocol, exactly as ④ would attach it. The V-B reversal gap rides along NAMED
+    # in the protocol's actuation (D-M1-7) so no design silently claims contact-level meshing.
+    for pr in card.verification(plan, elements[0]):
+        plan.protocols.append(pr)
+        b = next((x for x in plan.behaviors if x.id == pr.verifies), None)
+        if b is not None and not b.verified_by:
+            b.verified_by = pr.id
+    return plan
+
+
 def main() -> None:
     from ontology.validators import validate_all
 
@@ -615,6 +691,7 @@ def main() -> None:
         # stop-less design is a legal IR); its *verdict* is an expected FAIL — see `expected_verdict_fail`.
         "anchor_easy_nostop.json": anchor_easy("nostop"),
         "slide_fixture.json": slide_fixture(),
+        "rack_pinion_fixture.json": rack_pinion_fixture(),
     }
     # EXPECTED_FAIL at the VERDICT level (distinct from `expected` below, which is validator-level):
     # these goldens are legal IRs whose physics verdict must FAIL, and are kept as live regression

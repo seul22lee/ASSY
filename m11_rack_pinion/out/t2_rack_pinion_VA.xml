@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<mujoco model="t2_rack_pinion_VA">
+  <compiler angle="radian" meshdir="assets" autolimits="true"/>
+  <option timestep="0.0005" integrator="implicitfast" cone="elliptic" impratio="10"/>
+  <visual>
+    <headlight ambient="0.5 0.5 0.5" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2"/>
+    <global offwidth="1280" offheight="960" azimuth="140" elevation="-20"/>
+  </visual>
+  <default>
+    <geom solref="0.001 1.0" solimp="0.99 0.9999 0.0001" density="0" contype="0" conaffinity="0" group="2"/>
+  </default>
+  <asset>
+    <material name="base" rgba="0.35 0.65 0.85 1"/>
+    <material name="pinion" rgba="0.95 0.62 0.25 1"/>
+    <material name="rack" rgba="0.6 0.75 0.6 1"/>
+    <mesh name="base_vis" file="rp_base_vis.stl"/>
+    <mesh name="pinion_vis" file="rp_pinion_vis.stl"/>
+    <mesh name="rack_vis" file="rp_rack_vis.stl"/>
+  </asset>
+  <worldbody>
+    <light pos="0.15 -0.25 0.4" dir="-0.3 0.5 -1" directional="true" diffuse="0.5 0.5 0.5"/>
+    <camera name="iso" pos="0.18 -0.22 0.16" xyaxes="0.78 0.63 0 -0.28 0.34 0.90"/>
+    <body name="base" pos="0 0 0">
+      <inertial pos="0.000000000 0.000000000 0.010882393" mass="0.025852120" fullinertia="0.000007268486 0.000011133147 0.000009246619 -0.000000000000 -0.000000000000 -0.000000000000"/>
+      <geom name="base_vis" type="mesh" mesh="base_vis" material="base"/>
+    </body>
+    <body name="pinion" pos="0 0 0">
+      <joint name="pinion_hinge" type="hinge" axis="0.000000000 0.000000000 1.000000000" pos="0.000000000 0.000000000 0.045000000" damping="0.002"/>
+      <inertial pos="0.000000000 0.000000000 0.049000000" mass="0.027337590" fullinertia="0.000006632248 0.000006632248 0.000012972896 0.000000000000 0.000000000000 0.000000000000"/>
+      <geom name="pinion_vis" type="mesh" mesh="pinion_vis" material="pinion"/>
+    </body>
+    <body name="rack" pos="0 0 0">
+      <joint name="rack_slide" type="slide" axis="1.000000000 0.000000000 0.000000000" pos="0.000000000 0.000000000 0.045000000" damping="0.02"/>
+      <inertial pos="-0.000345208 -0.037302336 0.044029243" mass="0.026831785" fullinertia="0.000001253122 0.000072758735 0.000072917604 0.000000056194 -0.000000028058 0.000000402146"/>
+      <geom name="rack_vis" type="mesh" mesh="rack_vis" material="rack"/>
+    </body>
+  </worldbody>
+  <equality>
+    <joint name="couple" joint1="rack_slide" joint2="pinion_hinge" polycoef="0 0.030000000 0 0 0" solref="0.0005 1" solimp="0.999 0.9999 0.0001 0.5 2"/>
+  </equality>
+  <actuator>
+    <velocity name="drive" joint="pinion_hinge" kv="0.05"/>
+  </actuator>
+</mujoco>

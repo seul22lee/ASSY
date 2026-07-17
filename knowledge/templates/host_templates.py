@@ -230,7 +230,43 @@ def slide_base_dual(**params) -> TemplateResult:
     return TemplateResult(part=part, anchors=anchors, params=p)
 
 
+def pinion_carrier(**params) -> TemplateResult:
+    """rack_pinion host (§3.6 fixture) — a base plate with a bearing post the pinion rotates on.
+    `axis_h` sets the pinion-axis height above the floor. Anchors: `pinion_axis` (the +Z rotation
+    axis at the post top) + `mesh_line` (the +X pitch line where the rack engages)."""
+    p = {"base_l": 70.0, "base_w": 44.0, "base_t": 4.0, "axis_h": 45.0, "post_w": 14.0, **params}
+    L, W, T, H, pw = p["base_l"], p["base_w"], p["base_t"], p["axis_h"], p["post_w"]
+    part = Box(L, W, T, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    # bearing post to the axis (overlaps the plate by 0.5 so the union is one solid, D14)
+    part += Location((0, 0, T - 0.5)) * Box(pw, pw, H - T + 0.5,
+                                            align=(Align.CENTER, Align.CENTER, Align.MIN))
+    anchors = {
+        "pinion_axis": AnchorGeom("pinion_axis", "axis", (0.0, 0.0, H), (0, 0, 1)),
+        "mesh_line": AnchorGeom("mesh_line", "edge", (0.0, 0.0, H), (1, 0, 0)),
+    }
+    return TemplateResult(part=part, anchors=anchors, params=p)
+
+
+def rack_carrier(**params) -> TemplateResult:
+    """rack_pinion host — the sliding bar the rack is mounted to. Sized from the pinion (module,
+    z_pinion) so its top face meets the rack's back and the union is ONE solid (the two-yellow-bodies
+    lesson, D-D-1). Anchor `rack_mount` sits at the pinion axis point so the rack's built-in −rp pitch
+    offset lands the teeth in mesh with the pinion."""
+    p = {"module": 5.0, "z_pinion": 12, "axis_h": 45.0, "rail_l": 200.0,
+         "carrier_t": 5.0, "face_w": 8.0, **params}
+    m, z, H = p["module"], int(p["z_pinion"]), p["axis_h"]
+    rp = m * z / 2.0
+    L, ct, fw = p["rail_l"], p["carrier_t"], p["face_w"]
+    y_back = -rp - 1.25 * m - 4.0                     # rack body back face (see _rack_outline)
+    # a guide bar just behind the rack, overlapping it by 0.5 in +Y so rack∪carrier is one solid
+    part = Location((-L / 2, y_back - ct + 0.5, H)) * Box(L, ct, fw,
+                                                         align=(Align.MIN, Align.MIN, Align.MIN))
+    anchors = {"rack_mount": AnchorGeom("rack_mount", "face", (0.0, 0.0, H), (0, 0, 1))}
+    return TemplateResult(part=part, anchors=anchors, params=p)
+
+
 TEMPLATES = {"box_shell": box_shell, "lid_panel": lid_panel,
              "slide_base": slide_base, "slide_carriage": slide_carriage,
              "slide_base_dual": slide_base_dual,
+             "pinion_carrier": pinion_carrier, "rack_carrier": rack_carrier,
              "flat_panel_mount": flat_panel_mount, "retained_board": retained_board}

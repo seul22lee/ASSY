@@ -15,11 +15,12 @@ is the index over them. **No milestone folders are ever moved or renamed** — h
 | M4 | [`m4_templates/`](m4_templates/) | Host templates + `carve()` (snap-box compile). | ✅ APPROVED — the same carve attaches via anchors to different hosts (D-GEN-1). |
 | M5 | [`m5_resolve_t0/`](m5_resolve_t0/) | Stage-⑤ resolution + Tier0 three-way + Tier1 re-measure. | ✅ APPROVED — resolved params carry citations; COMPILE_DRIFT guard closes the blind spot. |
 | M6 | [`m6_ms_closeout/`](m6_ms_closeout/) | The **snap-fit-only track (M-S)** end-to-end: IR → ⑤ → ⑥ → t0 → t1. | ✅ Close-out of the single-element snap pipeline. |
-| M7 | [`m7_rack_pinion/`](m7_rack_pinion/) | `rack_pinion` card attempt under R2b. | ⚠️ **Card NOT built** — R2b routing exhausted both routes; it is a formulation limit, deferred to a `preset_v2`-time decision (D-M1-4/-5/-8). |
+| M7 | [`m7_rack_pinion/`](m7_rack_pinion/) | `rack_pinion` card attempt under R2b. | ⚠️→✅ **Superseded by M11.** The M7 attempt correctly found R2b is a contact-formulation limit; M11 (D-D-2) builds the card anyway with **V-A verification** and the V-B contact gap named-deferred — the standing-flag design the ontology always intended. |
 | M8 | [`m8_pin_hinge_easy/`](m8_pin_hinge_easy/) | **B-track**: `pin_hinge` + `stop_flange` cards, the **multi-element Easy anchor** (box + lid + hardware pin + snap latch) compiled and verified t0→t1→t2, and the **D20 no-stop/stop pair**. | ✅ **Benchmark PASS** (t0 ARs · t1 0 mm drift · V-A 5/5 · V-B 5/5). D20 demo golden `anchor_easy_nostop` = **EXPECTED_FAIL** (V-B 1/5, folds over). An earlier V-B PASS was **retracted** (D-M8-4) — it rested on an invented stop; the rule is now mechanized as a build error. |
 
 | M9 | [`m9_llm_stages/`](m9_llm_stages/) | **E-track 1 + frontier follow-up**: LLM stages ①–④, the KG narrowing, the grader, and the command→IR→physics run on **two models** (local qwen3-coder + Gemini). | ✅ **The loop closes, and scales.** Local qwen: ①②③④ PASS → V-B **0/5 folds over** (omits the stop). Frontier Gemini: declares the stop, **V-B 4/5 PASS** — machine-made, physics-verified. **Bindings-blindness (0.18) is a small-model artefact** — Gemini 6/6 (D-E-8). D-E-2/-5/-7 CONFIRMED & FIXED; generated IRs now validate_all CLEAN. |
-| M10 | [`m10_slide_rail/`](m10_slide_rail/) | **D-track 1**: the `slide_rail` card (§3.5, T-rail retaining slide, all-boxes) + the P-SLIDE physics — Hard-anchor prerequisite #1. | ✅ Card built (§3.5 rule chain, carve, collision_hint, verification); fixture CLEAN. **P-SLIDE V-A 5/5 PASS** (required). **V-B 5/5 PASS** (contact-only; the geometry produces + retains the DoF). A G-H-caught disjoint-carriage geometry bug that had tripped V-B is fixed; P-SLIDE gained an all_parts_retained coverage criterion. Alignment ontology gap flagged **D-E-10 DRAFT**. |
+| M10 | [`m10_slide_rail/`](m10_slide_rail/) | **D-track 1**: the `slide_rail` card (§3.5, T-rail retaining slide, all-boxes) + the P-SLIDE physics — Hard-anchor prerequisite #1. | ✅ Card built (§3.5 rule chain, carve, collision_hint, verification); fixture CLEAN. **P-SLIDE V-A 5/5 PASS** (required). **V-B 5/5 PASS** (contact-only; the geometry produces + retains the DoF). A G-H-caught disjoint-carriage geometry bug that had tripped V-B is fixed; P-SLIDE gained an all_parts_retained coverage criterion. Alignment ontology gap flagged **D-E-10 DRAFT** (since CONFIRMED Option A, implemented). |
+| M11 | [`m11_rack_pinion/`](m11_rack_pinion/) | **D-track 2**: the `rack_pinion` card (§3.6 amended, involute pinion + straight rack) + P-GEAR V-A — Hard-anchor prerequisite #2; retires M7's NOT-built. | ✅ Card built (§3.6 formulas self-derived + pinned 6/6; module bounds {5,6} with the WHY = contact-sim stability in selection_notes; carve reuses M1's involute; collision_hint = L3 flank-wedge decomposition). Fixture CLEAN. **P-GEAR V-A 5/5 PASS** (declared kinematic pair; rack reaches its 120 mm design stroke, matches the §3.6 formula to 0.01%). **V-B named-deferred** (R2b/D-M1-7) — carried in the verdict's `v_b_gap` + `shape_assert` (no V-B pass claimed). |
 ## Current system state
 
 **The full loop is demonstrated end-to-end (M9):** a one-sentence command → LLM stages ①–④ →
@@ -35,15 +36,17 @@ code's. Its IR compiled and ran — and V-B caught the design flaw it contained.
   two **first-class AssemblyRules** (D-ONT-12) evaluated on the compiled geometry, verified through
   physics in both V-A (declared joint) and V-B (DoF from geometry alone).
 
-**Built and green (suite 54/54):**
+**Built and green (suite 65/65):**
 - **Ontology/IR** — `DesignPlan` with pieces (provenance functional/hardware), elements, features,
   behaviours, protocols, **AssemblyRules**; validators V-01…V-16.
 - **Cards** — `snap_hook_cantilever` (Bayer), `pin_hinge` (M0 hinge), `stop_flange` (rotation
-  ceiling), `slide_rail` (§3.5 T-rail retaining slide, all-boxes); `rack_pinion` deferred (R2b). The
-  card API carries `provides_pieces` (hardware), `interaction_rules` (AssemblyRules), and
-  `verification()` (P-HINGE/PR-LATCH/PR-SWEEP/P-SLIDE — protocols are card knowledge, D5).
-- **Templates** — `box_shell`, `lid_panel`, `flat_panel_mount`, `retained_board`; template collision
-  hints for the seating load path (D14 inset).
+  ceiling), `slide_rail` (§3.5 T-rail retaining slide, all-boxes), `rack_pinion` (§3.6 involute
+  pinion + straight rack — **V-A built, V-B contact named-deferred, R2b/D-M1-7**). The card API
+  carries `provides_pieces` (hardware), `interaction_rules` (AssemblyRules), and `verification()`
+  (P-HINGE/PR-LATCH/PR-SWEEP/P-SLIDE/**P-GEAR** — protocols are card knowledge, D5).
+- **Templates** — `box_shell`, `lid_panel`, `flat_panel_mount`, `retained_board`, `slide_base`/
+  `slide_carriage`/`slide_base_dual`, `pinion_carrier`/`rack_carrier`; template collision hints for
+  the seating load path (D14 inset).
 - **Pipeline** — stages ①–④ (LLM: `s1_intent`/`s2_behavior`/`s3_decompose`/`s4_interface` +
   `llm_client` with structured output, validator-repair retries ≤3, and a verbatim `stage_log`
   audit); stage-⑤ resolve; stage-⑥ `compile_assembly` (motion → fasteners → passive features).
@@ -54,8 +57,10 @@ code's. Its IR compiled and ran — and V-B caught the design flaw it contained.
   collision-provenance gate).
 
 **Known limitations / open items:**
-- **R2b** (gear contact-only meshing) is FROZEN — a MuJoCo convex-facet contact-formulation limit;
-  gear V-B verification is deferred to a `preset_v2`-time decision. Mitigation queue in
+- **R2b** (gear contact-only meshing) is FROZEN — a MuJoCo convex-facet contact-formulation limit.
+  The `rack_pinion` card IS built (M11/D-D-2) and verified **V-A** (declared kinematic pair); only
+  its **V-B** (emergent tooth contact) is deferred to a `preset_v2`-time decision, and that deferral
+  is carried in every rack_pinion verdict (`v_b_gap` + `shape_assert`). Mitigation queue in
   `m1_gear/out/r2b_note.md`: (1) larger module — exhausted; (2) versioned preset — no candidate;
   (3) **[deferred] PhysX 5 SDF backend** (D-M1-8).
 - **Collision provenance is enforced (D-M8-4)** — every collision geom must trace to a declared IR

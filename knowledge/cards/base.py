@@ -518,26 +518,97 @@ class SlideRailCard(MechanicalElementCard):
         return out
 
 
+def _rack_pinion_imposes() -> list:
+    """The rack_pinion imposes an assembly-phase constraint: the pinion must be inserted onto its
+    shaft along the axis, and the rack threaded into mesh (§3.6). One assembly/translation behaviour,
+    registered and attributed to the element (V-08)."""
+    from ontology.schema import Behavior, MotionSpec
+    return [Behavior(id="_imposed_mesh_assembly", phase="assembly",
+                     motion=MotionSpec(kind="translation"))]
+
+
 class RackPinionCard(MechanicalElementCard):
+    """Spur rack & pinion (MECHSYNTH §3.6, amended) — the true INVOLUTE pinion (M1: the trapezoid is
+    dead, D-M1-1) driving a straight rack. Realizes a use-phase rot_to_trans transmission. Geometry
+    in knowledge/cards/rack_pinion.py (reuses M1's involute + L3 wedge decomposition)."""
     card_id = "rack_pinion"
     has_functional_clearance = True  # tooth-flank backlash (§3.6, D21)
+    imposes = _rack_pinion_imposes()
+    # §3.6 AMENDED: module bounds are LARGE {5,6}, and the reason is SIMULATION STABILITY, not
+    # mechanics — mechanically a smaller module meshes fine, but R2b (D-M1-2/-3/-5) showed the rigid
+    # contact rig is dt-unstable below the large-module range at the frozen preset. The bounds encode
+    # a physics-of-verification constraint, and selection_notes says so explicitly (D-M1-4 rule text).
+    param_bounds = {"module": (5.0, 6.0, "mm"), "z_pinion": (10.0, 24.0, "count"),
+                    "pressure_angle_deg": (20.0, 20.0, "deg"), "face_w": (4.0, 10.0, "mm"),
+                    "backlash": (0.1, 0.25, "mm"), "stroke": (20.0, 400.0, "mm")}
     selection_notes = (
         "Use when ROTATION must be converted to TRANSLATION at a defined ratio (a knob that drives "
-        "a drawer). Realizes a use-phase transmission.\n"
-        "Trade-offs: the most part-hungry option here, and it carries a STANDING R2b-OPEN FLAG — "
-        "contact-only (V-B) BIDIRECTIONAL meshing is NOT stable in the rigid rig: the "
-        "backlash-crossing impact on reversal diverges at the frozen preset, and no module size or "
-        "preset parameter fixes it (it is a contact-FORMULATION limit, D-M1-5/-7). Forward meshing "
-        "IS demonstrable. So a rack_pinion design can only be verified V-A (declared-shaft ratio); "
-        "its contact-level verification is deferred. Module bounds [3.0,4.0] are provisional and "
-        "driven by simulation stability, not mechanics.\n"
+        "a drawer). Realizes a use-phase rot_to_trans transmission.\n"
+        "WHY THE MODULE BOUNDS ARE LARGE ({5,6}, not the mechanically-natural 1-2): the bound is a "
+        "CONTACT-SIMULATION-STABILITY requirement, NOT a mechanical one (D-M1-2/-4). Mechanically a "
+        "fine-module rack meshes perfectly; but the rigid convex-facet contact rig is dt-unstable "
+        "below the large-module range at the frozen preset (R5) — larger teeth = gentler contact "
+        "geometry = a larger stable timestep. The card mandates the large module so the geometry it "
+        "produces is the geometry the verifier can actually simulate.\n"
+        "STANDING R2b-OPEN FLAG: contact-only (V-B) BIDIRECTIONAL meshing is NOT stable — the "
+        "reversal backlash-crossing impact diverges at the frozen preset, and no module or preset "
+        "param fixes it (a contact-FORMULATION limit, D-M1-5/-7). FORWARD meshing IS demonstrable "
+        "(ratio −0.50). So a rack_pinion is verified V-A (declared-shaft ratio); its bidirectional "
+        "contact verification is DEFERRED to a versioned preset_v2 or a pitch-cylinder proxy.\n"
         "Prefer a simpler element if the task does not genuinely need ratio'd rotation→translation.")
-    citations = [Citation(doc="MECHSYNTH_SPEC_v0.1", section="§3.6 Card 4 — rack_pinion"),
-                 Citation(doc="DECISIONS_LOG", section="D-M1-1/-5/-7 (R2a retired, R2b frozen)")]
+    citations = [Citation(doc="MECHSYNTH_SPEC_v0.1", section="§3.6 Card 4 — rack_pinion (amended)"),
+                 Citation(doc="DECISIONS_LOG", section="D-M1-1/-2/-4/-5/-7 (involute; R2a retired; R2b frozen)"),
+                 Citation(doc="M1 gear rig", section="gear_geom involute + L3 flank_wedges")]
     ports = [_p("pinion_axis", "axis"), _p("rack_mount", "face"), _p("mesh_line", "edge")]
 
-    def collision_hint(self, inst):
-        _not_yet()
+    def carve(self, host_parts, inst, bindings):
+        """Place the involute pinion on its shaft + the straight rack in mesh (host-agnostic)."""
+        from knowledge.cards.rack_pinion import carve as _carve
+        return _carve(host_parts, inst, bindings)
+
+    def collision_hint(self, inst, n_wedge=4):
+        """L3 involute flank-wedge decomposition (§3.6, D18/D21) — the card's OWN convex hint;
+        mujoco.sdf.gear is FORBIDDEN. Deferred with V-B this session (V-A uses no tooth contact)."""
+        from knowledge.cards.rack_pinion import collision_primitives
+        return collision_primitives(inst, n_wedge)
+
+    def resolve_params(self, ir, inst):
+        """⑤/D6: stroke from the use-phase transmission behaviour's range; module snapped INTO the
+        {5,6} stability band (never below); z_pinion carried. The card owns the §3.6 formulas."""
+        out = dict(inst.params or {})
+        b = next((x for x in ir.behaviors if x.realized_by == inst.id
+                  and getattr(x.motion.kind, "value", x.motion.kind) == "rot_to_trans"), None)
+        if b is not None and getattr(b.motion, "range_value", None):
+            out["stroke"] = float(b.motion.range_value)
+        out.setdefault("stroke", 120.0)
+        out.setdefault("z_pinion", 12)
+        # snap the module up into the stability band [5,6] (R2b — never below)
+        m = float(out.get("module", 5.0))
+        out["module"] = min(6.0, max(5.0, m))
+        out.setdefault("backlash", 0.20)
+        out.setdefault("face_w", 8.0)
+        out.setdefault("pressure_angle_deg", 20.0)
+        return out
+
+    def verification(self, ir, inst):
+        """§6.3 P-GEAR, V-A ONLY (the standing requirement, D-M1-7). V-A checks the declared-shaft
+        transmission ratio: |s / (θ·r_pitch) − 1| ≤ 5% over N revolutions. **V-B (emergent contact
+        ratio) is DOWNGRADED** — the bidirectional reversal is R2b-open; the gap is NAMED in the
+        protocol so a design never silently claims contact-level meshing it cannot show."""
+        from ontology.schema import Criterion, VerificationProtocol
+        use_b = next((b for b in ir.behaviors
+                      if b.realized_by == inst.id
+                      and getattr(b.phase, "value", b.phase) == "use"
+                      and getattr(b.motion.kind, "value", b.motion.kind) == "rot_to_trans"), None)
+        if use_b is None:
+            return []
+        return [VerificationProtocol(
+            id=f"P-GEAR-VA-{inst.id}", verifies=use_b.id, mode="V-A", seeds=5, seed_pass=4,
+            actuation={"kind": "shaft_velocity", "n_rev": 3.0,
+                       "v_b_gap": "bidirectional contact meshing PENDING preset_v2 (R2b/D-M1-7); "
+                                  "forward V-B demonstrable, reversal backlash-crossing diverges"},
+            criteria=[Criterion(name="transmission_ratio", observable="transmission_residual",
+                                op="<=", threshold=0.05, unit="")], observables=[])]
 
 
 # --------------------------------------------------------------------------------------

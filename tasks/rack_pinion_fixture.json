@@ -1,0 +1,223 @@
+{
+  "task_id": "rack_pinion_fixture",
+  "command": "A knob that drives a rack straight out and back. Plastic, 3D printing.",
+  "functions": [
+    {
+      "verb": "convert",
+      "object": "motion",
+      "qualifier": "rotation to translation"
+    },
+    {
+      "verb": "drive",
+      "object": "rack",
+      "qualifier": "linear travel from a knob"
+    }
+  ],
+  "behaviors": [
+    {
+      "id": "B1",
+      "phase": "use",
+      "motion": {
+        "kind": "rot_to_trans",
+        "axis_hint": "horizontal",
+        "range_value": 120.0,
+        "range_unit": "mm",
+        "bound": "min",
+        "transmission": {
+          "mm_per_rev": 188.496,
+          "pitch_radius_mm": 30.0,
+          "kind": "rack_pinion"
+        },
+        "event_force_window_N": null
+      },
+      "load": null,
+      "realized_by": "E1",
+      "imposed_by": null,
+      "verified_by": "P-GEAR-VA-E1",
+      "imposed_by_card": null
+    },
+    {
+      "id": "B2",
+      "phase": "assembly",
+      "motion": {
+        "kind": "translation",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "load": null,
+      "realized_by": null,
+      "imposed_by": "E1",
+      "verified_by": null,
+      "imposed_by_card": "rack_pinion"
+    }
+  ],
+  "pieces": [
+    {
+      "id": "P1",
+      "role": "base",
+      "provenance": "functional",
+      "template_ref": "pinion_carrier",
+      "source_element": null,
+      "params": {
+        "base_l": 70.0,
+        "base_w": 44.0,
+        "base_t": 4.0,
+        "axis_h": 45.0,
+        "post_w": 14.0
+      },
+      "is_base": true
+    },
+    {
+      "id": "P2",
+      "role": "rack",
+      "provenance": "functional",
+      "template_ref": "rack_carrier",
+      "source_element": null,
+      "params": {
+        "module": 5.0,
+        "z_pinion": 12.0,
+        "axis_h": 45.0,
+        "rail_l": 200.0,
+        "carrier_t": 5.0,
+        "face_w": 8.0
+      },
+      "is_base": false
+    }
+  ],
+  "templates": [
+    {
+      "template_ref": "pinion_carrier",
+      "anchors": [
+        {
+          "name": "pinion_axis",
+          "kind": "axis"
+        },
+        {
+          "name": "mesh_line",
+          "kind": "edge"
+        }
+      ],
+      "params": {
+        "base_l": 70.0,
+        "base_w": 44.0,
+        "base_t": 4.0,
+        "axis_h": 45.0,
+        "post_w": 14.0
+      }
+    },
+    {
+      "template_ref": "rack_carrier",
+      "anchors": [
+        {
+          "name": "rack_mount",
+          "kind": "face"
+        }
+      ],
+      "params": {
+        "module": 5.0,
+        "z_pinion": 12.0,
+        "axis_h": 45.0,
+        "rail_l": 200.0,
+        "carrier_t": 5.0,
+        "face_w": 8.0
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "E1",
+      "card_ref": "rack_pinion",
+      "params": {
+        "module": 5.0,
+        "z_pinion": 12.0,
+        "pressure_angle_deg": 20.0,
+        "face_w": 8.0,
+        "backlash": 0.2,
+        "stroke": 120.0
+      },
+      "host_pieces": [
+        "P1",
+        "P2"
+      ]
+    }
+  ],
+  "features": [],
+  "bindings": [
+    {
+      "element_id": "E1",
+      "port": "pinion_axis",
+      "piece_id": "P1",
+      "anchor": "pinion_axis",
+      "mate": "coincident_axis",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E1",
+      "port": "rack_mount",
+      "piece_id": "P2",
+      "anchor": "rack_mount",
+      "mate": "flush_face",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E1",
+      "port": "mesh_line",
+      "piece_id": "P1",
+      "anchor": "mesh_line",
+      "mate": "coincident_axis",
+      "offset_params": {}
+    }
+  ],
+  "assembly_rules": [],
+  "parameters": [
+    {
+      "name": "module",
+      "value": 5.0,
+      "unit": "mm",
+      "lo": 5.0,
+      "hi": 6.0,
+      "resolved_by": "rule",
+      "citation": null
+    },
+    {
+      "name": "stroke",
+      "value": 120.0,
+      "unit": "mm",
+      "lo": 20.0,
+      "hi": 400.0,
+      "resolved_by": "user",
+      "citation": null
+    }
+  ],
+  "protocols": [
+    {
+      "id": "P-GEAR-VA-E1",
+      "verifies": "B1",
+      "actuation": {
+        "kind": "shaft_velocity",
+        "n_rev": 3.0,
+        "v_b_gap": "bidirectional contact meshing PENDING preset_v2 (R2b/D-M1-7); forward V-B demonstrable, reversal backlash-crossing diverges"
+      },
+      "criteria": [
+        {
+          "name": "transmission_ratio",
+          "observable": "transmission_residual",
+          "op": "<=",
+          "threshold": 0.05,
+          "unit": ""
+        }
+      ],
+      "observables": [],
+      "mode": "V-A",
+      "seeds": 5,
+      "seed_pass": 4
+    }
+  ],
+  "material": "PETG",
+  "variant": null,
+  "stage_log": []
+}
