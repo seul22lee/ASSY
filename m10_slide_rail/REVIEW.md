@@ -1,11 +1,22 @@
 # M10 · slide_rail — REVIEW (G-H entry point)
 
-**Outcome: the card is built and the required mode passes.** `slide_rail` (§3.5) — a rectangular
-**T-rail** retaining slide — is a full card (ports, bounds, the §3.5 rule chain, imposes, carve,
-collision_hint, resolve_params, verification). The minimal two-piece fixture compiles and runs
-P-SLIDE: **V-A 5/5 PASS** (required); **V-B G-CONV trips on the drop-in settling transient** —
-recorded, not tuned, per the R2b precedent — with an **observed-not-gated** run showing the geometry
-itself does slide and retain.
+**Outcome: the card is built and BOTH modes pass.** `slide_rail` (§3.5) — a rectangular **T-rail**
+retaining slide — is a full card (ports, bounds, the §3.5 rule chain, imposes, carve, collision_hint,
+resolve_params, verification). The minimal two-piece fixture compiles and runs P-SLIDE:
+**V-A 5/5 PASS** (required) and **V-B 5/5 PASS** (target — the geometry alone produces AND retains the
+slide DoF, contact-only).
+
+> ### Correction (G-H review caught this)
+> The first pass shipped a **fixture geometry bug the reviewer spotted from the videos**: two yellow
+> bodies, one riding the rail and one tumbling. There were not two bodies — the single carriage body
+> P2 held **two disjoint solids**: the carve's groove block (rides the rail) and the `slide_carriage`
+> template's placeholder plate, `+`-added at a *different* X (a floating, disconnected chunk). It
+> offset P2's centre of mass off the rail, which is exactly what made V-B's carriage pitch and trip
+> G-CONV — so what I had recorded as a "frozen-preset settling transient, deferred" was **my own
+> geometry error**. Fix: the carve now REPLACES the carriage placeholder with the single connected
+> groove-block solid (the carriage shape is card knowledge — the D-ONT-11 principle). With the COM
+> back over the rail, **V-B settles cleanly and passes 5/5.** No preset was touched; the earlier
+> "R2b-style" deferral is withdrawn.
 
 ## The card (§3.5)
 
@@ -36,37 +47,31 @@ Retention verified by boolean at build time: lift > 0.35 mm → the lips capture
 
 ## P-SLIDE (§6.3) — [`out/t2_slide_verdict.json`](out/t2_slide_verdict.json) (guard trio)
 
-| mode | result | s_max | off-axis | derail | back-drift |
-|---|---|---|---|---|---|
-| **V-A** (declared prismatic joint) | **5/5 PASS** | 66.2 mm | 0.00° | no | 4.35 mm |
-| **V-B** (contact-only) | **G-CONV settling-transient (recorded, not tuned)** | — | — | — | — |
-| V-B *observed, not gated* | would-gate **PASS** | 60.5 mm | 2.03° | no | — |
+| mode | result | s_max | off-axis | derail | all-parts-retained | back-drift |
+|---|---|---|---|---|---|---|
+| **V-A** (declared prismatic joint) | **5/5 PASS** | 65.9 mm | 0.00° | no | ✓ | 3.98 mm |
+| **V-B** (contact-only) | **5/5 PASS** | 60.5 mm | 1.34° | no | ✓ | 2.75 mm |
 
-![V-A s(t)](out/t2_slide_V-A.png)
+![V-A s(t)](out/t2_slide_V-A.png) ![V-B s(t)](out/t2_slide_V-B.png)
 
 **V-A** (required): an axial force ramp drives the carriage past the 60 mm stroke; the joint's travel
 range models the physical stop; **joint frictionloss** (a slide's real Coulomb friction — a physical
-property, not a preset knob) holds it after release, so back-drift is 4.35 mm ≤ 5. It tracks dead
+property, not a preset knob) holds it after release, so back-drift is 3.98 mm ≤ 5. Tracks dead
 straight (off-axis 0°). Video: [`out/t2_slide_V-A.mp4`](out/t2_slide_V-A.mp4).
 
-**V-B** (target): G-CONV — M0's *coherence* gate — fails at-rest with peak-velocity 2.13 > 0.5 and
-drift 0.0085 > 0.005. **This is not a jam and not a broken model:** the carriage settles to a stable
-rest (0.36 mm drop, 0.49° pitch, `ncon`=6 constant). It is the **settling transient of a drop-in
-assembly meeting the stiff frozen preset** — a sub-mm drop into the groove gives a brief velocity
-spike that M0's hinge-tuned thresholds reject. Per the brief and the R2b precedent, this is
-**RECORDED, not tuned** — the frozen preset (R5) is untouched.
+**V-B** (target): the base is welded (D23), the carriage is a free body, and the **T-rail geometry
+alone** produces and retains the slide. It reaches the 60 mm stroke, tracks to 1.34° off-axis (< 3°),
+never derails, and keeps all parts retained — **5/5**. This works *because* the carriage is now one
+connected solid with its COM over the rail; the earlier failure was the disjoint-plate bug above, not
+the preset. Video: [`out/t2_slide_V-B.mp4`](out/t2_slide_V-B.mp4) (bodies labelled on-screen — one
+carriage). Diagnostic pass with the labels: [`out/diag_labeled_V-B.png`](out/diag_labeled_V-B.png).
 
-To characterise the geometry rather than stop at "G-CONV failed," an **observed-not-gated** run
-(seat the carriage first — the honest initial condition for a drop-in slide — then actuate) shows the
-**T-rail geometry does produce and retain the slide DoF**: s_max 60.5 mm (reaches stroke), off-axis
-2.03° (< 3°), no derail. It *would* pass the P-SLIDE gates if G-CONV admitted the settled start.
-Video: [`out/t2_slide_V-B.mp4`](out/t2_slide_V-B.mp4).
-
-**Honest reading:** V-A (required) is a clean pass. V-B's geometry works when observed, but does not
-clear M0's coherence gate at the frozen preset from a floating start. The gap is the same *class* as
-R2b — a frozen-preset interaction — but milder (a settling transient, not a divergent instability),
-and it is a candidate for the same `preset_v2`-time revisit, or for a G-CONV that admits a bounded
-settle-in for drop-in assemblies. Neither is done here; both are recorded.
+**Coverage fix (G-H point 2).** The reviewer noted no gate fired when a part appeared to fall. Two
+responses: (a) G-CONV's at-rest check already watches *every* body's qpos/qvel — the disjoint plate
+did not trip it only because it was rigidly attached to P2, not a separate body; (b) regardless,
+P-SLIDE now carries an **`all_parts_retained`** criterion that watches EVERY non-base body (not just
+the actuated one) — a body that drops or strays off the travel axis fails the gate. So a genuinely
+lost part now fires, and the criterion passes here (one carriage, retained).
 
 ## DRAFT (D-E-10) — the alignment ontology gap, for your ruling
 
@@ -96,7 +101,7 @@ what it holds. Flagged as DRAFT — **your ruling** before it lands (not smuggle
 ## Decisions
 
 **D-E-9** (API economy — logged separately) · **D-D-1** slide_rail card built (T-rail, all-boxes,
-§3.5 chain; V-A 5/5, V-B settling-transient recorded) · **D-E-10 DRAFT** the alignment ontology gap
+§3.5 chain; V-A 5/5, V-B 5/5 after the disjoint-carriage fix) · **D-E-10 DRAFT** the alignment ontology gap
 (three options, recommend the `alignment` AssemblyRule kind).
 
 Suite **54/54**.

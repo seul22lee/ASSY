@@ -147,7 +147,12 @@ def carve(pieces: dict, inst, bindings) -> SlideCarve:
 
     parts, tags = dict(pieces_as_solids(pieces)), {}
     parts[rb.piece_id] = parts[rb.piece_id] + rail
-    parts[cb.piece_id] = parts[cb.piece_id] + carriage
+    # The carriage geometry is the CARD's, not the template's: the slide fit defines the whole
+    # carriage (a block with the T-groove). REPLACE the carriage host's placeholder geometry — do
+    # NOT add, which would leave the placeholder as a DISCONNECTED second solid in one rigid body
+    # (a floating chunk that renders as a phantom second carriage and offsets the COM off the rail).
+    # This mirrors D-ONT-11: a piece whose functional shape is card knowledge gets it from the carve.
+    parts[cb.piece_id] = carriage
     tags["rail"] = rail
     tags["carriage"] = carriage
     axis_world = {"point": tuple(axis_anchor["point"]), "dir": (1.0, 0.0, 0.0)}

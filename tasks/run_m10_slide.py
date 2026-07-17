@@ -58,7 +58,7 @@ def _offaxis_deg(R0, R):
     return ang
 
 
-def run_slide(model, meta, mode, seed=0, stroke=60.0, record=False, settle_s=0.0):
+def run_slide(model, meta, mode, seed=0, stroke=60.0, record=False, settle_s=0.0, label=False):
     rng = np.random.default_rng(seed)
     d = mj.MjData(model)
     mover = mj.mj_name2id(model, mj.mjtObj.mjOBJ_BODY, "P2")
@@ -84,9 +84,18 @@ def run_slide(model, meta, mode, seed=0, stroke=60.0, record=False, settle_s=0.0
     R0 = d.xmat[mover].reshape(3, 3).copy()
     grip = d.xpos[mover].copy()
 
+    # coverage (G-H): watch EVERY non-base body, not only the actuated mover. A part that falls off
+    # the assembly must trip a gate even if it is not the one being pushed. base is welded (D23).
+    watched = [b for b in range(1, model.nbody)
+               if mj.mj_id2name(model, mj.mjtObj.mjOBJ_BODY, b) != "P1"]
+    start_pos = {b: d.xpos[b].copy() for b in watched}
+
     renderer = mj.Renderer(model, 480, 640) if record else None
+    label_opt = mj.MjvOption()
+    if label:
+        label_opt.label = mj.mjtLabel.mjLABEL_BODY
     ts, s_mm, off_deg, F_, frames = [], [], [], [], []
-    next_frame, diverged, derailed = 0.0, False, False
+    next_frame, diverged, derailed, part_lost = 0.0, False, False, False
     s_target = stroke * 1e-3
     t_open = None
 
@@ -114,10 +123,17 @@ def run_slide(model, meta, mode, seed=0, stroke=60.0, record=False, settle_s=0.0
         off_axis_disp = d.xpos[mover] - grip - ax * ((d.xpos[mover] - grip) @ ax)
         if mode == "V-B" and float(np.linalg.norm(off_axis_disp)) * 1e3 > 6.0:
             derailed = True
+        # all-parts-retained: a watched body must not drop, nor stray off the travel axis, beyond a
+        # generous bound (it may travel the stroke ALONG the axis, but not fall or wander off it).
+        for b in watched:
+            dv = d.xpos[b] - start_pos[b]
+            off = dv - ax * (dv @ ax)                       # component off the travel axis
+            if float(np.linalg.norm(off)) * 1e3 > 15.0 or dv[2] * 1e3 < -15.0:
+                part_lost = True
         ts.append(d.time); s_mm.append(s); off_deg.append(oa); F_.append(F)
 
         if record and d.time >= next_frame:
-            renderer.update_scene(d, camera=cam)
+            renderer.update_scene(d, camera=cam, scene_option=label_opt)
             frames.append(renderer.render())
             next_frame += 1.0 / FPS
     if renderer:
@@ -137,10 +153,13 @@ def run_slide(model, meta, mode, seed=0, stroke=60.0, record=False, settle_s=0.0
                                                 "pass": bool(off_max <= OFFAXIS_LIMIT and not diverged)},
         "no_derail": {"value": derailed, "threshold": False,
                       "pass": bool(not derailed and not diverged)},
+        "all_parts_retained": {"value": part_lost, "threshold": False,
+                               "pass": bool(not part_lost and not diverged)},
         "back_drift after stop <= 5 mm": {"value": round(back_drift, 2), "threshold": BACKDRIFT_LIMIT,
                                "pass": bool(back_drift <= BACKDRIFT_LIMIT and not diverged)},
     }
     v = {"ran": True, "mode": mode, "seed": seed, "diverged": diverged, "derailed": derailed,
+         "part_lost": part_lost, "n_bodies_watched": len(watched),
          "s_max_mm": s_max, "s_settled_mm": s_settled, "back_drift_mm": back_drift,
          "offaxis_max_deg": off_max,
          "criteria": crit, "passed": bool(all(c["pass"] for c in crit.values()))}
@@ -202,7 +221,7 @@ def main():
             # jam. Per the R2b precedent: RECORD, do not tune the preset. But still characterise the
             # geometry with an OBSERVED (settle-first, NOT gated) slide, so the record says what the
             # T-rail actually does, not merely "G-CONV failed".
-            ov, oser, ofr = run_slide(model, meta, mode, 0, stroke, record=True, settle_s=0.35)
+            ov, oser, ofr = run_slide(model, meta, mode, 0, stroke, record=True, settle_s=0.35, label=True)
             entry["p_slide"] = {"ran": False, "reason": "G-CONV settling transient (frozen preset; "
                                 "recorded, not tuned)",
                                 "observed_not_gated": {"criteria": ov["criteria"],
@@ -221,7 +240,7 @@ def main():
         per_seed, series0, frames0, v0 = [], None, None, None
         for seed in range(N_SEEDS):
             rec = seed == 0
-            v, series, frames = run_slide(model, meta, mode, seed, stroke, record=rec)
+            v, series, frames = run_slide(model, meta, mode, seed, stroke, record=rec, label=rec)
             per_seed.append(v)
             if rec:
                 series0, frames0, v0 = series, frames, v
