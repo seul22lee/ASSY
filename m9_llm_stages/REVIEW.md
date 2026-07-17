@@ -32,6 +32,21 @@
 > "qwen3-coder + this scaffolding" (D-E-6). The frontier run does not overwrite it; it answers the
 > question it left open.
 
+### D-E-8 — what the two-model experiment establishes (full record in DECISIONS_LOG)
+
+1. **The gap is model-scale, not scaffolding.** Identical prompts/gates/seeds/few-shot; only the
+   model changed. Binding-placement (0.18 → 1.00) and requirement-inference (stop omitted → stop
+   declared unprompted) are model capabilities. Nothing in the pipeline moved between the columns.
+2. **V-B is the detector.** Both IRs were validator-CLEAN and **V-A passed BOTH designs 5/5** — a
+   declared joint's `range` hides the missing stop, so V-A cannot tell a working design from one
+   that folds flat. **Only V-B separated them (qwen 0/5 fold-over, Gemini 4/5 PASS).** Contact-only
+   physics is the only layer that grades design **quality**, not merely **validity**.
+3. **Corollary for benchmark scoring:** validator-pass and V-A-pass are necessary but
+   **non-discriminating**; **V-B is the discriminating gate** and stays mandatory wherever a card
+   supports it (P-GEAR's V-A downgrade is the recorded exception, R2b). Cross-referenced
+   **D-E-8 ↔ D20 ↔ D-M8-5** — the requirement Gemini inferred is the one D-M8-5 records the *system*
+   discovering; now a model discovers it too, and V-B is what proves it was needed.
+
 ## Grader-fairness note — the m8 lesson, applied to the grader itself (G-H directed)
 
 Two gate bugs in the first E-track pass were **mine, not the model's**, and both are the exact error

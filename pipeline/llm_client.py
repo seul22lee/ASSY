@@ -63,7 +63,7 @@ def _load_dotenv(path: str = ".env") -> None:
 _load_dotenv(str(Path(__file__).resolve().parents[1] / ".env"))
 
 MAX_RETRIES = 3          # §4: pydantic parse retries ≤ 3
-BACKEND = os.environ.get("MECHSYNTH_LLM_BACKEND", "ollama")
+BACKEND = os.environ.get("MECHSYNTH_LLM_BACKEND", "gemini")  # D-E-8: gemini is the default; ollama/qwen is the cheap regression backend
 _MODEL_DEFAULTS = {"ollama": "qwen3-coder:latest", "gemini": "", "openai_compat": ""}
 DEFAULT_MODEL = os.environ.get("MECHSYNTH_LLM_MODEL") or _MODEL_DEFAULTS.get(BACKEND, "")
 DEFAULT_BASE = os.environ.get("MECHSYNTH_LLM_BASE_URL", "http://localhost:11434")

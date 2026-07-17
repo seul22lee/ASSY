@@ -67,8 +67,9 @@ code's. Its IR compiled and ran — and V-B caught the design flaw it contained.
   declares. A prim with no solid and no IR entity behind it voids any verdict resting on it.
 - **Two backends wired (D-E-6/-8)** — local Ollama (qwen3-coder-30B) and Gemini
   (`gemini-3.1-pro-preview`), selected by env var; keys in gitignored `.env`, `_redact`ed from logs.
-  Frontier passes physics; local folds over. Bindings-blindness is a small-model artefact, not a
-  design limit.
+  Frontier passes physics; local folds over. Bindings-blindness is a small-model artefact (D-E-8).
+  **Gemini is the DEFAULT backend; qwen is the cheap regression backend.** Gemini's ②-flakiness
+  (1/3 runs failed G2) is recorded, deferred to pre-benchmark hardening.
 - **`verification()` now implemented on the three anchor cards (D-E-5 FIXED)** — ④ attaches
   protocols FROM the cards (D5), so generated IRs are `validate_all` CLEAN.
 - **§4-③'s six-template vocabulary is 2/6 implemented (D-E-3 DRAFT)** — the Hard anchor needs all
