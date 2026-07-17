@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<mujoco model="m13_pslide">
+  <compiler angle="radian" meshdir="assets" autolimits="true"/>
+  <option timestep="0.0005" integrator="implicitfast" cone="elliptic" impratio="10"/>
+  <visual>
+    <headlight ambient="0.5 0.5 0.5" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2"/>
+    <global offwidth="1280" offheight="960" azimuth="150" elevation="-20"/>
+  </visual>
+  <default>
+    <geom solref="0.001 1.0" solimp="0.99 0.9999 0.0001" density="0" contype="0" conaffinity="0" group="2"/>
+  </default>
+  <asset>
+    <material name="base" rgba="0.54 0.66 0.79 1"/>
+    <material name="mover" rgba="0.42 0.75 0.48 1"/>
+    <material name="knob" rgba="0.79 0.55 0.75 1"/>
+    <mesh name="cabinet" file="cabinet.stl"/>
+    <mesh name="mv_P2" file="mv_P2.stl"/>
+    <mesh name="mv_P3" file="mv_P3.stl"/>
+    <mesh name="mv_P4" file="mv_P4.stl"/>
+    <mesh name="knob" file="knob.stl"/>
+  </asset>
+  <worldbody>
+    <light pos="0.2 -0.3 0.5" dir="-0.3 0.5 -1" directional="true" diffuse="0.5 0.5 0.5"/>
+    <camera name="iso" pos="0.28 -0.34 0.24" xyaxes="0.78 0.63 0 -0.28 0.34 0.90"/>
+    <body name="base" pos="0 0 0">
+      <geom name="cabinet" type="mesh" mesh="cabinet" material="base"/>
+      <inertial pos="-0.010198240 0.000000000 0.043595183" mass="0.526450560" fullinertia="0.002024325589 0.002700809627 0.003372166125 -0.000000000000 0.000008243441 -0.000000000000"/>
+    </body>
+    <body name="mover" pos="0 0 0">
+      <joint name="drawer" type="slide" axis="1 0 0" pos="0.000000000 -0.040000000 0.004000000" damping="0.05" range="-0.002 0.12200" limited="true"/>
+      <geom name="mv_P2" type="mesh" mesh="mv_P2" material="mover"/>
+      <geom name="mv_P3" type="mesh" mesh="mv_P3" material="mover"/>
+      <geom name="mv_P4" type="mesh" mesh="mv_P4" material="mover"/>
+      <inertial pos="0.007710620 0.002623794 0.028532046" mass="0.159213585" fullinertia="0.000281510793 0.000529873000 0.000760016078 -0.000028289855 0.000003108429 0.000001057746"/>
+    </body>
+    <body name="knob" pos="0 0 0">
+      <joint name="pinion" type="hinge" axis="0 0 1" pos="0.076000000 0.060000000 0.030000000" damping="0.002"/>
+      <geom name="knob" type="mesh" mesh="knob" material="knob"/>
+      <inertial pos="0.076000000 0.060000000 0.050251519" mass="0.040522020" fullinertia="0.000033871100 0.000033871101 0.000013803829 0.000000000000 0.000000000000 -0.000000000000"/>
+    </body>
+  </worldbody>
+</mujoco>

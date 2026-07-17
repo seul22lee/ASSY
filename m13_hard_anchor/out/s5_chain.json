@@ -1,0 +1,55 @@
+{
+  "rows": [
+    {
+      "symbol": "drawer_w",
+      "formula": "cab_inner_w \u2212 2\u00b7(rail_w+cl)",
+      "substituted": "132 \u2212 2\u00b7(8+0.35)",
+      "value": 115.3,
+      "unit": "mm",
+      "cite": "\u00a78.2 / \u00a73.5 (D6: geometry derived from the equality)"
+    },
+    {
+      "symbol": "L_rack",
+      "formula": "stroke + \u03c0\u00b7m\u00b7z/4",
+      "substituted": "120 + 188.50/4",
+      "value": 167.12,
+      "unit": "mm",
+      "op": "\u2265",
+      "cite": "\u00a73.6 rack engagement margin"
+    },
+    {
+      "symbol": "axis_offset",
+      "formula": "rack_pitchline + d/2  (mesh offset = d/2 = rp)",
+      "substituted": "d/2 = 60/2",
+      "value": 30.0,
+      "unit": "mm",
+      "cite": "\u00a78.2 pinion-rack mesh offset"
+    },
+    {
+      "symbol": "engagement",
+      "formula": "\u2265 0.35\u00b7stroke",
+      "substituted": "0.35\u00b7120",
+      "value": 42.0,
+      "unit": "mm",
+      "op": "\u2265",
+      "cite": "\u00a73.5 moment resistance"
+    },
+    {
+      "symbol": "transmission",
+      "formula": "\u03c0\u00b7m\u00b7z per rev",
+      "substituted": "\u03c0\u00b75\u00b712",
+      "value": 188.5,
+      "unit": "mm/rev",
+      "cite": "\u00a73.6 / \u00a78.2 rot_to_trans"
+    }
+  ],
+  "meta": {
+    "module": 5.0,
+    "z_pinion": 12,
+    "stroke_mm": 120.0,
+    "stroke_note": "scaled from the \u00a78.2 nominal 300 mm: the cabinet is 200 mm deep, so 300 mm would pull the drawer clean out; 120 mm keeps \u226545 mm engaged",
+    "cab_inner_w_mm": 132.0,
+    "rp_mm": 30.0,
+    "d_mm": 60.0
+  }
+}

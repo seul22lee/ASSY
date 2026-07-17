@@ -1,0 +1,354 @@
+{
+  "decision_row": "m13 Hard anchor \u2014 P-SLIDE V-A + P-GEAR V-A (declared pairs)",
+  "compile_hash": "92cb89a",
+  "protocols": {
+    "P-SLIDE-VA": {
+      "g9_gconv": true,
+      "n_seeds": 5,
+      "seeds_passed": 5,
+      "passed": true,
+      "criteria_seed0": {
+        "reaches_stroke": {
+          "value": 127.3,
+          "threshold": 120.0,
+          "pass": true
+        },
+        "tracks_straight (\u22643\u00b0)": {
+          "value": 0.0,
+          "threshold": 3.0,
+          "pass": true
+        },
+        "converged": {
+          "value": false,
+          "threshold": false,
+          "pass": true
+        }
+      },
+      "per_seed": [
+        {
+          "mode": "V-A",
+          "seed": 0,
+          "s_max_mm": 127.28576284687156,
+          "offaxis_max_deg": 0.0,
+          "diverged": false,
+          "criteria": {
+            "reaches_stroke": {
+              "value": 127.3,
+              "threshold": 120.0,
+              "pass": true
+            },
+            "tracks_straight (\u22643\u00b0)": {
+              "value": 0.0,
+              "threshold": 3.0,
+              "pass": true
+            },
+            "converged": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "mode": "V-A",
+          "seed": 1,
+          "s_max_mm": 127.26828584034685,
+          "offaxis_max_deg": 0.0,
+          "diverged": false,
+          "criteria": {
+            "reaches_stroke": {
+              "value": 127.3,
+              "threshold": 120.0,
+              "pass": true
+            },
+            "tracks_straight (\u22643\u00b0)": {
+              "value": 0.0,
+              "threshold": 3.0,
+              "pass": true
+            },
+            "converged": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "mode": "V-A",
+          "seed": 2,
+          "s_max_mm": 127.23342918555957,
+          "offaxis_max_deg": 0.0,
+          "diverged": false,
+          "criteria": {
+            "reaches_stroke": {
+              "value": 127.2,
+              "threshold": 120.0,
+              "pass": true
+            },
+            "tracks_straight (\u22643\u00b0)": {
+              "value": 0.0,
+              "threshold": 3.0,
+              "pass": true
+            },
+            "converged": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "mode": "V-A",
+          "seed": 3,
+          "s_max_mm": 127.20898517048656,
+          "offaxis_max_deg": 0.0,
+          "diverged": false,
+          "criteria": {
+            "reaches_stroke": {
+              "value": 127.2,
+              "threshold": 120.0,
+              "pass": true
+            },
+            "tracks_straight (\u22643\u00b0)": {
+              "value": 0.0,
+              "threshold": 3.0,
+              "pass": true
+            },
+            "converged": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "mode": "V-A",
+          "seed": 4,
+          "s_max_mm": 127.32905014971915,
+          "offaxis_max_deg": 0.0,
+          "diverged": false,
+          "criteria": {
+            "reaches_stroke": {
+              "value": 127.3,
+              "threshold": 120.0,
+              "pass": true
+            },
+            "tracks_straight (\u22643\u00b0)": {
+              "value": 0.0,
+              "threshold": 3.0,
+              "pass": true
+            },
+            "converged": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            }
+          },
+          "passed": true
+        }
+      ]
+    },
+    "P-GEAR-VA": {
+      "g9_gconv": true,
+      "n_seeds": 5,
+      "seeds_passed": 5,
+      "passed": true,
+      "criteria_seed0": {
+        "transmission_ratio (\u22645%)": {
+          "value": 0.0001,
+          "threshold": 0.05,
+          "pass": true
+        },
+        "matches_\u00a73.6 (\u22645%)": {
+          "value": 0.0001,
+          "threshold": 0.05,
+          "pass": true
+        },
+        "reaches_stroke": {
+          "value": 120.0,
+          "threshold": 120.0,
+          "pass": true
+        },
+        "converged": {
+          "value": false,
+          "threshold": false,
+          "pass": true
+        }
+      },
+      "per_seed": [
+        {
+          "mode": "V-A",
+          "seed": 0,
+          "revs_done": 0.637,
+          "drawer_travel_mm": 120.04,
+          "formula_travel_mm": 120.03,
+          "ratio_residual": 0.0001,
+          "diverged": false,
+          "criteria": {
+            "transmission_ratio (\u22645%)": {
+              "value": 0.0001,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "matches_\u00a73.6 (\u22645%)": {
+              "value": 0.0001,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "reaches_stroke": {
+              "value": 120.0,
+              "threshold": 120.0,
+              "pass": true
+            },
+            "converged": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "mode": "V-A",
+          "seed": 1,
+          "revs_done": 0.637,
+          "drawer_travel_mm": 120.03,
+          "formula_travel_mm": 120.03,
+          "ratio_residual": 0.0,
+          "diverged": false,
+          "criteria": {
+            "transmission_ratio (\u22645%)": {
+              "value": 0.0,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "matches_\u00a73.6 (\u22645%)": {
+              "value": 0.0,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "reaches_stroke": {
+              "value": 120.0,
+              "threshold": 120.0,
+              "pass": true
+            },
+            "converged": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "mode": "V-A",
+          "seed": 2,
+          "revs_done": 0.637,
+          "drawer_travel_mm": 120.02,
+          "formula_travel_mm": 120.03,
+          "ratio_residual": 0.0001,
+          "diverged": false,
+          "criteria": {
+            "transmission_ratio (\u22645%)": {
+              "value": 0.0001,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "matches_\u00a73.6 (\u22645%)": {
+              "value": 0.0001,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "reaches_stroke": {
+              "value": 120.0,
+              "threshold": 120.0,
+              "pass": true
+            },
+            "converged": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "mode": "V-A",
+          "seed": 3,
+          "revs_done": 0.637,
+          "drawer_travel_mm": 120.01,
+          "formula_travel_mm": 120.03,
+          "ratio_residual": 0.0002,
+          "diverged": false,
+          "criteria": {
+            "transmission_ratio (\u22645%)": {
+              "value": 0.0002,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "matches_\u00a73.6 (\u22645%)": {
+              "value": 0.0002,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "reaches_stroke": {
+              "value": 120.0,
+              "threshold": 120.0,
+              "pass": true
+            },
+            "converged": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "mode": "V-A",
+          "seed": 4,
+          "revs_done": 0.637,
+          "drawer_travel_mm": 120.06,
+          "formula_travel_mm": 120.03,
+          "ratio_residual": 0.0002,
+          "diverged": false,
+          "criteria": {
+            "transmission_ratio (\u22645%)": {
+              "value": 0.0002,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "matches_\u00a73.6 (\u22645%)": {
+              "value": 0.0002,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "reaches_stroke": {
+              "value": 120.1,
+              "threshold": 120.0,
+              "pass": true
+            },
+            "converged": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "v_b_gap": "emergent tooth contact PENDING preset_v2 (R2b/D-M1-7)"
+    }
+  },
+  "verdict_VA": true,
+  "verdict_VB": "DEFERRED \u2014 P-SLIDE-VB (multi-body contact) + P-GEAR-VB (R2b/D-M1-7): checkpoint",
+  "shape_assert": {
+    "pslide_va": true,
+    "pgear_va": true,
+    "vb_named_deferred": true
+  }
+}

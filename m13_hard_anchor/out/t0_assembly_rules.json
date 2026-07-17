@@ -1,0 +1,15 @@
+{
+  "alignment_fired": {
+    "ok": true,
+    "detail": "parallel: max axis angle 0.00\u00b0 (tol 1.0\u00b0), level \u0394z 0.00 mm (tol 0.5) \u2192 ALIGNED"
+  },
+  "rules": [
+    {
+      "id": "AR1",
+      "kind": "alignment",
+      "provenance": "task",
+      "ok": true,
+      "detail": "parallel: max axis angle 0.00\u00b0 (tol 1.0\u00b0), level \u0394z 0.00 mm (tol 0.5) \u2192 ALIGNED"
+    }
+  ]
+}
