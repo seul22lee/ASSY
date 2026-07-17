@@ -59,6 +59,9 @@ _M = [
     Measurement("stroke_mm", "mm", "P-SLIDE", "drawer displacement along travel axis"),
     Measurement("offaxis_rot_deg", "deg", "P-SLIDE", "off-axis roll/pitch/yaw of the carriage"),
     Measurement("transmission_residual", "", "P-GEAR", "|s/(theta*r) - 1|, ratio consistency"),
+    # --- P-HOLD (D-M13-2 lift): back-drive under load when the crank is released --------
+    Measurement("backdrive_mm", "mm", "P-HOLD",
+                "platform drop under gravity+load with the crank released (self-locking test)"),
 ]
 
 MEASUREMENTS: dict[str, Measurement] = {m.name: m for m in _M}

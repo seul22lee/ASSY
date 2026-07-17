@@ -1,21 +1,21 @@
 {
-  "task_id": "anchor_hard",
-  "command": "Design a desktop cabinet whose drawer slides out when you turn the knob. The drawer should extend about 300 mm.",
+  "task_id": "anchor_lift",
+  "command": "Design a crank-operated platform that raises and lowers a load to different heights.",
   "functions": [
     {
-      "verb": "allow_access",
-      "object": "contents",
-      "qualifier": "pull-out drawer"
+      "verb": "position",
+      "object": "load",
+      "qualifier": "raise/lower to height"
     },
     {
       "verb": "convert",
       "object": "motion",
-      "qualifier": "knob rotation to drawer travel"
+      "qualifier": "crank rotation to lift"
     },
     {
       "verb": "guide",
-      "object": "drawer",
-      "qualifier": "two parallel rails"
+      "object": "platform",
+      "qualifier": "two parallel vertical rails"
     }
   ],
   "behaviors": [
@@ -24,14 +24,17 @@
       "phase": "use",
       "motion": {
         "kind": "translation",
-        "axis_hint": "horizontal",
+        "axis_hint": "vertical",
         "range_value": 120.0,
         "range_unit": "mm",
         "bound": "min",
         "transmission": null,
         "event_force_window_N": null
       },
-      "load": null,
+      "load": {
+        "mass_kg": 0.5,
+        "direction": "-z"
+      },
       "realized_by": "E1",
       "imposed_by": null,
       "verified_by": "P-SLIDE-VA-E1",
@@ -42,14 +45,17 @@
       "phase": "use",
       "motion": {
         "kind": "translation",
-        "axis_hint": "horizontal",
+        "axis_hint": "vertical",
         "range_value": 120.0,
         "range_unit": "mm",
         "bound": "min",
         "transmission": null,
         "event_force_window_N": null
       },
-      "load": null,
+      "load": {
+        "mass_kg": 0.5,
+        "direction": "-z"
+      },
       "realized_by": "E2",
       "imposed_by": null,
       "verified_by": "P-SLIDE-VA-E2",
@@ -60,7 +66,7 @@
       "phase": "use",
       "motion": {
         "kind": "rot_to_trans",
-        "axis_hint": "horizontal",
+        "axis_hint": "vertical",
         "range_value": 120.0,
         "range_unit": "mm",
         "bound": "min",
@@ -71,14 +77,38 @@
         },
         "event_force_window_N": null
       },
-      "load": null,
+      "load": {
+        "mass_kg": 0.5,
+        "direction": "-z"
+      },
       "realized_by": "E3",
       "imposed_by": null,
       "verified_by": "P-GEAR-VA-E3",
       "imposed_by_card": null
     },
     {
-      "id": "B4",
+      "id": "B_HOLD",
+      "phase": "static",
+      "motion": {
+        "kind": "fixed",
+        "axis_hint": "vertical",
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "load": {
+        "mass_kg": 0.5,
+        "direction": "-z"
+      },
+      "realized_by": "E3",
+      "imposed_by": null,
+      "verified_by": "P-HOLD-E3",
+      "imposed_by_card": null
+    },
+    {
+      "id": "B5",
       "phase": "assembly",
       "motion": {
         "kind": "translation",
@@ -96,7 +126,7 @@
       "imposed_by_card": "slide_rail"
     },
     {
-      "id": "B5",
+      "id": "B6",
       "phase": "use",
       "motion": {
         "kind": "fixed",
@@ -114,7 +144,7 @@
       "imposed_by_card": "slide_rail"
     },
     {
-      "id": "B6",
+      "id": "B7",
       "phase": "assembly",
       "motion": {
         "kind": "translation",
@@ -132,7 +162,7 @@
       "imposed_by_card": "slide_rail"
     },
     {
-      "id": "B7",
+      "id": "B8",
       "phase": "use",
       "motion": {
         "kind": "fixed",
@@ -150,7 +180,7 @@
       "imposed_by_card": "slide_rail"
     },
     {
-      "id": "B8",
+      "id": "B9",
       "phase": "assembly",
       "motion": {
         "kind": "translation",
@@ -601,7 +631,7 @@
     },
     {
       "id": "PR-KEEPOUT-E1",
-      "verifies": "B5",
+      "verifies": "B6",
       "actuation": {
         "kind": "tier0_sweep"
       },
@@ -675,7 +705,7 @@
     },
     {
       "id": "PR-KEEPOUT-E2",
-      "verifies": "B7",
+      "verifies": "B8",
       "actuation": {
         "kind": "tier0_sweep"
       },
@@ -714,9 +744,31 @@
       "mode": "V-A",
       "seeds": 5,
       "seed_pass": 4
+    },
+    {
+      "id": "P-HOLD-E3",
+      "verifies": "B_HOLD",
+      "actuation": {
+        "kind": "release_and_watch",
+        "load_kg": 0.5,
+        "note": "crank released (no drive); a plain rack-pinion is generally NOT self-locking, so this tests whether friction alone holds the load"
+      },
+      "criteria": [
+        {
+          "name": "no_backdrive",
+          "observable": "backdrive_mm",
+          "op": "<=",
+          "threshold": 5.0,
+          "unit": "mm"
+        }
+      ],
+      "observables": [],
+      "mode": "V-A",
+      "seeds": 5,
+      "seed_pass": 4
     }
   ],
   "material": "PETG",
-  "variant": "drawer",
+  "variant": "lift",
   "stage_log": []
 }

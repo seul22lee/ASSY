@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<mujoco model="lift_pgear">
+  <compiler angle="radian" meshdir="assets" autolimits="true"/>
+  <option timestep="0.0005" integrator="implicitfast" cone="elliptic" impratio="10" gravity="0 0 -9.81"/>
+  <visual>
+    <headlight ambient="0.5 0.5 0.5" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2"/>
+    <global offwidth="1280" offheight="960" azimuth="150" elevation="-20"/>
+  </visual>
+  <default>
+    <geom solref="0.001 1.0" solimp="0.99 0.9999 0.0001" density="0" contype="0" conaffinity="0" group="2"/>
+  </default>
+  <asset>
+    <material name="base" rgba="0.54 0.66 0.79 1"/>
+    <material name="mover" rgba="0.42 0.75 0.48 1"/>
+    <material name="knob" rgba="0.79 0.55 0.75 1"/>
+    <material name="load" rgba="0.85 0.4 0.35 1"/>
+    <mesh name="tower" file="tower.stl"/>
+    <mesh name="mv_P2" file="mv_P2.stl"/>
+    <mesh name="mv_P3" file="mv_P3.stl"/>
+    <mesh name="mv_P4" file="mv_P4.stl"/>
+    <mesh name="crank" file="crank.stl"/>
+  </asset>
+  <worldbody>
+    <light pos="0.2 -0.3 0.6" dir="-0.3 0.5 -1" directional="true" diffuse="0.5 0.5 0.5"/>
+    <camera name="iso" pos="0.34 -0.40 0.30" xyaxes="0.76 0.65 0 -0.32 0.37 0.87"/>
+    <body name="base" pos="0 0 0">
+      <geom name="tower" type="mesh" mesh="tower" material="base"/>
+      <inertial pos="-0.043595183 0.000000000 -0.010198240" mass="0.526450560" fullinertia="0.003372166125 0.002700809627 0.002024325589 -0.000000000000 -0.000008243441 -0.000000000000"/>
+    </body>
+    <body name="mover" pos="0 0 0">
+      <joint name="platform" type="slide" axis="0 0 1" pos="-0.004000000 -0.040000000 0.000000000" damping="0.05" range="-0.002 0.12200" limited="true"/>
+      <geom name="mv_P2" type="mesh" mesh="mv_P2" material="mover"/>
+      <geom name="mv_P3" type="mesh" mesh="mv_P3" material="mover"/>
+      <geom name="mv_P4" type="mesh" mesh="mv_P4" material="mover"/>
+      <inertial pos="-0.028532046 0.002623794 0.007710620" mass="0.659213585" fullinertia="0.000760016 0.000529873 0.000281511 -0.000001058 -0.000003108 -0.000028290"/>
+      <geom name="load" type="box" pos="-0.028532046 0.002623794 0.027710620" size="0.02 0.02 0.012" material="load"/>
+    </body>
+    <body name="knob" pos="0 0 0">
+      <joint name="crank" type="hinge" axis="1 0 0" pos="-0.030000000 0.060000000 0.076000000" damping="0.002" frictionloss="0.0"/>
+      <geom name="crank" type="mesh" mesh="crank" material="knob"/>
+      <inertial pos="-0.050251519 0.060000000 0.076000000" mass="0.040522020" fullinertia="0.000013803829 0.000033871101 0.000033871100 0.000000000000 -0.000000000000 0.000000000000"/>
+    </body>
+  </worldbody>
+  <equality>
+    <joint name="couple" joint1="platform" joint2="crank" polycoef="0 0.030000000 0 0 0" solref="0.0005 1" solimp="0.999 0.9999 0.0001 0.5 2"/>
+  </equality>
+  <actuator>
+    <velocity name="drive" joint="crank" kv="0.35"/>
+  </actuator>
+</mujoco>

@@ -675,10 +675,22 @@ def rack_pinion_fixture() -> DesignPlan:
     return plan
 
 
-def anchor_hard() -> DesignPlan:
-    """THE HARD ANCHOR (MECHSYNTH §8.2) — a rack-pinion drawer cabinet. The pipeline's second
-    benchmark and its first MULTI-CARD MECHANISM: two `slide_rail` instances (the drawer's two rails)
-    + one `rack_pinion` (the knob→drawer transmission), with the **alignment** AssemblyRule firing
+def anchor_hard(variant: str = "drawer") -> DesignPlan:
+    """THE HARD ANCHOR (MECHSYNTH §8.2, RETARGETED at D-M13-2) — one mechanism, two products.
+
+    variant="lift" (the PRIMARY benchmark): a **crank-operated lift platform**. Same two `slide_rail`
+    + `rack_pinion` mechanism, rotated so **travel is VERTICAL (+Z)** and **gravity acts along the
+    travel axis**. Here the gear is FUNCTIONALLY NECESSARY (a drawer's rack-pinion is over-engineered;
+    a good model would omit it — but a vertical lift needs it to hold and raise a load against
+    gravity). Adds a 0.5 kg load and a **static/hold** behaviour (must not back-drive when the crank
+    is released). The geometry rotation reuses the m10/m11 carves + hints + verification VERBATIM
+    (the physics layer applies the −90° tilt about Y); only what does NOT carry over is named.
+
+    variant="drawer" (the labeled ALTERNATE, tasks/anchor_hard.json): the original horizontal
+    rack-pinion drawer cabinet — kept as a schema/geometry stress test.
+
+    Both are the pipeline's first MULTI-CARD MECHANISM: two `slide_rail` instances (the two rails)
+    + one `rack_pinion` (the crank→platform transmission), with the **alignment** AssemblyRule firing
     for the first time on real geometry (the two rails must be parallel + level).
 
     Frame (m13 correction — see m13_hard_anchor/REVIEW.md): +X = FRONT (pull-out). Two FLOOR rails
@@ -762,17 +774,29 @@ def anchor_hard() -> DesignPlan:
                                 "relation": "parallel", "level": True},
                      citation="§8.2: the drawer's two rails must be parallel and level"),
     ]
-    # realized use behaviours: each rail carries the drawer travel; the rack_pinion the transmission.
+    lift = variant == "lift"
+    hint = "vertical" if lift else "horizontal"
+    load = {"mass_kg": 0.5, "direction": "-z"} if lift else None
+    # realized use behaviours: each rail carries the platform/drawer travel; the rack_pinion the
+    # transmission. In the lift the translation is VERTICAL and carries the 0.5 kg load.
     behaviors = [
-        Behavior(id="B1", phase="use", motion=MotionSpec(kind="translation", axis_hint="horizontal",
-                 range_value=stroke, range_unit="mm", bound="min"), realized_by="E1"),
-        Behavior(id="B2", phase="use", motion=MotionSpec(kind="translation", axis_hint="horizontal",
-                 range_value=stroke, range_unit="mm", bound="min"), realized_by="E2"),
-        Behavior(id="B3", phase="use", motion=MotionSpec(kind="rot_to_trans", axis_hint="horizontal",
+        Behavior(id="B1", phase="use", motion=MotionSpec(kind="translation", axis_hint=hint,
+                 range_value=stroke, range_unit="mm", bound="min"), realized_by="E1", load=load),
+        Behavior(id="B2", phase="use", motion=MotionSpec(kind="translation", axis_hint=hint,
+                 range_value=stroke, range_unit="mm", bound="min"), realized_by="E2", load=load),
+        Behavior(id="B3", phase="use", motion=MotionSpec(kind="rot_to_trans", axis_hint=hint,
                  range_value=stroke, range_unit="mm", bound="min",
                  transmission={"mm_per_rev": round(tpr, 3), "pitch_radius_mm": rp, "kind": "rack_pinion"}),
-                 realized_by="E3"),
+                 realized_by="E3", load=load),
     ]
+    # static/HOLD (lift only) — the platform must NOT back-drive under load when the crank is released.
+    # Expressed WITHOUT new schema (D-M13-3 DRAFT): phase=static + motion=fixed + Behavior.load, with
+    # the "resists back-drive" requirement carried as a P-HOLD criterion. realized_by E3 (the gear is
+    # what would hold it) — and the physics tests whether a plain rack-pinion actually can.
+    if lift:
+        behaviors.append(Behavior(id="B_HOLD", phase="static",
+                 motion=MotionSpec(kind="fixed", axis_hint="vertical"),
+                 load={"mass_kg": 0.5, "direction": "-z"}, realized_by="E3"))
     # card-sourced imposed behaviours (V-08), per instance, BEFORE construction (pydantic copies list)
     from knowledge.cards.base import CARD_REGISTRY as _C
     n = len(behaviors)
@@ -789,13 +813,21 @@ def anchor_hard() -> DesignPlan:
         Parameter(name="L_rack", value=round(L_rack, 2), unit="mm", lo=0.0, hi=400.0, resolved_by="rule"),
         Parameter(name="module", value=m, unit="mm", lo=5.0, hi=6.0, resolved_by="rule"),
     ]
-    plan = DesignPlan(task_id="anchor_hard",
-        command=("Design a desktop cabinet whose drawer slides out when you turn the knob. "
-                 "The drawer should extend about 300 mm."),
-        functions=[Function(verb="allow_access", object="contents", qualifier="pull-out drawer"),
-                   Function(verb="convert", object="motion", qualifier="knob rotation to drawer travel"),
-                   Function(verb="guide", object="drawer", qualifier="two parallel rails")],
-        behaviors=behaviors, pieces=pieces,
+    if lift:
+        task_id, cmd = "anchor_lift", (
+            "Design a crank-operated platform that raises and lowers a load to different heights.")
+        functions = [Function(verb="position", object="load", qualifier="raise/lower to height"),
+                     Function(verb="convert", object="motion", qualifier="crank rotation to lift"),
+                     Function(verb="guide", object="platform", qualifier="two parallel vertical rails")]
+    else:
+        task_id, cmd = "anchor_hard", (
+            "Design a desktop cabinet whose drawer slides out when you turn the knob. "
+            "The drawer should extend about 300 mm.")
+        functions = [Function(verb="allow_access", object="contents", qualifier="pull-out drawer"),
+                     Function(verb="convert", object="motion", qualifier="knob rotation to drawer travel"),
+                     Function(verb="guide", object="drawer", qualifier="two parallel rails")]
+    plan = DesignPlan(task_id=task_id, command=cmd, variant=variant,
+        functions=functions, behaviors=behaviors, pieces=pieces,
         templates=[cabinet, carr["P2"], carr["P3"], tray, knob],
         elements=elements, bindings=bindings, assembly_rules=assembly_rules, parameters=parameters)
     # attach card verification protocols exactly as ④ would (P-SLIDE per rail, P-GEAR for the pinion)
@@ -805,7 +837,24 @@ def anchor_hard() -> DesignPlan:
             b = next((x for x in plan.behaviors if x.id == pr.verifies), None)
             if b is not None and not b.verified_by:
                 b.verified_by = pr.id
+    # P-HOLD (lift only): the static/hold protocol — release the crank, load the platform, gate on
+    # back-drive. mode="V-A" (a declared-joint test with sourced joint friction), criterion in mm.
+    if lift:
+        hold_b = next(b for b in plan.behaviors if b.id == "B_HOLD")
+        plan.protocols.append(VerificationProtocol(
+            id="P-HOLD-E3", verifies="B_HOLD", mode="V-A", seeds=5, seed_pass=4,
+            actuation={"kind": "release_and_watch", "load_kg": 0.5,
+                       "note": "crank released (no drive); a plain rack-pinion is generally NOT "
+                               "self-locking, so this tests whether friction alone holds the load"},
+            criteria=[Criterion(name="no_backdrive", observable="backdrive_mm", op="<=",
+                                threshold=5.0, unit="mm")], observables=[]))
+        hold_b.verified_by = "P-HOLD-E3"
     return plan
+
+
+def anchor_lift() -> DesignPlan:
+    """The retargeted PRIMARY Hard anchor (D-M13-2) — the crank-operated lift platform."""
+    return anchor_hard(variant="lift")
 
 
 def main() -> None:
@@ -825,7 +874,8 @@ def main() -> None:
         "anchor_easy_nostop.json": anchor_easy("nostop"),
         "slide_fixture.json": slide_fixture(),
         "rack_pinion_fixture.json": rack_pinion_fixture(),
-        "anchor_hard.json": anchor_hard(),
+        "anchor_lift.json": anchor_lift(),          # D-M13-2 PRIMARY: crank lift platform
+        "anchor_hard.json": anchor_hard(),          # labeled ALTERNATE: horizontal drawer
     }
     # EXPECTED_FAIL at the VERDICT level (distinct from `expected` below, which is validator-level):
     # these goldens are legal IRs whose physics verdict must FAIL, and are kept as live regression

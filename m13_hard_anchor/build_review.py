@@ -29,15 +29,18 @@ import trimesh  # noqa: E402
 from build123d import export_stl  # noqa: E402
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection  # noqa: E402
 
+from build123d import Rotation  # noqa: E402
 from knowledge.cards.base import CARD_REGISTRY  # noqa: E402
 from ontology.validators import validate_all  # noqa: E402
 from pipeline.compile_assembly import compile_assembly  # noqa: E402
-from tasks.build_goldens import anchor_hard  # noqa: E402
+from tasks.build_goldens import anchor_hard, anchor_lift  # noqa: E402
 from verify.assembly_rules import check_alignment, evaluate  # noqa: E402
 from verify.t2_physics.runner import _hash  # noqa: E402
 from viz.ir_graph import to_svg  # noqa: E402
 
 OUT = Path(__file__).parent / "out"
+TILT = Rotation(0, -90, 0)          # lift: +X travel → +Z (vertical); applied to geometry for renders
+VARIANT = "lift"                    # PRIMARY (D-M13-2); set to "drawer" for the alternate
 COL = {"P1": "#8aa9c9", "P2": "#e0a458", "P3": "#e0a458", "P4": "#6bbf7b",
        "P5": "#c98bbf", "P6": "#c98bbf"}
 LABEL = {"P1": "cabinet", "P2": "carriage_L", "P3": "carriage_R", "P4": "drawer",
@@ -82,7 +85,8 @@ def s5_chain():
 def _mesh(part):
     stl = OUT / "assets" / "tmp.stl"
     stl.parent.mkdir(parents=True, exist_ok=True)
-    export_stl(part, str(stl), tolerance=0.1, angular_tolerance=0.3)
+    export_stl(TILT * part if VARIANT == "lift" else part, str(stl), tolerance=0.1,
+               angular_tolerance=0.3)
     return trimesh.load(stl, force="mesh")
 
 
@@ -106,8 +110,10 @@ def render_four_view(meshes):
         ax = fig.add_subplot(2, 2, i, projection="3d")
         _draw(ax, meshes)
         ax.view_init(elev=el, azim=az); ax.set_title(name, fontsize=10)
-    fig.suptitle("Hard anchor — rack-pinion drawer cabinet (cabinet · 2 carriages · drawer · knob+pinion)",
-                 fontsize=12)
+    title = ("Lift platform — crank-driven, VERTICAL travel (tower · 2 carriages · platform+load · crank+pinion)"
+             if VARIANT == "lift" else
+             "Hard anchor — rack-pinion drawer cabinet (cabinet · 2 carriages · drawer · knob+pinion)")
+    fig.suptitle(title, fontsize=11)
     fig.tight_layout(); fig.savefig(OUT / "anchor_hard_4view.png", dpi=125); plt.close(fig)
 
 
@@ -125,49 +131,52 @@ def render_exploded(meshes):
     fig.tight_layout(); fig.savefig(OUT / "anchor_hard_exploded.png", dpi=125); plt.close(fig)
 
 
+def _sec(ax, meshes, which, origin, normal):
+    for pid, m in meshes.items():
+        if pid not in which:
+            continue
+        try:
+            sec = m.section(plane_origin=origin, plane_normal=normal)
+            if sec is None:
+                continue
+            planar, _ = sec.to_planar()
+            for ent in planar.entities:
+                pts = planar.vertices[ent.points]
+                ax.plot(pts[:, 0], pts[:, 1], color=COL[pid], lw=1.4)
+        except Exception:
+            pass
+    ax.set_aspect("equal"); ax.grid(alpha=.25)
+
+
 def render_section(parts, meshes):
-    """One cut showing BOTH engagements: a YZ section at x=0 (through the rails & carriages =
-    rail-carriage engagement) plus an inset note of the pinion-rack mesh (which lives near x=76)."""
+    """One figure, both engagements. For the lift (tilted) the rails run +Z, the pinion sits at
+    tilted (−30,60,76): cut horizontally (normal +Z) at the rail height for rail↔carriage, and at
+    the pinion height for pinion↔rack. For the drawer, cut YZ at x=0 and x=76."""
     fig, (a0, a1) = plt.subplots(1, 2, figsize=(13, 5.5))
-    # left: YZ section at x=0 (rail-carriage engagement, both rails)
-    for pid, m in meshes.items():
-        if pid == "P5":
-            continue
-        try:
-            sec = m.section(plane_origin=[0, 0, 0], plane_normal=[1, 0, 0])
-            if sec is None:
-                continue
-            planar, _ = sec.to_planar()
-            for ent in planar.entities:
-                pts = planar.vertices[ent.points]
-                a0.plot(pts[:, 0], pts[:, 1], color=COL[pid], lw=1.4)
-        except Exception:
-            pass
-    a0.set_aspect("equal"); a0.set_title("YZ section at x=0 — rail↔carriage engagement (both rails)")
-    a0.set_xlabel("Y (mm)"); a0.set_ylabel("Z (mm)"); a0.grid(alpha=.25)
-    # right: XZ-ish section near the pinion (x from mesh) — pinion↔rack mesh
-    for pid, m in meshes.items():
-        if pid not in ("P4", "P5"):
-            continue
-        try:
-            sec = m.section(plane_origin=[76, 30, 0], plane_normal=[1, 0, 0])
-            if sec is None:
-                continue
-            planar, _ = sec.to_planar()
-            for ent in planar.entities:
-                pts = planar.vertices[ent.points]
-                a1.plot(pts[:, 0], pts[:, 1], color=COL[pid], lw=1.4)
-        except Exception:
-            pass
-    a1.set_aspect("equal"); a1.set_title("YZ section at x=76 — pinion↔rack mesh")
-    a1.set_xlabel("Y (mm)"); a1.set_ylabel("Z (mm)"); a1.grid(alpha=.25)
-    fig.suptitle("Hard anchor — the two engagements in one figure", fontsize=12)
-    fig.tight_layout(); fig.savefig(OUT / "anchor_hard_section.png", dpi=125); plt.close(fig)
+    if VARIANT == "lift":
+        _sec(a0, meshes, {"P1", "P2", "P3", "P4"}, [0, 0, 10], [0, 0, 1])
+        a0.set_title("horizontal cut z=10 — rail↔carriage engagement (both rails)")
+        a0.set_xlabel("X (mm)"); a0.set_ylabel("Y (mm)")
+        _sec(a1, meshes, {"P4", "P5"}, [0, 0, 76], [0, 0, 1])
+        a1.set_title("horizontal cut z=76 — pinion↔rack mesh")
+        a1.set_xlabel("X (mm)"); a1.set_ylabel("Y (mm)")
+        fig.suptitle("Lift — rail engagement + pinion-rack mesh (vertical-travel frame)", fontsize=12)
+        out = OUT / "anchor_hard_section.png"
+    else:
+        _sec(a0, meshes, {"P1", "P2", "P3", "P4"}, [0, 0, 0], [1, 0, 0])
+        a0.set_title("YZ section at x=0 — rail↔carriage engagement (both rails)")
+        a0.set_xlabel("Y (mm)"); a0.set_ylabel("Z (mm)")
+        _sec(a1, meshes, {"P4", "P5"}, [76, 30, 0], [1, 0, 0])
+        a1.set_title("YZ section at x=76 — pinion↔rack mesh")
+        a1.set_xlabel("Y (mm)"); a1.set_ylabel("Z (mm)")
+        fig.suptitle("Hard anchor — the two engagements in one figure", fontsize=12)
+        out = OUT / "anchor_hard_section.png"
+    fig.tight_layout(); fig.savefig(out, dpi=125); plt.close(fig)
 
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    plan = anchor_hard()
+    plan = anchor_lift() if VARIANT == "lift" else anchor_hard()
     assert not validate_all(plan), "golden must be validator-clean"
     for e in plan.elements:
         e.params = CARD_REGISTRY[e.card_ref].resolve_params(plan, e)
