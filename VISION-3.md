@@ -28,11 +28,20 @@ does not have:
 
 The Bayer cantilever-snap formulas are **executed**, and pinned by a golden that reproduces the
 handbook's own worked example. `tests/test_golden_bayer.py` reproduces **Bayer "Calculation Example
-I" (PDF p.16) — 7/7**, gated to fixed tolerances (permissible deflection *h* ±1 %, deflection force
-*P* / mating force *W* / the Fig.18 friction factor ±2 %). The test's stance is explicit: *"If this
-fails, the CODE is wrong, not the book."* A retrieved passage can be quoted correctly and still
-computed wrong downstream; an executed formula validated against the source's own numbers cannot —
-the arithmetic is the artifact, and it is checked end-to-end.
+I" (PDF p.16) — 7/7**. Two distinct claims, kept separate:
+
+- **Gate bound** — the golden asserts to fixed tolerances taken from p.16: permissible deflection *h*
+  within **±1 %**, deflection force *P* / mating force *W* / the Fig.18 friction factor within **±2 %**.
+  This is the pass/fail line the CI holds.
+- **Measured residual** — the *actual* error against the book's printed numbers is **< 0.2 % on all
+  four quantities** (m3_cards record, `out/golden_bayer_comparison.md`): *h* 3.279 vs 3.28 (−0.03 %),
+  *P* 32.53 vs 32.5 (+0.09 %), *W* 58.591 vs 58.5 (+0.16 %), factor 1.801 vs 1.8 (+0.08 %). This is
+  how close the executed formulas come, not how loose the gate is.
+
+The test's stance is explicit: *"If this fails, the CODE is wrong, not the book."* A retrieved passage
+can be quoted correctly and still computed wrong downstream; an executed formula whose residual against
+the source's own numbers is sub-0.2 % cannot — the arithmetic is the artifact, and it is checked
+end-to-end.
 
 ### (b) Machine-enforced bounds/constraints — the decisive contrast with read-and-ignore
 
