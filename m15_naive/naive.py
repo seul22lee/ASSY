@@ -90,8 +90,8 @@ def gen_code(command: str, model: str) -> tuple[str, int]:
         del sys.modules[m]                       # BACKEND is bound at import → force a fresh read
     from pipeline.llm_client import _call_backend
     prompt = SYSTEM + "\n\nDESIGN REQUEST:\n" + command
-    txt, ntok = _call_backend(prompt, CODE_SCHEMA, model, 0.4)
-    return json.loads(txt).get("code", ""), ntok
+    txt, ptok, etok = _call_backend(prompt, CODE_SCHEMA, model, 0.4)
+    return json.loads(txt).get("code", ""), ptok + etok
 
 
 def execute(code: str, run_dir: Path) -> dict:

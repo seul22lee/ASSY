@@ -132,7 +132,8 @@ class CallRecord:
     latency_s: float
     ok: bool
     errors: list[str] = field(default_factory=list)   # validator text that forced a retry
-    eval_tokens: int = 0
+    prompt_tokens: int = 0        # D-E-9 / token-fix: input tokens the backend BILLED for this call
+    eval_tokens: int = 0          # output tokens
 
     def as_log(self) -> dict:
         # every string that lands in the audit file passes through _redact — the log is committed,
@@ -142,7 +143,11 @@ class CallRecord:
                 "response_raw": _redact(self.response_raw),
                 "latency_s": round(self.latency_s, 2), "ok": self.ok,
                 "validator_errors": [_redact(e) for e in self.errors],
-                "eval_tokens": self.eval_tokens}
+                # tokens BOTH directions, per call — the meter D-E-9 mandated. `tokens` is the
+                # canonical field; `eval_tokens` kept for back-compat with older summaries.
+                "tokens": {"prompt": self.prompt_tokens, "output": self.eval_tokens,
+                           "total": self.prompt_tokens + self.eval_tokens},
+                "prompt_tokens": self.prompt_tokens, "eval_tokens": self.eval_tokens}
 
 
 class LLMBackendError(RuntimeError):
@@ -196,8 +201,9 @@ def _strip_unsupported(schema):
     return schema
 
 
-def _call_backend(prompt: str, schema: dict, model: str, temperature: float) -> tuple[str, int]:
-    """One raw generation, schema-constrained. Returns (text, eval_tokens)."""
+def _call_backend(prompt: str, schema: dict, model: str, temperature: float) -> tuple[str, int, int]:
+    """One raw generation, schema-constrained. Returns (text, prompt_tokens, eval_tokens) — BOTH
+    token directions from the backend's own usage report (never an estimate)."""
     if BACKEND == "gemini":
         # Same contract as every other backend: schema-constrained JSON out, no free prose.
         # The key rides in the URL/header, never in `prompt` — so it cannot reach stage_log.
@@ -212,15 +218,16 @@ def _call_backend(prompt: str, schema: dict, model: str, temperature: float) -> 
             raise LLMBackendError(f"gemini returned no candidates: {str(d)[:200]}")
         parts = cands[0].get("content", {}).get("parts") or [{}]
         txt = "".join(p.get("text", "") for p in parts)
-        ntok = int(d.get("usageMetadata", {}).get("candidatesTokenCount", 0))
-        return txt, ntok
+        um = d.get("usageMetadata", {}) or {}
+        return txt, int(um.get("promptTokenCount", 0)), int(um.get("candidatesTokenCount", 0))
     if BACKEND == "ollama":
         d = _post(f"{DEFAULT_BASE}/api/chat", {
             "model": model, "messages": [{"role": "user", "content": prompt}],
             "stream": False, "format": schema, "keep_alive": "30m",
             "options": {"temperature": temperature, "num_ctx": 16384},
         }, REQUEST_TIMEOUT)
-        return d["message"]["content"], int(d.get("eval_count", 0))
+        return (d["message"]["content"], int(d.get("prompt_eval_count", 0)),
+                int(d.get("eval_count", 0)))
     if BACKEND == "openai_compat":
         d = _post(f"{DEFAULT_BASE}/v1/chat/completions", {
             "model": model, "messages": [{"role": "user", "content": prompt}],
@@ -229,7 +236,9 @@ def _call_backend(prompt: str, schema: dict, model: str, temperature: float) -> 
                                 "json_schema": {"name": "stage_out", "schema": schema,
                                                 "strict": True}},
         }, REQUEST_TIMEOUT)
-        return d["choices"][0]["message"]["content"], int(d.get("usage", {}).get("completion_tokens", 0))
+        _u = d.get("usage", {}) or {}
+        return (d["choices"][0]["message"]["content"], int(_u.get("prompt_tokens", 0)),
+                int(_u.get("completion_tokens", 0)))
     raise LLMBackendError(f"unknown MECHSYNTH_LLM_BACKEND={BACKEND!r}")
 
 
@@ -274,7 +283,7 @@ def call_structured(*, ir, stage: str, gate: str, prompt: str, schema: dict, par
     for attempt in range(MAX_RETRIES + 1):
         t0 = time.time()
         try:
-            raw, ntok = _call_backend(convo, schema, model, temperature)
+            raw, ptok, etok = _call_backend(convo, schema, model, temperature)
         except LLMBackendError as e:
             rec = CallRecord(stage, attempt, model, _sha(convo), convo, "", time.time() - t0,
                              False, [str(e)])
@@ -299,8 +308,16 @@ def call_structured(*, ir, stage: str, gate: str, prompt: str, schema: dict, par
             errors = list(validate(obj))
 
         rec = CallRecord(stage, attempt, model, _sha(convo), convo, raw, dt, not errors, errors,
-                         ntok)
+                         prompt_tokens=ptok, eval_tokens=etok)
         ir.stage_log.append(rec.as_log())
+        # INSTRUMENTATION SELF-CHECK (D-E-9 / token-fix): a real response whose backend reported ZERO
+        # tokens both directions means the per-call meter has silently rotted — fail the run rather
+        # than record an empty `tokens:{}` (the exact bug this fix closes).
+        if raw and (ptok + etok) == 0:
+            raise LLMBackendError(
+                f"token instrumentation returned 0 prompt+output tokens for a non-empty {stage} "
+                f"response (model={model}); the per-call meter is not recording — refusing to "
+                f"proceed with an unmeasured run.")
 
         if not errors:
             return obj
@@ -335,15 +352,17 @@ def stage_log_summary(ir) -> dict:
     """Per-stage call/retry/token counts — the headline of the audit trail. `_total` makes per-run
     cost visible at a glance (API economy: tokens are the meter)."""
     out: dict = {}
-    total_calls = total_tokens = 0
+    tot_calls = tot_prompt = tot_output = 0
     for r in ir.stage_log:
         st = r.get("stage", "?")
-        e = out.setdefault(st, {"calls": 0, "retries": 0, "ok": False, "tokens": 0})
+        e = out.setdefault(st, {"calls": 0, "retries": 0, "ok": False,
+                                "prompt_tokens": 0, "output_tokens": 0})
+        tk = r.get("tokens") or {"prompt": r.get("prompt_tokens", 0), "output": r.get("eval_tokens", 0)}
         e["calls"] += 1
         e["retries"] = max(e["retries"], r.get("attempt", 0))
         e["ok"] = e["ok"] or r.get("ok", False)
-        e["tokens"] += r.get("eval_tokens", 0)
-        total_calls += 1
-        total_tokens += r.get("eval_tokens", 0)
-    out["_total"] = {"calls": total_calls, "eval_tokens": total_tokens}
+        e["prompt_tokens"] += tk.get("prompt", 0); e["output_tokens"] += tk.get("output", 0)
+        tot_calls += 1; tot_prompt += tk.get("prompt", 0); tot_output += tk.get("output", 0)
+    out["_total"] = {"calls": tot_calls, "prompt_tokens": tot_prompt, "output_tokens": tot_output,
+                     "total_tokens": tot_prompt + tot_output}
     return out
