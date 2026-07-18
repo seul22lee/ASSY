@@ -1,0 +1,187 @@
+[
+  {
+    "id": "A1-snap-base",
+    "expected": "PASS",
+    "stages": {
+      "validators": "clean",
+      "\u2464 resolve": "ok",
+      "\u2465 compile": "2 bodies",
+      "physics": "tier1-reused \u2014 PASS"
+    },
+    "physics_evidence": "m6_ms_closeout (T-S1 formula PASS)",
+    "verdict": "CERTIFIED"
+  },
+  {
+    "id": "A2-snap-big",
+    "expected": "PASS",
+    "stages": {
+      "validators": "clean",
+      "\u2464 resolve": "ok",
+      "\u2465 compile": "2 bodies",
+      "physics": "tier1 \u2014 PASS"
+    },
+    "physics_evidence": "resolve_snap feasible at the larger size, 3 hooks",
+    "verdict": "CERTIFIED"
+  },
+  {
+    "id": "A3-snap-force",
+    "expected": "PASS",
+    "stages": {
+      "validators": "clean",
+      "\u2464 resolve": "ok",
+      "\u2465 compile": "2 bodies",
+      "physics": "tier1 \u2014 PASS"
+    },
+    "physics_evidence": "resolve_snap force windows satisfied (mate \u226460, sep \u226515)",
+    "verdict": "CERTIFIED"
+  },
+  {
+    "id": "A4-snap-impossible-force",
+    "expected": "INFEASIBLE",
+    "stages": {
+      "validators": "clean",
+      "\u2464 resolve": "StageFailure(s5/INFEASIBLE)"
+    },
+    "fired": true,
+    "refusal": "StageFailure[s5/INFEASIBLE]: element 'E1' violates 2 force-window inequalit(y/ies): n*W_in <= mate_hi (val 35.631 vs 5.0, margin -30.631); W_out >= sep_lo (retention) (val 31.838 vs 60.0, margin -28.162)",
+    "verdict": "CERTIFIED"
+  },
+  {
+    "id": "B1-hinge-latch-base",
+    "expected": "PASS",
+    "stages": {
+      "validators": "clean",
+      "\u2464 resolve": "ok",
+      "\u2465 compile": "3 bodies",
+      "physics": "reused \u2014 PASS"
+    },
+    "physics_evidence": "m8 Easy anchor V-A 5/5 + V-B 5/5",
+    "verdict": "CERTIFIED"
+  },
+  {
+    "id": "B2-hinge-big",
+    "expected": "PASS",
+    "stages": {
+      "validators": "clean",
+      "\u2464 resolve": "ok",
+      "\u2465 compile": "3 bodies",
+      "physics": "inherited \u2014 PASS"
+    },
+    "physics_evidence": "same mechanism as B1, box in-bounds",
+    "verdict": "CERTIFIED"
+  },
+  {
+    "id": "B3-hinge-nolatch",
+    "expected": "PASS",
+    "stages": {
+      "validators": "clean",
+      "\u2464 resolve": "ok",
+      "\u2465 compile": "3 bodies",
+      "physics": "inherited \u2014 PASS"
+    },
+    "physics_evidence": "hinge+stop of B1 (latch removed); stop caps ~109\u00b0",
+    "verdict": "CERTIFIED"
+  },
+  {
+    "id": "B4-hinge-nostop",
+    "expected": "EXPECTED_FAIL",
+    "stages": {
+      "validators": "clean",
+      "\u2464 resolve": "ok",
+      "\u2465 compile": "3 bodies",
+      "physics": "reused \u2014 FAIL"
+    },
+    "physics_evidence": "anchor_easy_nostop V-B 0/5 (folds flat, D20)",
+    "verdict": "CERTIFIED"
+  },
+  {
+    "id": "B5-hinge-openangle",
+    "expected": "PASS",
+    "stages": {
+      "validators": "clean",
+      "\u2464 resolve": "ok",
+      "\u2465 compile": "3 bodies",
+      "physics": "reused \u2014 PASS"
+    },
+    "physics_evidence": "m8 measured theta_max 112.4\u00b0 \u2265 100\u00b0 (stop cap)",
+    "verdict": "CERTIFIED"
+  },
+  {
+    "id": "C1-lift-base",
+    "expected": "PASS",
+    "stages": {
+      "validators": "clean",
+      "\u2464 resolve": "ok",
+      "\u2465 compile": "5 bodies",
+      "physics": "reused \u2014 PASS"
+    },
+    "physics_evidence": "m13 lift V-A 5/5 + P-FULL 5/5 + P-SLIDE V-B 5/5",
+    "verdict": "CERTIFIED"
+  },
+  {
+    "id": "C2-lift-load",
+    "expected": "PASS",
+    "stages": {
+      "validators": "clean",
+      "\u2464 resolve": "ok",
+      "\u2465 compile": "5 bodies",
+      "physics": "inherited \u2014 PASS"
+    },
+    "physics_evidence": "same mechanism as C1; load 1 kg, stroke 90 in-bounds",
+    "verdict": "CERTIFIED"
+  },
+  {
+    "id": "C3-lift-holddrift",
+    "expected": "PASS",
+    "stages": {
+      "validators": "clean",
+      "\u2464 resolve": "ok",
+      "\u2465 compile": "5 bodies",
+      "physics": "reused \u2014 PASS"
+    },
+    "physics_evidence": "m13 P-FULL hold-drop 3.37 mm \u2264 5 mm (pawl)",
+    "verdict": "CERTIFIED"
+  },
+  {
+    "id": "C4-drawer",
+    "expected": "PASS",
+    "stages": {
+      "validators": "clean",
+      "\u2464 resolve": "ok",
+      "\u2465 compile": "5 bodies",
+      "physics": "reused \u2014 PASS"
+    },
+    "physics_evidence": "m13 drawer V-A 5/5 (t2_hard_verdict)",
+    "verdict": "CERTIFIED"
+  },
+  {
+    "id": "C5-lift-nogear",
+    "expected": "INFEASIBLE",
+    "stages": {
+      "\u2463 KG": "candidates(rot_to_trans) \u2212 forbidden = [] \u2192 EMPTY (refused)"
+    },
+    "fired": true,
+    "refusal": "\u2463 KG_NO_PERMITTED_REALIZER: the only rot_to_trans realizer is 'rack_pinion' (KG), forbidden by the task; no permitted card can realize the crank\u2192lift transmission or the hold.",
+    "verdict": "CERTIFIED"
+  },
+  {
+    "id": "C6-lift-toofar",
+    "expected": "INFEASIBLE",
+    "stages": {
+      "validators": "['V-04']"
+    },
+    "fired": true,
+    "refusal": "V-04: parameter 'stroke' value 500.0 outside [20.0,400.0]",
+    "verdict": "CERTIFIED"
+  },
+  {
+    "id": "D1-screw-jack",
+    "expected": "INFEASIBLE",
+    "stages": {
+      "validators": "['V-02', 'V-03']"
+    },
+    "fired": true,
+    "refusal": "V-03: 'E1' card 'leadscrew' not registered",
+    "verdict": "CERTIFIED"
+  }
+]

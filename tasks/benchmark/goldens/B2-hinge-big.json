@@ -134,8 +134,8 @@
       "template_ref": "box_shell",
       "source_element": null,
       "params": {
-        "box_l": 80.0,
-        "box_w": 60.0,
+        "box_l": 100.0,
+        "box_w": 70.0,
         "box_h": 40.0,
         "wall": 2.0
       },
@@ -149,8 +149,8 @@
       "source_element": null,
       "params": {
         "lid_t": 3.0,
-        "box_l": 80.0,
-        "box_w": 60.0,
+        "box_l": 100.0,
+        "box_w": 70.0,
         "stop_flange_r": 8.0,
         "rim_length": 80.0
       },
@@ -191,8 +191,8 @@
         }
       ],
       "params": {
-        "box_l": 80.0,
-        "box_w": 60.0,
+        "box_l": 100.0,
+        "box_w": 70.0,
         "box_h": 40.0,
         "wall": 2.0
       }
@@ -219,8 +219,8 @@
       ],
       "params": {
         "lid_t": 3.0,
-        "box_l": 80.0,
-        "box_w": 60.0,
+        "box_l": 100.0,
+        "box_w": 70.0,
         "stop_flange_r": 8.0
       }
     }

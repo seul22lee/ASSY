@@ -101,9 +101,9 @@
       "template_ref": "box_shell",
       "source_element": null,
       "params": {
-        "box_l": 80.0,
-        "box_w": 60.0,
-        "box_h": 40.0,
+        "box_l": 120.0,
+        "box_w": 90.0,
+        "box_h": 50.0,
         "wall": 2.0
       },
       "is_base": true
@@ -116,8 +116,8 @@
       "source_element": null,
       "params": {
         "lid_t": 3.0,
-        "box_l": 80.0,
-        "box_w": 60.0
+        "box_l": 120.0,
+        "box_w": 90.0
       },
       "is_base": false
     }
@@ -136,9 +136,9 @@
         }
       ],
       "params": {
-        "box_l": 80.0,
-        "box_w": 60.0,
-        "box_h": 40.0,
+        "box_l": 120.0,
+        "box_w": 90.0,
+        "box_h": 50.0,
         "wall": 2.0
       }
     },
@@ -156,8 +156,8 @@
       ],
       "params": {
         "lid_t": 3.0,
-        "box_l": 80.0,
-        "box_w": 60.0
+        "box_l": 120.0,
+        "box_w": 90.0
       }
     }
   ],
@@ -166,7 +166,7 @@
       "id": "E1",
       "card_ref": "snap_hook_cantilever",
       "params": {
-        "n_hooks": 2.0,
+        "n_hooks": 3.0,
         "design_type": 2.0,
         "alpha_in_deg": 30.0,
         "alpha_out_deg": 45.0

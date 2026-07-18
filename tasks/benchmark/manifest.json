@@ -1,0 +1,146 @@
+[
+  {
+    "id": "A1-snap-base",
+    "command": "Design a snap-lid box I can push shut and pull open by hand. Plastic, for 3D printing.",
+    "base": "snap-box",
+    "axis": "base",
+    "expected_class": "PASS",
+    "physics_implied": "m6_ms_closeout (T-S1 formula PASS)",
+    "scoring_note": "base snap box; certifies the T-S1 track."
+  },
+  {
+    "id": "A2-snap-big",
+    "command": "Design a snap-lid storage box about 120 \u00d7 90 \u00d7 50 mm that pushes shut and pulls open by hand. Plastic.",
+    "base": "snap-box",
+    "axis": "dimensional",
+    "expected_class": "PASS",
+    "physics_implied": "resolve_snap feasible at the larger size, 3 hooks",
+    "scoring_note": "dimensional: bigger box + 3 hooks; \u2464 re-resolves within bounds."
+  },
+  {
+    "id": "A3-snap-force",
+    "command": "Design a push-on snap-lid box that closes with no more than 60 N by hand and needs at least 15 N of pull to open.",
+    "base": "snap-box",
+    "axis": "spec-tightening",
+    "expected_class": "PASS",
+    "physics_implied": "resolve_snap force windows satisfied (mate \u226460, sep \u226515)",
+    "scoring_note": "spec: explicit force window the \u2464 formula chain must hit."
+  },
+  {
+    "id": "A4-snap-impossible-force",
+    "command": "Design a snap-lid box that closes with at most 5 N by hand but needs at least 60 N of pull to open.",
+    "base": "snap-box",
+    "axis": "infeasible-spec",
+    "expected_class": "INFEASIBLE(s5,INFEASIBLE)",
+    "physics_implied": null,
+    "scoring_note": "physically-contradictory: retention/mating ratio the snap geometry cannot achieve."
+  },
+  {
+    "id": "B1-hinge-latch-base",
+    "command": "A small hinged box whose lid latches shut at the front. Plastic, for 3D printing.",
+    "base": "hinge-box",
+    "axis": "base",
+    "expected_class": "PASS",
+    "physics_implied": "m8 Easy anchor V-A 5/5 + V-B 5/5",
+    "scoring_note": "base hinge+latch (+stop); the Easy benchmark."
+  },
+  {
+    "id": "B2-hinge-big",
+    "command": "A hinged box with a 100 \u00d7 70 mm lid that latches shut at the front. Plastic.",
+    "base": "hinge-box",
+    "axis": "dimensional",
+    "expected_class": "PASS",
+    "physics_implied": "same mechanism as B1, box in-bounds",
+    "scoring_note": "dimensional: larger box footprint."
+  },
+  {
+    "id": "B3-hinge-nolatch",
+    "command": "A hinged box whose lid opens and stays put near 110\u00b0 \u2014 no latch, just a stop.",
+    "base": "hinge-box",
+    "axis": "constraint",
+    "expected_class": "PASS",
+    "physics_implied": "hinge+stop of B1 (latch removed); stop caps ~109\u00b0",
+    "scoring_note": "constraint: FORBID the latch \u2014 the golden visibly drops the snap element."
+  },
+  {
+    "id": "B4-hinge-nostop",
+    "command": "A hinged box whose lid opens 90\u00b0 and returns closed \u2014 no stop tab, no latch.",
+    "base": "hinge-box",
+    "axis": "constraint",
+    "expected_class": "EXPECTED_FAIL",
+    "physics_implied": "anchor_easy_nostop V-B 0/5 (folds flat, D20)",
+    "scoring_note": "constraint\u2192EXPECTED_FAIL: the over-centre lid folds flat with no stop (kept as a regression)."
+  },
+  {
+    "id": "B5-hinge-openangle",
+    "command": "A hinged box whose lid opens at least 100\u00b0 and settles closed within 5\u00b0.",
+    "base": "hinge-box",
+    "axis": "spec-tightening",
+    "expected_class": "PASS",
+    "physics_implied": "m8 measured theta_max 112.4\u00b0 \u2265 100\u00b0 (stop cap)",
+    "scoring_note": "spec: open-angle floor the P-HINGE gate must clear (real measured 112.4\u00b0)."
+  },
+  {
+    "id": "C1-lift-base",
+    "command": "Design a crank-operated platform that raises and lowers a load to different heights.",
+    "base": "crank-lift",
+    "axis": "base",
+    "expected_class": "PASS",
+    "physics_implied": "m13 lift V-A 5/5 + P-FULL 5/5 + P-SLIDE V-B 5/5",
+    "scoring_note": "base crank lift; the Hard benchmark."
+  },
+  {
+    "id": "C2-lift-load",
+    "command": "Design a crank platform that raises a 1 kg load by about 90 mm.",
+    "base": "crank-lift",
+    "axis": "dimensional",
+    "expected_class": "PASS",
+    "physics_implied": "same mechanism as C1; load 1 kg, stroke 90 in-bounds",
+    "scoring_note": "dimensional: heavier load, shorter stroke."
+  },
+  {
+    "id": "C3-lift-holddrift",
+    "command": "Design a crank lift whose platform holds within 5 mm of its set height when the crank is released, under a 0.5 kg load.",
+    "base": "crank-lift",
+    "axis": "spec-tightening",
+    "expected_class": "PASS",
+    "physics_implied": "m13 P-FULL hold-drop 3.37 mm \u2264 5 mm (pawl)",
+    "scoring_note": "spec: hold-drift ceiling the pawl (P-HOLD) must clear (real measured 3.37 mm)."
+  },
+  {
+    "id": "C4-drawer",
+    "command": "Design a desktop cabinet whose drawer slides out horizontally when you turn a knob.",
+    "base": "crank-lift",
+    "axis": "constraint",
+    "expected_class": "PASS",
+    "physics_implied": "m13 drawer V-A 5/5 (t2_hard_verdict)",
+    "scoring_note": "constraint: HORIZONTAL travel (no gravity-hold) \u2014 the drawer alternate, gear NOT over-engineered here."
+  },
+  {
+    "id": "C5-lift-nogear",
+    "command": "Design a crank lift that holds a 0.5 kg load, but without any gear or ratchet.",
+    "base": "crank-lift",
+    "axis": "infeasible-constraint",
+    "expected_class": "INFEASIBLE(s4,KG_NO_PERMITTED_REALIZER)",
+    "physics_implied": null,
+    "scoring_note": "constraint-contradiction: a crank\u2192lift needs rot_to_trans, whose ONLY card is rack_pinion; forbidding gear+ratchet leaves no realizer AND no hold."
+  },
+  {
+    "id": "C6-lift-toofar",
+    "command": "Design a crank lift that raises the platform 500 mm inside a compact desktop frame.",
+    "base": "crank-lift",
+    "axis": "infeasible-dimensional",
+    "expected_class": "INFEASIBLE(validator,V-04)",
+    "physics_implied": null,
+    "scoring_note": "dimensional-exceeds: the requested stroke is beyond the slide/gear param bounds."
+  },
+  {
+    "id": "D1-screw-jack",
+    "command": "Design a threaded screw-jack that lifts a load by turning a leadscrew.",
+    "base": "(none)",
+    "axis": "infeasible-oov",
+    "expected_class": "INFEASIBLE(validator,V-03)",
+    "physics_implied": null,
+    "scoring_note": "out-of-vocabulary: names a host + element we do not have (no leadscrew card/template)."
+  }
+]

@@ -26,7 +26,7 @@
         "transmission": null,
         "event_force_window_N": [
           0.0,
-          80.0
+          60.0
         ]
       },
       "load": null,

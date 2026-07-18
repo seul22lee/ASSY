@@ -51,63 +51,6 @@
       "imposed_by_card": "pin_hinge"
     },
     {
-      "id": "B4",
-      "phase": "static",
-      "motion": {
-        "kind": "snap_event",
-        "axis_hint": null,
-        "range_value": null,
-        "range_unit": null,
-        "bound": null,
-        "transmission": null,
-        "event_force_window_N": [
-          15.0,
-          60.0
-        ]
-      },
-      "load": null,
-      "realized_by": "E2",
-      "imposed_by": null,
-      "verified_by": "PR-LATCH",
-      "imposed_by_card": null
-    },
-    {
-      "id": "B5",
-      "phase": "use",
-      "motion": {
-        "kind": "fixed",
-        "axis_hint": null,
-        "range_value": null,
-        "range_unit": null,
-        "bound": null,
-        "transmission": null,
-        "event_force_window_N": null
-      },
-      "load": null,
-      "realized_by": null,
-      "imposed_by": "E2",
-      "verified_by": "PR-SWEEP",
-      "imposed_by_card": "snap_hook_cantilever"
-    },
-    {
-      "id": "B6",
-      "phase": "assembly",
-      "motion": {
-        "kind": "translation",
-        "axis_hint": null,
-        "range_value": null,
-        "range_unit": null,
-        "bound": null,
-        "transmission": null,
-        "event_force_window_N": null
-      },
-      "load": null,
-      "realized_by": null,
-      "imposed_by": "E2",
-      "verified_by": null,
-      "imposed_by_card": "snap_hook_cantilever"
-    },
-    {
       "id": "B3",
       "phase": "use",
       "motion": {
@@ -240,23 +183,6 @@
         "P1",
         "P2"
       ]
-    },
-    {
-      "id": "E2",
-      "card_ref": "snap_hook_cantilever",
-      "params": {
-        "L_mm": 12.0,
-        "b_mm": 8.0,
-        "y_mm": 1.5,
-        "n_hooks": 1.0,
-        "design_type": 2.0,
-        "alpha_in_deg": 30.0,
-        "alpha_out_deg": 45.0
-      },
-      "host_pieces": [
-        "P2",
-        "P1"
-      ]
     }
   ],
   "features": [
@@ -301,27 +227,6 @@
       "offset_params": {}
     },
     {
-      "element_id": "E2",
-      "port": "beam_root",
-      "piece_id": "P2",
-      "anchor": "front_edge_underside",
-      "mate": "on_face_uv",
-      "offset_params": {
-        "u": 0.5,
-        "v": 0.5
-      }
-    },
-    {
-      "element_id": "E2",
-      "port": "catch_window",
-      "piece_id": "P1",
-      "anchor": "front_wall_inner",
-      "mate": "offset_face",
-      "offset_params": {
-        "undercut_dir": "inward"
-      }
-    },
-    {
       "element_id": "F1",
       "port": "contact",
       "piece_id": "P2",
@@ -332,41 +237,7 @@
       }
     }
   ],
-  "assembly_rules": [
-    {
-      "id": "AR1",
-      "kind": "exclusion",
-      "provenance": "card:snap_hook_cantilever",
-      "subjects": [
-        "E2",
-        "E1"
-      ],
-      "predicate": {
-        "excluded": "E2",
-        "sweep_of": "E1"
-      },
-      "citation": "MECHSYNTH §5.2 / M0 B4 (latch ∉ lid sweep)"
-    },
-    {
-      "id": "AR2",
-      "kind": "resource",
-      "provenance": "task",
-      "subjects": [
-        "E2.L_mm",
-        "E1.edge_margin",
-        "P2.rim_length"
-      ],
-      "predicate": {
-        "contributors": [
-          "E2.L_mm",
-          "E1.edge_margin"
-        ],
-        "budget": "P2.rim_length",
-        "op": "<="
-      },
-      "citation": "shared front-rim budget: hook length + hinge edge_margin ≤ rim"
-    }
-  ],
+  "assembly_rules": [],
   "parameters": [
     {
       "name": "pin_d",
@@ -472,53 +343,6 @@
       ],
       "observables": [],
       "mode": "V-B",
-      "seeds": 5,
-      "seed_pass": 4
-    },
-    {
-      "id": "PR-LATCH",
-      "verifies": "B4",
-      "actuation": {
-        "kind": "formula_recheck"
-      },
-      "criteria": [
-        {
-          "name": "hand_closeable",
-          "observable": "mating_force_total_N",
-          "op": "<=",
-          "threshold": 80.0,
-          "unit": "N"
-        },
-        {
-          "name": "retention_floor",
-          "observable": "retention_force_N",
-          "op": ">=",
-          "threshold": 15.0,
-          "unit": "N"
-        }
-      ],
-      "observables": [],
-      "mode": null,
-      "seeds": 5,
-      "seed_pass": 4
-    },
-    {
-      "id": "PR-SWEEP",
-      "verifies": "B5",
-      "actuation": {
-        "kind": "tier0_sweep"
-      },
-      "criteria": [
-        {
-          "name": "no_defect_interference",
-          "observable": "pen_travel_mm",
-          "op": "<=",
-          "threshold": 0.2,
-          "unit": "mm"
-        }
-      ],
-      "observables": [],
-      "mode": null,
       "seeds": 5,
       "seed_pass": 4
     }

@@ -401,7 +401,7 @@
           "name": "opens",
           "observable": "theta_max_deg",
           "op": ">=",
-          "threshold": 90.0,
+          "threshold": 100.0,
           "unit": "deg"
         },
         {
@@ -445,7 +445,7 @@
           "name": "opens",
           "observable": "theta_max_deg",
           "op": ">=",
-          "threshold": 90.0,
+          "threshold": 100.0,
           "unit": "deg"
         },
         {

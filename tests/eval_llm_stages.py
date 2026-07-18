@@ -154,6 +154,39 @@ def stop_axis(gold, cand) -> dict:
                      "fold-over is the benchmark's own point (D20).")}
 
 
+def forbidden_axis(cand, forbidden) -> dict:
+    """D-M14-1 scorer extension — FORBIDDEN-ELEMENT COMPLIANCE. A task that forbids an element
+    ("without any gear", "no latch") is only satisfied if the candidate contains NONE of the
+    forbidden card_refs. This is the constraint axis the task ladder's constraint variants need."""
+    present = sorted(set(el_keys(cand)) & set(forbidden))
+    return {"name": "forbidden-element compliance", "forbidden": sorted(forbidden),
+            "present": present, "compliant": len(present) == 0}
+
+
+def _specs(plan) -> dict:
+    """(observable, op) -> threshold, over every protocol criterion — the numeric gates a plan sets."""
+    out = {}
+    for pr in getattr(plan, "protocols", []):
+        for c in pr.criteria:
+            out[(c.observable, c.op)] = round(float(c.threshold), 4)
+    return out
+
+
+def spec_axis(gold, cand) -> dict:
+    """D-M14-1 scorer extension — SPEC-NUMBER EXTRACTION/COMPLIANCE. Every gold criterion threshold
+    (force window, open angle, hold-drift…) must appear in the candidate with the same value. This is
+    what a spec-tightening task turns on — a criterion the LLM must carry through as a NUMBER, not a
+    discrete choice (the `wrong_field` slot in Axis was reserved for exactly this)."""
+    g, c = _specs(gold), _specs(cand)
+    matched = [k for k in g if k in c and abs(c[k] - g[k]) < 1e-4]
+    missing = [k for k in g if k not in c]
+    wrong = [k for k in g if k in c and abs(c[k] - g[k]) >= 1e-4]
+    return {"name": "spec-number compliance", "n_gold": len(g), "matched": len(matched),
+            "missing": [f"{o} {op}" for o, op in missing],
+            "wrong_value": [f"{o} {op}: {c[(o, op)]} vs {g[(o, op)]}" for o, op in wrong],
+            "compliant": len(missing) == 0 and len(wrong) == 0}
+
+
 def score(gold, cand, aliases: bool = True) -> dict:
     """`aliases=True` admits D-E-2's declared vocabulary aliases at ①. Both numbers are always
     reported (see `score_both`) — a scoring concession that is not shown is a scoring lie."""
@@ -252,9 +285,30 @@ def test_ids_and_order_are_free():
     assert score(g, c)["macro_f1"] == 1.0
 
 
+def test_forbidden_axis_flags_a_gear():
+    """The crank lift HAS a gear → 'without any gear' is NOT complied with; it has no hinge → a
+    'no hinge' constraint IS complied with."""
+    from tasks.build_goldens import anchor_lift
+    p = anchor_lift()
+    assert not forbidden_axis(p, ["rack_pinion"])["compliant"], "lift contains the gear"
+    assert forbidden_axis(p, ["pin_hinge"])["compliant"], "lift contains no hinge"
+
+
+def test_spec_axis_matches_and_flags_wrong_number():
+    """A spec-tightened golden vs itself is compliant; a candidate with a LOOSER threshold is flagged
+    with the exact wrong value (the number, not just a discrete miss)."""
+    from tasks.build_goldens import anchor_easy
+    g = anchor_easy("stop", open_min=100.0)
+    assert spec_axis(g, g)["compliant"], "self must be spec-compliant"
+    c = anchor_easy("stop", open_min=90.0)
+    r = spec_axis(g, c)
+    assert not r["compliant"] and r["wrong_value"], "a looser open-angle must be flagged with its value"
+
+
 if __name__ == "__main__":
     fns = [test_golden_scores_perfectly, test_nostop_variant_trips_only_the_stop_axis,
-           test_ids_and_order_are_free]
+           test_ids_and_order_are_free, test_forbidden_axis_flags_a_gear,
+           test_spec_axis_matches_and_flags_wrong_number]
     for f in fns:
         f()
     print(f"{len(fns)}/{len(fns)} passed  — scorer: golden==1.0, stop isolated to its own axis, "

@@ -1,0 +1,6 @@
+{
+  "A4-snap-impossible-force": "StageFailure[s5/INFEASIBLE]: element 'E1' violates 2 force-window inequalit(y/ies): n*W_in <= mate_hi (val 35.631 vs 5.0, margin -30.631); W_out >= sep_lo (retention) (val 31.838 vs 60.0, margin -28.162)",
+  "C5-lift-nogear": "\u2463 KG_NO_PERMITTED_REALIZER: the only rot_to_trans realizer is 'rack_pinion' (KG), forbidden by the task; no permitted card can realize the crank\u2192lift transmission or the hold.",
+  "C6-lift-toofar": "V-04: parameter 'stroke' value 500.0 outside [20.0,400.0]",
+  "D1-screw-jack": "V-03: 'E1' card 'leadscrew' not registered"
+}

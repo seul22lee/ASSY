@@ -380,10 +380,10 @@ def snap_panel() -> DesignPlan:
                             threshold=0.20, unit="mm")])
     behaviors = [
         Behavior(id="B1", phase="assembly",
-                 motion=MotionSpec(kind="snap_event", event_force_window_N=tuple(window_mate)),
+                 motion=MotionSpec(kind="snap_event", event_force_window_N=(0.0, 80.0)),
                  realized_by="E1", verified_by="PR-T1-MATE"),
         Behavior(id="B2", phase="static",
-                 motion=MotionSpec(kind="snap_event", event_force_window_N=tuple(window_sep)),
+                 motion=MotionSpec(kind="snap_event", event_force_window_N=(15.0, 60.0)),
                  realized_by="E1", verified_by="PR-T1-SEP"),
         Behavior(id="B3", phase="use", motion=MotionSpec(kind="fixed"),
                  imposed_by="E1", imposed_by_card="snap_hook_cantilever", verified_by="PR-T0-SWEEP"),
@@ -611,7 +611,7 @@ def rack_pinion_fixture() -> DesignPlan:
     Realizes ONE use-phase rot_to_trans behaviour (B1): the pinion turns, the rack translates
     `stroke` mm. The card's §3.6 formulas set the geometry; P-GEAR verifies the transmission V-A ONLY
     (the standing R2b-open flag — bidirectional contact meshing is DEFERRED, D-M1-5/-7)."""
-    m, z = 5.0, 12
+    m, z, stroke = 5.0, 12, 120.0
     axis_h = 45.0
     pinion_carrier = HostTemplate(template_ref="pinion_carrier",
         params={"base_l": 70.0, "base_w": 44.0, "base_t": 4.0, "axis_h": axis_h, "post_w": 14.0},
