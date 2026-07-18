@@ -1,0 +1,82 @@
+from build123d import *
+
+# Parameters
+box_length = 100
+box_width = 80
+box_height = 50
+wall_thickness = 2
+lip_height = 5
+snap_protrusion = 3
+snap_depth = 2
+
+# Main box body
+def create_box_body():
+    # Create the base box with walls
+    box = Box(box_length, box_width, box_height, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    
+    # Subtract inner volume to create hollow space
+    inner_box = Box(
+        box_length - 2*wall_thickness,
+        box_width - 2*wall_thickness,
+        box_height - wall_thickness,
+        align=(Align.CENTER, Align.CENTER, Align.MIN)
+    )
+    
+    # Create the main body by subtracting inner volume
+    body = box - inner_box
+    
+    # Add a lip around the top edge for lid fitting
+    lip = Box(
+        box_length + 2,
+        box_width + 2,
+        lip_height,
+        align=(Align.CENTER, Align.CENTER, Align.MIN)
+    )
+    
+    # Position lip at top of box
+    lip = lip.locate(Placement((0, 0, box_height - wall_thickness)))
+    
+    body = body + lip
+    
+    return body
+
+# Lid with snap mechanism
+def create_lid():
+    # Create lid base
+    lid = Box(box_length, box_width, wall_thickness, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    
+    # Add snap tabs on the edges
+    tab_width = 10
+    tab_height = 5
+    
+    # Create snap tabs around the perimeter
+    for i in range(4):
+        if i == 0:  # Front
+            tab = Box(tab_width, wall_thickness + 2, tab_height, align=(Align.CENTER, Align.CENTER, Align.MIN))
+            tab = tab.locate(Placement((0, box_width/2 - wall_thickness/2, 0)))
+        elif i == 1:  # Right
+            tab = Box(wall_thickness + 2, tab_width, tab_height, align=(Align.CENTER, Align.CENTER, Align.MIN))
+            tab = tab.locate(Placement((box_length/2 - wall_thickness/2, 0, 0)))
+        elif i == 2:  # Back
+            tab = Box(tab_width, wall_thickness + 2, tab_height, align=(Align.CENTER, Align.CENTER, Align.MIN))
+            tab = tab.locate(Placement((0, -box_width/2 + wall_thickness/2, 0)))
+        else:  # Left
+            tab = Box(wall_thickness + 2, tab_width, tab_height, align=(Align.CENTER, Align.CENTER, Align.MIN))
+            tab = tab.locate(Placement((-box_length/2 + wall_thickness/2, 0, 0)))
+        
+        lid = lid + tab
+    
+    # Add a small lip on the top edge for better fit
+    lip = Box(box_length - 4, box_width - 4, lip_height, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    lip = lip.locate(Placement((0, 0, wall_thickness)))
+    
+    lid = lid + lip
+    
+    return lid
+
+# Create the main parts
+box_body = create_box_body()
+lid = create_lid()
+
+# Set result to list of parts
+result = [box_body, lid]

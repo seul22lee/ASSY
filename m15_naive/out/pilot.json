@@ -1,0 +1,30 @@
+[
+  {
+    "task": "A1-snap-base",
+    "axis": "base",
+    "model": "gemini-3.1-pro-preview",
+    "seed": 0,
+    "tag": "A1-snap-base__gemini__s0",
+    "gen_ok": true,
+    "gen_tokens": 1146,
+    "code_chars": 2843,
+    "executes": false,
+    "execute_detail": "crash: NameError: name 'sub' is not defined. Did you mean: 'sum'?",
+    "geometry_ok": false,
+    "function": "N/A (did not execute)"
+  },
+  {
+    "task": "A1-snap-base",
+    "axis": "base",
+    "model": "qwen3-coder:latest",
+    "seed": 0,
+    "tag": "A1-snap-base__qwen__s0",
+    "gen_ok": true,
+    "gen_tokens": 811,
+    "code_chars": 2640,
+    "executes": false,
+    "execute_detail": "crash: NameError: name 'Placement' is not defined",
+    "geometry_ok": false,
+    "function": "N/A (did not execute)"
+  }
+]
