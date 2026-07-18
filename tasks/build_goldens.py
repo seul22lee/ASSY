@@ -207,7 +207,8 @@ def m0_hinge_box(variant: str) -> DesignPlan:
 # D-ONT additions the doc's §1.3 note calls for: is_base on P1, the HostTemplate anchor
 # interface (D-ONT-1/3), and PR-* protocols following the criteria/observables split (D-ONT-2).
 # ======================================================================================
-def snap_starter() -> DesignPlan:
+def snap_starter(box_l=80.0, box_w=60.0, box_h=40.0, n_hooks=2,
+                 window_mate=(0.0, 80.0), window_sep=(15.0, 60.0)) -> DesignPlan:
     functions = [
         Function(verb="secure", object="lid", qualifier="hold closed"),
         Function(verb="allow_access", object="contents", qualifier="repeated hand open/close"),
@@ -216,13 +217,13 @@ def snap_starter() -> DesignPlan:
     # Templates + anchors (D-ONT-1). Anchor names are exactly those the §1.3 bindings reference.
     box_shell = HostTemplate(
         template_ref="box_shell",
-        params={"box_l": 80.0, "box_w": 60.0, "box_h": 40.0, "wall": 2.0},
+        params={"box_l": box_l, "box_w": box_w, "box_h": box_h, "wall": 2.0},
         anchors=[Anchor(name="side_wall_left", kind="face"),
                  Anchor(name="side_wall_right", kind="face")],
     )
     lid_panel = HostTemplate(
         template_ref="lid_panel",
-        params={"lid_t": 3.0},
+        params={"lid_t": 3.0, "box_l": box_l, "box_w": box_w},
         anchors=[Anchor(name="rim_underside_left", kind="face"),
                  Anchor(name="rim_underside_right", kind="face")],
     )
@@ -236,7 +237,7 @@ def snap_starter() -> DesignPlan:
     # One element: the snap hook (realizes B1 mate + B2 retention; imposes B3 sweep clearance).
     elements = [
         ElementInstance(id="E1", card_ref="snap_hook_cantilever", host_pieces=["P2", "P1"],
-                        params={"n_hooks": 2, "design_type": 2,
+                        params={"n_hooks": int(n_hooks), "design_type": 2,
                                 "alpha_in_deg": 30, "alpha_out_deg": 45}),
     ]
 
@@ -256,10 +257,10 @@ def snap_starter() -> DesignPlan:
     # use-phase sweep-clearance constraint (fixed), attributed to the hook (V-08).
     behaviors = [
         Behavior(id="B1", phase="assembly",
-                 motion=MotionSpec(kind="snap_event", event_force_window_N=(0.0, 80.0)),
+                 motion=MotionSpec(kind="snap_event", event_force_window_N=tuple(window_mate)),
                  realized_by="E1", verified_by="PR-T1-MATE"),
         Behavior(id="B2", phase="static",
-                 motion=MotionSpec(kind="snap_event", event_force_window_N=(15.0, 60.0)),
+                 motion=MotionSpec(kind="snap_event", event_force_window_N=tuple(window_sep)),
                  realized_by="E1", verified_by="PR-T1-SEP"),
         Behavior(id="B3", phase="use", motion=MotionSpec(kind="fixed"),
                  imposed_by="E1", imposed_by_card="snap_hook_cantilever",
@@ -379,10 +380,10 @@ def snap_panel() -> DesignPlan:
                             threshold=0.20, unit="mm")])
     behaviors = [
         Behavior(id="B1", phase="assembly",
-                 motion=MotionSpec(kind="snap_event", event_force_window_N=(0.0, 80.0)),
+                 motion=MotionSpec(kind="snap_event", event_force_window_N=tuple(window_mate)),
                  realized_by="E1", verified_by="PR-T1-MATE"),
         Behavior(id="B2", phase="static",
-                 motion=MotionSpec(kind="snap_event", event_force_window_N=(15.0, 60.0)),
+                 motion=MotionSpec(kind="snap_event", event_force_window_N=tuple(window_sep)),
                  realized_by="E1", verified_by="PR-T1-SEP"),
         Behavior(id="B3", phase="use", motion=MotionSpec(kind="fixed"),
                  imposed_by="E1", imposed_by_card="snap_hook_cantilever", verified_by="PR-T0-SWEEP"),
@@ -400,7 +401,8 @@ def snap_panel() -> DesignPlan:
         protocols=[pr_mate, pr_sep, pr_sweep], material="PETG")
 
 
-def anchor_easy(variant: str = "stop") -> DesignPlan:
+def anchor_easy(variant: str = "stop", box_l=80.0, box_w=60.0, box_h=40.0,
+                open_min: float = 90.0) -> DesignPlan:
     """The EASY ANCHOR (MECHSYNTH §8.1) — the pipeline's first MULTI-ELEMENT assembly: a box + lid
     with a pin_hinge (E1, rear) AND a snap_hook latch (E2, front). Carries the D-ONT-11 hardware pin
     (P3) and both D-ONT-12 AssemblyRules (snap_hook's latch-vs-lid-sweep EXCLUSION + the
@@ -423,11 +425,12 @@ def anchor_easy(variant: str = "stop") -> DesignPlan:
     pattern). It is what proves V-A cannot tell the two designs apart while V-B can (D20)."""
     assert variant in ("stop", "nostop"), variant
     box_shell = HostTemplate(template_ref="box_shell",
-        params={"box_l": 80.0, "box_w": 60.0, "box_h": 40.0, "wall": 2.0},
+        params={"box_l": box_l, "box_w": box_w, "box_h": box_h, "wall": 2.0},
         anchors=[Anchor(name="rear_top_edge", kind="edge"), Anchor(name="rear_wall_outer", kind="face"),
                  Anchor(name="front_wall_inner", kind="face"), Anchor(name="rim_top", kind="face")])
     lid_panel = HostTemplate(template_ref="lid_panel",
-        params={"lid_t": 3.0, **({"stop_flange_r": 8.0} if variant == "stop" else {})},
+        params={"lid_t": 3.0, "box_l": box_l, "box_w": box_w,
+                **({"stop_flange_r": 8.0} if variant == "stop" else {})},
         anchors=[Anchor(name="rear_edge_underside", kind="face"),
                  Anchor(name="front_edge_underside", kind="face"),
                  Anchor(name="free_edge_mid", kind="point")]
@@ -470,7 +473,7 @@ def anchor_easy(variant: str = "stop") -> DesignPlan:
                      citation="shared front-rim budget: hook length + hinge edge_margin ≤ rim"),
     ]
     # protocols: P-HINGE (V-A + V-B) for the hinge; PR-LATCH (formula) for the snap
-    crit = [Criterion(name="opens", observable="theta_max_deg", op=">=", threshold=90.0, unit="deg"),
+    crit = [Criterion(name="opens", observable="theta_max_deg", op=">=", threshold=open_min, unit="deg"),
             Criterion(name="pin_radial_retention", observable="pin_radial_max_mm", op="<=", threshold=0.40, unit="mm"),
             Criterion(name="settles_closed", observable="theta_final_deg", op="<=", threshold=5.0, unit="deg"),
             Criterion(name="no_travel_interference", observable="pen_travel_mm", op="<=", threshold=0.20, unit="mm")]
@@ -608,7 +611,7 @@ def rack_pinion_fixture() -> DesignPlan:
     Realizes ONE use-phase rot_to_trans behaviour (B1): the pinion turns, the rack translates
     `stroke` mm. The card's §3.6 formulas set the geometry; P-GEAR verifies the transmission V-A ONLY
     (the standing R2b-open flag — bidirectional contact meshing is DEFERRED, D-M1-5/-7)."""
-    m, z, stroke = 5.0, 12, 120.0
+    m, z = 5.0, 12
     axis_h = 45.0
     pinion_carrier = HostTemplate(template_ref="pinion_carrier",
         params={"base_l": 70.0, "base_w": 44.0, "base_t": 4.0, "axis_h": axis_h, "post_w": 14.0},
@@ -675,7 +678,8 @@ def rack_pinion_fixture() -> DesignPlan:
     return plan
 
 
-def anchor_hard(variant: str = "drawer") -> DesignPlan:
+def anchor_hard(variant: str = "drawer", stroke: float = 120.0,
+                load_kg: float = 0.5) -> DesignPlan:
     """THE HARD ANCHOR (MECHSYNTH §8.2, RETARGETED at D-M13-2) — one mechanism, two products.
 
     variant="lift" (the PRIMARY benchmark): a **crank-operated lift platform**. Same two `slide_rail`
@@ -709,7 +713,7 @@ def anchor_hard(variant: str = "drawer") -> DesignPlan:
       engagement ≥ 0.35·stroke              = 42 mm
     Stroke is SCALED from the §8.2 nominal 300 mm to **120 mm**: the m12 desktop cabinet is 200 mm
     deep, so a 300 mm extension would pull the drawer clean out; 120 mm keeps ≥45 mm engaged."""
-    m, z, stroke = 5.0, 12, 120.0
+    m, z = 5.0, 12
     rail_w, rail_h, cl, wall, cab_w = 8.0, 8.0, 0.35, 4.0, 140.0
     rp = m * z / 2.0
     tpr = math.pi * m * z
@@ -788,7 +792,7 @@ def anchor_hard(variant: str = "drawer") -> DesignPlan:
     ]
     lift = variant == "lift"
     hint = "vertical" if lift else "horizontal"
-    load = {"mass_kg": 0.5, "direction": "-z"} if lift else None
+    load = {"mass_kg": load_kg, "direction": "-z"} if lift else None
     # realized use behaviours: each rail carries the platform/drawer travel; the rack_pinion the
     # transmission. In the lift the translation is VERTICAL and carries the 0.5 kg load.
     behaviors = [
@@ -808,7 +812,7 @@ def anchor_hard(variant: str = "drawer") -> DesignPlan:
     if lift:
         behaviors.append(Behavior(id="B_HOLD", phase="static",
                  motion=MotionSpec(kind="fixed", axis_hint="vertical"),
-                 load={"mass_kg": 0.5, "direction": "-z"}, realized_by="E4"))
+                 load={"mass_kg": load_kg, "direction": "-z"}, realized_by="E4"))
     # card-sourced imposed behaviours (V-08), per instance, BEFORE construction (pydantic copies list)
     from knowledge.cards.base import CARD_REGISTRY as _C
     n = len(behaviors)
