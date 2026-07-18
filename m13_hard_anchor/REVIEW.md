@@ -1,12 +1,12 @@
 # M13 · THE HARD ANCHOR — REVIEW (crank-operated lift platform, §8.2 retargeted)
 
-**Outcome: the second benchmark is a crank-driven vertical LIFT PLATFORM, assembled and V-A-verified,
-and the physics discovered a real design requirement (a holding brake).** Same mechanism as the
-drawer (`slide_rail` ×2 + `rack_pinion`), the verified geometry rotated so **travel is vertical and
-gravity acts along it** — the case where the rack-pinion is *functionally necessary*, not
-over-engineered. The deterministic spine carries over verbatim; P-SLIDE + P-GEAR pass V-A under
-gravity; the new P-HOLD test found the lift needs a brake (a plain rack-pinion back-drives), so the
-`pawl_detent` element was built and P-HOLD flipped 0/5 → 5/5 — the golden now passes its own protocols.
+**Outcome: THE HARD ANCHOR IS CLOSED.** The second benchmark is a crank-driven vertical LIFT PLATFORM
+(`slide_rail` ×2 + `rack_pinion` + `pawl_detent`), the verified geometry rotated so **travel is
+vertical and gravity acts along it** — the case where the rack-pinion is *functionally necessary*.
+The full V-A column passes (raise, transmit-under-gravity, hold, and the integrated P-FULL cycle); the
+physics discovered a required element (a holding brake); and P-SLIDE V-B is CHECKPOINTED honestly —
+the contact-only slide's clearance-fit retention does not survive gravity-along-travel, a real finding
+the horizontal drawer could not surface, recorded with evidence and the preset untouched.
 
 | what | artifact | result |
 |---|---|---|
@@ -16,7 +16,10 @@ gravity; the new P-HOLD test found the lift needs a brake (a plain rack-pinion b
 | alignment firing | [t0 report](out/t0_assembly_rules.json) | parallel/level on real geometry — **PASS, 0.00° / 0.00 mm** |
 | it raises | [P-SLIDE V-A](out/lift_pslide_VA.png) · [mp4](out/lift_pslide_VA.mp4) | platform + 0.5 kg raised 128 mm **against gravity**, off-axis 0.00° — **5/5** |
 | it transmits under gravity | [P-GEAR V-A](out/lift_pgear_VA.png) · [mp4](out/lift_pgear_VA.mp4) | crank→lift on the π·m·z line, 119.9 mm, ratio resid 0.01% — **5/5** |
-| it holds | [P-HOLD V-A](out/lift_phold_VA.png) · [mp4](out/lift_phold_VA.mp4) | crank released, 0.5 kg — **with the pawl** back-drive **3.4 mm** (≤ one detent) — **5/5** |
+| it holds | [P-HOLD before](out/lift_phold_before.mp4) → [after](out/lift_phold_VA.mp4) | crank released, 0.5 kg: **no pawl 62 mm** (D-M13-2) → **with pawl 3.4 mm** (D-M13-4) — **5/5** |
+| the brake | [pawl closeup](out/pawl_closeup.png) | asymmetric Bayer angles — shallow drive-over (30°), steep self-locking lock (80° ≥ 73.3°) |
+| the full cycle | [P-FULL](out/lift_pfull.png) · [mp4](out/lift_pfull.mp4) | raise 100 mm → hold (drop 3.4 mm) → controlled lower (≤106 mm/s) → base — **5/5** |
+| contact-only slide | [P-SLIDE V-B](out/lift_pslide_VB.mp4) | **CHECKPOINT (0/5):** clearance fit not gravity-seated → platform escapes the groove (off-axis→180°) |
 
 ## Why a lift, not a drawer (D-M13-2)
 
@@ -74,7 +77,7 @@ The cheapest honest element that makes the golden pass its own protocols: a **ra
 factor `(μ+tanα)/(1−μtanα)`, `self_locking_angle = atan(1/μ)`) reused **asymmetrically**:
 
 - a **shallow drive-over angle** (30°) so the crank clicks over each ratchet tooth cheaply
-  (W_drive ≈ 1.1 N ≪ the ~4.9 N lift force — verified by `PR-CLICK`);
+  (W_drive ≈ 2.0 N ≪ the ~4.9 N lift force — verified by `PR-CLICK`);
 - a **steep lock angle** (80° ≥ the **73.3°** self-lock angle at μ=0.30) where the Fig.18 factor
   **diverges**, so back-drive cannot deflect the pawl out — it self-locks (verified by `PR-PAWL`).
 
@@ -110,13 +113,54 @@ into the ontology (the D-ONT-5 restraint); B and C were considered and rejected.
 rides on the behaviour, "without input" is a verification actuation, "must not back-drive" is a
 criterion — none is a new motion type.
 
-## Honest checkpoint — V-B follows
+## P-FULL — the integrated cycle (the mechanism working as one)
 
-Per the standing rule: **P-SLIDE V-B** (two-rail welded-platform contact) + **P-FULL** are the next
-scoped step (m10's lesson set applies — all_parts_retained, declared seat contacts, sourced
-friction). **P-GEAR V-B** stays R2b-deferred (D-M1-7). The **holding brake** the P-HOLD finding demanded is
-now built (`pawl_detent`, D-M13-4) — so the lift is a complete, self-consistent design before its
-physics is deepened, exactly the ruling's order.
+One run, three phases ([plot](out/lift_pfull.png) · [mp4](out/lift_pfull.mp4)), **5/5**:
+
+- **RAISE** — the crank drives the platform + 0.5 kg up to 100 mm under gravity; the pawl clicks over
+  each ratchet tooth (an **intended contact**, D22, gated apart from a defect).
+- **HOLD** — the crank is released, the pawl engages, drop **3.4 mm** (≤ one detent).
+- **LOWER** — the pawl is released (its release lever) and the crank lowers the platform under
+  **control** at ≤106 mm/s — no free-fall (a released plain rack-pinion would drop, D-M13-2/-4);
+  returns to base (1.9 mm).
+
+The pawl engage/release happens at runtime in the phase machine; criteria are D22-stratified.
+
+## P-SLIDE V-B — the honest checkpoint (contact-only retention)
+
+The one that fights the frozen preset, recorded per the rule (not tuned):
+[`t2_pslide_vb_verdict.json`](out/t2_pslide_vb_verdict.json), [video](out/lift_pslide_VB.mp4).
+
+- **Interface:** carriage-lip ↔ rail-head T-groove retention (the slide_rail mechanism contact class).
+- **Scale:** contacts lost at t≈0.02 s (ncon 8→0); peak off-axis **180°**, peak lateral drift
+  **116 mm** — the free welded platform escapes the groove.
+- **Diagnosis:** the T-rail is a **clearance fit whose retention was gravity-SEATED** in the horizontal
+  drawer (m10 V-B 5/5). Rotated vertical, gravity acts **along** travel and no longer presses the
+  carriage into the groove, so the clearance-fit lips are not engaged; the rack/pinion COM offset then
+  pitches the platform out. **This is the V-A/V-B distinction made concrete:** the declared prismatic
+  joint (V-A) enforced retention 5/5; the contact geometry *alone* does not, under gravity-along-travel.
+- **Design implication (deferred, not tuned):** a vertical contact slide needs a **preloaded /
+  near-zero-clearance** retention (or the pawl + a bottom stop), not the drawer's gravity-seated fit —
+  a finding the horizontal m10 could not surface. The preset is untouched (R5).
+
+## Two elements the physics discovered
+
+The Hard anchor's two benchmarks each surfaced a **required element from their own simulation** — the
+system finding what a design needs, not assuming it:
+
+1. **`stop_flange`** (D-M8-5, Easy anchor): honest V-B proved an over-centre lid folds flat without an
+   angular stop — the stop is a *discovered* requirement, and the benchmark carries it.
+2. **`pawl_detent`** (D-M13-4, this anchor): P-HOLD proved a plain rack-pinion lift back-drives (μ·W·rp
+   ≪ W·rp) — the holding brake is a *discovered* requirement, built and made to pass (0/5 → 5/5).
+
+Both were reported as FAILs first and fixed by adding the real element — never tuned to green.
+
+## Closing — the Hard anchor is CLOSED
+
+V-A complete (P-SLIDE, P-GEAR, P-HOLD, P-FULL all 5/5); alignment fires; ⑤ chain resolves; two
+physics-discovered elements. **Remaining, named:** P-GEAR V-B stays R2b-deferred (D-M1-7); P-SLIDE V-B
+is a checkpoint with a scoped design fix (preloaded vertical retention). Neither blocks the anchor's
+closure — the design is assembled, self-consistent, and V-A-verified end to end.
 
 ## Status
 
@@ -124,4 +168,5 @@ physics is deepened, exactly the ruling's order.
 - Spine: `m13_hard_anchor/build_review.py` (VARIANT="lift") → ⑤ table, alignment, renders, IR graph.
 - Physics: `m13_hard_anchor/p_lift.py` → P-SLIDE + P-GEAR + P-HOLD V-A, plots + mp4, verdict.
 - Suite: 72/72; both goldens build clean.
-- **Open:** P-SLIDE V-B · P-FULL · P-GEAR V-B (R2b). (The holding brake — the P-HOLD finding — is now BUILT, D-M13-4; the D-M13-3 ruling is CONFIRMED, Option A.)
+- Physics: `p_lift.py` (P-SLIDE/P-GEAR/P-HOLD V-A) · `p_slide_vb.py` (V-B checkpoint) · `p_full.py` (integrated cycle).
+- **CLOSED.** V-A complete + P-FULL; alignment + ⑤ verified; two physics-discovered elements. Deferred (named, non-blocking): P-GEAR V-B (R2b/D-M1-7), P-SLIDE V-B preloaded-retention design fix.

@@ -1,0 +1,80 @@
+{
+  "decision_row": "m13 CLOSE \u2014 P-FULL integrated raise\u2192hold\u2192lower (declared pair + pawl)",
+  "compile_hash": "61f6225",
+  "g9_gconv": false,
+  "load_kg": 0.5,
+  "protocol": {
+    "P-FULL": {
+      "passed": true,
+      "criteria": {
+        "raises_under_load (\u2265100 mm)": {
+          "value": 100.1,
+          "threshold": 100.0,
+          "pass": true
+        },
+        "holds_on_release (drop \u2264 detent)": {
+          "value": 3.37,
+          "threshold": 5.0,
+          "pass": true
+        },
+        "lowers_controlled (\u2264300 mm/s, no free-fall)": {
+          "value": 106.0,
+          "threshold": 300.0,
+          "pass": true
+        },
+        "returns_to_base (\u22645 mm)": {
+          "value": 1.9,
+          "threshold": 5.0,
+          "pass": true
+        },
+        "converged": {
+          "value": false,
+          "threshold": false,
+          "pass": true
+        }
+      },
+      "detail": {
+        "mode": "V-A (integrated)",
+        "raise_peak_mm": 100.1,
+        "hold_drop_mm": 3.37,
+        "peak_lower_speed_mm_s": 106.0,
+        "final_mm": 1.9,
+        "diverged": false,
+        "criteria": {
+          "raises_under_load (\u2265100 mm)": {
+            "value": 100.1,
+            "threshold": 100.0,
+            "pass": true
+          },
+          "holds_on_release (drop \u2264 detent)": {
+            "value": 3.37,
+            "threshold": 5.0,
+            "pass": true
+          },
+          "lowers_controlled (\u2264300 mm/s, no free-fall)": {
+            "value": 106.0,
+            "threshold": 300.0,
+            "pass": true
+          },
+          "returns_to_base (\u22645 mm)": {
+            "value": 1.9,
+            "threshold": 5.0,
+            "pass": true
+          },
+          "converged": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          }
+        },
+        "passed": true
+      }
+    }
+  },
+  "d22_note": "ratchet click-over during RAISE is an INTENDED contact class, gated apart from defects",
+  "shape_assert": {
+    "three_phases": true,
+    "pawl_engage_release_at_runtime": true,
+    "gravity_along_travel": true
+  }
+}
