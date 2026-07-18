@@ -1,0 +1,128 @@
+{
+  "preset_default": {
+    "mu": 0.3,
+    "note": "R5 frozen; \u03bc swept is a per-run experiment param"
+  },
+  "results": [
+    {
+      "mu": 0.15,
+      "clearance": 0.2,
+      "ran": true,
+      "seeds_passed": 3,
+      "passed": true,
+      "mu_factor": 0.5
+    },
+    {
+      "mu": 0.15,
+      "clearance": 0.3,
+      "ran": true,
+      "seeds_passed": 3,
+      "passed": true,
+      "mu_factor": 0.5
+    },
+    {
+      "mu": 0.15,
+      "clearance": 0.4,
+      "ran": true,
+      "seeds_passed": 3,
+      "passed": true,
+      "mu_factor": 0.5
+    },
+    {
+      "mu": 0.225,
+      "clearance": 0.2,
+      "ran": true,
+      "seeds_passed": 3,
+      "passed": true,
+      "mu_factor": 0.75
+    },
+    {
+      "mu": 0.225,
+      "clearance": 0.3,
+      "ran": true,
+      "seeds_passed": 3,
+      "passed": true,
+      "mu_factor": 0.75
+    },
+    {
+      "mu": 0.225,
+      "clearance": 0.4,
+      "ran": true,
+      "seeds_passed": 3,
+      "passed": true,
+      "mu_factor": 0.75
+    },
+    {
+      "mu": 0.3,
+      "clearance": 0.2,
+      "ran": true,
+      "seeds_passed": 1,
+      "passed": false,
+      "mu_factor": 1.0
+    },
+    {
+      "mu": 0.3,
+      "clearance": 0.3,
+      "ran": true,
+      "seeds_passed": 3,
+      "passed": true,
+      "mu_factor": 1.0
+    },
+    {
+      "mu": 0.3,
+      "clearance": 0.4,
+      "ran": true,
+      "seeds_passed": 2,
+      "passed": true,
+      "mu_factor": 1.0
+    },
+    {
+      "mu": 0.375,
+      "clearance": 0.2,
+      "ran": true,
+      "seeds_passed": 3,
+      "passed": true,
+      "mu_factor": 1.25
+    },
+    {
+      "mu": 0.375,
+      "clearance": 0.3,
+      "ran": true,
+      "seeds_passed": 3,
+      "passed": true,
+      "mu_factor": 1.25
+    },
+    {
+      "mu": 0.375,
+      "clearance": 0.4,
+      "ran": true,
+      "seeds_passed": 3,
+      "passed": true,
+      "mu_factor": 1.25
+    },
+    {
+      "mu": 0.45,
+      "clearance": 0.2,
+      "ran": true,
+      "seeds_passed": 2,
+      "passed": true,
+      "mu_factor": 1.5
+    },
+    {
+      "mu": 0.45,
+      "clearance": 0.3,
+      "ran": true,
+      "seeds_passed": 3,
+      "passed": true,
+      "mu_factor": 1.5
+    },
+    {
+      "mu": 0.45,
+      "clearance": 0.4,
+      "ran": true,
+      "seeds_passed": 2,
+      "passed": true,
+      "mu_factor": 1.5
+    }
+  ]
+}

@@ -137,7 +137,7 @@ def build_vb(ca, plan, detent_mm=3.0):
     return xml, meta
 
 
-def run_vb(model, seed=0, record=False):
+def run_vb(model, seed=0, record=False, misalign_deg=0.0):
     """FULL CYCLE retention test (D-M13-6): raise → hold → lower, contact-only, gravity along travel.
     With the preloaded lips the free welded platform must stay RETAINED on the two rails throughout
     (off-axis ≤3°, lateral ≤6 mm, no derail, all parts retained). The lip-preload contact is an

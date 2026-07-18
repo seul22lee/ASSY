@@ -1,0 +1,434 @@
+{
+  "preset_default": {
+    "mu": 0.3,
+    "dt": 0.0005,
+    "load_kg": 0.5,
+    "note": "R5 frozen; swept values are per-run experiment params"
+  },
+  "load": [
+    {
+      "mu": 0.15,
+      "clearance": 0.3,
+      "load_kg": 0.25,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": false,
+      "off_deg": 179.93,
+      "mu_factor": 0.5
+    },
+    {
+      "mu": 0.15,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": false,
+      "off_deg": 180.0,
+      "mu_factor": 0.5
+    },
+    {
+      "mu": 0.15,
+      "clearance": 0.3,
+      "load_kg": 1.0,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": false,
+      "off_deg": 179.97,
+      "mu_factor": 0.5
+    },
+    {
+      "mu": 0.225,
+      "clearance": 0.3,
+      "load_kg": 0.25,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.68,
+      "mu_factor": 0.75
+    },
+    {
+      "mu": 0.225,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": false,
+      "off_deg": 179.98,
+      "mu_factor": 0.75
+    },
+    {
+      "mu": 0.225,
+      "clearance": 0.3,
+      "load_kg": 1.0,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": false,
+      "off_deg": 179.95,
+      "mu_factor": 0.75
+    },
+    {
+      "mu": 0.3,
+      "clearance": 0.3,
+      "load_kg": 0.25,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.36,
+      "mu_factor": 1.0
+    },
+    {
+      "mu": 0.3,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.61,
+      "mu_factor": 1.0
+    },
+    {
+      "mu": 0.3,
+      "clearance": 0.3,
+      "load_kg": 1.0,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 1.04,
+      "mu_factor": 1.0
+    },
+    {
+      "mu": 0.375,
+      "clearance": 0.3,
+      "load_kg": 0.25,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.34,
+      "mu_factor": 1.25
+    },
+    {
+      "mu": 0.375,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.41,
+      "mu_factor": 1.25
+    },
+    {
+      "mu": 0.375,
+      "clearance": 0.3,
+      "load_kg": 1.0,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": false,
+      "off_deg": 2.18,
+      "mu_factor": 1.25
+    },
+    {
+      "mu": 0.45,
+      "clearance": 0.3,
+      "load_kg": 0.25,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.22,
+      "mu_factor": 1.5
+    },
+    {
+      "mu": 0.45,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.35,
+      "mu_factor": 1.5
+    },
+    {
+      "mu": 0.45,
+      "clearance": 0.3,
+      "load_kg": 1.0,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.53,
+      "mu_factor": 1.5
+    }
+  ],
+  "misalign": [
+    {
+      "mu": 0.15,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": false,
+      "off_deg": 180.0,
+      "mu_factor": 0.5
+    },
+    {
+      "mu": 0.15,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.5,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": false,
+      "off_deg": 180.0,
+      "mu_factor": 0.5
+    },
+    {
+      "mu": 0.15,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 1.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": false,
+      "off_deg": 180.0,
+      "mu_factor": 0.5
+    },
+    {
+      "mu": 0.225,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": false,
+      "off_deg": 179.98,
+      "mu_factor": 0.75
+    },
+    {
+      "mu": 0.225,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.5,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": false,
+      "off_deg": 179.98,
+      "mu_factor": 0.75
+    },
+    {
+      "mu": 0.225,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 1.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": false,
+      "off_deg": 179.98,
+      "mu_factor": 0.75
+    },
+    {
+      "mu": 0.3,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.61,
+      "mu_factor": 1.0
+    },
+    {
+      "mu": 0.3,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.5,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.61,
+      "mu_factor": 1.0
+    },
+    {
+      "mu": 0.3,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 1.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.61,
+      "mu_factor": 1.0
+    },
+    {
+      "mu": 0.375,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.41,
+      "mu_factor": 1.25
+    },
+    {
+      "mu": 0.375,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.5,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.41,
+      "mu_factor": 1.25
+    },
+    {
+      "mu": 0.375,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 1.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.41,
+      "mu_factor": 1.25
+    },
+    {
+      "mu": 0.45,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.35,
+      "mu_factor": 1.5
+    },
+    {
+      "mu": 0.45,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.5,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.35,
+      "mu_factor": 1.5
+    },
+    {
+      "mu": 0.45,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 1.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.35,
+      "mu_factor": 1.5
+    }
+  ],
+  "dt": [
+    {
+      "mu": 0.3,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 0,
+      "retained": true,
+      "off_deg": 0.61
+    },
+    {
+      "mu": 0.3,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 1,
+      "retained": true,
+      "off_deg": 0.66
+    },
+    {
+      "mu": 0.3,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.0005,
+      "seed": 2,
+      "retained": true,
+      "off_deg": 0.54
+    },
+    {
+      "mu": 0.3,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.00025,
+      "seed": 0,
+      "retained": false,
+      "off_deg": 180.0
+    },
+    {
+      "mu": 0.3,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.00025,
+      "seed": 1,
+      "retained": false,
+      "off_deg": 180.0
+    },
+    {
+      "mu": 0.3,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.00025,
+      "seed": 2,
+      "retained": false,
+      "off_deg": 140.32
+    },
+    {
+      "mu": 0.3,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.0001,
+      "seed": 0,
+      "retained": false,
+      "off_deg": 179.99
+    },
+    {
+      "mu": 0.3,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.0001,
+      "seed": 1,
+      "retained": false,
+      "off_deg": 180.0
+    },
+    {
+      "mu": 0.3,
+      "clearance": 0.3,
+      "load_kg": 0.5,
+      "misalign": 0.0,
+      "dt": 0.0001,
+      "seed": 2,
+      "retained": false,
+      "off_deg": 179.99
+    }
+  ]
+}
