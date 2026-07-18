@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/home/ftk3187/github/ASSY/m16_robustness/sweep_lift.py", line 120, in <module>
+    main()
+  File "/home/ftk3187/github/ASSY/m16_robustness/sweep_lift.py", line 98, in main
+    r = one_run(MU_NOM * f, cl, rw, rh)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ftk3187/github/ASSY/m16_robustness/sweep_lift.py", line 64, in one_run
+    model = mj.MjModel.from_xml_path(str(xf))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Error: Error opening file 'assets/vb_tower.stl'

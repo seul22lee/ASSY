@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<mujoco model="lift_pslide_VB">
+  <compiler angle="radian" meshdir="assets" autolimits="true"/>
+  <option timestep="0.00025" integrator="implicitfast" cone="elliptic" impratio="10" gravity="0 0 -9.81"/>
+  <visual>
+    <headlight ambient="0.5 0.5 0.5" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2"/>
+    <global offwidth="1280" offheight="960" azimuth="150" elevation="-20"/>
+  </visual>
+  <default>
+    <geom solref="0.001 1.0" solimp="0.99 0.9999 0.0001" friction="0.3 0.005 0.0001" condim="4" density="0"/>
+  </default>
+  <asset>
+    <material name="base" rgba="0.54 0.66 0.79 1"/>
+    <material name="mover" rgba="0.42 0.75 0.48 1"/>
+    <mesh name="tower" file="vb_tower.stl"/>
+    <mesh name="mv_P2" file="vb_mv_P2.stl"/>
+    <mesh name="mv_P3" file="vb_mv_P3.stl"/>
+    <mesh name="mv_P4" file="vb_mv_P4.stl"/>
+  </asset>
+  <worldbody>
+    <light pos="0.2 -0.3 0.6" dir="-0.3 0.5 -1" directional="true" diffuse="0.5 0.5 0.5"/>
+    <camera name="iso" pos="0.34 -0.40 0.30" xyaxes="0.76 0.65 0 -0.32 0.37 0.87"/>
+    <body name="base" pos="0 0 0">
+      <geom name="tower_vis" type="mesh" mesh="tower" material="base" contype="0" conaffinity="0" group="2"/>
+      <inertial pos="-0.043593676 0.000006666 -0.010181348" mass="0.526553748" fullinertia="0.003373054322 0.002701582504 0.002024453138 -0.000000026919 -0.000008311804 -0.000000302476"/>
+      <geom name="rail_c0" type="box" pos="-0.006000000 -0.040000000 0.000000000" size="0.002000000 0.002000000 0.082500000" material="base" contype="1" conaffinity="1" group="3"/>
+      <geom name="rail_c1" type="box" pos="-0.010000000 -0.040000000 0.000000000" size="0.002000000 0.004000000 0.082500000" material="base" contype="1" conaffinity="1" group="3"/>
+      <geom name="rail_c2" type="box" pos="-0.009000000 -0.040000000 0.081000000" size="0.005000000 0.004000000 0.001500000" material="base" contype="1" conaffinity="1" group="3"/>
+      <geom name="rail_c3" type="box" pos="-0.006000000 0.040000000 0.000000000" size="0.002000000 0.002000000 0.082500000" material="base" contype="1" conaffinity="1" group="3"/>
+      <geom name="rail_c4" type="box" pos="-0.010000000 0.040000000 0.000000000" size="0.002000000 0.004000000 0.082500000" material="base" contype="1" conaffinity="1" group="3"/>
+      <geom name="rail_c5" type="box" pos="-0.009000000 0.040000000 0.081000000" size="0.005000000 0.004000000 0.001500000" material="base" contype="1" conaffinity="1" group="3"/>
+    </body>
+    <body name="mover" pos="0 0 0">
+      <freejoint name="mover_free"/>
+      <geom name="mv_P2_vis" type="mesh" mesh="mv_P2" material="mover" contype="0" conaffinity="0" group="2"/>
+      <geom name="mv_P3_vis" type="mesh" mesh="mv_P3" material="mover" contype="0" conaffinity="0" group="2"/>
+      <geom name="mv_P4_vis" type="mesh" mesh="mv_P4" material="mover" contype="0" conaffinity="0" group="2"/>
+      <inertial pos="-0.028532046 0.002623794 0.007710620" mass="0.659213585" fullinertia="0.000760016 0.000529873 0.000281511 -0.000001058 -0.000003108 -0.000028290"/>
+      <geom name="carr_c0" type="box" pos="-0.013500000 -0.040000000 -0.061500000" size="0.001500000 0.003800000 0.020800000" material="mover" contype="1" conaffinity="1" group="3"/>
+      <geom name="carr_c1" type="box" pos="-0.010000000 -0.034425000 -0.061500000" size="0.002000000 0.001500000 0.020800000" material="mover" contype="1" conaffinity="1" group="3"/>
+      <geom name="carr_c2" type="box" pos="-0.010000000 -0.045575000 -0.061500000" size="0.002000000 0.001500000 0.020800000" material="mover" contype="1" conaffinity="1" group="3"/>
+      <geom name="carr_c3" type="box" pos="-0.007775000 -0.036925000 -0.061500000" size="0.000150000 0.001000000 0.020800000" material="mover" contype="1" conaffinity="1" group="3"/>
+      <geom name="carr_c4" type="box" pos="-0.007775000 -0.043075000 -0.061500000" size="0.000150000 0.001000000 0.020800000" material="mover" contype="1" conaffinity="1" group="3"/>
+      <geom name="carr_c5" type="box" pos="-0.013500000 0.040000000 -0.061500000" size="0.001500000 0.003800000 0.020800000" material="mover" contype="1" conaffinity="1" group="3"/>
+      <geom name="carr_c6" type="box" pos="-0.010000000 0.045575000 -0.061500000" size="0.002000000 0.001500000 0.020800000" material="mover" contype="1" conaffinity="1" group="3"/>
+      <geom name="carr_c7" type="box" pos="-0.010000000 0.034425000 -0.061500000" size="0.002000000 0.001500000 0.020800000" material="mover" contype="1" conaffinity="1" group="3"/>
+      <geom name="carr_c8" type="box" pos="-0.007775000 0.043075000 -0.061500000" size="0.000150000 0.001000000 0.020800000" material="mover" contype="1" conaffinity="1" group="3"/>
+      <geom name="carr_c9" type="box" pos="-0.007775000 0.036925000 -0.061500000" size="0.000150000 0.001000000 0.020800000" material="mover" contype="1" conaffinity="1" group="3"/>
+    </body>
+  </worldbody>
+</mujoco>
