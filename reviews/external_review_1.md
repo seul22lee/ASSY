@@ -43,12 +43,16 @@
 | 7 | Robustness sweeps missing | **ACCEPT** | **m16** robustness sweeps → success **regions** (heatmaps), not points | m16 planned |
 | 8 | No physical fabrication | **ACCEPT-PENDING** | user decision on printer access | awaiting user |
 | 9 | Element families limited | **ACCEPT** | honest **coverage table** in the paper; VISION-6 (spring, gear train) stands as the extension path | coverage table pending |
-| 10 | Card authoring cost unmeasured | **ACCEPT** | **card cost table** this session (LOC, sessions, new schema/API, new verifier vs reused, templates) — sourced to commit refs | **ITEM 3 — in progress** |
+| 10 | Card authoring cost unmeasured | **ACCEPT** | **card cost table** this session (LOC, sessions, new schema/API, new verifier vs reused, templates) — sourced to commit refs | **DONE** ([card_cost.md](card_cost.md)) |
 | 11 | Anti-RAG framing overclaims | **WORDING** | reframe: *"retrieved prose is insufficient as an execution substrate"*; retrieval and execution substrate are **complementary roles** | wording rule recorded |
 | 12 | Novelty diffuse | **ACCEPT** | center claim: *"heterogeneous executable verifiers expose design errors that syntactic validity and declared kinematics cannot detect"*; cards/compiler positioned as **infrastructure** | claim recorded |
 
 ---
 
-### Point-10 card cost table
+### Point-10 card cost table (ITEM 3 — done)
 
-*(Filled by ITEM 3 — see the "Card authoring cost" section appended below once the table is built.)*
+Full table + provenance: **[reviews/card_cost.md](card_cost.md)**. Headline (sourced to commits):
+the marginal card gets cheaper as the scaffolding amortizes — **LOC 731 (snap) → 286 (pawl, ~40%)**,
+**sessions ~3 → ~0.5**, **new schema/API front-loaded then ~zero** (slide/rack/pawl added none), and
+**3 of 6 verifiers reuse/adapt** an existing protocol (hinge←m0, rack←M1, pawl delegates snap's
+formulas). This quantifies VISION-3's 3→1→0.5-session claim. Honest limit: still hand-authored.
