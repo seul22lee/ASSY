@@ -1,0 +1,35 @@
+{
+  "rung": "D",
+  "task": "B1-hinge-latch-base",
+  "paraphrase": 0,
+  "seed": 0,
+  "backend": "qwen",
+  "tag": "D__B1-hinge-latch-base__p0__s0__qwen",
+  "stages": {
+    "s1": "PASS",
+    "s2": "PASS",
+    "s3": "PASS",
+    "s4": "PASS"
+  },
+  "score": {
+    "macro_f1": 0.792,
+    "elements_f1": 0.8,
+    "bindings_f1": 0.182,
+    "behaviors_f1": 0.769
+  },
+  "downstream": {
+    "s5": "PASS",
+    "s6": "PASS(3)",
+    "t0": "n/a"
+  },
+  "design_ok": true,
+  "tokens": {
+    "calls": 7,
+    "prompt_tokens": 5579,
+    "output_tokens": 1533,
+    "total_tokens": 7112,
+    "retries": 2,
+    "ok": true
+  },
+  "latency_s": 19.1
+}

@@ -1,0 +1,180 @@
+{
+  "flash": {
+    "tier": "flash",
+    "model": "gemini-3.5-flash",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "all_pass": true,
+    "elements": {
+      "axis": "\u2463 elements (by card_ref)",
+      "matched": [
+        "stop_flange",
+        "pin_hinge",
+        "snap_hook_cantilever"
+      ],
+      "missing": [],
+      "spurious": [],
+      "wrong_field": [],
+      "aliased": [],
+      "recall": 1.0,
+      "precision": 1.0,
+      "f1": 1.0
+    },
+    "bindings": {
+      "axis": "\u2463 bindings (by card_ref+port+anchor)",
+      "matched": [
+        [
+          "pin_hinge",
+          "mount_A",
+          "rear_wall_outer"
+        ],
+        [
+          "pin_hinge",
+          "mount_B",
+          "rear_edge_underside"
+        ],
+        [
+          "snap_hook_cantilever",
+          "catch_window",
+          "front_wall_inner"
+        ],
+        [
+          "stop_flange",
+          "contact",
+          "stop_flange_face"
+        ],
+        [
+          "snap_hook_cantilever",
+          "beam_root",
+          "front_edge_underside"
+        ],
+        [
+          "pin_hinge",
+          "axis",
+          "rear_top_edge"
+        ]
+      ],
+      "missing": [],
+      "spurious": [],
+      "wrong_field": [],
+      "aliased": [],
+      "recall": 1.0,
+      "precision": 1.0,
+      "f1": 1.0
+    },
+    "macro_f1": 0.939,
+    "tokens": {
+      "calls": 7,
+      "prompt_tokens": 8012,
+      "output_tokens": 2343,
+      "total_tokens": 10355,
+      "retries": 1,
+      "ok": true
+    },
+    "elements_chosen": [
+      [
+        "E1",
+        "snap_hook_cantilever"
+      ],
+      [
+        "E2",
+        "pin_hinge"
+      ]
+    ],
+    "n_bindings": 6
+  },
+  "pro": {
+    "tier": "pro",
+    "model": "gemini-3.1-pro-preview",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "all_pass": true,
+    "elements": {
+      "axis": "\u2463 elements (by card_ref)",
+      "matched": [
+        "pin_hinge",
+        "snap_hook_cantilever"
+      ],
+      "missing": [
+        "stop_flange"
+      ],
+      "spurious": [],
+      "wrong_field": [],
+      "aliased": [],
+      "recall": 0.667,
+      "precision": 1.0,
+      "f1": 0.8
+    },
+    "bindings": {
+      "axis": "\u2463 bindings (by card_ref+port+anchor)",
+      "matched": [
+        [
+          "pin_hinge",
+          "mount_A",
+          "rear_wall_outer"
+        ],
+        [
+          "pin_hinge",
+          "mount_B",
+          "rear_edge_underside"
+        ],
+        [
+          "snap_hook_cantilever",
+          "catch_window",
+          "front_wall_inner"
+        ],
+        [
+          "snap_hook_cantilever",
+          "beam_root",
+          "front_edge_underside"
+        ],
+        [
+          "pin_hinge",
+          "axis",
+          "rear_top_edge"
+        ]
+      ],
+      "missing": [
+        [
+          "stop_flange",
+          "contact",
+          "stop_flange_face"
+        ]
+      ],
+      "spurious": [],
+      "wrong_field": [],
+      "aliased": [],
+      "recall": 0.833,
+      "precision": 1.0,
+      "f1": 0.909
+    },
+    "macro_f1": 0.924,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 4949,
+      "output_tokens": 1083,
+      "total_tokens": 6032,
+      "retries": 1,
+      "ok": true
+    },
+    "elements_chosen": [
+      [
+        "E1",
+        "pin_hinge"
+      ],
+      [
+        "E2",
+        "snap_hook_cantilever"
+      ]
+    ],
+    "n_bindings": 5
+  }
+}

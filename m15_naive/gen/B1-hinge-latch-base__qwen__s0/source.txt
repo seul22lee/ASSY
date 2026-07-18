@@ -1,0 +1,50 @@
+from build123d import *
+
+# Parameters
+box_length = 80.0
+box_width = 60.0
+box_height = 40.0
+wall_thickness = 2.0
+hinge_width = 8.0
+latch_depth = 12.0
+latch_width = 10.0
+latch_height = 8.0
+
+# Main box body
+with BuildPart() as box_body:
+    Box(box_length, box_width, box_height)
+    
+    # Create inner cavity with wall thickness
+    with Locations((0, 0, wall_thickness/2)):
+        Box(box_length - 2*wall_thickness, box_width - 2*wall_thickness, box_height - wall_thickness, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    
+    # Create hinge cutout
+    with Locations((box_length/2 - hinge_width/2, 0, 0)):
+        Box(hinge_width, box_width, wall_thickness, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    
+    # Create latch slot
+    with Locations((box_length/2 - latch_width/2, box_width/2 - wall_thickness/2, wall_thickness/2)):
+        Box(latch_width, wall_thickness, latch_height)
+    
+# Lid part
+with BuildPart() as lid:
+    Box(box_length, box_width, wall_thickness)
+    
+    # Create hinge cutout for lid
+    with Locations((box_length/2 - hinge_width/2, 0, 0)):
+        Box(hinge_width, box_width, wall_thickness, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    
+    # Create latch tab
+    with Locations((box_length/2 - latch_width/2, box_width/2 - wall_thickness/2, 0)):
+        Box(latch_width, wall_thickness, latch_height)
+    
+# Hinge pin (separate part for printing)
+with BuildPart() as hinge_pin:
+    Cylinder(radius=hinge_width/2, height=box_width, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    
+# Create a small gap for the latch to fit
+with BuildPart() as latch_tab:
+    Box(latch_width, wall_thickness, latch_height)
+    
+# Return the parts as separate printable components
+result = [box_body.part, lid.part, hinge_pin.part, latch_tab.part]

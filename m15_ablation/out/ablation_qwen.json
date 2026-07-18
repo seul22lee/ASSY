@@ -1,0 +1,122 @@
+[
+  {
+    "rung": "A",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "A__B1-hinge-latch-base__p0__s0__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": false,
+    "function": "UNMAPPABLE",
+    "design_ok": false,
+    "tokens": {
+      "total": 712
+    },
+    "latency_s": 9.3
+  },
+  {
+    "rung": "B",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "B__B1-hinge-latch-base__p0__s0__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.755,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.727
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2201,
+      "output_tokens": 655,
+      "total_tokens": 2856,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 10.9
+  },
+  {
+    "rung": "C",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "C__B1-hinge-latch-base__p0__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.711,
+      "elements_f1": 0.5,
+      "bindings_f1": 0.222,
+      "behaviors_f1": 0.545
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 7,
+      "prompt_tokens": 6423,
+      "output_tokens": 1318,
+      "total_tokens": 7741,
+      "retries": 2,
+      "ok": true
+    },
+    "latency_s": 17.5
+  },
+  {
+    "rung": "D",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "D__B1-hinge-latch-base__p0__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.792,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.182,
+      "behaviors_f1": 0.769
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 7,
+      "prompt_tokens": 5579,
+      "output_tokens": 1533,
+      "total_tokens": 7112,
+      "retries": 2,
+      "ok": true
+    },
+    "latency_s": 19.1
+  }
+]
