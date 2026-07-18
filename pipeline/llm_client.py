@@ -204,8 +204,14 @@ def _post(url: str, payload: dict, timeout: int) -> dict:
             with urllib.request.urlopen(req, timeout=timeout) as r:
                 return json.load(r)
         except urllib.error.HTTPError as e:
-            body = e.read()[:300]
-            if e.code in _BACKOFF_STATUSES and attempt < _BACKOFF_MAX:
+            body = e.read()[:400]
+            # a 429 is NOT always transient: a billing SPEND-CAP / RESOURCE_EXHAUSTED rejection is
+            # permanent until the cap is raised — retrying it just wedges. Fail fast on those; only
+            # back off on genuine rate-limit (per-minute quota) 429s.
+            btxt = body.decode("utf-8", "replace") if isinstance(body, (bytes, bytearray)) else str(body)
+            hard_429 = e.code == 429 and ("spend" in btxt.lower() or "spending cap" in btxt.lower()
+                                          or "billing" in btxt.lower())
+            if e.code in _BACKOFF_STATUSES and attempt < _BACKOFF_MAX and not hard_429:
                 # prefer the server's own Retry-After; else exponential backoff, capped.
                 ra = e.headers.get("Retry-After") if e.headers else None
                 try:

@@ -99,18 +99,57 @@ def no_kg():
         S4.candidates, S4.why = orig_c, orig_w
 
 
+def expectation_from_golden(task_id):
+    """The ② G2 expectation, CALIBRATED PER TASK from the golden's behaviour profile — the objective
+    generalisation of the hardcoded EASY_EXPECTATION (which is itself the hinge golden's profile).
+    It is a GATE, never whispered into the prompt (s2 docstring), so this leaks nothing to the LLM;
+    it only asks 'did ② recover the essential phases this task needs?'. Returns EASY_EXPECTATION's
+    tuple shape: (phase, {acceptable kinds}, min_range_or_None, why)."""
+    from ontology.schema import DesignPlan
+    gp = ROOT / "tasks" / "benchmark" / "goldens" / f"{task_id}.json"
+    if not gp.exists():
+        return None
+    g = DesignPlan.model_validate_json(gp.read_text())
+    use_kinds, use_min, has_static, has_assembly = set(), None, False, False
+    for b in g.behaviors:
+        ph = getattr(b.phase, "value", b.phase)
+        k = getattr(b.motion.kind, "value", b.motion.kind)
+        bd = getattr(b.motion.bound, "value", b.motion.bound)
+        if ph == "use" and k in ("rotation", "translation", "rot_to_trans"):
+            use_kinds.add(k)
+            if bd == "min" and b.motion.range_value:
+                use_min = max(use_min or 0.0, float(b.motion.range_value))
+        if ph == "static" and k in ("fixed", "snap_event"):
+            has_static = True
+        if ph == "assembly" and k in ("translation", "snap_event"):
+            has_assembly = True
+    exp = []
+    if use_kinds:
+        exp.append(("use", set(use_kinds), use_min,
+                    f"a use-phase {'/'.join(sorted(use_kinds))}"
+                    + (f" of at least {use_min:g}" if use_min else "")))
+    if has_static:
+        exp.append(("static", {"fixed", "snap_event"}, None, "a static-phase hold"))
+    if has_assembly:
+        exp.append(("assembly", {"translation", "snap_event"}, None, "an assembly-phase fastening"))
+    return tuple(exp)
+
+
 def run_staged(command, task_id, kg=True):
-    """Rungs C/D: the ①②③④ pipeline. kg=False ablates the knowledge graph (rung C)."""
+    """Rungs C/D: the ①②③④ pipeline. kg=False ablates the knowledge graph (rung C). The ② G2
+    expectation is calibrated per task from its golden (never in the prompt — a gate only)."""
     from ontology.schema import DesignPlan
     from pipeline import s1_intent, s2_behavior, s3_decompose, s4_interface
     ir = DesignPlan(task_id=task_id, command=command, functions=[], behaviors=[], pieces=[])
+    exp = expectation_from_golden(task_id)
+    ctx_dict = {"expectation": exp} if exp else {}
     stages = {}
-    ctx = no_kg() if not kg else _nullctx()
-    with ctx:
+    kgctx = no_kg() if not kg else _nullctx()
+    with kgctx:
         for key, mod in (("s1", s1_intent), ("s2", s2_behavior),
                          ("s3", s3_decompose), ("s4", s4_interface)):
             try:
-                ir = mod.run(ir)
+                ir = mod.run(ir, ctx_dict)
                 stages[key] = "PASS"
             except Exception as e:
                 stages[key] = _stage_err(e)

@@ -101,11 +101,13 @@ def execute(code: str, run_dir: Path) -> dict:
     preamble = ("import sys as _s0\n_s0.path[:] = [p for p in _s0.path if 'm15_naive' not in p]\n")
     src.write_text(preamble + code + "\n" + HARNESS)
     stl_dir = run_dir / "stl"
+    import os as _os
+    _to = int(_os.environ.get("M15_CAD_TIMEOUT", "90"))
     try:
         r = subprocess.run(["./bin/py", str(src), str(stl_dir)], cwd=str(ROOT),
-                           capture_output=True, text=True, timeout=90)
+                           capture_output=True, text=True, timeout=_to)
     except subprocess.TimeoutExpired:
-        return {"executed": False, "reason": "timeout (>90 s)"}
+        return {"executed": False, "reason": f"timeout (>{_to} s)"}
     status = None
     for line in r.stdout.splitlines():
         if line.startswith("M15_STATUS "):
