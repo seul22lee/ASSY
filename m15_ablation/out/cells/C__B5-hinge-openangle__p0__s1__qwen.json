@@ -1,0 +1,23 @@
+{
+  "rung": "C",
+  "task": "B5-hinge-openangle",
+  "paraphrase": 0,
+  "seed": 1,
+  "backend": "qwen",
+  "tag": "C__B5-hinge-openangle__p0__s1__qwen",
+  "stages": {
+    "s1": "PASS",
+    "s2": "FAIL(G2)"
+  },
+  "score": {},
+  "design_ok": false,
+  "tokens": {
+    "calls": 5,
+    "prompt_tokens": 4025,
+    "output_tokens": 961,
+    "total_tokens": 4986,
+    "retries": 3,
+    "ok": false
+  },
+  "latency_s": 11.4
+}

@@ -1,0 +1,31 @@
+{
+  "rung": "B",
+  "task": "A1-snap-base",
+  "paraphrase": 1,
+  "seed": 1,
+  "backend": "qwen",
+  "tag": "B__A1-snap-base__p1__s1__qwen",
+  "stages": {
+    "monolithic": "PASS"
+  },
+  "score": {
+    "macro_f1": 0.5,
+    "elements_f1": 0.667,
+    "bindings_f1": 0.0,
+    "behaviors_f1": 0.667
+  },
+  "downstream": {
+    "s5": "PASS",
+    "s6": "FAIL:KeyError"
+  },
+  "design_ok": false,
+  "tokens": {
+    "calls": 1,
+    "prompt_tokens": 2201,
+    "output_tokens": 808,
+    "total_tokens": 3009,
+    "retries": 0,
+    "ok": true
+  },
+  "latency_s": 9.4
+}

@@ -1,0 +1,19 @@
+{
+  "rung": "A",
+  "task": "B1-hinge-latch-base",
+  "paraphrase": 0,
+  "seed": 2,
+  "backend": "qwen",
+  "tag": "A__B1-hinge-latch-base__p0__s2__qwen",
+  "stages": {
+    "cad": "PASS"
+  },
+  "executes": true,
+  "geometry_ok": true,
+  "function": "UNMAPPABLE",
+  "design_ok": true,
+  "tokens": {
+    "total": 844
+  },
+  "latency_s": 9.9
+}

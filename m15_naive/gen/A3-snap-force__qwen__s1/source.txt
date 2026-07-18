@@ -1,0 +1,54 @@
+from build123d import *
+
+# Design parameters
+box_length = 100.0
+box_width = 80.0
+box_height = 50.0
+wall_thickness = 2.0
+lip_height = 3.0
+snap_lip_width = 5.0
+snap_lip_depth = 2.0
+snap_lip_spacing = 15.0
+
+# Create the main box body
+box_body = Box(box_length, box_width, box_height, align=(Align.CENTER, Align.CENTER, Align.MIN))
+
+# Create the inner cavity with wall thickness
+inner_length = box_length - 2 * wall_thickness
+inner_width = box_width - 2 * wall_thickness
+inner_height = box_height - 2 * wall_thickness
+
+box_cavity = Box(inner_length, inner_width, inner_height, align=(Align.CENTER, Align.CENTER, Align.MIN))
+
+# Create the snap lid
+lid = Box(box_length, box_width, wall_thickness + lip_height, align=(Align.CENTER, Align.CENTER, Align.MIN))
+
+# Create snap lips on the lid
+snap_lips = []
+for i in range(2):
+    for j in range(2):
+        lip_x = (i - 0.5) * (box_length - snap_lip_width - 2 * wall_thickness)
+        lip_y = (j - 0.5) * (box_width - snap_lip_width - 2 * wall_thickness)
+        
+        # Create a snap lip with a slight overhang for the snap fit
+        lip = Box(snap_lip_width, snap_lip_width, lip_height, align=(Align.CENTER, Align.CENTER, Align.MIN))
+        lip = lip.translate((lip_x, lip_y, 0))
+        
+        # Add clearance to prevent interference
+        lip_clearance = Box(snap_lip_width + 0.3, snap_lip_width + 0.3, lip_height + 0.1, align=(Align.CENTER, Align.CENTER, Align.MIN))
+        lip_clearance = lip_clearance.translate((lip_x, lip_y, 0))
+        
+        # Subtract the clearance from the lid to create the snap fit
+        lid = lid - lip_clearance
+        
+        # Add the snap lip to the list
+        snap_lips.append(lip)
+
+# Create the main box with cavity
+box = box_body - box_cavity
+
+# Create the lid with snap lips
+lid_with_lips = lid
+
+# Combine parts into result
+result = [box, lid_with_lips]

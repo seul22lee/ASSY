@@ -1,0 +1,22 @@
+{
+  "rung": "B",
+  "task": "C1-lift-base",
+  "paraphrase": 1,
+  "seed": 0,
+  "backend": "qwen",
+  "tag": "B__C1-lift-base__p1__s0__qwen",
+  "stages": {
+    "monolithic": "ASSEMBLE_ERROR:ValidationError: 1 validation error for MotionSpec\nrange_unit\n  Input should be 'deg' or 'mm' [type=literal_error, input_value='degrees',"
+  },
+  "score": {},
+  "design_ok": false,
+  "tokens": {
+    "calls": 1,
+    "prompt_tokens": 2193,
+    "output_tokens": 973,
+    "total_tokens": 3166,
+    "retries": 0,
+    "ok": true
+  },
+  "latency_s": 11.3
+}

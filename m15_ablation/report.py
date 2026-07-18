@@ -63,9 +63,11 @@ def build(backend):
     # ---- picture index (top) --------------------------------------------------------------------
     L += ["## Picture index", "",
           "| figure | what it shows |", "|---|---|",
-          "| ![](out/fig_rung_deltas.png) | per-rung design-success + IR-score deltas (the headline) |",
-          "| ![](out/fig_matrix.png) | condition × task success matrix |",
-          "| out/gallery/ | side-by-side renders + failure gallery (per rung) |", ""]
+          "| ![](out/fig_rung_deltas.png) | per-rung design-success + IR-score, the headline ladder |",
+          "| ![](out/fig_matrix.png) | condition × task design_ok matrix |",
+          "| ![](out/gallery/target_B1-hinge-latch-base.png) | a target design (golden ≈ rung D): 3-part hinged box |",
+          "| out/gallery/README.md | full geometry gallery — target (golden ≈ D) vs naive floor (A) |",
+          "| out/flash_vs_pro.txt | the flash-vs-pro gate (frontier reference, captured pre-cap) |", ""]
 
     # ---- headline per-rung table ----------------------------------------------------------------
     L += ["## Per-rung results (pooled over 6 tasks × 2 paraphrases × N=3)", "",
@@ -83,19 +85,31 @@ def build(backend):
     L.append("")
 
     # ---- what each layer bought -----------------------------------------------------------------
-    L += ["## What each layer bought (adjacent deltas)", ""]
-    pairs = [("B", "A", "the IR / ontology"), ("C", "B", "staging + gates"), ("D", "C", "the knowledge graph")]
     byr = {d["rung"]: d for d in deltas}
-    for hi, lo, what in pairs:
-        h, l = byr.get(hi), byr.get(lo)
-        if not h or not l:
-            continue
-        dd = _delta(h["design"], l["design"])
-        de = _delta(h["el"], l["el"])
-        db = _delta(h["bd"], l["bd"])
-        L.append(f"- **{hi} − {lo} = {what}:** design_ok {_f(l['design'])}→{_f(h['design'])} ({dd}), "
-                 f"elements_f1 {_f(l['el'])}→{_f(h['el'])} ({de}), bindings_f1 {_f(l['bd'])}→{_f(h['bd'])} ({db})")
-    L.append("")
+    A, B, C, D = byr["A"], byr["B"], byr["C"], byr["D"]
+    L += ["## What each layer bought (adjacent deltas)", "",
+          "*Read `design_ok` carefully: for rung A it is a GEOMETRY bar (code executes ∧ watertight ∧ "
+          "non-interpenetrating); for B/C/D it is a FUNCTIONAL bar (gates pass ∧ compiles ∧ "
+          "interference-free). So the A↔B design_ok numbers are not the same metric — the honest "
+          "B−A contrast is the existence of a scoreable STRUCTURE, below.*", "",
+          f"- **B − A = the IR / ontology.** Rung A produces nothing gradeable for function "
+          f"({A['design']:.0%} make a watertight solid, but every one is UNMAPPABLE — no declared "
+          f"axis/port to test). Rung B produces a **scored IR** (elements_f1 {_f(B['el'])}, "
+          f"behaviors_f1 {_f(B['bh'])}) — the ontology buys a gradeable, inspectable representation. "
+          f"Neither yet yields a *buildable* assembly (both ~0 functional).",
+          f"- **C − B = staging + gates → BUILDABILITY.** The biggest jump: design_ok "
+          f"{_f(B['design'])} → {_f(C['design'])} ({_delta(C['design'], B['design'])}). Monolithic "
+          f"IRs (B) never compile (bad units survive, ports go unbound, s6 fails); the SAME ontology "
+          f"run staged+gated (C) becomes buildable. Staging+gates is what turns a plausible IR into a "
+          f"manufacturable one. bindings_f1 {_f(B['bd'])} → {_f(C['bd'])} ({_delta(C['bd'], B['bd'])}).",
+          f"- **D − C = the knowledge graph → element/binding CORRECTNESS.** KG narrowing lifts "
+          f"elements_f1 {_f(C['el'])} → {_f(D['el'])} ({_delta(D['el'], C['el'])}) and bindings_f1 "
+          f"{_f(C['bd'])} → {_f(D['bd'])} ({_delta(D['bd'], C['bd'])}). BUT on this WEAK model (qwen) "
+          f"the narrowing also tightens the choice into cards qwen cannot always satisfy downstream, "
+          f"so design_ok DROPS {_f(C['design'])} → {_f(D['design'])} ({_delta(D['design'], C['design'])}). "
+          f"On the STRONG model the KG helps unambiguously: the flash-vs-pro gate (Easy task) shows "
+          f"full-pipeline flash at elements_f1 **1.00** / bindings_f1 **1.00**. So the KG's value is "
+          f"real (correctness) but MODEL-DEPENDENT in its design_ok effect — reported, not hidden.", ""]
 
     # ---- condition × task matrix ----------------------------------------------------------------
     L += ["## Condition × task matrix (design_ok rate)", "",
@@ -114,12 +128,19 @@ def build(backend):
         modes = {}
         for r in fails:
             if rk == "A":
-                m = r.get("function") or r.get("execute_detail") or "did not execute"
-                m = "did-not-execute" if not r.get("executes") else ("UNMAPPABLE" if r.get("function") == "UNMAPPABLE" else "geom-fail")
+                m = ("did-not-execute" if not r.get("executes")
+                     else ("UNMAPPABLE" if r.get("function") == "UNMAPPABLE" else "geometry-fail"))
             else:
                 st = r.get("stages", {})
                 failed = [f"{k}:{v}" for k, v in st.items() if v != "PASS"]
-                m = failed[0] if failed else (f"downstream:{r.get('downstream')}" if not r.get("design_ok") else "?")
+                if failed:
+                    m = failed[0].split(":")[0] + ":" + failed[0].split("(")[-1].rstrip(")").split(":")[0][:14]
+                    m = failed[0][:22]
+                else:
+                    ds = r.get("downstream", {})
+                    stg = next((f"{k}={str(v)[:18]}" for k, v in ds.items() if not str(v).startswith("PASS")
+                                and v != "n/a"), "compile/t0")
+                    m = f"downstream {stg}"
             modes[m] = modes.get(m, 0) + 1
         summ = ", ".join(f"{k} ×{v}" for k, v in sorted(modes.items(), key=lambda kv: -kv[1]))
         L.append(f"- **rung {rk}** ({len(fails)}/{len(g)} fail): {summ or '—'}")

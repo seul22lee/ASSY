@@ -1,53 +1,1503 @@
 [
   {
-    "rung": "A",
-    "task": "B1-hinge-latch-base",
+    "rung": "D",
+    "task": "A1-snap-base",
     "paraphrase": 0,
     "seed": 0,
     "backend": "qwen",
-    "tag": "A__B1-hinge-latch-base__p0__s0__qwen",
+    "tag": "D__A1-snap-base__p0__s0__qwen",
     "stages": {
-      "cad": "PASS"
-    },
-    "executes": true,
-    "geometry_ok": false,
-    "function": "UNMAPPABLE",
-    "design_ok": false,
-    "tokens": {
-      "total": 712
-    },
-    "latency_s": 9.3
-  },
-  {
-    "rung": "B",
-    "task": "B1-hinge-latch-base",
-    "paraphrase": 0,
-    "seed": 0,
-    "backend": "qwen",
-    "tag": "B__B1-hinge-latch-base__p0__s0__qwen",
-    "stages": {
-      "monolithic": "PASS"
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
     },
     "score": {
-      "macro_f1": 0.755,
-      "elements_f1": 0.8,
+      "macro_f1": 0.444,
+      "elements_f1": 0.0,
       "bindings_f1": 0.0,
-      "behaviors_f1": 0.727
+      "behaviors_f1": 0.667
     },
     "downstream": {
       "s5": "PASS",
-      "s6": "FAIL:KeyError"
+      "s6": "FAIL:ValueError"
     },
     "design_ok": false,
     "tokens": {
-      "calls": 1,
-      "prompt_tokens": 2201,
-      "output_tokens": 655,
-      "total_tokens": 2856,
+      "calls": 6,
+      "prompt_tokens": 4767,
+      "output_tokens": 1440,
+      "total_tokens": 6207,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 20.2
+  },
+  {
+    "rung": "D",
+    "task": "A1-snap-base",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "D__A1-snap-base__p0__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.444,
+      "elements_f1": 0.0,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:ValueError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 4767,
+      "output_tokens": 1440,
+      "total_tokens": 6207,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 18.1
+  },
+  {
+    "rung": "D",
+    "task": "A1-snap-base",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "D__A1-snap-base__p0__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.444,
+      "elements_f1": 0.0,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:ValueError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 4767,
+      "output_tokens": 1440,
+      "total_tokens": 6207,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 18.0
+  },
+  {
+    "rung": "D",
+    "task": "A1-snap-base",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "D__A1-snap-base__p1__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.981,
+      "elements_f1": 1.0,
+      "bindings_f1": 1.0,
+      "behaviors_f1": 0.889
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(2)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 7,
+      "prompt_tokens": 8070,
+      "output_tokens": 1994,
+      "total_tokens": 10064,
+      "retries": 2,
+      "ok": true
+    },
+    "latency_s": 24.8
+  },
+  {
+    "rung": "D",
+    "task": "A1-snap-base",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "D__A1-snap-base__p1__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.981,
+      "elements_f1": 1.0,
+      "bindings_f1": 1.0,
+      "behaviors_f1": 0.889
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(2)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 7,
+      "prompt_tokens": 8070,
+      "output_tokens": 1994,
+      "total_tokens": 10064,
+      "retries": 2,
+      "ok": true
+    },
+    "latency_s": 25.1
+  },
+  {
+    "rung": "D",
+    "task": "A1-snap-base",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "D__A1-snap-base__p1__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.981,
+      "elements_f1": 1.0,
+      "bindings_f1": 1.0,
+      "behaviors_f1": 0.889
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(2)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 7,
+      "prompt_tokens": 8070,
+      "output_tokens": 1994,
+      "total_tokens": 10064,
+      "retries": 2,
+      "ok": true
+    },
+    "latency_s": 24.9
+  },
+  {
+    "rung": "D",
+    "task": "A3-snap-force",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "D__A3-snap-force__p0__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "FAIL(G4)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 7,
+      "prompt_tokens": 9501,
+      "output_tokens": 2567,
+      "total_tokens": 12068,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 31.3
+  },
+  {
+    "rung": "D",
+    "task": "A3-snap-force",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "D__A3-snap-force__p0__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "FAIL(G4)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 7,
+      "prompt_tokens": 9501,
+      "output_tokens": 2567,
+      "total_tokens": 12068,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 31.2
+  },
+  {
+    "rung": "D",
+    "task": "A3-snap-force",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "D__A3-snap-force__p0__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "FAIL(G4)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 7,
+      "prompt_tokens": 9501,
+      "output_tokens": 2567,
+      "total_tokens": 12068,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 31.3
+  },
+  {
+    "rung": "D",
+    "task": "A3-snap-force",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "D__A3-snap-force__p1__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.981,
+      "elements_f1": 1.0,
+      "bindings_f1": 1.0,
+      "behaviors_f1": 0.889
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(2)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 7,
+      "prompt_tokens": 7360,
+      "output_tokens": 1975,
+      "total_tokens": 9335,
+      "retries": 2,
+      "ok": true
+    },
+    "latency_s": 24.6
+  },
+  {
+    "rung": "D",
+    "task": "A3-snap-force",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "D__A3-snap-force__p1__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.981,
+      "elements_f1": 1.0,
+      "bindings_f1": 1.0,
+      "behaviors_f1": 0.889
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(2)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 7,
+      "prompt_tokens": 7360,
+      "output_tokens": 1975,
+      "total_tokens": 9335,
+      "retries": 2,
+      "ok": true
+    },
+    "latency_s": 24.5
+  },
+  {
+    "rung": "D",
+    "task": "A3-snap-force",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "D__A3-snap-force__p1__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.981,
+      "elements_f1": 1.0,
+      "bindings_f1": 1.0,
+      "behaviors_f1": 0.889
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(2)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 7,
+      "prompt_tokens": 7360,
+      "output_tokens": 1975,
+      "total_tokens": 9335,
+      "retries": 2,
+      "ok": true
+    },
+    "latency_s": 24.4
+  },
+  {
+    "rung": "D",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "D__B1-hinge-latch-base__p0__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.792,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.182,
+      "behaviors_f1": 0.769
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 7,
+      "prompt_tokens": 5579,
+      "output_tokens": 1533,
+      "total_tokens": 7112,
+      "retries": 2,
+      "ok": true
+    },
+    "latency_s": 19.1
+  },
+  {
+    "rung": "D",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "D__B1-hinge-latch-base__p0__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.792,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.182,
+      "behaviors_f1": 0.769
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 8,
+      "prompt_tokens": 6485,
+      "output_tokens": 1769,
+      "total_tokens": 8254,
+      "retries": 3,
+      "ok": true
+    },
+    "latency_s": 22.0
+  },
+  {
+    "rung": "D",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "D__B1-hinge-latch-base__p0__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.792,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.182,
+      "behaviors_f1": 0.769
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 8,
+      "prompt_tokens": 6485,
+      "output_tokens": 1769,
+      "total_tokens": 8254,
+      "retries": 3,
+      "ok": true
+    },
+    "latency_s": 21.8
+  },
+  {
+    "rung": "D",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "D__B1-hinge-latch-base__p1__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.822,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.364,
+      "behaviors_f1": 0.769
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 4747,
+      "output_tokens": 1299,
+      "total_tokens": 6046,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 16.6
+  },
+  {
+    "rung": "D",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "D__B1-hinge-latch-base__p1__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.822,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.364,
+      "behaviors_f1": 0.769
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 4747,
+      "output_tokens": 1299,
+      "total_tokens": 6046,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 16.6
+  },
+  {
+    "rung": "D",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "D__B1-hinge-latch-base__p1__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.822,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.364,
+      "behaviors_f1": 0.769
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 4747,
+      "output_tokens": 1299,
+      "total_tokens": 6046,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 16.7
+  },
+  {
+    "rung": "D",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "D__B5-hinge-openangle__p0__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4025,
+      "output_tokens": 961,
+      "total_tokens": 4986,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.4
+  },
+  {
+    "rung": "D",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "D__B5-hinge-openangle__p0__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4025,
+      "output_tokens": 961,
+      "total_tokens": 4986,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.4
+  },
+  {
+    "rung": "D",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "D__B5-hinge-openangle__p0__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4025,
+      "output_tokens": 961,
+      "total_tokens": 4986,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.6
+  },
+  {
+    "rung": "D",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "D__B5-hinge-openangle__p1__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4098,
+      "output_tokens": 927,
+      "total_tokens": 5025,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.2
+  },
+  {
+    "rung": "D",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "D__B5-hinge-openangle__p1__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4098,
+      "output_tokens": 927,
+      "total_tokens": 5025,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.2
+  },
+  {
+    "rung": "D",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "D__B5-hinge-openangle__p1__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4098,
+      "output_tokens": 927,
+      "total_tokens": 5025,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.1
+  },
+  {
+    "rung": "D",
+    "task": "C1-lift-base",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "D__C1-lift-base__p0__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4063,
+      "output_tokens": 1094,
+      "total_tokens": 5157,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 12.8
+  },
+  {
+    "rung": "D",
+    "task": "C1-lift-base",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "D__C1-lift-base__p0__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4063,
+      "output_tokens": 1094,
+      "total_tokens": 5157,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 12.9
+  },
+  {
+    "rung": "D",
+    "task": "C1-lift-base",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "D__C1-lift-base__p0__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4063,
+      "output_tokens": 1094,
+      "total_tokens": 5157,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 13.0
+  },
+  {
+    "rung": "D",
+    "task": "C1-lift-base",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "D__C1-lift-base__p1__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 3909,
+      "output_tokens": 942,
+      "total_tokens": 4851,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.3
+  },
+  {
+    "rung": "D",
+    "task": "C1-lift-base",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "D__C1-lift-base__p1__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 3909,
+      "output_tokens": 942,
+      "total_tokens": 4851,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.3
+  },
+  {
+    "rung": "D",
+    "task": "C1-lift-base",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "D__C1-lift-base__p1__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 3909,
+      "output_tokens": 942,
+      "total_tokens": 4851,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.3
+  },
+  {
+    "rung": "D",
+    "task": "C4-drawer",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "D__C4-drawer__p0__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.414,
+      "elements_f1": 0.333,
+      "bindings_f1": 0.4,
+      "behaviors_f1": 0.75
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:StageFailure"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 4891,
+      "output_tokens": 1838,
+      "total_tokens": 6729,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 23.8
+  },
+  {
+    "rung": "D",
+    "task": "C4-drawer",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "D__C4-drawer__p0__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.414,
+      "elements_f1": 0.333,
+      "bindings_f1": 0.4,
+      "behaviors_f1": 0.75
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:StageFailure"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 4891,
+      "output_tokens": 1838,
+      "total_tokens": 6729,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 23.8
+  },
+  {
+    "rung": "D",
+    "task": "C4-drawer",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "D__C4-drawer__p0__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.414,
+      "elements_f1": 0.333,
+      "bindings_f1": 0.4,
+      "behaviors_f1": 0.75
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:StageFailure"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 4891,
+      "output_tokens": 1838,
+      "total_tokens": 6729,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 23.8
+  },
+  {
+    "rung": "D",
+    "task": "C4-drawer",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "D__C4-drawer__p1__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.421,
+      "elements_f1": 0.4,
+      "bindings_f1": 0.471,
+      "behaviors_f1": 0.571
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(4)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 4932,
+      "output_tokens": 1550,
+      "total_tokens": 6482,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 20.5
+  },
+  {
+    "rung": "D",
+    "task": "C4-drawer",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "D__C4-drawer__p1__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.421,
+      "elements_f1": 0.4,
+      "bindings_f1": 0.471,
+      "behaviors_f1": 0.571
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(4)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 4932,
+      "output_tokens": 1550,
+      "total_tokens": 6482,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 20.4
+  },
+  {
+    "rung": "D",
+    "task": "C4-drawer",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "D__C4-drawer__p1__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.421,
+      "elements_f1": 0.4,
+      "bindings_f1": 0.471,
+      "behaviors_f1": 0.571
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(4)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 4932,
+      "output_tokens": 1550,
+      "total_tokens": 6482,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 20.3
+  },
+  {
+    "rung": "C",
+    "task": "A1-snap-base",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "C__A1-snap-base__p0__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.444,
+      "elements_f1": 0.0,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 5635,
+      "output_tokens": 1285,
+      "total_tokens": 6920,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 17.2
+  },
+  {
+    "rung": "C",
+    "task": "A1-snap-base",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "C__A1-snap-base__p0__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.444,
+      "elements_f1": 0.0,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 5635,
+      "output_tokens": 1285,
+      "total_tokens": 6920,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 17.1
+  },
+  {
+    "rung": "C",
+    "task": "A1-snap-base",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "C__A1-snap-base__p0__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.444,
+      "elements_f1": 0.0,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 5635,
+      "output_tokens": 1285,
+      "total_tokens": 6920,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 17.2
+  },
+  {
+    "rung": "C",
+    "task": "A1-snap-base",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "C__A1-snap-base__p1__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.981,
+      "elements_f1": 1.0,
+      "bindings_f1": 1.0,
+      "behaviors_f1": 0.889
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(2)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 7,
+      "prompt_tokens": 11199,
+      "output_tokens": 1969,
+      "total_tokens": 13168,
+      "retries": 2,
+      "ok": true
+    },
+    "latency_s": 26.9
+  },
+  {
+    "rung": "C",
+    "task": "A1-snap-base",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "C__A1-snap-base__p1__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.981,
+      "elements_f1": 1.0,
+      "bindings_f1": 1.0,
+      "behaviors_f1": 0.889
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(2)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 7,
+      "prompt_tokens": 11199,
+      "output_tokens": 1969,
+      "total_tokens": 13168,
+      "retries": 2,
+      "ok": true
+    },
+    "latency_s": 26.9
+  },
+  {
+    "rung": "C",
+    "task": "A1-snap-base",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "C__A1-snap-base__p1__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.981,
+      "elements_f1": 1.0,
+      "bindings_f1": 1.0,
+      "behaviors_f1": 0.889
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(2)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 7,
+      "prompt_tokens": 11199,
+      "output_tokens": 1969,
+      "total_tokens": 13168,
+      "retries": 2,
+      "ok": true
+    },
+    "latency_s": 26.9
+  },
+  {
+    "rung": "C",
+    "task": "A3-snap-force",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "C__A3-snap-force__p0__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.704,
+      "elements_f1": 0.667,
+      "bindings_f1": 0.667,
+      "behaviors_f1": 0.889
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 8367,
+      "output_tokens": 2310,
+      "total_tokens": 10677,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 31.0
+  },
+  {
+    "rung": "C",
+    "task": "A3-snap-force",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "C__A3-snap-force__p0__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.704,
+      "elements_f1": 0.667,
+      "bindings_f1": 0.667,
+      "behaviors_f1": 0.889
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 8367,
+      "output_tokens": 2310,
+      "total_tokens": 10677,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 30.8
+  },
+  {
+    "rung": "C",
+    "task": "A3-snap-force",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "C__A3-snap-force__p0__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.704,
+      "elements_f1": 0.667,
+      "bindings_f1": 0.667,
+      "behaviors_f1": 0.889
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 8367,
+      "output_tokens": 2310,
+      "total_tokens": 10677,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 31.0
+  },
+  {
+    "rung": "C",
+    "task": "A3-snap-force",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "C__A3-snap-force__p1__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.481,
+      "elements_f1": 0.0,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.889
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4595,
+      "output_tokens": 888,
+      "total_tokens": 5483,
       "retries": 0,
       "ok": true
     },
-    "latency_s": 10.9
+    "latency_s": 12.9
+  },
+  {
+    "rung": "C",
+    "task": "A3-snap-force",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "C__A3-snap-force__p1__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.481,
+      "elements_f1": 0.0,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.889
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4595,
+      "output_tokens": 888,
+      "total_tokens": 5483,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 12.7
+  },
+  {
+    "rung": "C",
+    "task": "A3-snap-force",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "C__A3-snap-force__p1__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.481,
+      "elements_f1": 0.0,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.889
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4595,
+      "output_tokens": 888,
+      "total_tokens": 5483,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 12.6
   },
   {
     "rung": "C",
@@ -85,12 +1535,12 @@
     "latency_s": 17.5
   },
   {
-    "rung": "D",
+    "rung": "C",
     "task": "B1-hinge-latch-base",
     "paraphrase": 0,
-    "seed": 0,
+    "seed": 1,
     "backend": "qwen",
-    "tag": "D__B1-hinge-latch-base__p0__s0__qwen",
+    "tag": "C__B1-hinge-latch-base__p0__s1__qwen",
     "stages": {
       "s1": "PASS",
       "s2": "PASS",
@@ -98,9 +1548,79 @@
       "s4": "PASS"
     },
     "score": {
-      "macro_f1": 0.792,
+      "macro_f1": 0.711,
+      "elements_f1": 0.5,
+      "bindings_f1": 0.222,
+      "behaviors_f1": 0.545
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 8,
+      "prompt_tokens": 7329,
+      "output_tokens": 1554,
+      "total_tokens": 8883,
+      "retries": 3,
+      "ok": true
+    },
+    "latency_s": 20.3
+  },
+  {
+    "rung": "C",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "C__B1-hinge-latch-base__p0__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.711,
+      "elements_f1": 0.5,
+      "bindings_f1": 0.222,
+      "behaviors_f1": 0.545
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 8,
+      "prompt_tokens": 7329,
+      "output_tokens": 1554,
+      "total_tokens": 8883,
+      "retries": 3,
+      "ok": true
+    },
+    "latency_s": 20.3
+  },
+  {
+    "rung": "C",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "C__B1-hinge-latch-base__p1__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.822,
       "elements_f1": 0.8,
-      "bindings_f1": 0.182,
+      "bindings_f1": 0.364,
       "behaviors_f1": 0.769
     },
     "downstream": {
@@ -110,13 +1630,2284 @@
     },
     "design_ok": true,
     "tokens": {
-      "calls": 7,
-      "prompt_tokens": 5579,
-      "output_tokens": 1533,
-      "total_tokens": 7112,
-      "retries": 2,
+      "calls": 6,
+      "prompt_tokens": 5607,
+      "output_tokens": 1393,
+      "total_tokens": 7000,
+      "retries": 1,
       "ok": true
     },
-    "latency_s": 19.1
+    "latency_s": 18.7
+  },
+  {
+    "rung": "C",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "C__B1-hinge-latch-base__p1__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.822,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.364,
+      "behaviors_f1": 0.769
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 5607,
+      "output_tokens": 1393,
+      "total_tokens": 7000,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 18.6
+  },
+  {
+    "rung": "C",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "C__B1-hinge-latch-base__p1__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.822,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.364,
+      "behaviors_f1": 0.769
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 5607,
+      "output_tokens": 1393,
+      "total_tokens": 7000,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 18.6
+  },
+  {
+    "rung": "C",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "C__B5-hinge-openangle__p0__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4025,
+      "output_tokens": 961,
+      "total_tokens": 4986,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.5
+  },
+  {
+    "rung": "C",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "C__B5-hinge-openangle__p0__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4025,
+      "output_tokens": 961,
+      "total_tokens": 4986,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.4
+  },
+  {
+    "rung": "C",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "C__B5-hinge-openangle__p0__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4025,
+      "output_tokens": 961,
+      "total_tokens": 4986,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.4
+  },
+  {
+    "rung": "C",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "C__B5-hinge-openangle__p1__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4098,
+      "output_tokens": 927,
+      "total_tokens": 5025,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.1
+  },
+  {
+    "rung": "C",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "C__B5-hinge-openangle__p1__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4098,
+      "output_tokens": 927,
+      "total_tokens": 5025,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.0
+  },
+  {
+    "rung": "C",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "C__B5-hinge-openangle__p1__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4098,
+      "output_tokens": 927,
+      "total_tokens": 5025,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.1
+  },
+  {
+    "rung": "C",
+    "task": "C1-lift-base",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "C__C1-lift-base__p0__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4063,
+      "output_tokens": 1094,
+      "total_tokens": 5157,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 12.9
+  },
+  {
+    "rung": "C",
+    "task": "C1-lift-base",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "C__C1-lift-base__p0__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4063,
+      "output_tokens": 1094,
+      "total_tokens": 5157,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 12.8
+  },
+  {
+    "rung": "C",
+    "task": "C1-lift-base",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "C__C1-lift-base__p0__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 4063,
+      "output_tokens": 1094,
+      "total_tokens": 5157,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 12.9
+  },
+  {
+    "rung": "C",
+    "task": "C1-lift-base",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "C__C1-lift-base__p1__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 3909,
+      "output_tokens": 942,
+      "total_tokens": 4851,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.2
+  },
+  {
+    "rung": "C",
+    "task": "C1-lift-base",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "C__C1-lift-base__p1__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 3909,
+      "output_tokens": 942,
+      "total_tokens": 4851,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.2
+  },
+  {
+    "rung": "C",
+    "task": "C1-lift-base",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "C__C1-lift-base__p1__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "FAIL(G2)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 5,
+      "prompt_tokens": 3909,
+      "output_tokens": 942,
+      "total_tokens": 4851,
+      "retries": 3,
+      "ok": false
+    },
+    "latency_s": 11.2
+  },
+  {
+    "rung": "C",
+    "task": "C4-drawer",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "C__C4-drawer__p0__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.643,
+      "elements_f1": 0.667,
+      "bindings_f1": 0.526,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(5)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 5483,
+      "output_tokens": 1667,
+      "total_tokens": 7150,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 22.4
+  },
+  {
+    "rung": "C",
+    "task": "C4-drawer",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "C__C4-drawer__p0__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.643,
+      "elements_f1": 0.667,
+      "bindings_f1": 0.526,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(5)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 5483,
+      "output_tokens": 1667,
+      "total_tokens": 7150,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 22.3
+  },
+  {
+    "rung": "C",
+    "task": "C4-drawer",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "C__C4-drawer__p0__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.643,
+      "elements_f1": 0.667,
+      "bindings_f1": 0.526,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(5)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 5483,
+      "output_tokens": 1667,
+      "total_tokens": 7150,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 22.4
+  },
+  {
+    "rung": "C",
+    "task": "C4-drawer",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "C__C4-drawer__p1__s0__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.642,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.4,
+      "behaviors_f1": 0.571
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 5524,
+      "output_tokens": 1439,
+      "total_tokens": 6963,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 19.8
+  },
+  {
+    "rung": "C",
+    "task": "C4-drawer",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "C__C4-drawer__p1__s1__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.642,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.4,
+      "behaviors_f1": 0.571
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 5524,
+      "output_tokens": 1439,
+      "total_tokens": 6963,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 19.7
+  },
+  {
+    "rung": "C",
+    "task": "C4-drawer",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "C__C4-drawer__p1__s2__qwen",
+    "stages": {
+      "s1": "PASS",
+      "s2": "PASS",
+      "s3": "PASS",
+      "s4": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.642,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.4,
+      "behaviors_f1": 0.571
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "PASS(3)",
+      "t0": "n/a"
+    },
+    "design_ok": true,
+    "tokens": {
+      "calls": 6,
+      "prompt_tokens": 5524,
+      "output_tokens": 1439,
+      "total_tokens": 6963,
+      "retries": 1,
+      "ok": true
+    },
+    "latency_s": 19.9
+  },
+  {
+    "rung": "B",
+    "task": "A1-snap-base",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "B__A1-snap-base__p0__s0__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.536,
+      "elements_f1": 0.667,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.75
+    },
+    "downstream": {
+      "s5": "FAIL(INFEASIBLE)"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2203,
+      "output_tokens": 690,
+      "total_tokens": 2893,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 9.4
+  },
+  {
+    "rung": "B",
+    "task": "A1-snap-base",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "B__A1-snap-base__p0__s1__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.536,
+      "elements_f1": 0.667,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.75
+    },
+    "downstream": {
+      "s5": "FAIL(INFEASIBLE)"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2203,
+      "output_tokens": 690,
+      "total_tokens": 2893,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 8.2
+  },
+  {
+    "rung": "B",
+    "task": "A1-snap-base",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "B__A1-snap-base__p0__s2__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.536,
+      "elements_f1": 0.667,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.75
+    },
+    "downstream": {
+      "s5": "FAIL(INFEASIBLE)"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2203,
+      "output_tokens": 690,
+      "total_tokens": 2893,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 8.0
+  },
+  {
+    "rung": "B",
+    "task": "A1-snap-base",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "B__A1-snap-base__p1__s0__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.522,
+      "elements_f1": 0.667,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "FAIL(INFEASIBLE)"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2201,
+      "output_tokens": 788,
+      "total_tokens": 2989,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 9.3
+  },
+  {
+    "rung": "B",
+    "task": "A1-snap-base",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "B__A1-snap-base__p1__s1__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.5,
+      "elements_f1": 0.667,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2201,
+      "output_tokens": 808,
+      "total_tokens": 3009,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 9.4
+  },
+  {
+    "rung": "B",
+    "task": "A1-snap-base",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "B__A1-snap-base__p1__s2__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.5,
+      "elements_f1": 0.667,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2201,
+      "output_tokens": 808,
+      "total_tokens": 3009,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 9.3
+  },
+  {
+    "rung": "B",
+    "task": "A3-snap-force",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "B__A3-snap-force__p0__s0__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.522,
+      "elements_f1": 0.667,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2212,
+      "output_tokens": 809,
+      "total_tokens": 3021,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 9.5
+  },
+  {
+    "rung": "B",
+    "task": "A3-snap-force",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "B__A3-snap-force__p0__s1__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.744,
+      "elements_f1": 1.0,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2212,
+      "output_tokens": 618,
+      "total_tokens": 2830,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 7.2
+  },
+  {
+    "rung": "B",
+    "task": "A3-snap-force",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "B__A3-snap-force__p0__s2__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.744,
+      "elements_f1": 1.0,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2212,
+      "output_tokens": 618,
+      "total_tokens": 2830,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 7.2
+  },
+  {
+    "rung": "B",
+    "task": "A3-snap-force",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "B__A3-snap-force__p1__s0__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.472,
+      "elements_f1": 0.5,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2210,
+      "output_tokens": 903,
+      "total_tokens": 3113,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 10.5
+  },
+  {
+    "rung": "B",
+    "task": "A3-snap-force",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "B__A3-snap-force__p1__s1__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.472,
+      "elements_f1": 0.5,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2210,
+      "output_tokens": 900,
+      "total_tokens": 3110,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 10.3
+  },
+  {
+    "rung": "B",
+    "task": "A3-snap-force",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "B__A3-snap-force__p1__s2__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.472,
+      "elements_f1": 0.5,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2210,
+      "output_tokens": 900,
+      "total_tokens": 3110,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 10.4
+  },
+  {
+    "rung": "B",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "B__B1-hinge-latch-base__p0__s0__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.755,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.727
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2201,
+      "output_tokens": 655,
+      "total_tokens": 2856,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 10.9
+  },
+  {
+    "rung": "B",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "B__B1-hinge-latch-base__p0__s1__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.755,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.727
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2201,
+      "output_tokens": 656,
+      "total_tokens": 2857,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 7.8
+  },
+  {
+    "rung": "B",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "B__B1-hinge-latch-base__p0__s2__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.755,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.727
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2201,
+      "output_tokens": 592,
+      "total_tokens": 2793,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 7.0
+  },
+  {
+    "rung": "B",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "B__B1-hinge-latch-base__p1__s0__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.721,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.727
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2202,
+      "output_tokens": 746,
+      "total_tokens": 2948,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 8.8
+  },
+  {
+    "rung": "B",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "B__B1-hinge-latch-base__p1__s1__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.721,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.727
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2202,
+      "output_tokens": 695,
+      "total_tokens": 2897,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 8.2
+  },
+  {
+    "rung": "B",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "B__B1-hinge-latch-base__p1__s2__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.721,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.727
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2202,
+      "output_tokens": 695,
+      "total_tokens": 2897,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 8.2
+  },
+  {
+    "rung": "B",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "B__B5-hinge-openangle__p0__s0__qwen",
+    "stages": {
+      "monolithic": "ASSEMBLE_ERROR:ValidationError: 1 validation error for MotionSpec\nrange_unit\n  Input should be 'deg' or 'mm' [type=literal_error, input_value='degrees',"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2201,
+      "output_tokens": 595,
+      "total_tokens": 2796,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 7.1
+  },
+  {
+    "rung": "B",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "B__B5-hinge-openangle__p0__s1__qwen",
+    "stages": {
+      "monolithic": "ASSEMBLE_ERROR:ValidationError: 1 validation error for MotionSpec\nrange_unit\n  Input should be 'deg' or 'mm' [type=literal_error, input_value='degrees',"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2201,
+      "output_tokens": 597,
+      "total_tokens": 2798,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 7.0
+  },
+  {
+    "rung": "B",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "B__B5-hinge-openangle__p0__s2__qwen",
+    "stages": {
+      "monolithic": "ASSEMBLE_ERROR:ValidationError: 1 validation error for MotionSpec\nrange_unit\n  Input should be 'deg' or 'mm' [type=literal_error, input_value='degrees',"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2201,
+      "output_tokens": 597,
+      "total_tokens": 2798,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 7.0
+  },
+  {
+    "rung": "B",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "B__B5-hinge-openangle__p1__s0__qwen",
+    "stages": {
+      "monolithic": "ASSEMBLE_ERROR:ValidationError: 1 validation error for MotionSpec\nrange_unit\n  Input should be 'deg' or 'mm' [type=literal_error, input_value='degrees',"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2206,
+      "output_tokens": 588,
+      "total_tokens": 2794,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 7.1
+  },
+  {
+    "rung": "B",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "B__B5-hinge-openangle__p1__s1__qwen",
+    "stages": {
+      "monolithic": "ASSEMBLE_ERROR:ValidationError: 1 validation error for MotionSpec\nrange_unit\n  Input should be 'deg' or 'mm' [type=literal_error, input_value='degrees',"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2206,
+      "output_tokens": 601,
+      "total_tokens": 2807,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 7.1
+  },
+  {
+    "rung": "B",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "B__B5-hinge-openangle__p1__s2__qwen",
+    "stages": {
+      "monolithic": "ASSEMBLE_ERROR:ValidationError: 1 validation error for MotionSpec\nrange_unit\n  Input should be 'deg' or 'mm' [type=literal_error, input_value='degrees',"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2206,
+      "output_tokens": 601,
+      "total_tokens": 2807,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 7.1
+  },
+  {
+    "rung": "B",
+    "task": "C1-lift-base",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "B__C1-lift-base__p0__s0__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.363,
+      "elements_f1": 0.75,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.778
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2195,
+      "output_tokens": 1004,
+      "total_tokens": 3199,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 11.9
+  },
+  {
+    "rung": "B",
+    "task": "C1-lift-base",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "B__C1-lift-base__p0__s1__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.363,
+      "elements_f1": 0.75,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.778
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2195,
+      "output_tokens": 1004,
+      "total_tokens": 3199,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 11.8
+  },
+  {
+    "rung": "B",
+    "task": "C1-lift-base",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "B__C1-lift-base__p0__s2__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.363,
+      "elements_f1": 0.75,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.778
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2195,
+      "output_tokens": 1004,
+      "total_tokens": 3199,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 11.8
+  },
+  {
+    "rung": "B",
+    "task": "C1-lift-base",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "B__C1-lift-base__p1__s0__qwen",
+    "stages": {
+      "monolithic": "ASSEMBLE_ERROR:ValidationError: 1 validation error for MotionSpec\nrange_unit\n  Input should be 'deg' or 'mm' [type=literal_error, input_value='degrees',"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2193,
+      "output_tokens": 973,
+      "total_tokens": 3166,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 11.3
+  },
+  {
+    "rung": "B",
+    "task": "C1-lift-base",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "B__C1-lift-base__p1__s1__qwen",
+    "stages": {
+      "monolithic": "ASSEMBLE_ERROR:ValidationError: 1 validation error for MotionSpec\nrange_unit\n  Input should be 'deg' or 'mm' [type=literal_error, input_value='degrees',"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2193,
+      "output_tokens": 1055,
+      "total_tokens": 3248,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 12.3
+  },
+  {
+    "rung": "B",
+    "task": "C1-lift-base",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "B__C1-lift-base__p1__s2__qwen",
+    "stages": {
+      "monolithic": "ASSEMBLE_ERROR:ValidationError: 1 validation error for MotionSpec\nrange_unit\n  Input should be 'deg' or 'mm' [type=literal_error, input_value='degrees',"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2193,
+      "output_tokens": 1055,
+      "total_tokens": 3248,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 12.3
+  },
+  {
+    "rung": "B",
+    "task": "C4-drawer",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "B__C4-drawer__p0__s0__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.594,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.571
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:KeyError"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2194,
+      "output_tokens": 999,
+      "total_tokens": 3193,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 12.0
+  },
+  {
+    "rung": "B",
+    "task": "C4-drawer",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "B__C4-drawer__p0__s1__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.596,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.143,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:StopIteration"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2194,
+      "output_tokens": 1195,
+      "total_tokens": 3389,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 14.0
+  },
+  {
+    "rung": "B",
+    "task": "C4-drawer",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "B__C4-drawer__p0__s2__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.596,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.143,
+      "behaviors_f1": 0.667
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:StopIteration"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2194,
+      "output_tokens": 1195,
+      "total_tokens": 3389,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 14.2
+  },
+  {
+    "rung": "B",
+    "task": "C4-drawer",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "B__C4-drawer__p1__s0__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.569,
+      "elements_f1": 0.8,
+      "bindings_f1": 0.0,
+      "behaviors_f1": 0.615
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:StopIteration"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2196,
+      "output_tokens": 1014,
+      "total_tokens": 3210,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 12.1
+  },
+  {
+    "rung": "B",
+    "task": "C4-drawer",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "B__C4-drawer__p1__s1__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.605,
+      "elements_f1": 0.667,
+      "bindings_f1": 0.143,
+      "behaviors_f1": 0.706
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:StopIteration"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2196,
+      "output_tokens": 1101,
+      "total_tokens": 3297,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 13.0
+  },
+  {
+    "rung": "B",
+    "task": "C4-drawer",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "B__C4-drawer__p1__s2__qwen",
+    "stages": {
+      "monolithic": "PASS"
+    },
+    "score": {
+      "macro_f1": 0.605,
+      "elements_f1": 0.667,
+      "bindings_f1": 0.143,
+      "behaviors_f1": 0.706
+    },
+    "downstream": {
+      "s5": "PASS",
+      "s6": "FAIL:StopIteration"
+    },
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 2196,
+      "output_tokens": 1101,
+      "total_tokens": 3297,
+      "retries": 0,
+      "ok": true
+    },
+    "latency_s": 13.0
+  },
+  {
+    "rung": "A",
+    "task": "A1-snap-base",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "A__A1-snap-base__p0__s0__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": false,
+    "function": "UNMAPPABLE",
+    "design_ok": false,
+    "tokens": {
+      "total": 1263
+    },
+    "latency_s": 14.8
+  },
+  {
+    "rung": "A",
+    "task": "A1-snap-base",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "A__A1-snap-base__p0__s1__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": false,
+    "function": "UNMAPPABLE",
+    "design_ok": false,
+    "tokens": {
+      "total": 870
+    },
+    "latency_s": 10.3
+  },
+  {
+    "rung": "A",
+    "task": "A1-snap-base",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "A__A1-snap-base__p0__s2__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": false,
+    "function": "UNMAPPABLE",
+    "design_ok": false,
+    "tokens": {
+      "total": 1116
+    },
+    "latency_s": 12.8
+  },
+  {
+    "rung": "A",
+    "task": "A1-snap-base",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "A__A1-snap-base__p1__s0__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 765
+    },
+    "latency_s": 9.3
+  },
+  {
+    "rung": "A",
+    "task": "A1-snap-base",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "A__A1-snap-base__p1__s1__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 1187
+    },
+    "latency_s": 13.6
+  },
+  {
+    "rung": "A",
+    "task": "A1-snap-base",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "A__A1-snap-base__p1__s2__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 1219
+    },
+    "latency_s": 14.0
+  },
+  {
+    "rung": "A",
+    "task": "A3-snap-force",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "A__A3-snap-force__p0__s0__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": false,
+    "function": "UNMAPPABLE",
+    "design_ok": false,
+    "tokens": {
+      "total": 880
+    },
+    "latency_s": 10.2
+  },
+  {
+    "rung": "A",
+    "task": "A3-snap-force",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "A__A3-snap-force__p0__s1__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 979
+    },
+    "latency_s": 11.1
+  },
+  {
+    "rung": "A",
+    "task": "A3-snap-force",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "A__A3-snap-force__p0__s2__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": true,
+    "function": "UNMAPPABLE",
+    "design_ok": true,
+    "tokens": {
+      "total": 1110
+    },
+    "latency_s": 12.7
+  },
+  {
+    "rung": "A",
+    "task": "A3-snap-force",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "A__A3-snap-force__p1__s0__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 880
+    },
+    "latency_s": 10.2
+  },
+  {
+    "rung": "A",
+    "task": "A3-snap-force",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "A__A3-snap-force__p1__s1__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": false,
+    "function": "UNMAPPABLE",
+    "design_ok": false,
+    "tokens": {
+      "total": 746
+    },
+    "latency_s": 8.7
+  },
+  {
+    "rung": "A",
+    "task": "A3-snap-force",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "A__A3-snap-force__p1__s2__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 1013
+    },
+    "latency_s": 11.4
+  },
+  {
+    "rung": "A",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "A__B1-hinge-latch-base__p0__s0__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": false,
+    "function": "UNMAPPABLE",
+    "design_ok": false,
+    "tokens": {
+      "total": 712
+    },
+    "latency_s": 9.3
+  },
+  {
+    "rung": "A",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "A__B1-hinge-latch-base__p0__s1__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": true,
+    "function": "UNMAPPABLE",
+    "design_ok": true,
+    "tokens": {
+      "total": 1297
+    },
+    "latency_s": 14.9
+  },
+  {
+    "rung": "A",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "A__B1-hinge-latch-base__p0__s2__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": true,
+    "function": "UNMAPPABLE",
+    "design_ok": true,
+    "tokens": {
+      "total": 844
+    },
+    "latency_s": 9.9
+  },
+  {
+    "rung": "A",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "A__B1-hinge-latch-base__p1__s0__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 864
+    },
+    "latency_s": 10.1
+  },
+  {
+    "rung": "A",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "A__B1-hinge-latch-base__p1__s1__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 814
+    },
+    "latency_s": 9.6
+  },
+  {
+    "rung": "A",
+    "task": "B1-hinge-latch-base",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "A__B1-hinge-latch-base__p1__s2__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": true,
+    "function": "UNMAPPABLE",
+    "design_ok": true,
+    "tokens": {
+      "total": 1084
+    },
+    "latency_s": 12.6
+  },
+  {
+    "rung": "A",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "A__B5-hinge-openangle__p0__s0__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": true,
+    "function": "UNMAPPABLE",
+    "design_ok": true,
+    "tokens": {
+      "total": 601
+    },
+    "latency_s": 7.7
+  },
+  {
+    "rung": "A",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "A__B5-hinge-openangle__p0__s1__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": false,
+    "function": "UNMAPPABLE",
+    "design_ok": false,
+    "tokens": {
+      "total": 832
+    },
+    "latency_s": 9.9
+  },
+  {
+    "rung": "A",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "A__B5-hinge-openangle__p0__s2__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": true,
+    "function": "UNMAPPABLE",
+    "design_ok": true,
+    "tokens": {
+      "total": 1018
+    },
+    "latency_s": 11.5
+  },
+  {
+    "rung": "A",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "A__B5-hinge-openangle__p1__s0__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 703
+    },
+    "latency_s": 8.4
+  },
+  {
+    "rung": "A",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "A__B5-hinge-openangle__p1__s1__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": false,
+    "function": "UNMAPPABLE",
+    "design_ok": false,
+    "tokens": {
+      "total": 1146
+    },
+    "latency_s": 12.9
+  },
+  {
+    "rung": "A",
+    "task": "B5-hinge-openangle",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "A__B5-hinge-openangle__p1__s2__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": true,
+    "function": "UNMAPPABLE",
+    "design_ok": true,
+    "tokens": {
+      "total": 707
+    },
+    "latency_s": 8.5
+  },
+  {
+    "rung": "A",
+    "task": "C1-lift-base",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "A__C1-lift-base__p0__s0__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 643
+    },
+    "latency_s": 4.9
+  },
+  {
+    "rung": "A",
+    "task": "C1-lift-base",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "A__C1-lift-base__p0__s1__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 1057
+    },
+    "latency_s": 11.9
+  },
+  {
+    "rung": "A",
+    "task": "C1-lift-base",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "A__C1-lift-base__p0__s2__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 692
+    },
+    "latency_s": 8.4
+  },
+  {
+    "rung": "A",
+    "task": "C1-lift-base",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "A__C1-lift-base__p1__s0__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 642
+    },
+    "latency_s": 8.0
+  },
+  {
+    "rung": "A",
+    "task": "C1-lift-base",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "A__C1-lift-base__p1__s1__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 606
+    },
+    "latency_s": 7.6
+  },
+  {
+    "rung": "A",
+    "task": "C1-lift-base",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "A__C1-lift-base__p1__s2__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": true,
+    "function": "UNMAPPABLE",
+    "design_ok": true,
+    "tokens": {
+      "total": 875
+    },
+    "latency_s": 10.3
+  },
+  {
+    "rung": "A",
+    "task": "C4-drawer",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "A__C4-drawer__p0__s0__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 1228
+    },
+    "latency_s": 14.0
+  },
+  {
+    "rung": "A",
+    "task": "C4-drawer",
+    "paraphrase": 0,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "A__C4-drawer__p0__s1__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 1507
+    },
+    "latency_s": 17.1
+  },
+  {
+    "rung": "A",
+    "task": "C4-drawer",
+    "paraphrase": 0,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "A__C4-drawer__p0__s2__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": true,
+    "function": "UNMAPPABLE",
+    "design_ok": true,
+    "tokens": {
+      "total": 686
+    },
+    "latency_s": 8.5
+  },
+  {
+    "rung": "A",
+    "task": "C4-drawer",
+    "paraphrase": 1,
+    "seed": 0,
+    "backend": "qwen",
+    "tag": "A__C4-drawer__p1__s0__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": true,
+    "geometry_ok": false,
+    "function": "UNMAPPABLE",
+    "design_ok": false,
+    "tokens": {
+      "total": 784
+    },
+    "latency_s": 9.5
+  },
+  {
+    "rung": "A",
+    "task": "C4-drawer",
+    "paraphrase": 1,
+    "seed": 1,
+    "backend": "qwen",
+    "tag": "A__C4-drawer__p1__s1__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 1119
+    },
+    "latency_s": 12.7
+  },
+  {
+    "rung": "A",
+    "task": "C4-drawer",
+    "paraphrase": 1,
+    "seed": 2,
+    "backend": "qwen",
+    "tag": "A__C4-drawer__p1__s2__qwen",
+    "stages": {
+      "cad": "PASS"
+    },
+    "executes": false,
+    "geometry_ok": false,
+    "function": "N/A (did not execute)",
+    "design_ok": false,
+    "tokens": {
+      "total": 718
+    },
+    "latency_s": 8.5
   }
 ]

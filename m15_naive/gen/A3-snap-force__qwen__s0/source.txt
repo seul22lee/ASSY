@@ -1,0 +1,76 @@
+from build123d import *
+
+# Design parameters
+box_length = 100.0
+box_width = 80.0
+box_height = 40.0
+wall_thickness = 2.0
+lid_snap_gap = 0.3
+lid_snap_height = 5.0
+lid_snap_width = 8.0
+lid_snap_depth = 3.0
+snap_lid_thickness = 1.5
+
+class SnapLidBox:
+    def __init__(self, length, width, height, wall_thickness):
+        self.length = length
+        self.width = width
+        self.height = height
+        self.wall_thickness = wall_thickness
+        
+    def create_box(self):
+        # Create the main box body
+        box = Box(self.length, self.width, self.height)
+        
+        # Subtract inner cavity with wall thickness
+        inner_length = self.length - 2 * self.wall_thickness
+        inner_width = self.width - 2 * self.wall_thickness
+        inner_height = self.height - 2 * self.wall_thickness
+        
+        cavity = Box(inner_length, inner_width, inner_height)
+        box = box - cavity
+        
+        # Add snap features to the lid
+        return box
+    
+    def create_lid(self):
+        # Create the lid with snap features
+        lid = Box(self.length, self.width, self.wall_thickness)
+        
+        # Create snap tabs on the lid
+        tab_count = 4
+        tab_spacing = (self.length - 2 * self.wall_thickness) / (tab_count + 1)
+        
+        for i in range(tab_count):
+            tab_x = self.wall_thickness + tab_spacing * (i + 1)
+            tab_y = self.width - self.wall_thickness
+            
+            # Create snap tab on lid
+            tab = Box(lid_snap_width, lid_snap_depth, lid_snap_height)
+            tab = tab.locate(Placement((tab_x - lid_snap_width/2, tab_y - lid_snap_depth, 0)))
+            lid = lid - tab
+            
+        # Create snap features on the box sides
+        box_side_tabs = []
+        for i in range(tab_count):
+            tab_x = self.wall_thickness + tab_spacing * (i + 1)
+            
+            # Create snap feature on box side
+            snap_feature = Box(lid_snap_width, lid_snap_depth, lid_snap_height)
+            snap_feature = snap_feature.locate(Placement((tab_x - lid_snap_width/2, self.width - self.wall_thickness, 0)))
+            box_side_tabs.append(snap_feature)
+            
+        return lid, box_side_tabs
+
+# Create the box and lid
+box_model = SnapLidBox(box_length, box_width, box_height, wall_thickness)
+box_body = box_model.create_box()
+
+# Create lid with snap features
+lid, side_tabs = box_model.create_lid()
+
+# Adjust lid to be slightly smaller for clearance
+lid_adjusted = Box(box_length - 2 * wall_thickness, box_width - 2 * wall_thickness, wall_thickness)
+
+# Create the final parts
+result = [box_body, lid_adjusted]

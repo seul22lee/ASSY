@@ -1,0 +1,19 @@
+{
+  "rung": "A",
+  "task": "C4-drawer",
+  "paraphrase": 1,
+  "seed": 1,
+  "backend": "qwen",
+  "tag": "A__C4-drawer__p1__s1__qwen",
+  "stages": {
+    "cad": "PASS"
+  },
+  "executes": false,
+  "geometry_ok": false,
+  "function": "N/A (did not execute)",
+  "design_ok": false,
+  "tokens": {
+    "total": 1119
+  },
+  "latency_s": 12.7
+}

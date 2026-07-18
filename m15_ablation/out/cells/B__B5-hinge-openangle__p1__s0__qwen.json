@@ -1,0 +1,22 @@
+{
+  "rung": "B",
+  "task": "B5-hinge-openangle",
+  "paraphrase": 1,
+  "seed": 0,
+  "backend": "qwen",
+  "tag": "B__B5-hinge-openangle__p1__s0__qwen",
+  "stages": {
+    "monolithic": "ASSEMBLE_ERROR:ValidationError: 1 validation error for MotionSpec\nrange_unit\n  Input should be 'deg' or 'mm' [type=literal_error, input_value='degrees',"
+  },
+  "score": {},
+  "design_ok": false,
+  "tokens": {
+    "calls": 1,
+    "prompt_tokens": 2206,
+    "output_tokens": 588,
+    "total_tokens": 2794,
+    "retries": 0,
+    "ok": true
+  },
+  "latency_s": 7.1
+}

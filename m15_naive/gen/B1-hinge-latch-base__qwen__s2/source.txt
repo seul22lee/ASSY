@@ -1,0 +1,113 @@
+from build123d import *
+
+# Parameters
+box_length = 60
+box_width = 40
+box_height = 25
+wall_thickness = 2
+lid_overlap = 3
+hinge_width = 8
+hinge_depth = 5
+hinge_height = 3
+snap_fit_clearance = 0.3
+
+# Box body
+box_body = Box(box_length, box_width, box_height, align=(Align.CENTER, Align.CENTER, Align.MIN))
+
+# Inner cavity
+inner_cavity = Box(
+    box_length - 2 * wall_thickness,
+    box_width - 2 * wall_thickness,
+    box_height - wall_thickness,
+    align=(Align.CENTER, Align.CENTER, Align.MIN)
+)
+
+# Subtract cavity from body
+box_part = box_body - inner_cavity
+
+# Lid
+lid_thickness = wall_thickness
+lid = Box(
+    box_length + 2 * lid_overlap,
+    box_width,
+    lid_thickness,
+    align=(Align.CENTER, Align.CENTER, Align.MIN)
+)
+
+# Create hinge cutout in lid
+hinge_cutout = Box(
+    hinge_width,
+    hinge_depth,
+    hinge_height,
+    align=(Align.CENTER, Align.CENTER, Align.MIN)
+)
+
+# Position hinge cutout at front of lid
+hinge_cutout = hinge_cutout.locate(Location((0, box_width/2 - hinge_depth/2, 0)))
+
+# Remove hinge cutout from lid
+lid = lid - hinge_cutout
+
+# Create hinge on box body
+hinge = Box(
+    hinge_width,
+    hinge_depth,
+    hinge_height,
+    align=(Align.CENTER, Align.CENTER, Align.MIN)
+)
+
+# Position hinge at front of box
+hinge = hinge.locate(Location((0, box_width/2 - hinge_depth/2, 0)))
+
+# Add hinge to box body
+box_part = box_part + hinge
+
+# Snap fit features
+# Add snap ridges on lid edges
+snap_ridge_height = 1.5
+snap_ridge_width = 3
+
+# Create snap ridges along the front edge of the lid
+lid_front_edge = Line(
+    (-(box_length/2 + lid_overlap - snap_ridge_width/2), box_width/2, 0),
+    (box_length/2 + lid_overlap - snap_ridge_width/2, box_width/2, 0)
+)
+
+# Create ridges
+snap_ridges = []
+for i in range(3):
+    ridge_x = -(box_length/2 + lid_overlap - snap_ridge_width/2) + i * (box_length + 2 * lid_overlap) / 4
+    ridge = Box(
+        snap_ridge_width,
+        wall_thickness + snap_fit_clearance,
+        snap_ridge_height,
+        align=(Align.CENTER, Align.CENTER, Align.MIN)
+    )
+    ridge = ridge.locate(Location((ridge_x, box_width/2 - wall_thickness/2, 0)))
+    snap_ridges.append(ridge)
+
+# Add ridges to lid
+lid_with_ridges = lid
+for ridge in snap_ridges:
+    lid_with_ridges = lid_with_ridges + ridge
+
+# Create corresponding snap sockets on box body
+snap_sockets = []
+for i in range(3):
+    socket_x = -(box_length/2 + lid_overlap - snap_ridge_width/2) + i * (box_length + 2 * lid_overlap) / 4
+    socket = Box(
+        snap_ridge_width,
+        wall_thickness + snap_fit_clearance,
+        snap_ridge_height,
+        align=(Align.CENTER, Align.CENTER, Align.MIN)
+    )
+    socket = socket.locate(Location((socket_x, box_width/2 - wall_thickness/2, 0)))
+    snap_sockets.append(socket)
+
+# Add sockets to box body
+box_with_sockets = box_part
+for socket in snap_sockets:
+    box_with_sockets = box_with_sockets - socket
+
+# Final parts
+result = [box_with_sockets, lid_with_ridges]

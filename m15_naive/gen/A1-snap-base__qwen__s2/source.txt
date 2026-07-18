@@ -1,0 +1,101 @@
+from build123d import *
+
+# Parameters
+box_length = 50.0
+box_width = 30.0
+box_height = 20.0
+wall_thickness = 2.0
+lip_height = 2.0
+clip_width = 3.0
+clip_height = 4.0
+
+# Main box body
+with BuildPart() as box_part:
+    with BuildSketch() as base:
+        Rectangle(box_length, box_width)
+    extrude(amount=box_height)
+    
+    # Create inner cavity
+    with BuildSketch(Plane.YZ) as inner_base:
+        Rectangle(box_length - 2*wall_thickness, box_width - 2*wall_thickness, align=(Align.CENTER, Align.CENTER))
+    extrude(amount=box_height - wall_thickness)
+    
+    # Create lips for clicking
+    with BuildSketch(Plane.XZ) as lip:
+        Rectangle(box_length - 2*wall_thickness, lip_height, align=(Align.CENTER, Align.CENTER))
+    extrude(amount=wall_thickness)
+    
+    # Create clips on the sides
+    with BuildSketch(Plane.YZ) as clip_base:
+        Rectangle(clip_width, clip_height, align=(Align.CENTER, Align.CENTER))
+    extrude(amount=wall_thickness)
+    
+    # Make clips on both sides
+    with BuildSketch(Plane.YZ) as clip_base2:
+        Rectangle(clip_width, clip_height, align=(Align.CENTER, Align.CENTER))
+    extrude(amount=wall_thickness)
+    
+    # Position clips
+    translate((box_length/2 - wall_thickness - clip_width/2, 0, box_height - wall_thickness))
+    translate((-box_length/2 + wall_thickness + clip_width/2, 0, box_height - wall_thickness))
+    
+# Box lid
+with BuildPart() as lid_part:
+    with BuildSketch() as lid_base:
+        Rectangle(box_length, box_width)
+    extrude(amount=wall_thickness)
+    
+    # Create inner cavity for lid
+    with BuildSketch(Plane.YZ) as inner_lid:
+        Rectangle(box_length - 2*wall_thickness, box_width - 2*wall_thickness, align=(Align.CENTER, Align.CENTER))
+    extrude(amount=wall_thickness)
+    
+    # Create lip for clicking
+    with BuildSketch(Plane.XZ) as lid_lip:
+        Rectangle(box_length - 2*wall_thickness, lip_height, align=(Align.CENTER, Align.CENTER))
+    extrude(amount=wall_thickness)
+    
+# Create the box with clips and lid
+with BuildPart() as box_with_lid:
+    # Box body
+    with BuildSketch() as base:
+        Rectangle(box_length, box_width)
+    extrude(amount=box_height)
+    
+    # Inner cavity
+    with BuildSketch(Plane.YZ) as inner_base:
+        Rectangle(box_length - 2*wall_thickness, box_width - 2*wall_thickness, align=(Align.CENTER, Align.CENTER))
+    extrude(amount=box_height - wall_thickness)
+    
+    # Outer lip for clicking
+    with BuildSketch(Plane.XZ) as lip:
+        Rectangle(box_length - 2*wall_thickness, lip_height, align=(Align.CENTER, Align.CENTER))
+    extrude(amount=wall_thickness)
+    
+    # Clips on sides
+    with BuildSketch(Plane.YZ) as clip_base:
+        Rectangle(clip_width, clip_height, align=(Align.CENTER, Align.CENTER))
+    extrude(amount=wall_thickness)
+    
+    # Position clips
+    translate((box_length/2 - wall_thickness - clip_width/2, 0, box_height - wall_thickness))
+    translate((-box_length/2 + wall_thickness + clip_width/2, 0, box_height - wall_thickness))
+    
+# Create a lid that fits the box
+with BuildPart() as lid:
+    with BuildSketch() as lid_base:
+        Rectangle(box_length, box_width)
+    extrude(amount=wall_thickness)
+    
+    # Inner cavity for lid
+    with BuildSketch(Plane.YZ) as inner_lid:
+        Rectangle(box_length - 2*wall_thickness, box_width - 2*wall_thickness, align=(Align.CENTER, Align.CENTER))
+    extrude(amount=wall_thickness)
+    
+    # Lip for clicking
+    with BuildSketch(Plane.XZ) as lid_lip:
+        Rectangle(box_length - 2*wall_thickness, lip_height, align=(Align.CENTER, Align.CENTER))
+    extrude(amount=wall_thickness)
+    
+# Final result - two separate parts
+result = [box_with_lid.part, lid.part]

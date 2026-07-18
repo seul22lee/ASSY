@@ -1,0 +1,19 @@
+{
+  "rung": "A",
+  "task": "B5-hinge-openangle",
+  "paraphrase": 0,
+  "seed": 1,
+  "backend": "qwen",
+  "tag": "A__B5-hinge-openangle__p0__s1__qwen",
+  "stages": {
+    "cad": "PASS"
+  },
+  "executes": true,
+  "geometry_ok": false,
+  "function": "UNMAPPABLE",
+  "design_ok": false,
+  "tokens": {
+    "total": 832
+  },
+  "latency_s": 9.9
+}

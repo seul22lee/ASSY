@@ -1,0 +1,46 @@
+[
+  {
+    "rung": "D",
+    "task": "A1-snap-base",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "flash",
+    "tag": "D__A1-snap-base__p0__s0__flash",
+    "stages": {
+      "s1": "FAIL(G1)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0,
+      "retries": 0,
+      "ok": false
+    },
+    "latency_s": 12.4
+  },
+  {
+    "rung": "D",
+    "task": "C1-lift-base",
+    "paraphrase": 0,
+    "seed": 0,
+    "backend": "flash",
+    "tag": "D__C1-lift-base__p0__s0__flash",
+    "stages": {
+      "s1": "FAIL(G1)"
+    },
+    "score": {},
+    "design_ok": false,
+    "tokens": {
+      "calls": 1,
+      "prompt_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0,
+      "retries": 0,
+      "ok": false
+    },
+    "latency_s": 10.0
+  }
+]

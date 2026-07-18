@@ -1,0 +1,55 @@
+from build123d import *
+
+# Parameters
+box_length = 100.0
+box_width = 80.0
+box_height = 60.0
+wall_thickness = 2.0
+hinge_width = 15.0
+hinge_depth = 8.0
+hinge_offset = 5.0
+lid_angle_open = 100.0
+lid_angle_closed = 5.0
+
+# Create the main box body
+box_body = Box(box_length, box_width, box_height, align=(Align.CENTER, Align.CENTER, Align.MIN))
+
+# Create the lid
+lid = Box(box_length, box_width, box_height, align=(Align.CENTER, Align.CENTER, Align.MIN))
+
+# Create hinge cutout in box
+hinge_cutout = Pos(0, 0, -box_height/2 + wall_thickness) * \
+    Box(hinge_width, box_width - 2*wall_thickness, hinge_depth, align=(Align.CENTER, Align.CENTER, Align.MIN))
+
+# Create hinge cutout in lid
+lid_hinge_cutout = Pos(0, 0, box_height/2 - wall_thickness) * \
+    Box(hinge_width, box_width - 2*wall_thickness, hinge_depth, align=(Align.CENTER, Align.CENTER, Align.MAX))
+
+# Subtract hinge cutouts from box and lid
+box_body = box_body - hinge_cutout
+lid = lid - lid_hinge_cutout
+
+# Create the hinge pin
+hinge_pin_radius = 3.0
+hinge_pin_length = box_width - 2*wall_thickness - 4.0
+hinge_pin = Pos(0, 0, -box_height/2 + wall_thickness + hinge_depth/2) * \
+    Cylinder(hinge_pin_radius, hinge_pin_length, align=(Align.CENTER, Align.CENTER, Align.MIN))
+
+# Create the box with hinge
+box_with_hinge = box_body + hinge_pin
+
+# Create the lid with hinge pin
+lid_with_hinge = lid + hinge_pin
+
+# Adjust the lid to allow for proper rotation
+# The lid needs to be rotated around the hinge axis
+# We'll create a separate part that can be assembled
+
+# Create the main box part
+main_box = box_with_hinge
+
+# Create the lid part
+lid_part = lid_with_hinge
+
+# Set result to list of parts
+result = [main_box, lid_part]

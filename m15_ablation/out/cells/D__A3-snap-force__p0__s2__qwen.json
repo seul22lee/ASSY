@@ -1,0 +1,25 @@
+{
+  "rung": "D",
+  "task": "A3-snap-force",
+  "paraphrase": 0,
+  "seed": 2,
+  "backend": "qwen",
+  "tag": "D__A3-snap-force__p0__s2__qwen",
+  "stages": {
+    "s1": "PASS",
+    "s2": "PASS",
+    "s3": "PASS",
+    "s4": "FAIL(G4)"
+  },
+  "score": {},
+  "design_ok": false,
+  "tokens": {
+    "calls": 7,
+    "prompt_tokens": 9501,
+    "output_tokens": 2567,
+    "total_tokens": 12068,
+    "retries": 3,
+    "ok": false
+  },
+  "latency_s": 31.3
+}

@@ -1,0 +1,19 @@
+{
+  "rung": "A",
+  "task": "A1-snap-base",
+  "paraphrase": 0,
+  "seed": 0,
+  "backend": "qwen",
+  "tag": "A__A1-snap-base__p0__s0__qwen",
+  "stages": {
+    "cad": "PASS"
+  },
+  "executes": true,
+  "geometry_ok": false,
+  "function": "UNMAPPABLE",
+  "design_ok": false,
+  "tokens": {
+    "total": 1263
+  },
+  "latency_s": 14.8
+}

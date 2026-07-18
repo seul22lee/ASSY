@@ -1,0 +1,117 @@
+import sys as _s0
+_s0.path[:] = [p for p in _s0.path if 'm15_naive' not in p]
+from build123d import *
+
+# Parameters
+box_length = 100
+box_width = 80
+box_height = 50
+wall_thickness = 2
+lip_height = 5
+snap_tolerance = 0.3
+
+# Create the main box body
+def create_box_body():
+    # Base rectangle with rounded corners
+    base = Rectangle(box_length, box_width)
+    
+    # Extrude to create the box
+    box = extrude(base, box_height)
+    
+    # Create inner cavity with wall thickness
+    inner_base = Rectangle(box_length - 2*wall_thickness, box_width - 2*wall_thickness)
+    inner_box = extrude(inner_base, box_height - wall_thickness)
+    
+    # Subtract to create hollow box
+    result = box - inner_box
+    
+    return result
+
+# Create the snap lid with engagement features
+def create_lid():
+    # Base rectangle for lid
+    base = Rectangle(box_length + 2*wall_thickness, box_width + 2*wall_thickness)
+    
+    # Extrude to create the lid
+    lid = extrude(base, wall_thickness)
+    
+    # Create snap engagement features (tabs)
+    tab_width = 10
+    tab_height = 3
+    
+    # Create tabs around the perimeter
+    tabs = []
+    
+    # Top tabs
+    for i in range(4):
+        x_offset = (box_length + 2*wall_thickness) / 2 - tab_width/2
+        y_offset = (box_width + 2*wall_thickness) / 2 - tab_height/2
+        
+        if i == 0:  # Top
+            tab_base = Rectangle(tab_width, tab_height)
+            tab_pos = Location((0, -(box_width + 2*wall_thickness)/2 + tab_height/2, 0))
+        elif i == 1:  # Bottom
+            tab_base = Rectangle(tab_width, tab_height)
+            tab_pos = Location((0, (box_width + 2*wall_thickness)/2 - tab_height/2, 0))
+        elif i == 2:  # Left
+            tab_base = Rectangle(tab_height, tab_width)
+            tab_pos = Location((-(box_length + 2*wall_thickness)/2 + tab_height/2, 0, 0))
+        else:  # Right
+            tab_base = Rectangle(tab_height, tab_width)
+            tab_pos = Location((+(box_length + 2*wall_thickness)/2 - tab_height/2, 0, 0))
+        
+        tab = extrude(tab_base, wall_thickness)
+        tab = tab.located(tab_pos)
+        tabs.append(tab)
+    
+    # Combine all tabs
+    tab_group = Union(tabs)
+    
+    # Create the lid with tabs
+    lid_with_tabs = lid + tab_group
+    
+    return lid_with_tabs
+
+# Create the snap mechanism for engagement
+# This is a simplified approach - in reality, more precise engineering would be needed
+
+def create_snap_mechanism():
+    # Create a series of snap features on the box edges
+    # These will engage with the lid tabs
+    
+    # Create a simple rectangular tab that fits into the lid
+    snap_tab = Rectangle(15, 3)
+    snap_tab = extrude(snap_tab, wall_thickness)
+    
+    return snap_tab
+
+# Main assembly
+box_body = create_box_body()
+lid = create_lid()
+
+# Position the lid above the box
+lid_positioned = lid.located(Location((0, 0, box_height)))
+
+# Create the final result with separate parts
+result = [box_body, lid]
+
+# --- m15 export harness (appended) ---
+import sys as _sys
+_sys.path[:] = [p for p in _sys.path if "m15_naive/gen" not in p]  # never shadow stdlib
+import json as _json
+from pathlib import Path as _P
+try:
+    from build123d import export_stl as _export
+    _parts = result if isinstance(result, (list, tuple)) else [result]
+    _od = _P(_sys.argv[1]); _od.mkdir(parents=True, exist_ok=True)
+    _n = 0
+    for _i, _p in enumerate(_parts):
+        _solid = getattr(_p, "part", _p)
+        try:
+            _export(_solid, str(_od / f"part_{_i}.stl"), tolerance=0.2, angular_tolerance=0.4)
+            _n += 1
+        except Exception as _e:
+            pass
+    print("M15_STATUS " + _json.dumps({"ok": True, "n_parts": len(_parts), "n_exported": _n}))
+except Exception as _e:
+    print("M15_STATUS " + _json.dumps({"ok": False, "error": type(_e).__name__ + ": " + str(_e)[:200]}))

@@ -1,0 +1,65 @@
+from build123d import *
+
+# Parameters
+box_length = 100.0
+box_width = 80.0
+box_height = 60.0
+wall_thickness = 2.0
+hinge_width = 15.0
+hinge_depth = 10.0
+hinge_offset = 5.0
+lid_angle_open = 100.0
+lid_angle_closed = 5.0
+
+class HingedBox:
+    def __init__(self):
+        self.box_part = None
+        self.lid_part = None
+        self.hinge_pin = None
+        
+    def create_box(self):
+        # Create the main box body
+        box = Box(box_length, box_width, box_height)
+        
+        # Create inner cavity with wall thickness
+        inner_box = Box(
+            box_length - 2 * wall_thickness,
+            box_width - 2 * wall_thickness,
+            box_height - wall_thickness
+        ).locate(Translation((0, 0, wall_thickness/2)))
+        
+        # Subtract cavity from box
+        self.box_part = box - inner_box
+        
+    def create_lid(self):
+        # Create lid with hinge cutout
+        lid = Box(box_length, box_width, wall_thickness)
+        
+        # Create hinge cutout in lid
+        hinge_cutout = Box(
+            hinge_width,
+            hinge_depth,
+            wall_thickness * 2
+        ).locate(Translation((0, -box_width/2 + hinge_offset + hinge_depth/2, 0)))
+        
+        self.lid_part = lid - hinge_cutout
+        
+    def create_hinge_pin(self):
+        # Create the hinge pin that goes through both parts
+        pin_radius = 3.0
+        pin_length = box_width - 2 * hinge_offset - hinge_depth
+        
+        # Create cylindrical hinge pin
+        self.hinge_pin = Cylinder(pin_radius, pin_length, rotation=(90, 0, 0))
+        
+    def build(self):
+        self.create_box()
+        self.create_lid()
+        self.create_hinge_pin()
+        
+        # Return the parts as separate objects
+        return [self.box_part, self.lid_part]
+
+# Create the hinged box
+box_design = HingedBox()
+result = box_design.build()

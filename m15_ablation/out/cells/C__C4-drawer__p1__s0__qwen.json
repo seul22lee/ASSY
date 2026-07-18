@@ -1,0 +1,35 @@
+{
+  "rung": "C",
+  "task": "C4-drawer",
+  "paraphrase": 1,
+  "seed": 0,
+  "backend": "qwen",
+  "tag": "C__C4-drawer__p1__s0__qwen",
+  "stages": {
+    "s1": "PASS",
+    "s2": "PASS",
+    "s3": "PASS",
+    "s4": "PASS"
+  },
+  "score": {
+    "macro_f1": 0.642,
+    "elements_f1": 0.8,
+    "bindings_f1": 0.4,
+    "behaviors_f1": 0.571
+  },
+  "downstream": {
+    "s5": "PASS",
+    "s6": "PASS(3)",
+    "t0": "n/a"
+  },
+  "design_ok": true,
+  "tokens": {
+    "calls": 6,
+    "prompt_tokens": 5524,
+    "output_tokens": 1439,
+    "total_tokens": 6963,
+    "retries": 1,
+    "ok": true
+  },
+  "latency_s": 19.8
+}

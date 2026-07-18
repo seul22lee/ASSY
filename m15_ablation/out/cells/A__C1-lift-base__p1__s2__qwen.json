@@ -1,0 +1,19 @@
+{
+  "rung": "A",
+  "task": "C1-lift-base",
+  "paraphrase": 1,
+  "seed": 2,
+  "backend": "qwen",
+  "tag": "A__C1-lift-base__p1__s2__qwen",
+  "stages": {
+    "cad": "PASS"
+  },
+  "executes": true,
+  "geometry_ok": true,
+  "function": "UNMAPPABLE",
+  "design_ok": true,
+  "tokens": {
+    "total": 875
+  },
+  "latency_s": 10.3
+}

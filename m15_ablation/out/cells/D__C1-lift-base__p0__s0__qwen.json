@@ -1,0 +1,23 @@
+{
+  "rung": "D",
+  "task": "C1-lift-base",
+  "paraphrase": 0,
+  "seed": 0,
+  "backend": "qwen",
+  "tag": "D__C1-lift-base__p0__s0__qwen",
+  "stages": {
+    "s1": "PASS",
+    "s2": "FAIL(G2)"
+  },
+  "score": {},
+  "design_ok": false,
+  "tokens": {
+    "calls": 5,
+    "prompt_tokens": 4063,
+    "output_tokens": 1094,
+    "total_tokens": 5157,
+    "retries": 3,
+    "ok": false
+  },
+  "latency_s": 12.8
+}

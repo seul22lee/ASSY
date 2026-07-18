@@ -1,0 +1,58 @@
+from build123d import *
+
+# Parameters
+width = 100
+height = 150
+depth = 80
+wall_thickness = 2
+knob_diameter = 12
+knob_radius = knob_diameter / 2
+knob_offset = 15
+drawer_width = width - 2 * wall_thickness
+drawer_height = height - 2 * wall_thickness
+drawer_depth = depth - 2 * wall_thickness
+slot_width = 8
+slot_depth = 40
+slot_height = 10
+
+# Cabinet body
+with BuildPart() as cabinet_body:
+    Box(width, height, depth)
+    # Inner cavity
+    with Locations((0, 0, 0)):
+        Box(drawer_width, drawer_height, drawer_depth, mode=Subtract)
+    
+    # Slot for drawer guide
+    with Locations((0, -depth/2 + slot_depth/2, 0)):
+        Box(slot_width, slot_height, depth - 2 * wall_thickness, mode=Subtract)
+    
+    # Knob hole
+    with Locations((width/2 - knob_offset, 0, 0)):
+        Cylinder(knob_diameter, wall_thickness, rotation=(0, 90, 0), mode=Subtract)
+    
+    # Drawer front
+    with Locations((0, -depth/2 + drawer_depth/2, 0)):
+        Box(drawer_width, drawer_height, wall_thickness, mode=Subtract)
+
+# Drawer
+with BuildPart() as drawer:
+    Box(drawer_width, drawer_height, wall_thickness)
+    
+    # Handle cutout
+    with Locations((0, 0, 0)):
+        Box(30, 20, wall_thickness/2, mode=Subtract)
+    
+    # Slot for cabinet guide
+    with Locations((0, -drawer_depth/2 + slot_depth/2, 0)):
+        Box(slot_width, slot_height, wall_thickness, mode=Subtract)
+
+# Knob
+with BuildPart() as knob:
+    Cylinder(knob_diameter, wall_thickness, rotation=(0, 90, 0))
+    
+    # Center hole
+    with Locations((0, 0, 0)):
+        Cylinder(4, wall_thickness, rotation=(0, 90, 0), mode=Subtract)
+
+# Result list
+result = [cabinet_body.part, drawer.part, knob.part]

@@ -1,0 +1,35 @@
+{
+  "rung": "C",
+  "task": "A3-snap-force",
+  "paraphrase": 0,
+  "seed": 0,
+  "backend": "qwen",
+  "tag": "C__A3-snap-force__p0__s0__qwen",
+  "stages": {
+    "s1": "PASS",
+    "s2": "PASS",
+    "s3": "PASS",
+    "s4": "PASS"
+  },
+  "score": {
+    "macro_f1": 0.704,
+    "elements_f1": 0.667,
+    "bindings_f1": 0.667,
+    "behaviors_f1": 0.889
+  },
+  "downstream": {
+    "s5": "PASS",
+    "s6": "PASS(3)",
+    "t0": "n/a"
+  },
+  "design_ok": true,
+  "tokens": {
+    "calls": 6,
+    "prompt_tokens": 8367,
+    "output_tokens": 2310,
+    "total_tokens": 10677,
+    "retries": 1,
+    "ok": true
+  },
+  "latency_s": 31.0
+}

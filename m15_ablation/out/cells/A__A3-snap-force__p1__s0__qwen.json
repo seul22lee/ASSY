@@ -1,0 +1,19 @@
+{
+  "rung": "A",
+  "task": "A3-snap-force",
+  "paraphrase": 1,
+  "seed": 0,
+  "backend": "qwen",
+  "tag": "A__A3-snap-force__p1__s0__qwen",
+  "stages": {
+    "cad": "PASS"
+  },
+  "executes": false,
+  "geometry_ok": false,
+  "function": "N/A (did not execute)",
+  "design_ok": false,
+  "tokens": {
+    "total": 880
+  },
+  "latency_s": 10.2
+}

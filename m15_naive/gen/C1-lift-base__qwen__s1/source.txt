@@ -1,0 +1,53 @@
+from build123d import *
+
+# Parameters
+platform_width = 100
+platform_length = 150
+platform_height = 20
+crank_radius = 25
+crank_shaft_diameter = 8
+support_height = 40
+thread_pitch = 2
+thread_diameter = 6
+thread_height = 3
+
+# Create the platform
+platform = Box(platform_width, platform_length, platform_height)
+
+# Create the crank mechanism
+# Crank shaft
+shaft = Cylinder(radius=crank_shaft_diameter/2, height=support_height)
+
+# Crank arm
+arm_length = crank_radius * 1.5
+arm = Box(arm_length, crank_shaft_diameter, support_height)
+
+# Position the crank arm
+arm = arm.locate(Placement((0, -crank_shaft_diameter/2, 0)))
+
+# Create the threaded rod
+rod = Cylinder(radius=thread_diameter/2, height=support_height + thread_height)
+
+# Create threads on the rod
+threads = []
+for i in range(int(support_height / thread_pitch)):
+    thread = Box(thread_diameter * 0.8, thread_diameter * 0.8, thread_height)
+    thread = thread.locate(Placement((0, 0, i * thread_pitch)))
+    threads.append(thread)
+
+# Combine all parts for the crank assembly
+assembly = shaft + arm + rod
+for thread in threads:
+    assembly = assembly + thread
+
+# Create support structure
+support = Box(platform_width + 20, platform_length + 20, support_height)
+
+# Create clearance hole for the crank shaft
+clearance_hole = Cylinder(radius=crank_shaft_diameter/2 + 1, height=support_height)
+
+# Position the assembly within the support structure
+assembly = assembly.locate(Placement((0, 0, support_height - platform_height)))
+
+# Final parts list
+result = [platform, assembly, support]
