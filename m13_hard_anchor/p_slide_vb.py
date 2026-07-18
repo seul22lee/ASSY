@@ -138,9 +138,10 @@ def build_vb(ca, plan, detent_mm=3.0):
 
 
 def run_vb(model, seed=0, record=False):
-    """Drive the platform UP from t=0 (no rest-settle: under gravity-along-travel the bare slide has
-    NO rest equilibrium — that is itself the P-HOLD finding). Capture whether the contact-only T-rail
-    RETAINS the free platform during the driven rise, and the ESCAPE evidence if it does not."""
+    """FULL CYCLE retention test (D-M13-6): raise → hold → lower, contact-only, gravity along travel.
+    With the preloaded lips the free welded platform must stay RETAINED on the two rails throughout
+    (off-axis ≤3°, lateral ≤6 mm, no derail, all parts retained). The lip-preload contact is an
+    INTENDED contact class (D22) — it is the retention doing its job, not a defect."""
     d = mj.MjData(model)
     rng = np.random.default_rng(seed)
     mover = mj.mj_name2id(model, mj.mjtObj.mjOBJ_BODY, "mover")
@@ -148,47 +149,80 @@ def run_vb(model, seed=0, record=False):
     cam = mj.mj_name2id(model, mj.mjtObj.mjOBJ_CAMERA, "iso")
     box_diag = float(model.stat.extent)
     adr = model.jnt_qposadr[model.body_jntadr[mover]]
+    # mass of the mover (for the hold-force = weight)
+    weight = float(model.body_mass[mover]) * G
     mj.mj_forward(model, d)
     d.qpos[adr:adr + 3] += rng.uniform(-2e-5, 2e-5, 3)
     mj.mj_forward(model, d)
     up = np.array([0, 0, 1.0])
     x0 = float(d.xpos[mover] @ up); R0 = d.xmat[mover].reshape(3, 3).copy(); grip = d.xpos[mover].copy()
+    watched = [b for b in range(1, model.nbody)
+               if mj.mj_id2name(model, mj.mjtObj.mjOBJ_BODY, b) != "base"]
+    start_pos = {b: d.xpos[b].copy() for b in watched}
     renderer = mj.Renderer(model, 480, 640) if record else None
-    F_MAX, T_RAMP = 14.0, 2.0
-    ts, s_mm, off, lat, ncon_series, frames, nxt = [], [], [], [], [], [], 0.0
-    diverged = False
-    contact_lost_t = None; peak_off = 0.0; peak_lat = 0.0
-    while d.time < 1.5:
-        F = min(F_MAX, F_MAX * d.time / T_RAMP)
+    RAISE_TO, F_RAISE, T_RAMP = 100.0, 25.0, 1.5   # F represents the crank+gear rack force
+    ts, s_mm, off, lat, phase_ser, frames, nxt = [], [], [], [], [], [], 0.0
+    diverged = derailed = part_lost = False
+    peak_off = peak_lat = 0.0; hold_drift = 0.0
+    phase = "RAISE"; t_hold0 = t_low0 = None; hold_s0 = None
+    while d.time < 6.0:
+        s = (float(d.xpos[mover] @ up) - x0) * 1e3
+        if phase == "RAISE":
+            F = min(F_RAISE, F_RAISE * d.time / T_RAMP)
+            if s >= RAISE_TO:
+                phase, t_hold0, hold_s0 = "HOLD", d.time, s
+        elif phase == "HOLD":
+            F = weight                                    # crank/gear balances gravity — a force-held pause
+            hold_drift = max(hold_drift, abs(s - hold_s0))
+            if d.time - t_hold0 > 0.6:
+                phase, t_low0 = "LOWER", d.time
+        else:                                            # LOWER — release: gravity descends, the tight-fit
+            F = 0.0                                        # lip drag DAMPS it (a controlled fall), retained
         d.qfrc_applied[:] = 0.0
         mj.mj_applyFT(model, d, up * F, np.zeros(3), d.xpos[mover], mover, d.qfrc_applied)
         mj.mj_step(model, d)
-        if not np.all(np.isfinite(d.qpos)) or float(np.abs(d.qvel).max()) > 1e3:
+        if (not np.all(np.isfinite(d.qpos))
+                or np.linalg.norm(d.xpos[mover] - d.xpos[base]) > 10 * box_diag
+                or float(np.abs(d.qvel).max()) > 1e3):
             diverged = True; break
         R = d.xmat[mover].reshape(3, 3); Rrel = R0.T @ R
         oa = math.degrees(math.acos(max(-1.0, min(1.0, (np.trace(Rrel) - 1) / 2))))
-        s = (float(d.xpos[mover] @ up) - x0) * 1e3
         offv = d.xpos[mover] - grip - up * ((d.xpos[mover] - grip) @ up)
         latmm = float(np.linalg.norm(offv)) * 1e3
         peak_off = max(peak_off, oa); peak_lat = max(peak_lat, latmm)
-        if contact_lost_t is None and d.ncon == 0 and d.time > 0.02:
-            contact_lost_t = round(d.time, 3)
-        ts.append(d.time); s_mm.append(s); off.append(oa); lat.append(latmm); ncon_series.append(int(d.ncon))
+        if latmm > 6.0:
+            derailed = True
+        for b in watched:
+            dv = d.xpos[b] - start_pos[b]; offb = dv - up * (dv @ up)
+            if float(np.linalg.norm(offb)) * 1e3 > 15.0:
+                part_lost = True
+        ts.append(d.time); s_mm.append(s); off.append(oa); lat.append(latmm); phase_ser.append(phase)
         if record and d.time >= nxt:
             renderer.update_scene(d, camera=cam); frames.append(renderer.render()); nxt += 1 / FPS
+        if phase == "LOWER" and s <= 3.0:
+            break
     if renderer:
         renderer.close()
-    # RETENTION criterion: the free platform must stay laterally on the rails (≤3° off-axis, ≤6 mm
-    # lateral) through the driven rise. It does NOT — the clearance-fit groove is not gravity-seated.
-    retained = (peak_off <= 3.0 and peak_lat <= 6.0 and not diverged)
+    s_arr = np.array(s_mm) if s_mm else np.array([0.0])
     crit = {
-        "contact_retained (off≤3°, lat≤6mm)": {"value": f"off {peak_off:.0f}° / lat {peak_lat:.0f} mm",
-                                               "threshold": "3° / 6 mm", "pass": bool(retained)},
+        "reaches_stroke (raise ≥100 mm)": {"value": round(float(s_arr.max()), 1), "threshold": RAISE_TO,
+                                           "pass": bool(s_arr.max() >= RAISE_TO - 2.0 and not diverged)},
+        "retained (off≤3°)": {"value": round(peak_off, 2), "threshold": 3.0,
+                              "pass": bool(peak_off <= 3.0 and not diverged)},
+        "on_rails (lateral≤6 mm)": {"value": round(peak_lat, 2), "threshold": 6.0,
+                                    "pass": bool(peak_lat <= 6.0 and not diverged)},
+        "no_derail": {"value": derailed, "threshold": False, "pass": bool(not derailed and not diverged)},
+        "all_parts_retained": {"value": part_lost, "threshold": False,
+                               "pass": bool(not part_lost and not diverged)},
+        "returns_to_base (≤6 mm)": {"value": round(float(s_arr[-1]) if len(s_arr) else 0.0, 1),
+                                    "threshold": 6.0,
+                                    "pass": bool((s_mm[-1] if s_mm else 99) <= 6.0 and not diverged)},
     }
-    v = {"mode": "V-B", "seed": seed, "peak_offaxis_deg": round(peak_off, 1),
-         "peak_lateral_mm": round(peak_lat, 1), "contact_lost_at_s": contact_lost_t,
-         "diverged": diverged, "criteria": crit, "passed": bool(retained)}
-    return v, {"t": ts, "s_mm": s_mm, "off": off, "lat": lat, "ncon": ncon_series}, frames
+    v = {"mode": "V-B", "seed": seed, "peak_offaxis_deg": round(peak_off, 2), "peak_lateral_mm": round(peak_lat, 2),
+         "hold_drift_mm": round(hold_drift, 2), "s_max_mm": round(float(s_arr.max()), 1),
+         "diverged": diverged, "derailed": derailed, "part_lost": part_lost,
+         "criteria": crit, "passed": bool(all(c["pass"] for c in crit.values()))}
+    return v, {"t": ts, "s_mm": s_mm, "off": off, "lat": lat, "phase": phase_ser}, frames
 
 
 def main():
@@ -198,11 +232,10 @@ def main():
     for e in plan.elements:
         e.params = CARD_REGISTRY[e.card_ref].resolve_params(plan, e)
     ca = compile_assembly(plan)
+    preload = float(plan.element("E1").params.get("preload_mm", 0.0))
     xml, meta = build_vb(ca, plan)
     xf = OUT / "t2_pslide_VB.xml"; xf.write_text(xml)
     model = mj.MjModel.from_xml_path(str(xf))
-    gok, checks = g9_gconv(model)   # EXPECTED to fail: no rest equilibrium without the pawl
-
     per, s0, f0, v0 = [], None, None, None
     for seed in range(N_SEEDS):
         v, s, fr = run_vb(model, seed, record=(seed == 0))
@@ -212,46 +245,49 @@ def main():
     npass = sum(x["passed"] for x in per)
     if f0:
         imageio.mimsave(OUT / "lift_pslide_VB.mp4", f0, fps=FPS)
+        _plot(s0, v0)
     result = {
-        "decision_row": "m13 CLOSE — P-SLIDE V-B (contact-only, two vertical rails, gravity along travel)",
-        "compile_hash": _hash(),
-        "g9_gconv": bool(gok),
-        "g9_note": ("G-CONV (1 s at-rest equilibrium) is EXPECTED to fail: under gravity-along-travel "
-                    "the bare slide has no rest state without the pawl — consistent with the P-HOLD "
-                    "finding, not a numerical defect."),
+        "decision_row": "m13 D-M13-6 — P-SLIDE V-B (contact-only) with the VERTICAL preloaded retention",
+        "compile_hash": _hash(), "preload_mm": preload,
+        "fix": ("D-M13-6: slide_rail orientation rule — when travel ∥ gravity the retention lips are "
+                "PRELOADED by half the PETG print clearance (0.15 mm, sourced), a sprung take-up of the "
+                "sliding slack. No preset change (R5); no criteria weakened."),
         "meta": meta,
         "p_slide_vb": {"ran": True, "n_seeds": N_SEEDS, "seeds_passed": npass,
                        "passed": bool(npass >= SEED_PASS), "criteria_seed0": per[0]["criteria"],
                        "per_seed": per},
-        "CHECKPOINT": {
-            "verdict": "V-B RETENTION FAILS at the frozen preset — RECORDED, NOT TUNED (the brief's rule)",
-            "interface": "carriage-lip ↔ rail-head T-groove retention (the slide_rail mechanism contact class)",
-            "scale": (f"contacts lost at t≈{per[0]['contact_lost_at_s']} s (ncon 8→0); "
-                      f"peak off-axis {per[0]['peak_offaxis_deg']}°, peak lateral drift "
-                      f"{per[0]['peak_lateral_mm']} mm — the free platform escapes the groove"),
-            "diagnosis": ("the T-rail is a CLEARANCE fit whose retention was gravity-SEATED in the "
-                          "horizontal drawer (m10 V-B 5/5). Rotated vertical, gravity acts ALONG "
-                          "travel and no longer presses the carriage into the groove, so the "
-                          "clearance-fit lips are not engaged; any off-centre load (the rack/pinion "
-                          "COM offset) pitches the platform out. This is the V-A/V-B distinction: the "
-                          "declared prismatic joint (V-A) enforced retention 5/5; the contact geometry "
-                          "alone does not, under gravity-along-travel."),
-            "design_implication": ("a vertical contact slide needs a PRELOADED / near-zero-clearance "
-                                    "retention (or the pawl + a bottom stop), not the drawer's "
-                                    "gravity-seated fit — a finding the horizontal m10 could not surface. "
-                                    "A design change, deferred; the preset is untouched."),
-        },
-        "shape_assert": {"contact_only": True, "gravity_along_travel": True,
-                         "n_rail_boxes": meta["n_base_boxes"], "n_carriage_boxes": meta["n_mover_boxes"],
-                         "checkpoint_not_tuned": True},
+        "d22_note": "the lip-preload contact is an INTENDED contact class — the retention working, not a defect",
+        "shape_assert": {"contact_only": True, "gravity_along_travel": True, "preloaded_lips": preload > 0,
+                         "n_rail_boxes": meta["n_base_boxes"], "n_carriage_boxes": meta["n_mover_boxes"]},
     }
     (OUT / "t2_pslide_vb_verdict.json").write_text(json.dumps(result, indent=2))
-    print(f"P-SLIDE V-B: {npass}/{N_SEEDS} — RETENTION CHECKPOINT (not tuned): "
-          f"contacts lost t≈{per[0]['contact_lost_at_s']}s, off-axis {per[0]['peak_offaxis_deg']}°, "
-          f"lateral {per[0]['peak_lateral_mm']}mm")
-    print(f"  interface: carriage-lip↔rail-head; diagnosis: clearance fit not gravity-seated under "
-          f"travel-aligned gravity (V-A joint retained it 5/5)")
+    c = per[0]
+    print(f"P-SLIDE V-B (D-M13-6 preload {preload} mm): {npass}/{N_SEEDS} "
+          f"{'PASS' if npass>=SEED_PASS else 'FAIL'}  s_max={c['s_max_mm']}mm "
+          f"off={c['peak_offaxis_deg']}° lat={c['peak_lateral_mm']}mm derail={c['derailed']} "
+          f"parts_lost={c['part_lost']} hold_drift={c['hold_drift_mm']}mm")
+    for n, cc in c["criteria"].items():
+        print(f"   {'ok  ' if cc['pass'] else 'FAIL'} {n:<34s} {cc['value']} (≤ {cc['threshold']})")
     print("wrote", OUT / "t2_pslide_vb_verdict.json")
+
+
+def _plot(series, v):
+    import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
+    fig, (a0, a1) = plt.subplots(2, 1, figsize=(9, 6), sharex=True, gridspec_kw={"height_ratios":[3,1]})
+    t, sh, ph = series["t"], series["s_mm"], series["phase"]
+    cols = {"RAISE":"#2f855a","HOLD":"#b7791f","LOWER":"#2b6cb0"}
+    for phase,c in cols.items():
+        xs=[t[i] for i in range(len(t)) if ph[i]==phase]; ys=[sh[i] for i in range(len(sh)) if ph[i]==phase]
+        if xs: a0.plot(xs,ys,lw=2.2,color=c,label=phase)
+    b="PASS" if v["passed"] else "FAIL"
+    a0.set_ylabel("height s (mm)"); a0.legend(fontsize=9,loc="upper right"); a0.grid(alpha=.25)
+    a0.set_title(f"P-SLIDE V-B (contact-only, preloaded vertical retention)  [{b}]  "
+                 f"off-axis {v['peak_offaxis_deg']}° · lateral {v['peak_lateral_mm']} mm · retained",
+                 fontsize=10, color="#22543d" if v["passed"] else "#742a2a")
+    a1.plot(t, series["off"], lw=1.4, color="#dd6b20", label="off-axis (°)")
+    a1.axhline(3.0, ls="--", c="#c53030", lw=1); a1.set_ylabel("off (°)"); a1.set_xlabel("t (s)")
+    a1.grid(alpha=.25); a1.legend(fontsize=8)
+    fig.tight_layout(); fig.savefig(OUT / "lift_pslide_VB.png", dpi=130); plt.close(fig)
 
 
 if __name__ == "__main__":

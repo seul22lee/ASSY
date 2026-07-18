@@ -77,9 +77,44 @@ def test_engagement_rule_and_drawer_equality():
     assert abs(g.drawer_w(100.0) - (100.0 - 2 * (g.rail_w + g.clearance))) < 1e-6
 
 
+def test_vertical_travel_tightens_retention_gap():
+    """D-M13-6: when travel ∥ gravity, the retention lips run at a TIGHT stop gap (sourced
+    print_clearance/4), not the loose gravity-seated sliding clearance — so the platform stays on the
+    rails without gravity seating it. Horizontal (preload=0) is UNCHANGED."""
+    from knowledge.cards.slide_rail import collision_primitives
+    horiz = type("I", (), {"params": {"rail_w": 8.0, "rail_h": 8.0, "clearance": 0.35,
+                                       "stroke": 120.0}, "id": "E1"})()
+    vert = type("I", (), {"params": {"rail_w": 8.0, "rail_h": 8.0, "clearance": 0.35,
+                                     "stroke": 120.0, "preload_mm": 0.075}, "id": "E1"})()
+    # the lip Y-position encodes the retention gap: tighter (smaller |y|) under preload
+    def lip_y(prims):
+        lips = [pr for pr in prims if abs(pr["pos"][1]) > 0]   # any off-centre carriage box
+        return max(abs(pr["pos"][1]) for pr in prims if pr["owner"] == "carriage")
+    ph, pv = collision_primitives(horiz, 120.0), collision_primitives(vert, 120.0)
+    assert lip_y(pv) < lip_y(ph), "vertical retention must pull the lips/sides IN (tighter gap)"
+
+
+def test_vertical_rule_fires_from_axis_hint():
+    """slide_rail.resolve_params sets the sourced preload only for a VERTICAL (travel∥gravity) slide."""
+    from knowledge.cards.base import CARD_REGISTRY
+    from ontology.schema import Behavior, MotionSpec
+    card = CARD_REGISTRY["slide_rail"]
+    class _Ir:
+        def __init__(self, hint):
+            self.behaviors = [Behavior(id="B1", phase="use", realized_by="E1",
+                              motion=MotionSpec(kind="translation", axis_hint=hint,
+                                                range_value=120.0, range_unit="mm", bound="min"))]
+    inst = type("I", (), {"id": "E1", "params": {"stroke": 120.0}})()
+    v = card.resolve_params(_Ir("vertical"), inst)
+    h = card.resolve_params(_Ir("horizontal"), type("I", (), {"id": "E1", "params": {"stroke": 120.0}})())
+    assert v.get("preload_mm", 0) > 0, "vertical must set a preload"
+    assert h.get("preload_mm", 0) == 0, "horizontal must NOT set a preload"
+
+
 if __name__ == "__main__":
     fns = [test_carriage_is_one_connected_solid, test_carriage_com_is_over_the_rail,
-           test_t_rail_retains_on_lift_and_slides_free, test_engagement_rule_and_drawer_equality]
+           test_t_rail_retains_on_lift_and_slides_free, test_engagement_rule_and_drawer_equality,
+           test_vertical_travel_tightens_retention_gap, test_vertical_rule_fires_from_axis_hint]
     for f in fns:
         f()
     print(f"{len(fns)}/{len(fns)} passed  — carriage is one connected solid, COM over rail, T-rail "

@@ -438,7 +438,11 @@ class SlideRailCard(MechanicalElementCard):
         "load (§3.5); that engagement eats depth the payload wanted. The rail/carriage clearance "
         "is a functional clearance a generic mesh approximation destroys, so the card must supply "
         "its own collision decomposition (D18).\n"
-        "Do NOT use for rotation (see pin_hinge).")
+        "Do NOT use for rotation (see pin_hinge)."
+        "ORIENTATION (D-M13-6): a HORIZONTAL slide is gravity-seated — the lips catch on lift "
+        "with the sliding clearance c. A VERTICAL slide (travel ∥ gravity) is NOT gravity-seated, "
+        "so resolve_params tightens the retention STOP gap to a quarter of the PETG print clearance (0.075 mm); the lip "
+        "catches within that tight gap on any wobble (a retention stop), independent of gravity direction.")
     citations = [Citation(doc="MECHSYNTH_SPEC_v0.1", section="§3.5 Card 3 — slide_rail")]
     ports = [_p("rail_mount", "face"), _p("carriage_mount", "face"), _p("travel_axis", "axis")]
 
@@ -474,6 +478,20 @@ class SlideRailCard(MechanicalElementCard):
         out.setdefault("rail_w", 8.0)
         out.setdefault("rail_h", 8.0)
         out.setdefault("clearance", 0.35)
+        # D-M13-6 ORIENTATION RULE: when travel ∥ gravity (a VERTICAL lift, not a horizontal drawer),
+        # gravity no longer seats the carriage in the groove, so the retention lips are PRELOADED.
+        # The preload is SOURCED, not invented: it uses a QUARTER of the PETG print clearance (a retention STOP face bears only on wobble,
+        # not during travel, so it tolerates a gap tighter than the sliding fit): 0.30/4 = 0.075 mm.
+        # A tight positive gap (NOT interference — an interference on the rigid stops jams them, the
+        # PETG leaf's compliance can't be modelled at the frozen stiff preset R5) catches the pitch
+        # before the platform escapes the groove. Detected from the realized translation behaviour's
+        # axis_hint (vertical / travel-parallel-to-gravity).
+        b = next((x for x in ir.behaviors if x.realized_by == inst.id
+                  and getattr(x.motion.kind, "value", x.motion.kind) == "translation"), None)
+        hint = (getattr(b.motion, "axis_hint", "") or "") if b is not None else ""
+        if "vert" in hint.lower():
+            from knowledge.materials import PETG
+            out.setdefault("preload_mm", round(PETG.print_clearance_mm / 4.0, 3))   # 0.075 mm, sourced
         return out
 
     def verification(self, ir, inst):

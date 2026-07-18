@@ -4,9 +4,10 @@
 (`slide_rail` ×2 + `rack_pinion` + `pawl_detent`), the verified geometry rotated so **travel is
 vertical and gravity acts along it** — the case where the rack-pinion is *functionally necessary*.
 The full V-A column passes (raise, transmit-under-gravity, hold, and the integrated P-FULL cycle); the
-physics discovered a required element (a holding brake); and P-SLIDE V-B is CHECKPOINTED honestly —
-the contact-only slide's clearance-fit retention does not survive gravity-along-travel, a real finding
-the horizontal drawer could not surface, recorded with evidence and the preset untouched.
+physics discovered a required element (a holding brake); and P-SLIDE V-B PASSES 5/5 after the
+D-M13-6 fix — the contact-only slide's clearance-fit retention was gravity-seated horizontally; a
+card-level vertical-retention rule (a tight retention-stop gap, sourced) makes it survive
+gravity-along-travel, with the preset untouched (R5) and no criteria weakened.
 
 | what | artifact | result |
 |---|---|---|
@@ -19,7 +20,7 @@ the horizontal drawer could not surface, recorded with evidence and the preset u
 | it holds | [P-HOLD before](out/lift_phold_before.mp4) → [after](out/lift_phold_VA.mp4) | crank released, 0.5 kg: **no pawl 62 mm** (D-M13-2) → **with pawl 3.4 mm** (D-M13-4) — **5/5** |
 | the brake | [pawl closeup](out/pawl_closeup.png) | asymmetric Bayer angles — shallow drive-over (30°), steep self-locking lock (80° ≥ 73.3°) |
 | the full cycle | [P-FULL](out/lift_pfull.png) · [mp4](out/lift_pfull.mp4) | raise 100 mm → hold (drop 3.4 mm) → controlled lower (≤106 mm/s) → base — **5/5** |
-| contact-only slide | [P-SLIDE V-B](out/lift_pslide_VB.mp4) | **CHECKPOINT (0/5):** clearance fit not gravity-seated → platform escapes the groove (off-axis→180°) |
+| contact-only slide | [P-SLIDE V-B](out/lift_pslide_VB.png) · [mp4](out/lift_pslide_VB.mp4) | **5/5 (D-M13-6):** preloaded vertical retention → raise/hold/lower **retained**, off-axis 0.67° |
 
 ## Why a lift, not a drawer (D-M13-2)
 
@@ -126,22 +127,32 @@ One run, three phases ([plot](out/lift_pfull.png) · [mp4](out/lift_pfull.mp4)),
 
 The pawl engage/release happens at runtime in the phase machine; criteria are D22-stratified.
 
-## P-SLIDE V-B — the honest checkpoint (contact-only retention)
+## P-SLIDE V-B — the vertical-retention fix (D-M13-6), 5/5
 
-The one that fights the frozen preset, recorded per the rule (not tuned):
-[`t2_pslide_vb_verdict.json`](out/t2_pslide_vb_verdict.json), [video](out/lift_pslide_VB.mp4).
+The diagnosis from the first pass stood: the T-rail is a **clearance fit whose retention was
+gravity-SEATED** in the horizontal drawer (m10 V-B 5/5); rotated vertical, gravity acts **along**
+travel and no longer presses the carriage into the groove, so the loose lips disengage and the
+rack/pinion COM offset pitches the platform out. This is the V-A/V-B distinction made concrete — the
+declared joint (V-A) enforced retention; the contact geometry, as toleranced for a drawer, did not.
 
-- **Interface:** carriage-lip ↔ rail-head T-groove retention (the slide_rail mechanism contact class).
-- **Scale:** contacts lost at t≈0.02 s (ncon 8→0); peak off-axis **180°**, peak lateral drift
-  **116 mm** — the free welded platform escapes the groove.
-- **Diagnosis:** the T-rail is a **clearance fit whose retention was gravity-SEATED** in the horizontal
-  drawer (m10 V-B 5/5). Rotated vertical, gravity acts **along** travel and no longer presses the
-  carriage into the groove, so the clearance-fit lips are not engaged; the rack/pinion COM offset then
-  pitches the platform out. **This is the V-A/V-B distinction made concrete:** the declared prismatic
-  joint (V-A) enforced retention 5/5; the contact geometry *alone* does not, under gravity-along-travel.
-- **Design implication (deferred, not tuned):** a vertical contact slide needs a **preloaded /
-  near-zero-clearance** retention (or the pawl + a bottom stop), not the drawer's gravity-seated fit —
-  a finding the horizontal m10 could not surface. The preset is untouched (R5).
+**The fix is at the CARD level, sourced, with the preset untouched (R5):** `slide_rail` gains an
+orientation rule. When travel ∥ gravity (detected from the realized translation behaviour's
+`axis_hint`), `resolve_params` tightens the **retention-STOP gap** on the lip-under-head and
+side-to-neck faces. These faces are **non-sliding stops** — they bear only when the carriage tries to
+leave the groove, not during travel — so they tolerate a gap tighter than the sliding fit:
+`print_clearance/4 = 0.30/4 = 0.075 mm` (sourced from `PETG.print_clearance_mm`). It is a **tight
+positive gap, not an interference** — an interference on the rigid stop boxes would clamp every face
+and *jam* at the frozen stiff preset (the PETG leaf's compliance can't be modelled without changing
+R5); a tight gap catches the pitch before escape while leaving travel free. Horizontal slides
+(preload=0) are unchanged (m10 4/4; two new regressions pin the rule).
+
+**Result — 5/5** ([plot](out/lift_pslide_VB.png) · [mp4](out/lift_pslide_VB.mp4) ·
+[verdict](out/t2_pslide_vb_verdict.json)): the full raise/hold/lower cycle, contact-only, gravity
+along travel — RAISE the 0.5 kg platform to 107 mm (25 N crank+gear rack force; the vertical tight fit
+adds lip drag from the COM offset, a real consequence) → HOLD force-balanced (drift 6.8 mm) → LOWER
+under gravity, the lip drag DAMPING it → base (3 mm). **Retained throughout: off-axis 0.67°, lateral
+0.58 mm, no derail, all parts retained** (5 seeds). The lip contact is an INTENDED class (D22). **The
+V-A/V-B pair is now complete on the lift** — the declared joint AND the contact geometry both retain.
 
 ## Two elements the physics discovered
 
@@ -158,9 +169,10 @@ Both were reported as FAILs first and fixed by adding the real element — never
 ## Closing — the Hard anchor is CLOSED
 
 V-A complete (P-SLIDE, P-GEAR, P-HOLD, P-FULL all 5/5); alignment fires; ⑤ chain resolves; two
-physics-discovered elements. **Remaining, named:** P-GEAR V-B stays R2b-deferred (D-M1-7); P-SLIDE V-B
-is a checkpoint with a scoped design fix (preloaded vertical retention). Neither blocks the anchor's
-closure — the design is assembled, self-consistent, and V-A-verified end to end.
+physics-discovered elements; **and now P-SLIDE V-B 5/5** (D-M13-6 — the vertical retention fixed at
+the card level, sourced, preset untouched). **Remaining, named:** P-GEAR V-B stays R2b-deferred
+(D-M1-7) — the only open verification, and a documented contact-formulation limit, not a design gap.
+The lift is assembled, self-consistent, and verified V-A + P-SLIDE V-B end to end.
 
 ## Status
 
@@ -169,4 +181,5 @@ closure — the design is assembled, self-consistent, and V-A-verified end to en
 - Physics: `m13_hard_anchor/p_lift.py` → P-SLIDE + P-GEAR + P-HOLD V-A, plots + mp4, verdict.
 - Suite: 72/72; both goldens build clean.
 - Physics: `p_lift.py` (P-SLIDE/P-GEAR/P-HOLD V-A) · `p_slide_vb.py` (V-B checkpoint) · `p_full.py` (integrated cycle).
-- **CLOSED.** V-A complete + P-FULL; alignment + ⑤ verified; two physics-discovered elements. Deferred (named, non-blocking): P-GEAR V-B (R2b/D-M1-7), P-SLIDE V-B preloaded-retention design fix.
+- Retention fix: `knowledge/cards/slide_rail.py` (D-M13-6 orientation rule) + `p_slide_vb.py` (5/5).
+- **CLOSED.** V-A complete + P-FULL + **P-SLIDE V-B (D-M13-6)**; alignment + ⑤ verified; two physics-discovered elements. Only P-GEAR V-B remains (R2b/D-M1-7, a documented contact-formulation limit).

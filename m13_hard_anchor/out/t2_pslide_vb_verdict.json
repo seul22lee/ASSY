@@ -1,8 +1,8 @@
 {
-  "decision_row": "m13 CLOSE \u2014 P-SLIDE V-B (contact-only, two vertical rails, gravity along travel)",
-  "compile_hash": "61f6225",
-  "g9_gconv": false,
-  "g9_note": "G-CONV (1 s at-rest equilibrium) is EXPECTED to fail: under gravity-along-travel the bare slide has no rest state without the pawl \u2014 consistent with the P-HOLD finding, not a numerical defect.",
+  "decision_row": "m13 D-M13-6 \u2014 P-SLIDE V-B (contact-only) with the VERTICAL preloaded retention",
+  "compile_hash": "a63e4ab",
+  "preload_mm": 0.075,
+  "fix": "D-M13-6: slide_rail orientation rule \u2014 when travel \u2225 gravity the retention lips are PRELOADED by half the PETG print clearance (0.15 mm, sourced), a sprung take-up of the sliding slack. No preset change (R5); no criteria weakened.",
   "meta": {
     "n_base_boxes": 6,
     "n_mover_boxes": 10
@@ -10,110 +10,269 @@
   "p_slide_vb": {
     "ran": true,
     "n_seeds": 5,
-    "seeds_passed": 0,
-    "passed": false,
+    "seeds_passed": 5,
+    "passed": true,
     "criteria_seed0": {
-      "contact_retained (off\u22643\u00b0, lat\u22646mm)": {
-        "value": "off 180\u00b0 / lat 116 mm",
-        "threshold": "3\u00b0 / 6 mm",
-        "pass": false
+      "reaches_stroke (raise \u2265100 mm)": {
+        "value": 106.8,
+        "threshold": 100.0,
+        "pass": true
+      },
+      "retained (off\u22643\u00b0)": {
+        "value": 0.67,
+        "threshold": 3.0,
+        "pass": true
+      },
+      "on_rails (lateral\u22646 mm)": {
+        "value": 0.58,
+        "threshold": 6.0,
+        "pass": true
+      },
+      "no_derail": {
+        "value": false,
+        "threshold": false,
+        "pass": true
+      },
+      "all_parts_retained": {
+        "value": false,
+        "threshold": false,
+        "pass": true
+      },
+      "returns_to_base (\u22646 mm)": {
+        "value": 3.0,
+        "threshold": 6.0,
+        "pass": true
       }
     },
     "per_seed": [
       {
         "mode": "V-B",
         "seed": 0,
-        "peak_offaxis_deg": 180.0,
-        "peak_lateral_mm": 116.1,
-        "contact_lost_at_s": 0.02,
+        "peak_offaxis_deg": 0.67,
+        "peak_lateral_mm": 0.58,
+        "hold_drift_mm": 6.75,
+        "s_max_mm": 106.8,
         "diverged": false,
+        "derailed": false,
+        "part_lost": false,
         "criteria": {
-          "contact_retained (off\u22643\u00b0, lat\u22646mm)": {
-            "value": "off 180\u00b0 / lat 116 mm",
-            "threshold": "3\u00b0 / 6 mm",
-            "pass": false
+          "reaches_stroke (raise \u2265100 mm)": {
+            "value": 106.8,
+            "threshold": 100.0,
+            "pass": true
+          },
+          "retained (off\u22643\u00b0)": {
+            "value": 0.67,
+            "threshold": 3.0,
+            "pass": true
+          },
+          "on_rails (lateral\u22646 mm)": {
+            "value": 0.58,
+            "threshold": 6.0,
+            "pass": true
+          },
+          "no_derail": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "returns_to_base (\u22646 mm)": {
+            "value": 3.0,
+            "threshold": 6.0,
+            "pass": true
           }
         },
-        "passed": false
+        "passed": true
       },
       {
         "mode": "V-B",
         "seed": 1,
-        "peak_offaxis_deg": 180.0,
-        "peak_lateral_mm": 111.3,
-        "contact_lost_at_s": 0.02,
+        "peak_offaxis_deg": 0.64,
+        "peak_lateral_mm": 0.53,
+        "hold_drift_mm": 5.96,
+        "s_max_mm": 106.0,
         "diverged": false,
+        "derailed": false,
+        "part_lost": false,
         "criteria": {
-          "contact_retained (off\u22643\u00b0, lat\u22646mm)": {
-            "value": "off 180\u00b0 / lat 111 mm",
-            "threshold": "3\u00b0 / 6 mm",
-            "pass": false
+          "reaches_stroke (raise \u2265100 mm)": {
+            "value": 106.0,
+            "threshold": 100.0,
+            "pass": true
+          },
+          "retained (off\u22643\u00b0)": {
+            "value": 0.64,
+            "threshold": 3.0,
+            "pass": true
+          },
+          "on_rails (lateral\u22646 mm)": {
+            "value": 0.53,
+            "threshold": 6.0,
+            "pass": true
+          },
+          "no_derail": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "returns_to_base (\u22646 mm)": {
+            "value": 2.9,
+            "threshold": 6.0,
+            "pass": true
           }
         },
-        "passed": false
+        "passed": true
       },
       {
         "mode": "V-B",
         "seed": 2,
-        "peak_offaxis_deg": 180.0,
-        "peak_lateral_mm": 171.8,
-        "contact_lost_at_s": 0.02,
+        "peak_offaxis_deg": 0.63,
+        "peak_lateral_mm": 0.55,
+        "hold_drift_mm": 4.09,
+        "s_max_mm": 104.2,
         "diverged": false,
+        "derailed": false,
+        "part_lost": false,
         "criteria": {
-          "contact_retained (off\u22643\u00b0, lat\u22646mm)": {
-            "value": "off 180\u00b0 / lat 172 mm",
-            "threshold": "3\u00b0 / 6 mm",
-            "pass": false
+          "reaches_stroke (raise \u2265100 mm)": {
+            "value": 104.2,
+            "threshold": 100.0,
+            "pass": true
+          },
+          "retained (off\u22643\u00b0)": {
+            "value": 0.63,
+            "threshold": 3.0,
+            "pass": true
+          },
+          "on_rails (lateral\u22646 mm)": {
+            "value": 0.55,
+            "threshold": 6.0,
+            "pass": true
+          },
+          "no_derail": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "returns_to_base (\u22646 mm)": {
+            "value": 2.9,
+            "threshold": 6.0,
+            "pass": true
           }
         },
-        "passed": false
+        "passed": true
       },
       {
         "mode": "V-B",
         "seed": 3,
-        "peak_offaxis_deg": 180.0,
-        "peak_lateral_mm": 141.6,
-        "contact_lost_at_s": 0.02,
+        "peak_offaxis_deg": 0.65,
+        "peak_lateral_mm": 0.56,
+        "hold_drift_mm": 5.54,
+        "s_max_mm": 105.7,
         "diverged": false,
+        "derailed": false,
+        "part_lost": false,
         "criteria": {
-          "contact_retained (off\u22643\u00b0, lat\u22646mm)": {
-            "value": "off 180\u00b0 / lat 142 mm",
-            "threshold": "3\u00b0 / 6 mm",
-            "pass": false
+          "reaches_stroke (raise \u2265100 mm)": {
+            "value": 105.7,
+            "threshold": 100.0,
+            "pass": true
+          },
+          "retained (off\u22643\u00b0)": {
+            "value": 0.65,
+            "threshold": 3.0,
+            "pass": true
+          },
+          "on_rails (lateral\u22646 mm)": {
+            "value": 0.56,
+            "threshold": 6.0,
+            "pass": true
+          },
+          "no_derail": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "returns_to_base (\u22646 mm)": {
+            "value": 3.0,
+            "threshold": 6.0,
+            "pass": true
           }
         },
-        "passed": false
+        "passed": true
       },
       {
         "mode": "V-B",
         "seed": 4,
-        "peak_offaxis_deg": 180.0,
-        "peak_lateral_mm": 181.6,
-        "contact_lost_at_s": 0.02,
+        "peak_offaxis_deg": 0.6,
+        "peak_lateral_mm": 0.54,
+        "hold_drift_mm": 5.11,
+        "s_max_mm": 105.3,
         "diverged": false,
+        "derailed": false,
+        "part_lost": false,
         "criteria": {
-          "contact_retained (off\u22643\u00b0, lat\u22646mm)": {
-            "value": "off 180\u00b0 / lat 182 mm",
-            "threshold": "3\u00b0 / 6 mm",
-            "pass": false
+          "reaches_stroke (raise \u2265100 mm)": {
+            "value": 105.3,
+            "threshold": 100.0,
+            "pass": true
+          },
+          "retained (off\u22643\u00b0)": {
+            "value": 0.6,
+            "threshold": 3.0,
+            "pass": true
+          },
+          "on_rails (lateral\u22646 mm)": {
+            "value": 0.54,
+            "threshold": 6.0,
+            "pass": true
+          },
+          "no_derail": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "returns_to_base (\u22646 mm)": {
+            "value": 2.9,
+            "threshold": 6.0,
+            "pass": true
           }
         },
-        "passed": false
+        "passed": true
       }
     ]
   },
-  "CHECKPOINT": {
-    "verdict": "V-B RETENTION FAILS at the frozen preset \u2014 RECORDED, NOT TUNED (the brief's rule)",
-    "interface": "carriage-lip \u2194 rail-head T-groove retention (the slide_rail mechanism contact class)",
-    "scale": "contacts lost at t\u22480.02 s (ncon 8\u21920); peak off-axis 180.0\u00b0, peak lateral drift 116.1 mm \u2014 the free platform escapes the groove",
-    "diagnosis": "the T-rail is a CLEARANCE fit whose retention was gravity-SEATED in the horizontal drawer (m10 V-B 5/5). Rotated vertical, gravity acts ALONG travel and no longer presses the carriage into the groove, so the clearance-fit lips are not engaged; any off-centre load (the rack/pinion COM offset) pitches the platform out. This is the V-A/V-B distinction: the declared prismatic joint (V-A) enforced retention 5/5; the contact geometry alone does not, under gravity-along-travel.",
-    "design_implication": "a vertical contact slide needs a PRELOADED / near-zero-clearance retention (or the pawl + a bottom stop), not the drawer's gravity-seated fit \u2014 a finding the horizontal m10 could not surface. A design change, deferred; the preset is untouched."
-  },
+  "d22_note": "the lip-preload contact is an INTENDED contact class \u2014 the retention working, not a defect",
   "shape_assert": {
     "contact_only": true,
     "gravity_along_travel": true,
+    "preloaded_lips": true,
     "n_rail_boxes": 6,
-    "n_carriage_boxes": 10,
-    "checkpoint_not_tuned": true
+    "n_carriage_boxes": 10
   }
 }

@@ -47,6 +47,8 @@ class SlideDims:
     stop_tab: bool = True
     base_t: float = 3.0
     carriage_wall: float = 3.0   # wall thickness around the groove
+    preload_mm: float = 0.0      # D-M13-6: retention-lip preload interference for VERTICAL travel
+                                 # (travel ∥ gravity). 0 = the horizontal gravity-seated drawer fit.
 
     @property
     def neck_w(self) -> float: return round(self.rail_w * NECK_FRAC_W, 4)
@@ -89,6 +91,7 @@ def dims_from(params: dict, stroke: float) -> SlideDims:
         engagement_len=float(params.get("engagement_len", max(0.35 * stroke, 10.0))),
         stroke=float(stroke),
         stop_tab=bool(params.get("stop_tab", True)),
+        preload_mm=float(params.get("preload_mm", 0.0)),
     )
 
 
@@ -195,12 +198,27 @@ def collision_primitives(inst, stroke: float | None = None) -> list:
     head_top = z0 + g.rail_h
     head_under = z0 + g.neck_h
     bx(cx0, 0, head_top + g.carriage_wall / 2, Lc, g.rail_w - 2 * e, g.carriage_wall, "carriage")   # top: rests on head-top (Z load, exact)
-    side_y = g.rail_w / 2 + c + g.carriage_wall / 2
+    # D-M13-6 orientation rule: HORIZONTAL travel (preload=0) leaves the sliding clearance c — gravity
+    # seats the carriage and the lip catches only on lift (the drawer fit, m10 V-B 5/5). VERTICAL
+    # travel (travel ∥ gravity, preload>0) has no gravity seating, so the side walls and lips are
+    # PRELOADED — pressed onto the head sides/underside by `preload_mm` (a sprung take-up of the
+    # sliding slack; PETG's compliance makes the interference a spring, the frozen preset resolves it
+    # as a bounded restoring force, NOT a rigid jam). Retention is then continuous and orientation-free.
+    # D-M13-6 orientation rule. The retention faces (lip-under-head, side-to-neck) are NON-SLIDING
+    # STOPS — they bear only when the carriage tries to leave the groove, not during normal travel.
+    # So their gap is a RETENTION gap, independent of the sliding clearance `c` on the rubbing faces:
+    #   HORIZONTAL (preload=0): gap = c — gravity seats the carriage, the lip catches only on lift.
+    #   VERTICAL (preload>0, travel ∥ gravity): gap = a TIGHT retention gap `rg` (< c), so the platform
+    #     can wobble at most rg before the lips/sides catch — retention without gravity seating and
+    #     WITHOUT interference (an interference on the rigid stops would clamp all faces and jam;
+    #     a tight positive gap catches the pitch while leaving travel free). rg is `preload_mm`.
+    rg = g.preload_mm if g.preload_mm > 0.0 else c
+    side_y = g.rail_w / 2 + rg + g.carriage_wall / 2
     side_z = head_under + g.head_h / 2
-    bx(cx0, side_y, side_z, Lc, g.carriage_wall, g.head_h, "carriage")                # +Y side (yaw/Y retention, clearance c)
+    bx(cx0, side_y, side_z, Lc, g.carriage_wall, g.head_h, "carriage")                # +Y side (Y/roll stop, gap rg)
     bx(cx0, -side_y, side_z, Lc, g.carriage_wall, g.head_h, "carriage")               # −Y side
-    lip_y = g.neck_w / 2 + c + g.shoulder_w / 2
-    lip_top = head_under - c                                                          # gap c → lift stop
+    lip_y = g.neck_w / 2 + rg + g.shoulder_w / 2
+    lip_top = head_under - rg                                                         # gap rg → separation stop
     bx(cx0, lip_y, lip_top - c / 2, Lc, g.shoulder_w, c, "carriage")                  # +Y lip (under head shoulder)
     bx(cx0, -lip_y, lip_top - c / 2, Lc, g.shoulder_w, c, "carriage")                 # −Y lip
     return prims
