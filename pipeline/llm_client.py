@@ -80,44 +80,56 @@ def _gemini_key() -> str:
     return k
 
 
-def _gemini_pick_model() -> str:
-    """Pick the current PRO-TIER Gemini text model by ASKING the API, not by hardcoding a guess
-    that silently rots. The exact resolved string is logged into stage_log for every call.
-
-    Explicit over clever: a first attempt ranked on "contains 'pro'" and chose
-    `deep-research-pro-preview` — a different PRODUCT that happens to share the word. So the rule is
-    now a denylist of non-text/other-product families plus a version sort, and it is stated rather
-    than inferred. Set MECHSYNTH_LLM_MODEL to override and skip resolution entirely.
-    """
-    global _GEMINI_RESOLVED
-    if _GEMINI_RESOLVED:
-        return _GEMINI_RESOLVED
+def _gemini_list_text_models() -> list[str]:
+    """Names of Gemini models that expose generateContent — a metadata call (NOT a generation, so it
+    consumes no token quota and is safe as a free-tier reachability probe)."""
     req = urllib.request.Request(f"{GEMINI_BASE}/models?key={_gemini_key()}")
     try:
         with urllib.request.urlopen(req, timeout=60) as r:
             models = json.load(r).get("models", [])
     except Exception as e:
         raise LLMBackendError(_redact(f"could not list Gemini models: {type(e).__name__}: {e}")) from e
-    names = [m["name"].split("/", 1)[-1] for m in models
-             if "generateContent" in (m.get("supportedGenerationMethods") or [])]
+    return [m["name"].split("/", 1)[-1] for m in models
+            if "generateContent" in (m.get("supportedGenerationMethods") or [])]
+
+
+def _gemini_pick_model(tier: str = "") -> str:
+    """Pick the current Gemini text model of a TIER (pro | flash) by ASKING the API, not by hardcoding
+    a guess that silently rots. The exact resolved string is logged into stage_log for every call.
+
+    Tier is MECHSYNTH_LLM_TIER (default pro, D-E-8). Flash is the FREE-TIER workhorse (D-M16-5):
+    generous free quota, so the m15 bulk cells can run on it if it holds the bindings.
+
+    Explicit over clever: a first attempt ranked on "contains 'pro'" and chose
+    `deep-research-pro-preview` — a different PRODUCT that happens to share the word. So the rule is
+    now a denylist of non-text/other-product families plus a version sort, and it is stated rather
+    than inferred. Set MECHSYNTH_LLM_MODEL to override and skip resolution entirely.
+    """
+    tier = (tier or os.environ.get("MECHSYNTH_LLM_TIER", "pro")).lower()
+    if tier not in ("pro", "flash"):
+        raise LLMBackendError(f"MECHSYNTH_LLM_TIER must be 'pro' or 'flash', got {tier!r}")
+    if _GEMINI_RESOLVED.get(tier):
+        return _GEMINI_RESOLVED[tier]
+    names = _gemini_list_text_models()
     # not general text models / not the same product line
     DENY = ("image", "tts", "audio", "vision", "embedding", "aqa", "customtools",
             "deep-research", "lyria", "nano-banana", "robotics", "omni", "live")
-    pro = [n for n in names
-           if n.startswith("gemini-") and "-pro" in n and not any(d in n for d in DENY)]
-    if not pro:
-        raise LLMBackendError(f"no pro-tier Gemini text model exposes generateContent; saw {names[:15]}")
+    want = f"-{tier}"
+    cands = [n for n in names
+             if n.startswith("gemini-") and want in n and not any(d in n for d in DENY)]
+    if not cands:
+        raise LLMBackendError(f"no {tier}-tier Gemini text model exposes generateContent; saw {names[:15]}")
 
     def version(n: str) -> float:
         m = re.search(r"gemini-(\d+(?:\.\d+)?)", n)
         return float(m.group(1)) if m else 0.0
 
     # highest version wins; among equals prefer the shorter (plain) name over decorated variants.
-    _GEMINI_RESOLVED = sorted(pro, key=lambda n: (version(n), -len(n)), reverse=True)[0]
-    return _GEMINI_RESOLVED
+    _GEMINI_RESOLVED[tier] = sorted(cands, key=lambda n: (version(n), -len(n)), reverse=True)[0]
+    return _GEMINI_RESOLVED[tier]
 
 
-_GEMINI_RESOLVED = ""
+_GEMINI_RESOLVED: dict[str, str] = {}
 
 
 @dataclass
@@ -170,19 +182,46 @@ def _redact(text: str) -> str:
     return text
 
 
+# Free-tier reality (D-M16-5): a free Gemini/OpenAI key is RATE-LIMITED, not paid — the server
+# answers 429 (quota) or 503 (overloaded) instead of billing. So the ONLY thing standing between
+# "free tier" and "works" is backoff. These transient statuses are retried with exponential backoff,
+# honouring a Retry-After header when the server sends one; everything else fails fast (a 400 is a
+# bug, not a wait). Tunable via env so a latency-tolerant free-tier run can wait longer.
+_BACKOFF_STATUSES = {429, 500, 503}
+_BACKOFF_MAX = int(os.environ.get("MECHSYNTH_LLM_BACKOFF_RETRIES", "6"))
+_BACKOFF_BASE = float(os.environ.get("MECHSYNTH_LLM_BACKOFF_BASE", "2.0"))   # seconds
+_BACKOFF_CAP = float(os.environ.get("MECHSYNTH_LLM_BACKOFF_CAP", "90.0"))    # seconds
+
+
 def _post(url: str, payload: dict, timeout: int) -> dict:
-    req = urllib.request.Request(url, data=json.dumps(payload).encode(),
-                                 headers={"Content-Type": "application/json"})
+    data = json.dumps(payload).encode()
     key = os.environ.get("MECHSYNTH_LLM_API_KEY")
-    if key:
-        req.add_header("Authorization", f"Bearer {key}")
-    try:
-        with urllib.request.urlopen(req, timeout=timeout) as r:
-            return json.load(r)
-    except urllib.error.HTTPError as e:
-        raise LLMBackendError(_redact(f"HTTP {e.code} from {url}: {e.read()[:300]!r}")) from e
-    except Exception as e:
-        raise LLMBackendError(_redact(f"{type(e).__name__} calling {url}: {e}")) from e
+    for attempt in range(_BACKOFF_MAX + 1):
+        req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
+        if key:
+            req.add_header("Authorization", f"Bearer {key}")
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                return json.load(r)
+        except urllib.error.HTTPError as e:
+            body = e.read()[:300]
+            if e.code in _BACKOFF_STATUSES and attempt < _BACKOFF_MAX:
+                # prefer the server's own Retry-After; else exponential backoff, capped.
+                ra = e.headers.get("Retry-After") if e.headers else None
+                try:
+                    wait = float(ra) if ra else min(_BACKOFF_CAP, _BACKOFF_BASE * (2 ** attempt))
+                except ValueError:
+                    wait = min(_BACKOFF_CAP, _BACKOFF_BASE * (2 ** attempt))
+                time.sleep(wait)
+                continue
+            raise LLMBackendError(_redact(f"HTTP {e.code} from {url}: {body!r}")) from e
+        except Exception as e:
+            # network hiccups (timeout, reset) are transient too — back off and retry.
+            if attempt < _BACKOFF_MAX:
+                time.sleep(min(_BACKOFF_CAP, _BACKOFF_BASE * (2 ** attempt)))
+                continue
+            raise LLMBackendError(_redact(f"{type(e).__name__} calling {url}: {e}")) from e
+    raise LLMBackendError(f"exhausted {_BACKOFF_MAX} backoff retries calling {url}")
 
 
 def _strip_unsupported(schema):
@@ -249,6 +288,52 @@ def resolve_model() -> str:
     if BACKEND == "gemini":
         return _gemini_pick_model()
     raise LLMBackendError(f"no model configured for backend {BACKEND!r}; set MECHSYNTH_LLM_MODEL.")
+
+
+def reachable_backends() -> dict:
+    """Which backends this server can actually reach, probed with UNBILLED metadata calls only
+    (ollama /api/tags, gemini model-list, openai_compat /v1/models) — NO generation, so this spends
+    no token quota. Answers the review's 'report which free options are actually reachable'.
+    Returns {backend: {"reachable": bool, "detail": str, "free": str}}."""
+    out: dict = {}
+    # ollama (local, always free)
+    try:
+        with urllib.request.urlopen(f"{DEFAULT_BASE}/api/tags", timeout=5) as r:
+            tags = [m["name"] for m in json.load(r).get("models", [])]
+        out["ollama"] = {"reachable": True, "free": "local (no key, no quota)",
+                         "detail": f"{len(tags)} models: {tags[:6]}"}
+    except Exception as e:
+        out["ollama"] = {"reachable": False, "free": "local", "detail": f"{type(e).__name__}: {e}"}
+    # gemini (free tier = flash; pro has a small free quota) — model list is unbilled
+    try:
+        names = _gemini_list_text_models()
+        flash = [n for n in names if n.startswith("gemini-") and "-flash" in n][:4]
+        pro = [n for n in names if n.startswith("gemini-") and "-pro" in n][:4]
+        out["gemini"] = {"reachable": True,
+                         "free": "flash: generous free tier; pro: small free tier then billed",
+                         "detail": f"flash={flash} pro={pro}"}
+    except Exception as e:
+        out["gemini"] = {"reachable": False, "free": "flash free / pro billed",
+                         "detail": _redact(f"{type(e).__name__}: {e}")}
+    # openai_compat (generic: base_url + key from .env) — only meaningful if configured
+    base = os.environ.get("MECHSYNTH_LLM_BASE_URL")
+    if base and base != "http://localhost:11434":
+        try:
+            req = urllib.request.Request(f"{base}/v1/models")
+            k = os.environ.get("MECHSYNTH_LLM_API_KEY")
+            if k:
+                req.add_header("Authorization", f"Bearer {k}")
+            with urllib.request.urlopen(req, timeout=8) as r:
+                mids = [m.get("id") for m in (json.load(r).get("data") or [])][:6]
+            out["openai_compat"] = {"reachable": True, "free": "depends on provider",
+                                    "detail": f"base={base} models={mids}"}
+        except Exception as e:
+            out["openai_compat"] = {"reachable": False, "free": "depends on provider",
+                                    "detail": _redact(f"{type(e).__name__}: {e}")}
+    else:
+        out["openai_compat"] = {"reachable": None, "free": "depends on provider",
+                                "detail": "not configured (set MECHSYNTH_LLM_BASE_URL + _API_KEY in .env)"}
+    return out
 
 
 def backend_info() -> dict:
@@ -364,5 +449,8 @@ def stage_log_summary(ir) -> dict:
         e["prompt_tokens"] += tk.get("prompt", 0); e["output_tokens"] += tk.get("output", 0)
         tot_calls += 1; tot_prompt += tk.get("prompt", 0); tot_output += tk.get("output", 0)
     out["_total"] = {"calls": tot_calls, "prompt_tokens": tot_prompt, "output_tokens": tot_output,
-                     "total_tokens": tot_prompt + tot_output}
+                     "total_tokens": tot_prompt + tot_output,
+                     # keep the per-stage shape (retries/ok) so callers can iterate .items() uniformly
+                     "retries": max((v["retries"] for k, v in out.items() if k != "_total"), default=0),
+                     "ok": all(v["ok"] for k, v in out.items() if k != "_total") if out else False}
     return out

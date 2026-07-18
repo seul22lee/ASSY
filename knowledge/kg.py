@@ -79,19 +79,24 @@ def why(card_id: str, behavior) -> list[str]:
             if e.card_id == card_id and e.motion_kind == kind and phase in e.phases]
 
 
+def card_brief(cid: str, why_text: str | None = None) -> str:
+    """One card's full selection knowledge — ports, an optional 'why offered' line, its
+    selection_notes and citations. Behaviour-independent so ④ can emit each distinct card ONCE
+    (a catalogue) instead of re-emitting it per behaviour that offers it (D-M16-4 prompt diet)."""
+    card = CARD_REGISTRY[cid]
+    cites = "; ".join(f"{c.doc} {c.section}" for c in card.citations) or "(none)"
+    why_line = f"why offered: {why_text}\n" if why_text else ""
+    return (f"### card_ref: {cid}\n"
+            f"ports: {[p.name for p in card.ports]}\n"
+            f"{why_line}"
+            f"selection_notes:\n{card.selection_notes}\n"
+            f"citations: {cites}")
+
+
 def briefing(behavior) -> str:
     """The narrowed choice as stage ④ sees it: the surviving cards with the trade-off text and
     citations the LLM must weigh and cite (G4). This is the whole KG→LLM contract."""
     ids = candidates(behavior)
     if not ids:
         return "(no candidate cards — the knowledge graph knows no realizer for this behaviour)"
-    blocks = []
-    for cid in ids:
-        card = CARD_REGISTRY[cid]
-        cites = "; ".join(f"{c.doc} {c.section}" for c in card.citations) or "(none)"
-        blocks.append(f"### card_ref: {cid}\n"
-                      f"ports: {[p.name for p in card.ports]}\n"
-                      f"why offered: {'; '.join(why(cid, behavior))}\n"
-                      f"selection_notes:\n{card.selection_notes}\n"
-                      f"citations: {cites}")
-    return "\n\n".join(blocks)
+    return "\n\n".join(card_brief(cid, "; ".join(why(cid, behavior))) for cid in ids)

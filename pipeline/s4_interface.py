@@ -16,7 +16,7 @@ dimensional is ⑤'s and ⑥'s.
 from __future__ import annotations
 
 from knowledge.cards.base import CARD_REGISTRY
-from knowledge.kg import briefing, candidates
+from knowledge.kg import candidates, card_brief, why
 from knowledge.templates import TEMPLATES
 from ontology.schema import Anchor, Binding, ElementInstance, FeatureInstance, HostTemplate
 from ontology.validators import validate_all
@@ -57,14 +57,33 @@ def _anchor_table(ir) -> str:
 
 
 def _kg_block(ir) -> str:
-    out = []
+    """The KG→LLM contract, dieted (D-M16-4). A card offered for K behaviours used to have its full
+    selection_notes re-emitted K times; here each DISTINCT card's knowledge is emitted ONCE (a
+    catalogue) and per-behaviour we list only its candidate card_refs. Information-preserving: the
+    model sees identical card knowledge and citations, just deduplicated — the 77%-of-prompt KG block
+    shrinks ~2× with no content dropped."""
+    seen: list[str] = []
+    why_of: dict[str, str] = {}
+    per_beh: list[str] = []
     for b in ir.behaviors:
         ph = getattr(b.phase, "value", b.phase)
         k = getattr(b.motion.kind, "value", b.motion.kind)
-        out.append(f"## behaviour {b.id} (phase={ph}, motion={k})\n"
-                   f"candidate cards (the knowledge graph offers ONLY these): {candidates(b)}\n"
-                   f"{briefing(b)}")
-    return "\n\n".join(out)
+        cands = candidates(b)
+        if cands:
+            per_beh.append(f"- {b.id} (phase={ph}, motion={k}): candidates {cands}")
+        else:
+            per_beh.append(f"- {b.id} (phase={ph}, motion={k}): candidates [] — the knowledge graph "
+                           f"knows NO realizer for this behaviour (leave it unbound)")
+        for cid in cands:
+            if cid not in seen:
+                seen.append(cid)
+                why_of[cid] = "; ".join(why(cid, b))
+    catalogue = ("\n\n".join(card_brief(cid, why_of[cid]) for cid in seen)
+                 if seen else "(no candidate cards for any behaviour)")
+    beh = "\n".join(per_beh)
+    return (f"## Card catalogue — the ONLY cards you may use. Each appears ONCE; weigh its trade-offs.\n"
+            f"{catalogue}\n\n"
+            f"## Per-behaviour candidate lists — choose one card_ref from each behaviour's list:\n{beh}")
 
 
 def _prompt(ir) -> str:
