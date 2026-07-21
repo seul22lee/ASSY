@@ -242,3 +242,138 @@ def _stroke(inst, bindings) -> float:
     """Travel distance: from the element's params, else a default. The behaviour's use-phase
     translation range is the authoritative source; carried on the instance params by ⑤."""
     return float((inst.params or {}).get("stroke", 60.0))
+
+
+# --- card class (M18 refactor: moved from base.py, verbatim) ---------------------------------
+from knowledge.cards.base import ProvidedPiece, InteractionRule, _p  # noqa: E402
+from ontology.schema import Citation, EmergentCheck  # noqa: E402
+from knowledge.cards.base import MechanicalElementCard  # noqa: E402
+
+def _slide_rail_imposes() -> list:
+    """The slide imposes two constraints (§3.5): an ASSEMBLY axial-insertion path (the carriage
+    threads onto the rail along the travel axis — nothing may block that axis), and a USE travel
+    keep-out (nothing may intrude into the swept volume the carriage passes through). Both are
+    registered in the IR and attributed to the slide (V-08)."""
+    from ontology.schema import Behavior, MotionSpec
+    return [Behavior(id="_imposed_axial_insertion", phase="assembly",
+                     motion=MotionSpec(kind="translation")),
+            Behavior(id="_imposed_travel_keepout", phase="use",
+                     motion=MotionSpec(kind="fixed"))]
+
+
+class SlideRailCard(MechanicalElementCard):
+    """Rectangular retaining slide (MECHSYNTH §3.5) — a T-rail + captured carriage. Geometry (all
+    boxes, no curves) in knowledge/cards/slide_rail.py, host-agnostic (D-GEN-1). Realizes a use-phase
+    translation; imposes an axial-insertion path + a travel keep-out."""
+    card_id = "slide_rail"
+    has_functional_clearance = True  # rail/carriage sliding clearance (§3.5)
+    taxonomy = {"working_motion": ("translation", "regular"), "axis_relationship": "parallel",
+                "connection_principle": None, "self_locking": False, "emergent_check": EmergentCheck(status="verified"),
+                "compliance": "rigid", "kinematic_dof": "1 prismatic"}
+    imposes = _slide_rail_imposes()
+    param_bounds = {"rail_h": (4.0, 10.0, "mm"), "rail_w": (4.0, 10.0, "mm"),
+                    "clearance": (0.25, 0.45, "mm"), "engagement_len": (5.0, 200.0, "mm"),
+                    "stroke": (10.0, 400.0, "mm")}
+    selection_notes = (
+        "Use when a piece must TRANSLATE along a straight axis (a drawer, a tray). Realizes a "
+        "use-phase translation.\n"
+        "Trade-offs: engagement_len >= 0.35*stroke or the carriage racks and jams under moment "
+        "load (§3.5); that engagement eats depth the payload wanted. The rail/carriage clearance "
+        "is a functional clearance a generic mesh approximation destroys, so the card must supply "
+        "its own collision decomposition (D18).\n"
+        "Do NOT use for rotation (see pin_hinge)."
+        "ORIENTATION (D-M13-6): a HORIZONTAL slide is gravity-seated — the lips catch on lift "
+        "with the sliding clearance c. A VERTICAL slide (travel ∥ gravity) is NOT gravity-seated, "
+        "so resolve_params tightens the retention STOP gap to a quarter of the PETG print clearance (0.075 mm); the lip "
+        "catches within that tight gap on any wobble (a retention stop), independent of gravity direction.")
+    citations = [Citation(doc="MECHSYNTH_SPEC_v0.1", section="§3.5 Card 3 — slide_rail")]
+    ports = [_p("rail_mount", "face"), _p("carriage_mount", "face"), _p("travel_axis", "axis")]
+
+    def carve(self, host_parts, inst, bindings):
+        """Grow the rail on the rail_mount host + the captured carriage on the carriage_mount host,
+        anchor-driven. Delegates to slide_rail geometry (host-agnostic)."""
+        from knowledge.cards.slide_rail import carve as _carve
+        return _carve(host_parts, inst, bindings)
+
+    def collision_hint(self, inst, stroke=None):
+        """All-box decomposition of the rail + carriage channel (§3.5: groove as box primitives, no
+        curves). Every prim carries `owner` (rail|carriage) and a `source` stamp (D-M8-4)."""
+        from knowledge.cards.slide_rail import collision_primitives
+        return collision_primitives(inst, stroke)
+
+    def resolve_params(self, ir, inst):
+        """⑤/D6: derive engagement_len from the §3.5 moment-resistance rule (≥ 0.35·stroke), and
+        carry the stroke from the use-phase translation behaviour's range. stroke is the design
+        input; engagement_len is DERIVED (never free) — the card owns the formula, ⑤ owns when."""
+        from knowledge.cards.slide_rail import dims_from
+        out = dict(inst.params or {})
+        # stroke from the behaviour this element realizes (its use-phase translation range), else param
+        strk = out.get("stroke")
+        if strk is None:
+            b = next((x for x in ir.behaviors if x.realized_by == inst.id
+                      and getattr(x.motion.kind, "value", x.motion.kind) == "translation"
+                      and getattr(x.motion, "range_value", None)), None)
+            strk = float(b.motion.range_value) if b else 60.0
+        out["stroke"] = float(strk)
+        # engagement_len = the §3.5 minimum unless the IR already asked for more (moment resistance)
+        g = dims_from(out, out["stroke"])
+        out["engagement_len"] = round(max(float(out.get("engagement_len", 0.0)), g.min_engagement), 3)
+        out.setdefault("rail_w", 8.0)
+        out.setdefault("rail_h", 8.0)
+        out.setdefault("clearance", 0.35)
+        # D-M13-6 ORIENTATION RULE: when travel ∥ gravity (a VERTICAL lift, not a horizontal drawer),
+        # gravity no longer seats the carriage in the groove, so the retention lips are PRELOADED.
+        # The preload is SOURCED, not invented: it uses a QUARTER of the PETG print clearance (a retention STOP face bears only on wobble,
+        # not during travel, so it tolerates a gap tighter than the sliding fit): 0.30/4 = 0.075 mm.
+        # A tight positive gap (NOT interference — an interference on the rigid stops jams them, the
+        # PETG leaf's compliance can't be modelled at the frozen stiff preset R5) catches the pitch
+        # before the platform escapes the groove. Detected from the realized translation behaviour's
+        # axis_hint (vertical / travel-parallel-to-gravity).
+        b = next((x for x in ir.behaviors if x.realized_by == inst.id
+                  and getattr(x.motion.kind, "value", x.motion.kind) == "translation"), None)
+        hint = (getattr(b.motion, "axis_hint", "") or "") if b is not None else ""
+        if "vert" in hint.lower():
+            from knowledge.materials import PETG
+            out.setdefault("preload_mm", round(PETG.print_clearance_mm / 4.0, 3))   # 0.075 mm, sourced
+        return out
+
+    def verification(self, ir, inst):
+        """D-track/§6.3: P-SLIDE in both modes. V-A (declared prismatic joint) is REQUIRED; V-B
+        (contact-only, the geometry must produce and retain the DoF) is the TARGET. Judge s_max ≥
+        stroke, off-axis ≤ 3°, no derail, back-drift ≤ 5 mm (§6.3)."""
+        from ontology.schema import Criterion, VerificationProtocol
+        use_b = next((b for b in ir.behaviors
+                      if b.realized_by == inst.id
+                      and getattr(b.phase, "value", b.phase) == "use"
+                      and getattr(b.motion.kind, "value", b.motion.kind) == "translation"), None)
+        if use_b is None:
+            return []
+        stroke = float((inst.params or {}).get("stroke", 60.0))
+        crits = [
+            Criterion(name="reaches_stroke", observable="stroke_mm", op=">=", threshold=stroke,
+                      unit="mm"),
+            Criterion(name="tracks_straight", observable="offaxis_rot_deg", op="<=", threshold=3.0,
+                      unit="deg"),
+        ]
+        out = [
+            VerificationProtocol(id=f"P-SLIDE-VA-{inst.id}", verifies=use_b.id, mode="V-A",
+                                 seeds=5, seed_pass=4, actuation={"kind": "force_ramp_axial"},
+                                 criteria=[c.model_copy() for c in crits], observables=[]),
+            VerificationProtocol(id=f"P-SLIDE-VB-{inst.id}", verifies=use_b.id, mode="V-B",
+                                 seeds=5, seed_pass=4, actuation={"kind": "force_ramp_axial"},
+                                 criteria=[c.model_copy() for c in crits], observables=[]),
+        ]
+        # the USE-phase travel keep-out this slide IMPOSES (§3.5): nothing intrudes into the swept
+        # volume — a Tier0 sweep, like the snap card's PR-SWEEP. Verifies that imposed behaviour so
+        # it is not left unverified (V-01).
+        keep_b = next((b for b in ir.behaviors
+                       if b.imposed_by == inst.id
+                       and getattr(b.phase, "value", b.phase) == "use"
+                       and getattr(b.motion.kind, "value", b.motion.kind) == "fixed"), None)
+        if keep_b is not None:
+            out.append(VerificationProtocol(
+                id=f"PR-KEEPOUT-{inst.id}", verifies=keep_b.id, mode=None, seeds=5, seed_pass=4,
+                actuation={"kind": "tier0_sweep"},
+                criteria=[Criterion(name="no_travel_intrusion", observable="offaxis_rot_deg",
+                                    op="<=", threshold=3.0, unit="deg")], observables=[]))
+        return out

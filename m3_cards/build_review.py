@@ -21,7 +21,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from knowledge.cards.snap_hook_cantilever import (P_deflect, W_mate, W_sep, fig18_factor,
+from knowledge.cards.snap_hook import (P_deflect, W_mate, W_sep, fig18_factor,
                                                   solve_h, y_perm)
 
 OUT = Path(__file__).parent / "out"

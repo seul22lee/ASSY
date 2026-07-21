@@ -155,7 +155,6 @@ def _protocol_would_emit(card, el):
 # ======================================================================================
 def audit_layer1():
     from knowledge.cards.base import CARD_REGISTRY
-    from knowledge.cards import m18_tier1 as MT
 
     class _Ir:
         behaviors = []

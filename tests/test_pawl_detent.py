@@ -26,7 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from knowledge.cards.base import CARD_REGISTRY
 from knowledge.cards.pawl_detent import PawlDims, forces
-from knowledge.cards.snap_hook_cantilever import fig18_factor, self_locking_angle
+from knowledge.cards.snap_hook import fig18_factor, self_locking_angle
 
 
 def test_self_locking_angle_is_the_m3_asymptote():

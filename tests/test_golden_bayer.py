@@ -20,7 +20,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from knowledge.cards.snap_hook_cantilever import (P_deflect, W_mate, fig18_factor, solve_h,
+from knowledge.cards.snap_hook import (P_deflect, W_mate, fig18_factor, solve_h,
                                                   y_perm)
 
 # --- Example I inputs (PDF p.16) ---------------------------------------------------------

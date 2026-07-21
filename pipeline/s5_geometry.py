@@ -16,7 +16,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, field
 
-from knowledge.cards.snap_hook_cantilever import (Es_secant, P_deflect, SHAPE_A_COEFF, W_mate,
+from knowledge.cards.snap_hook import (Es_secant, P_deflect, SHAPE_A_COEFF, W_mate,
                                                   W_sep, max_retract_angle, self_locking_angle,
                                                   solve_h, working_strain, y_perm)
 from knowledge.materials import PETG
@@ -83,7 +83,7 @@ def resolve_snap_hook(*, L, y, b, alpha_in, alpha_out, n_hooks, design_type,
 
     A placement rule caps α_out at self_locking_angle(μ) − 10° in both strategies. Returns a
     SnapResolution; does not raise (the stage decides what infeasible means)."""
-    from knowledge.cards.snap_hook_cantilever import EPS_PERM_PETG, MU_PETG
+    from knowledge.cards.snap_hook import EPS_PERM_PETG, MU_PETG
     mu = MU_PETG if mu is None else mu
     eps_perm = EPS_PERM_PETG if eps_perm is None else eps_perm
     a_out = float(alpha_out)
