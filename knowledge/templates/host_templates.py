@@ -11,6 +11,7 @@ box (z ∈ [box_h, box_h+lid_t]); an anchor's `normal` points OUT of the materia
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 
 from build123d import Align, Box, Cylinder, Location, Part, Rotation
@@ -276,7 +277,28 @@ def shaft_carrier_in(**params) -> TemplateResult:
     # because the hub is FUSED to it (a rigid coupling grips the input rigidly).
     part += Location((0, 0, T - 0.5)) * Cylinder(sd / 2, H - T + 0.5,
                                                  align=(Align.CENTER, Align.CENTER, Align.MIN))
-    anchors = {"shaft_in": AnchorGeom("shaft_in", "axis", (0.0, 0.0, H), (0, 0, 1))}
+    anchors = {"shaft_in": AnchorGeom("shaft_in", "axis", (0.0, 0.0, H), (0, 0, 1)),
+               # cross_pivot: the joint centre at the stub top (the U-joint's spider sits here, m21).
+               # Coincident with shaft_in; unused by the m20 coupling fixture.
+               "cross_pivot": AnchorGeom("cross_pivot", "axis", (0.0, 0.0, H), (0, 0, 1))}
+    return TemplateResult(part=part, anchors=anchors, params=p)
+
+
+def shaft_carrier_out_angled(**params) -> TemplateResult:
+    """universal_joint host (m21 D-track fixture) — the OUTPUT side at a BEND angle β: the driven
+    output shaft (the MOVER, is_base=False) whose axis INTERSECTS the input +Z axis at β in the XZ
+    plane. The bend is the whole point of this element, so this is genuinely new geometry (the m20
+    shaft_carrier_out is straight). A floating undersized stub from the joint centre outward along
+    B=(sinβ,0,cosβ). Anchor `shaft_out` at the joint centre declares the INTERSECTING axis (normal=B)."""
+    p = {"shaft_d": 8.0, "beta_deg": 20.0, "joint_z": 30.0, "shaft_len": 24.0, "clearance": 0.30,
+         **params}
+    sd, beta, jz, sl, c = p["shaft_d"], p["beta_deg"], p["joint_z"], p["shaft_len"], p["clearance"]
+    # a +Z-local cylinder, tilted β about Y (so +Z_local → B=(sinβ,0,cosβ)), placed at the joint centre
+    cyl = Cylinder(sd / 2 - c, sl, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    part = Location((0.0, 0.0, jz)) * Rotation(0, beta, 0) * cyl
+    b = math.radians(beta)
+    Bdir = (round(math.sin(b), 6), 0.0, round(math.cos(b), 6))
+    anchors = {"shaft_out": AnchorGeom("shaft_out", "axis", (0.0, 0.0, jz), Bdir)}
     return TemplateResult(part=part, anchors=anchors, params=p)
 
 
@@ -532,6 +554,7 @@ TEMPLATES = {"box_shell": box_shell, "lid_panel": lid_panel,
              "pinion_carrier": pinion_carrier, "rack_carrier": rack_carrier,
              "screw_base": screw_base, "nut_carriage": nut_carriage,
              "shaft_carrier_in": shaft_carrier_in, "shaft_carrier_out": shaft_carrier_out,
+             "shaft_carrier_out_angled": shaft_carrier_out_angled,
              "cabinet_shell": cabinet_shell, "drawer_tray": drawer_tray,
              "knob_shaft": knob_shaft, "rack_bar": rack_bar,
              "flat_panel_mount": flat_panel_mount, "retained_board": retained_board}
