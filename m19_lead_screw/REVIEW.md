@@ -97,12 +97,13 @@ back-drive. `verdict.discrimination_probe.discriminates = true`.
 The declared pair looks trivial but the self-lock hold is delicate; each choice below was forced by a
 *measured* failure, and all are documented in [`p_screw_va.py`](p_screw_va.py):
 
-- **dt = 1e-4, not the R5 5e-4.** The hold is resolved by JOINT frictionloss, which **leaks per-step**
-  for the small plastic-screw inertia at 5e-4 (measured: a 0.00515 N·m frictionloss failed to hold a
-  0.00156 N·m sub-cap torque; holds to <0.1 mm at 1e-4). This rig declares **no contact geoms**
-  (contype/conaffinity=0 — the joints are the mechanism), so the R5 FROZEN preset (a *contact* preset:
-  SOLIMP/SOLREF/µ) does not constrain the clock here. Contact-bearing rigs keep the R5 clock; a
-  contact-free joint rig does not.
+- **dt = 1e-4, not the R5 5e-4 (D-M19-3).** The hold is resolved by JOINT frictionloss, which **leaks
+  per-step** for the small plastic-screw inertia at 5e-4 (measured: a 0.00515 N·m frictionloss failed
+  to hold a 0.00156 N·m sub-cap torque; holds to <0.1 mm at 1e-4). This is a **solver-accuracy** choice
+  in a **contactless** declared-joint rig — the rig declares **no contact geoms** (contype/conaffinity
+  =0, the joints are the mechanism), so the R5 FROZEN preset (a *contact* preset: SOLIMP/SOLREF/µ, dt
+  5e-4) is **untouched and irrelevant here**; it never constrained a rig that runs no contacts. Any
+  V-B/contact run stays on the frozen R5 clock. Recorded as a standing recipe in **D-M19-3**.
 - **Rigid coupling** (`solref="-1e8 -1e4"`, direct stiffness, not timeconst). A soft/positive-timeconst
   equality is a **spring the load stretches** (>12 mm) while the screw never rotates — so the hinge
   friction never engages. Direct high stiffness makes the nut's weight transmit to a screw torque the
@@ -148,6 +149,33 @@ arithmetic and checks it against the card, the verdict, and the compiled geometr
 [4] t1 COMPILE_DRIFT: base 60×60, screw_len 60, nut 26×26×10 vs intent — all drift 0.0000 mm (≤0.05)
 ========== reproduction CLEAN — every number checks out ==========
 ```
+
+## Close-out corrections (m19 review)
+
+**The dt=1e-4 clock does not manufacture the hold — the discrimination probe proves it.** Both numbers
+come from the *same final dt=1e-4 configuration*: the sourced friction holds the released load to
+**0.079 mm**, and re-running that identical rig with a sub-back-drive friction (0.5·T_backdrive) lets it
+slip **18.4 mm** (233×). If the fine clock were *hiding* the physics (numerically pinning the joint
+regardless of friction), the low-friction case would also hold — it does not. So dt=1e-4 buys frictionloss
+integration *accuracy*, not a false pass; the self-lock is the sourced friction winning. This is a
+solver-clock choice on a contactless rig, **fully distinct from the frozen R5 contact preset** (dt=5e-4,
+SOLREF, SOLIMP, µ — untouched, and V-A declares no contacts). Formalized as **D-M19-3**; it is the
+standing recipe for the coupling / universal_joint / bearing declared-joint rigs to come.
+
+**Parked for a future milestone (DRAFT D-M19-2, reviewer insight — deliberately NOT built here).**
+Retention-class contact (gravity-hold, no driving) may be verifiable *within* the R2b limits — the m8
+lid-fold and m10 T-rail retention already ran that contact class on the frozen preset. A future
+milestone could design a **generic settle/retention protocol** (criteria drawn only from IR-declared
+criteria + the generic guard suite — no per-element scripted checks), which would narrow the honest V-B
+gap for *all* deferred curved-contact elements at once (rack_pinion, lead_screw, worm/bevel/cam). New
+verification machinery earns its own design pass, not a rider on this card — so m19 records the idea and
+builds nothing.
+
+**Known video-legibility limitation.** The V-A `.mp4` HUD shows the rev counter and nut travel (the
+quantitative record), but the orange screw cylinder is smooth, so its *rotation* is not visually obvious
+frame-to-frame — there is no painted reference stripe. This is a legibility gap in the render only, not
+in the measurement; the s(t) plot and the HUD rev counter carry the numbers. Left as-is rather than
+re-running the (slow, 5-seed) rig for a cosmetic marker.
 
 ## Stage-by-stage (D-track, no stage skipped)
 
