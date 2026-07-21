@@ -265,6 +265,33 @@ def rack_carrier(**params) -> TemplateResult:
     return TemplateResult(part=part, anchors=anchors, params=p)
 
 
+def shaft_carrier_in(**params) -> TemplateResult:
+    """coupling host (m20 D-track fixture) — the INPUT side: a base plate with a vertical shaft stub
+    the coupling hub is fused onto (a driven input shaft standing up). Mirrors screw_base/pinion_carrier
+    (is_base). Anchor `shaft_in` (+Z rotation axis at the stub top, where the card grows the hub)."""
+    p = {"base_l": 50.0, "base_w": 50.0, "base_t": 4.0, "shaft_d": 8.0, "shaft_h": 30.0, **params}
+    L, W, T, sd, H = p["base_l"], p["base_w"], p["base_t"], p["shaft_d"], p["shaft_h"]
+    part = Box(L, W, T, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    # input shaft stub (overlaps the plate by 0.5 so the union is one solid, D14); full nominal radius
+    # because the hub is FUSED to it (a rigid coupling grips the input rigidly).
+    part += Location((0, 0, T - 0.5)) * Cylinder(sd / 2, H - T + 0.5,
+                                                 align=(Align.CENTER, Align.CENTER, Align.MIN))
+    anchors = {"shaft_in": AnchorGeom("shaft_in", "axis", (0.0, 0.0, H), (0, 0, 1))}
+    return TemplateResult(part=part, anchors=anchors, params=p)
+
+
+def shaft_carrier_out(**params) -> TemplateResult:
+    """coupling host — the OUTPUT side: the driven output shaft (the MOVER, is_base=False, like
+    nut_carriage). A floating stub that inserts into the coupling's blind bore with print clearance
+    (undersized by the A-PETG-1 clearance so it slides in). Anchor `shaft_out` (−Z, the end that
+    enters the bore)."""
+    p = {"shaft_d": 8.0, "z0": 40.0, "shaft_len": 24.0, "clearance": 0.30, **params}
+    sd, z0, sl, c = p["shaft_d"], p["z0"], p["shaft_len"], p["clearance"]
+    part = Location((0, 0, z0)) * Cylinder(sd / 2 - c, sl, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    anchors = {"shaft_out": AnchorGeom("shaft_out", "axis", (0.0, 0.0, z0), (0, 0, -1))}
+    return TemplateResult(part=part, anchors=anchors, params=p)
+
+
 def screw_base(**params) -> TemplateResult:
     """lead_screw host (m19 D-track fixture) — a base plate the screw stands VERTICALLY on (a
     screw-jack: rotation about +Z drives the nut up/down, gravity is the hold load). Mirrors
@@ -504,6 +531,7 @@ TEMPLATES = {"box_shell": box_shell, "lid_panel": lid_panel,
              "slide_base_dual": slide_base_dual,
              "pinion_carrier": pinion_carrier, "rack_carrier": rack_carrier,
              "screw_base": screw_base, "nut_carriage": nut_carriage,
+             "shaft_carrier_in": shaft_carrier_in, "shaft_carrier_out": shaft_carrier_out,
              "cabinet_shell": cabinet_shell, "drawer_tray": drawer_tray,
              "knob_shaft": knob_shaft, "rack_bar": rack_bar,
              "flat_panel_mount": flat_panel_mount, "retained_board": retained_board}

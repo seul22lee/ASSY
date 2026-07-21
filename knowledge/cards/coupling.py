@@ -69,17 +69,28 @@ def coupling_torque(g: CouplingDims) -> dict:
     return {"torque_capacity_Nmm": m["torque_capacity_Nmm"], "ratio": m["ratio"]}
 
 
+_HUB_OVERLAP_MM = 4.0     # hub bottom sinks this far onto the input stub so the union is ONE solid (D14)
+_HUB_SOLID_FLOOR_MM = 10.0  # solid hub floor kept below the blind bore, fusing the hub to the input stub
+
+
 def coupling_carve(pieces, inst, bindings) -> CarveResult:
-    """The hub bridges the two shaft ends: a cylinder (OD body_d) with a clearance bore (bore_d)
-    CENTRED on the shaft_in anchor so it straddles the input-stub top and the output-stub bottom.
-    One solid (hub − bore), added to the shaft_in host."""
+    """A RIGID coupling is FUSED to the input shaft and GRIPS the output shaft (the physical picture,
+    and the one-solid fix for the D-D-1 'two yellow bodies' lesson — a clearance through-bore would
+    leave the hub floating, two solids). So: a hub cylinder (OD body_d) sits on the input-stub top
+    (overlapping it so hub∪stub is one solid) with a BLIND clearance bore (bore_d) drilled from the
+    TOP — the bottom floor stays solid and fuses to the input shaft; the output shaft inserts into the
+    blind bore from above with print clearance. One solid, added to the shaft_in host."""
     g = coupling_dims(getattr(inst, "params", {}) or {})
-    p = _anchor_point(pieces, bindings, "shaft_in")
-    hub = Location(Pos(*p)) * (Cylinder(radius=g.body_d / 2, height=g.length,
-                                        align=(Align.CENTER, Align.CENTER, Align.CENTER))
-                               - Cylinder(radius=g.bore_d / 2, height=g.length + 2,
-                                          align=(Align.CENTER, Align.CENTER, Align.CENTER)))
-    return CarveResult(parts=_add(pieces, _pid(bindings, "shaft_in"), hub), tags={"coupling": hub}, dims=g)
+    x, y, z = _anchor_point(pieces, bindings, "shaft_in")
+    bottom = z - _HUB_OVERLAP_MM
+    hub = Location(Pos(x, y, bottom)) * Cylinder(radius=g.body_d / 2, height=g.length,
+                                                 align=(Align.CENTER, Align.CENTER, Align.MIN))
+    bore_depth = max(6.0, g.length - _HUB_SOLID_FLOOR_MM)
+    bore_bottom = bottom + g.length - bore_depth
+    bore = Location(Pos(x, y, bore_bottom)) * Cylinder(radius=g.bore_d / 2, height=bore_depth + 1.0,
+                                                       align=(Align.CENTER, Align.CENTER, Align.MIN))
+    body = hub - bore
+    return CarveResult(parts=_add(pieces, _pid(bindings, "shaft_in"), body), tags={"coupling": body}, dims=g)
 
 
 def coupling_collision(inst) -> list:
