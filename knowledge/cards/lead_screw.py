@@ -20,32 +20,50 @@ from knowledge.cards.carve_utils import CarveResult, _add, _anchor_point, _pid
 @dataclass
 class LeadScrewDims:
     d_major: float = 8.0        # screw major diameter (mm)
-    lead: float = 2.0           # axial advance per revolution (mm)
+    pitch: float = 2.0          # thread pitch (axial distance between adjacent threads, mm)
     starts: int = 1             # thread starts
+    lead: float = 2.0           # axial advance per revolution (mm) = starts * pitch  (rule chain)
     length: float = 60.0        # threaded length (mm) — bounds the stroke
     stroke: float = 40.0        # design travel (mm)
-    mu: float = 0.30            # thread friction (A-PETG-1, R5)
+    mu: float = 0.30            # thread friction (A-PETG-1, R5 preset value)
 
 
 def lead_screw_dims(p: dict) -> LeadScrewDims:
+    """RULE CHAIN (Shigley §8-2): lead = starts × pitch. `lead` may be given directly (m18 back-compat)
+    or DERIVED from starts×pitch; pitch is inferred from lead/starts when only lead is supplied."""
     p = p or {}
-    return LeadScrewDims(d_major=float(p.get("d_major", 8.0)), lead=float(p.get("lead", 2.0)),
-                         starts=int(p.get("starts", 1)), length=float(p.get("length", 60.0)),
+    starts = int(p.get("starts", 1))
+    lead = p.get("lead")
+    pitch = p.get("pitch")
+    if lead is None:                                        # derive lead from the rule chain
+        lead = starts * float(pitch if pitch is not None else 2.0)
+    lead = float(lead)
+    if pitch is None:                                       # infer pitch when only lead was given
+        pitch = lead / starts
+    return LeadScrewDims(d_major=float(p.get("d_major", 8.0)), pitch=float(pitch), starts=starts,
+                         lead=lead, length=float(p.get("length", 60.0)),
                          stroke=float(p.get("stroke", 40.0)), mu=float(p.get("mu", 0.30)))
 
 
 def lead_screw_mechanics(g: LeadScrewDims) -> dict:
-    """Shigley §8-2 power screw: pitch diameter d_p = d_major - lead/2 (single-start ISO approx);
-    lead angle lambda = atan(lead / (pi d_p)); friction angle phi = atan(mu). SELF-LOCKS iff
-    lambda <= phi (P&B §7.4.3 self-help). Efficiency eta = tan(lambda)/tan(lambda+phi)."""
-    d_p = g.d_major - g.lead / 2.0
-    lam = math.atan(g.lead / (math.pi * d_p))               # lead angle (rad)
-    phi = math.atan(g.mu)                                    # friction angle (rad)
-    self_locks = lam <= phi
+    """Shigley §8-2 power screw rule chain:
+      lead          = starts × pitch                         (advance per revolution)
+      travel_per_rev = lead                                  (the transmission the IR carries, mm/rev)
+      d_mean        = d_major − pitch/2                      (single-thread mean diameter)
+      lead angle λ  = atan(lead / (π · d_mean))
+      friction angle φ = atan(µ)
+      SELF-LOCKS iff tan(λ) ≤ µ  ⇔  λ ≤ φ                    (P&B §7.4.3 self-help)
+      efficiency η  = tan(λ) / tan(λ+φ)
+    A self-locking screw HOLDS a released load with no brake (the axis-4 discriminator vs rack_pinion)."""
+    d_mean = g.d_major - g.pitch / 2.0
+    lam = math.atan(g.lead / (math.pi * d_mean))            # lead angle (rad)
+    phi = math.atan(g.mu)                                   # friction angle (rad)
+    self_locks = math.tan(lam) <= g.mu                      # tan(λ) ≤ µ (Shigley self-lock criterion)
     eta = math.tan(lam) / math.tan(lam + phi) if (lam + phi) > 0 else 0.0
-    return {"pitch_d_mm": round(d_p, 4), "lead_angle_deg": round(math.degrees(lam), 3),
-            "friction_angle_deg": round(math.degrees(phi), 3), "self_locks": bool(self_locks),
-            "efficiency": round(eta, 4)}
+    return {"lead_mm": round(g.lead, 4), "travel_per_rev_mm": round(g.lead, 4),
+            "d_mean_mm": round(d_mean, 4), "lead_angle_deg": round(math.degrees(lam), 3),
+            "friction_angle_deg": round(math.degrees(phi), 3), "tan_lambda": round(math.tan(lam), 5),
+            "self_locks": bool(self_locks), "efficiency": round(eta, 4)}
 
 
 def lead_screw_carve(pieces, inst, bindings) -> CarveResult:
@@ -66,6 +84,15 @@ def lead_screw_collision(inst) -> list:
                      "(vb_verifiable=False, cite m17/D-M1-7), like rack_pinion"}]
 
 
+def _lead_screw_imposes() -> list:
+    """The lead screw imposes an ASSEMBLY threading path: the nut is threaded onto the screw along
+    the screw axis (an axial insertion), so that axis must stay open for assembly (§8-2 / like the
+    rack_pinion mesh-insertion, pin_hinge pin-path). Registered + attributed to the element (V-08)."""
+    from ontology.schema import Behavior, MotionSpec
+    return [Behavior(id="_imposed_thread_path", phase="assembly",
+                     motion=MotionSpec(kind="translation"))]
+
+
 class LeadScrewCard(MechanicalElementCard):
     """Power lead screw (P&B §7.4.3, Shigley §8-2): converts rotation to translation and — unlike a
     plain rack_pinion — SELF-LOCKS when the lead angle ≤ the friction angle (holds a load with no
@@ -77,9 +104,11 @@ class LeadScrewCard(MechanicalElementCard):
     taxonomy = {"working_motion": ("rot_to_trans", "regular"), "axis_relationship": "parallel",
                 "connection_principle": None, "self_locking": True, "emergent_check": EmergentCheck(status="deferred", reason="thread contact is curved; rigid-body V-B limit (R2b class, m17)", risk="self-lock verified by formula only (tan(lead)<=mu); actual hold under load not physics-verified — cf. m13 where pawl self-lock needed physics to trust"),
                 "compliance": "rigid", "kinematic_dof": "1 rot coupled to 1 trans (reserved axis-7)"}
-    param_bounds = {"d_major": (5.0, 20.0, "mm"), "lead": (1.0, 6.0, "mm"), "starts": (1.0, 2.0, "count"),
+    param_bounds = {"d_major": (5.0, 20.0, "mm"), "pitch": (0.5, 4.0, "mm"),
+                    "starts": (1.0, 2.0, "count"), "lead": (0.5, 8.0, "mm"),
                     "length": (20.0, 200.0, "mm"), "stroke": (10.0, 180.0, "mm")}
-    ports = [_p("screw_axis", "axis"), _p("nut_mount", "face")]
+    ports = [_p("screw_axis", "axis"), _p("nut_mount", "face"), _p("travel_axis", "axis")]
+    imposes = _lead_screw_imposes()   # §8-2: the assembly threading path (V-08)
     selection_notes = (
         "Use when ROTATION must become TRANSLATION and the load must HOLD when released without a "
         "brake (a screw-jack, a vice, a leadscrew stage). Realizes a use-phase rot_to_trans that "
@@ -100,12 +129,19 @@ class LeadScrewCard(MechanicalElementCard):
                   and getattr(x.motion.kind, "value", x.motion.kind) == "rot_to_trans"), None)
         if b is not None and getattr(b.motion, "range_value", None):
             out["stroke"] = float(b.motion.range_value)
-        out.setdefault("stroke", 40.0); out.setdefault("d_major", 8.0); out.setdefault("lead", 2.0)
+        out.setdefault("stroke", 40.0)
+        out.setdefault("d_major", 8.0)
+        out.setdefault("starts", 1)               # FIX (m18 audit): starts now RESOLVES (bound 1..2)
+        out.setdefault("pitch", 2.0)
+        # RULE CHAIN — lead = starts × pitch (DERIVED, never a free param; the card owns the formula)
+        out["lead"] = round(int(out["starts"]) * float(out["pitch"]), 3)
         out.setdefault("length", round(float(out["stroke"]) + 20.0, 1))
-        # keep it self-locking if the behaviour asked for it: shrink the lead until λ ≤ φ
+        # self-lock enforcement (axis-4): if the behaviour demands hold-under-load, shrink the pitch
+        # (hence the lead) until tan(λ) ≤ µ — the card guarantees the self-lock it advertises.
         if b is not None and getattr(b, "self_locking", False):
-            while not lead_screw_mechanics(lead_screw_dims(out))["self_locks"] and out["lead"] > 1.0:
-                out["lead"] = round(out["lead"] - 0.5, 2)
+            while not lead_screw_mechanics(lead_screw_dims(out))["self_locks"] and out["pitch"] > 0.5:
+                out["pitch"] = round(out["pitch"] - 0.5, 2)
+                out["lead"] = round(int(out["starts"]) * float(out["pitch"]), 3)
         return out
 
     def carve(self, host_parts, inst, bindings):
