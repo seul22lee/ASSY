@@ -1,0 +1,29 @@
+
+========== m20 coupling — NUMERIC REPRODUCTION CHAIN ==========
+
+[1] RULE CHAIN (Shigley §3-12 + hub proportions)   inputs: bore_d=8.0 τ_allow=25.0 MPa, body_d=20.0, length=24.0 mm
+  rated torque           τ·π·bore³/16                   =  2513.2741 N·mm
+  hub OD (min)           2·bore                         =    16.0000 mm
+  hub length (min)       1.5·bore                       =    12.0000 mm
+  ratio                  1 (no ratio)                   =     1.0000 
+  hub proportions hold: body_d 20.0 ≥ 16.0 (True) ; length 24.0 ≥ 12.0 (True)
+
+[2] SOURCED LOAD   (resisting torque = a design fraction of RATED — not invented)
+  T_rated = 2.51327 N·m ( = 2513.27 N·mm / 1000 )
+  T_load  = load_fraction · T_rated = 0.5 · 2.51327 = 1.256635 N·m
+
+[3] P-COUPLING V-A MEASURED   (the non-tautology: ratio is weak, TORQUE transmission is real)
+  ratio out/in = 1.00000   residual 0.0000%   (gate ≤ 0.1%)   ok
+  torque transmitted 1.2574 vs applied 1.256635 N·m   residual 0.06%   (gate ≤ 5%)   ok
+  discrimination: coupled output 6.00 rev  vs  BROKEN output 0.00 rev (input 6.00) ⇒ discriminates=True
+
+[4] t1 COMPILE_DRIFT   (compiled geometry vs card/template intent, ≤ 0.05 mm)
+  dimension                  intent   measured    drift   ok
+  base_l (P1.x)              50.000     50.000   0.0000   ok
+  base_w (P1.y)              50.000     50.000   0.0000   ok
+  hub_top (P1.z)             50.000     50.000   0.0000   ok
+  out_len (P2.z)             24.000     24.000   0.0000   ok
+  out_shaft_d (P2.x)          7.400      7.400   0.0000   ok
+
+========== reproduction CLEAN — every number checks out ==========
+
