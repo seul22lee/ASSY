@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<mujoco model="t2_screw_lift">
+  <compiler angle="radian" autolimits="true"/>
+  <option timestep="0.0001" integrator="implicitfast" cone="elliptic" impratio="10" gravity="0 0 0"/>
+  <visual>
+    <headlight ambient="0.5 0.5 0.5" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2"/>
+    <global offwidth="1280" offheight="960"/>
+  </visual>
+  <default>
+    <geom density="0" contype="0" conaffinity="0" group="2"/>
+  </default>
+  <asset>
+    <material name="base" rgba="0.35 0.65 0.85 1"/>
+    <material name="crank" rgba="0.85 0.35 0.35 1"/>
+    <material name="screw" rgba="0.95 0.62 0.25 1"/>
+    <material name="nut" rgba="0.45 0.78 0.5 1"/>
+    <material name="mk_crank" rgba="0.90 0.10 0.10 1"/>
+    <material name="mk_screw" rgba="0.98 0.85 0.10 1"/>
+    <material name="mk_nut" rgba="0.10 0.55 0.95 1"/>
+  </asset>
+  <worldbody>
+    <light pos="0.1 -0.2 0.4" dir="-0.2 0.3 -1" directional="true" diffuse="0.5 0.5 0.5"/>
+    <camera name="side" pos="0.16 -0.20 0.055" xyaxes="0.78 0.62 0 -0.16 0.20 0.97"/>
+    <geom name="base_plate" type="box" pos="0 0 -0.006" size="0.03 0.03 0.002" material="base"/>
+    <body name="crank" pos="0 0 0">
+      <joint name="crank_hinge" type="hinge" axis="0 0 1" pos="0 0 0" damping="1e-05" armature="1e-05"/>
+      <geom name="crank_shaft" type="cylinder" fromto="0 0 -0.028 0 0 -0.004" size="0.004" material="crank" mass="0.01"/>
+      <geom name="crank_arm" type="box" pos="0.010 0 -0.026" size="0.010 0.002 0.002" material="crank" mass="0.002"/>
+      <geom name="mk_crank" type="box" pos="0.019000000 0.000000000 -0.026000000" size="0.002000000 0.002500000 0.002000000" material="mk_crank"/>
+    </body>
+    <body name="screw" pos="0 0 0">
+      <joint name="screw_hinge" type="hinge" axis="0 0 1" pos="0 0 0" damping="1e-05" armature="1e-05" frictionloss="0.005150250"/>
+      <geom name="screw_rod" type="cylinder" fromto="0 0 0 0 0 0.060000" size="0.004" material="screw" mass="0.01"/>
+      <geom name="mk_screw" type="box" pos="0.006000000 0.000000000 0.020000000" size="0.003000000 0.001200000 0.004000000" material="mk_screw"/>
+    </body>
+    <body name="nut" pos="0 0 0">
+      <joint name="nut_slide" type="slide" axis="0 0 1" pos="0 0 0" damping="1e-05"/>
+      <geom name="platform" type="box" pos="0 0 0.030000" size="0.013 0.013 0.004" material="nut" mass="0.02"/>
+      <geom name="mk_nut" type="box" pos="0.014000000 0.000000000 0.030000000" size="0.002000000 0.002500000 0.003000000" material="mk_nut"/>
+    </body>
+  </worldbody>
+  <equality>
+    <joint name="couple_cs" joint1="screw_hinge" joint2="crank_hinge" polycoef="0 1.0 0 0 0" solref="-1e8 -1e4" solimp="0.9999 0.99999 1e-6 0.5 2"/>
+    <joint name="couple_sn" joint1="nut_slide" joint2="screw_hinge" polycoef="0 0.000318310 0 0 0" solref="-1e8 -1e4" solimp="0.9999 0.99999 1e-6 0.5 2"/>
+  </equality>
+  <actuator>
+    <velocity name="drive" joint="crank_hinge" kv="0.5"/>
+  </actuator>
+</mujoco>
