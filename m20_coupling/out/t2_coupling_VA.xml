@@ -13,6 +13,9 @@
     <material name="base" rgba="0.35 0.65 0.85 1"/>
     <material name="input" rgba="0.95 0.62 0.25 1"/>
     <material name="output" rgba="0.55 0.78 0.55 1"/>
+    <material name="mk_in" rgba="0.90 0.10 0.10 1"/>
+    <material name="mk_hub" rgba="0.10 0.85 0.90 1"/>
+    <material name="mk_out" rgba="0.85 0.10 0.80 1"/>
     <mesh name="base_vis" file="cp_base_vis.stl"/>
     <mesh name="input_vis" file="cp_input_vis.stl"/>
     <mesh name="output_vis" file="cp_output_vis.stl"/>
@@ -20,6 +23,7 @@
   <worldbody>
     <light pos="0.1 -0.15 0.4" dir="-0.2 0.3 -1" directional="true" diffuse="0.5 0.5 0.5"/>
     <camera name="iso" pos="0.10 -0.13 0.11" xyaxes="0.79 0.61 0 -0.20 0.26 0.94"/>
+    <camera name="side" pos="0 -0.16 0.032" xyaxes="1 0 0 0 0 1"/>
     <body name="base" pos="0 0 0">
       <inertial pos="0.000000000 0.000000000 0.002000000" mass="0.012700000" fullinertia="0.000002662767 0.000002662767 0.000005291667 -0.000000000000 -0.000000000000 -0.000000000000"/>
       <geom name="base_vis" type="mesh" mesh="base_vis" material="base"/>
@@ -28,11 +32,14 @@
       <joint name="input_hinge" type="hinge" axis="0.000000000 0.000000000 1.000000000" pos="0.000000000 0.000000000 0.000000000" damping="1e-05" armature="1e-05"/>
       <inertial pos="-0.000000000 0.000000000 0.034257886" mass="0.010101425" fullinertia="0.000001356930 0.000001356930 0.000000481520 0.000000000000 0.000000000000 0.000000000000"/>
       <geom name="input_vis" type="mesh" mesh="input_vis" material="input"/>
+      <geom name="input_mk_in" type="box" pos="0.006000000 0.000000000 0.015000000" size="0.003000000 0.001000000 0.004000000" material="mk_in"/>
+      <geom name="input_mk_hub" type="box" pos="0.012000000 0.000000000 0.038000000" size="0.004000000 0.001200000 0.006000000" material="mk_hub"/>
     </body>
     <body name="output" pos="0 0 0">
       <joint name="output_hinge" type="hinge" axis="0.000000000 0.000000000 1.000000000" pos="0.000000000 0.000000000 0.000000000" damping="1e-05" armature="1e-05"/>
       <inertial pos="0.000000000 -0.000000000 0.052000000" mass="0.001308724" fullinertia="0.000000067290 0.000000067290 0.000000008943 -0.000000000000 0.000000000000 0.000000000000"/>
       <geom name="output_vis" type="mesh" mesh="output_vis" material="output"/>
+      <geom name="output_mk_out" type="box" pos="0.005500000 0.000000000 0.057000000" size="0.003000000 0.001000000 0.004000000" material="mk_out"/>
     </body>
   </worldbody>
   <equality>

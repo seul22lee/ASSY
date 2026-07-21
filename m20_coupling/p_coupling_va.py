@@ -58,7 +58,8 @@ from step2mjcf import MM, SOLIMP, SOLREF  # FROZEN preset (R5, contact only)  # 
 VA_DT = 1e-4          # D-M19-2 clock: contact-free joint rig; R5 (contact preset) does not apply here
 ARMATURE = 1e-5       # driven-train rotor inertia (numerical rigidity, D-M19-2 recipe)
 JOINT_DAMPING = 1e-5  # tiny — must not mask the transmission
-FPS = 60
+CAPTURE_HZ = 240      # frame CAPTURE cadence (Hz of sim time) — dense so the 6-rev sweep is smooth
+OUT_FPS = 60          # video OUTPUT fps ⇒ 240/60 = 4× slow-motion (legible marker sweep; HUD keeps it honest)
 N_SEEDS, SEED_PASS = 5, 4
 OMEGA = 40.0          # rad/s input drive (kinematic pair, fast is fine; keeps step count low at dt=1e-4)
 RAMP = 0.15
@@ -73,10 +74,11 @@ def _v(a):
     return " ".join(f"{float(x):.9f}" for x in a)
 
 
-def build_va_mjcf(plan, ca, meshdir: Path):
+def build_va_mjcf(plan, ca, meshdir: Path, markers=True):
     """base(weld) + input(hinge +Z: shaft ⊕ hub, fused) + output(hinge +Z: shaft), coupled by an
     equality polycoef = 1.0 (the declared 1:1 pair). The input actuator drives; a resisting torque on
-    the output is applied at run time (sourced from T_rated)."""
+    the output is applied at run time (sourced from T_rated). markers=True adds visual-only rotation
+    tabs (zero mass, no contact — physics identical, asserted)."""
     meshdir.mkdir(parents=True, exist_ok=True)
     e1 = plan.element("E1")
     g = coupling_dims(e1.params)
@@ -129,11 +131,29 @@ def build_va_mjcf(plan, ca, meshdir: Path):
     ET.SubElement(asset, "material", name="base", rgba="0.35 0.65 0.85 1")
     ET.SubElement(asset, "material", name="input", rgba="0.95 0.62 0.25 1")
     ET.SubElement(asset, "material", name="output", rgba="0.55 0.78 0.55 1")
+    ET.SubElement(asset, "material", name="mk_in", rgba="0.90 0.10 0.10 1")   # input marker (red)
+    ET.SubElement(asset, "material", name="mk_hub", rgba="0.10 0.85 0.90 1")  # hub marker (cyan)
+    ET.SubElement(asset, "material", name="mk_out", rgba="0.85 0.10 0.80 1")  # output marker (magenta)
     world = ET.SubElement(root, "worldbody")
     ET.SubElement(world, "light", pos="0.1 -0.15 0.4", dir="-0.2 0.3 -1", directional="true",
                   diffuse="0.5 0.5 0.5")
     ET.SubElement(world, "camera", name="iso", pos="0.10 -0.13 0.11",
                   xyaxes="0.79 0.61 0 -0.20 0.26 0.94")
+    # SIDE camera (perpendicular to the +Z shaft axis) — the marker sweep is only legible side-on;
+    # a near-axial view hides rotation even WITH markers (the m10/m19 lesson).
+    ET.SubElement(world, "camera", name="side", pos="0 -0.16 0.032", xyaxes="1 0 0 0 0 1")
+
+    # VISUAL-ONLY rotation markers (zero mass via default density=0, contype/conaffinity=0 → NO physics
+    # effect; asserted identical below). Thin radial tabs so a rotationally-symmetric cylinder shows its
+    # spin. One+ asymmetric feature per MOVING body (the standing V-A-video rule): input shaft + hub on
+    # the input body; a tab on the output shaft. Positions/sizes in mm → metres.
+    def _mk(mm):
+        return tuple(x * MM for x in mm)
+    MARKERS = {
+        "input": [("mk_in", _mk((g.bore_d / 2 + 2.0, 0, 15.0)), _mk((3.0, 1.0, 4.0))),
+                  ("mk_hub", _mk((g.body_d / 2 + 2.0, 0, 38.0)), _mk((4.0, 1.2, 6.0)))],
+        "output": [("mk_out", _mk((g.bore_d / 2 - clr + 1.8, 0, 57.0)), _mk((3.0, 1.0, 4.0)))],
+    }
 
     masses = {}
     specs = [("base", base_solid, "base", None),
@@ -152,6 +172,10 @@ def build_va_mjcf(plan, ca, meshdir: Path):
         masses[name] = _inertial(body, mesh)
         ET.SubElement(asset, "mesh", name=f"{name}_vis", file=vf.name)
         ET.SubElement(body, "geom", name=f"{name}_vis", type="mesh", mesh=f"{name}_vis", material=mat)
+        if markers:
+            for mname, mpos, msize in MARKERS.get(name, []):
+                ET.SubElement(body, "geom", name=f"{name}_{mname}", type="box",
+                              pos=_v(mpos), size=_v(msize), material=mname)   # density=0 default → 0 mass
 
     # THE DECLARED 1:1 PAIR (V-A): output_hinge(rad) = 1.0 · input_hinge(rad). RIGID coupling (D-M19-2):
     # a direct-stiffness solref so the applied output torque transmits to the input (a soft equality
@@ -182,7 +206,7 @@ def run_va(model, meta, seed=0, record=False, break_coupling=False):
     idi, ido = model.jnt_dofadr[ji], model.jnt_dofadr[jo]
     a = mj.mj_name2id(model, mj.mjtObj.mjOBJ_ACTUATOR, "drive")
     eqid = mj.mj_name2id(model, mj.mjtObj.mjOBJ_EQUALITY, "couple")
-    cam = mj.mj_name2id(model, mj.mjtObj.mjOBJ_CAMERA, "iso")
+    cam = mj.mj_name2id(model, mj.mjtObj.mjOBJ_CAMERA, "side")   # side-on: the marker sweep is legible
 
     eq_active0 = model.eq_active0.copy()
     if break_coupling:
@@ -221,7 +245,7 @@ def run_va(model, meta, seed=0, record=False, break_coupling=False):
         if record and d.time >= nextf:
             renderer.update_scene(d, camera=cam)
             frames.append((renderer.render(), d.time, ai, ao, load_on))
-            nextf += 1.0 / FPS
+            nextf += 1.0 / CAPTURE_HZ
         if ai >= theta_target or d.time > t_wall:
             break
     if renderer:
@@ -266,22 +290,28 @@ def run_va(model, meta, seed=0, record=False, break_coupling=False):
 def _hud(img, lines, colors):
     from PIL import Image, ImageDraw
     im = Image.fromarray(img.copy()); dr = ImageDraw.Draw(im)
-    dr.rectangle([0, 0, 320, 14 * len(lines) + 6], fill=(0, 0, 0))
+    dr.rectangle([0, 0, 470, 14 * len(lines) + 6], fill=(0, 0, 0))
     for i, (t, c) in enumerate(zip(lines, colors)):
         dr.text((5, 3 + 14 * i), t, fill=c)
     return np.asarray(im)
 
 
-def _save_video(frames, meta, path):
+def _save_video(frames, meta, path, broken=False):
+    tag = "COUPLING BROKEN (equality inactive)" if broken else "coupling INTACT   1:1 rigid"
+    slow = f"{CAPTURE_HZ // OUT_FPS}x slow-mo"
     vid = []
     for img, t, ai, ao, load in frames:
-        vid.append(_hud(img, [f"P-COUPLING V-A  coupling   1:1 rigid",
-                              f"T {t:5.2f}s   in {ai/(2*math.pi):5.2f} rev  out {ao/(2*math.pi):5.2f} rev",
-                              f"load {load*meta['T_load_Nm']:.3f} / {meta['T_load_Nm']:.3f} Nm "
-                              f"(0.5*T_rated)",
-                              f"ratio out/in = {(ao/ai if abs(ai)>1e-6 else 0):.4f}"],
-                        [(255, 255, 255), (150, 220, 255), (255, 200, 120), (200, 255, 200)]))
-    imageio.mimsave(path, vid, fps=FPS, macro_block_size=1)
+        ratio = (ao / ai) if abs(ai) > 1e-6 else 0.0
+        vid.append(_hud(img, [f"P-COUPLING V-A  {tag}   [{slow}]",
+                              f"T {t:5.2f}s   in(red/cyan) {ai/(2*math.pi):5.2f} rev   "
+                              f"out(magenta) {ao/(2*math.pi):5.2f} rev",
+                              (f"load {load*meta['T_load_Nm']:.3f} / {meta['T_load_Nm']:.3f} Nm (0.5*T_rated)"
+                               if not broken else "no load — showing the output does NOT track"),
+                              f"ratio out/in = {ratio:.4f}"
+                              + ("   <-- output DEAD STILL" if broken else "")],
+                        [(255, 255, 255), (150, 220, 255), (255, 200, 120),
+                         (255, 150, 150) if broken else (200, 255, 200)]))
+    imageio.mimsave(path, vid, fps=OUT_FPS, macro_block_size=1)
 
 
 def _plot(series, v, meta, path):
@@ -349,8 +379,22 @@ def main():
         result["modes"]["V-A"] = {"ran": True, "n_seeds": N_SEEDS, "seeds_passed": n_pass,
                                   "passed": bool(n_pass >= SEED_PASS),
                                   "criteria_seed0": per_seed[0]["criteria"], "per_seed": per_seed}
+        # MARKERS ARE PHYSICS-IDENTICAL: visual-only tabs (zero mass, no contact). Prove it — seed0's
+        # triple (revs / ratio residual / torque residual) on a NO-marker model must match exactly.
+        xml_nm, _ = build_va_mjcf(plan, ca, out / "assets", markers=False)
+        (out / "_nomark.xml").write_text(xml_nm)
+        v_nm, _, _ = run_va(mj.MjModel.from_xml_path(str(out / "_nomark.xml")), meta, seed=0, record=False)
+        triple_mk = [per_seed[0]["revs_in"], per_seed[0]["ratio_residual"], per_seed[0]["torque_residual"]]
+        triple_nm = [v_nm["revs_in"], v_nm["ratio_residual"], v_nm["torque_residual"]]
+        assert triple_mk == triple_nm, f"markers CHANGED physics: {triple_mk} != {triple_nm}"
+        (out / "_nomark.xml").unlink(missing_ok=True)
+        result["modes"]["V-A"]["markers_physics_identical"] = {
+            "with_markers (revs,ratio_resid,torque_resid)": triple_mk,
+            "no_markers": triple_nm, "identical": True}
+
         # DISCRIMINATION (inherited, D-M19-2): break the coupling — the output must NOT track the input.
-        vbreak, _, _ = run_va(model, meta, seed=0, record=False, break_coupling=True)
+        # Recorded as its own clip (broken-vs-intact is the most legible evidence this element produces).
+        vbreak, _, frames_break = run_va(model, meta, seed=0, record=True, break_coupling=True)
         intact_ratio_resid = per_seed[0]["ratio_residual"]
         result["modes"]["V-A"]["discrimination_probe"] = {
             "intact_ratio_residual": intact_ratio_resid,
@@ -361,6 +405,9 @@ def main():
                                   and vbreak["revs_in"] > 1.0),
             "note": "coupling INTACT: output tracks input 1:1; coupling BROKEN (equality inactive): input "
                     "spins, output stays put — the tracking is the coupling, not a solver artifact"}
+        if frames_break:
+            _save_video(frames_break, meta, out / "t2_coupling_VA_broken.mp4", broken=True)
+            result["modes"]["V-A"]["discrimination_video"] = "t2_coupling_VA_broken.mp4"
         if series0:
             _plot(series0, v0, meta, out / "t2_coupling_VA.png")
             result["modes"]["V-A"]["plot"] = "t2_coupling_VA.png"
@@ -377,6 +424,9 @@ def main():
               f"({v0['torque_residual']*100:.2f}%)")
         print(f"   discrimination: intact out {dp['intact_out_rev']:.2f} rev  vs  BROKEN out "
               f"{dp['broken_out_rev']:.2f} rev (in {dp['broken_in_rev']:.2f}) => discriminates={dp['discriminates']}")
+        mi = result["modes"]["V-A"]["markers_physics_identical"]
+        print(f"   markers physics-identical: with {mi['with_markers (revs,ratio_resid,torque_resid)']} "
+              f"== without {mi['no_markers']}  ({mi['identical']})")
 
     result["verdict_VA"] = result["modes"].get("V-A", {}).get("passed", False)
     result["verdict_VB"] = ("VERIFIED — a rigid coupling is concentric clamped solids with NO curved "

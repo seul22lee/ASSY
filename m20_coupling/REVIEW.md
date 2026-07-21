@@ -76,7 +76,12 @@ and the REVIEW is explicit that (a) alone is weak:
   true`. So the tracking is the coupling doing work, not a solver artifact — the same discipline that
   caught two masked-hold tautologies in m19.
 
-Video: [`out/t2_coupling_VA.mp4`](out/t2_coupling_VA.mp4).
+Videos (both side-on, 4× slow-mo, with per-body rotation markers — see the video-evidence note
+below): the **intact** drive [`out/t2_coupling_VA.mp4`](out/t2_coupling_VA.mp4) (input + output markers
+sweep 6 rev in lock-step) and the **discrimination** clip
+[`out/t2_coupling_VA_broken.mp4`](out/t2_coupling_VA_broken.mp4) (coupling inactive — the red/cyan input
+markers sweep 6 rev while the magenta output marker stays **dead still**). That broken-vs-intact contrast
+is the most legible evidence this element produces.
 
 ### Physics-of-verification notes
 
@@ -113,6 +118,31 @@ question — a future clamp-torque check — **not** a deferred curved-contact V
 [4] t1 COMPILE_DRIFT: base 50×50, hub_top 50, out_len 24, out_shaft_d 7.4 vs intent — all drift 0.0000 mm
 ========== reproduction CLEAN — every number checks out ==========
 ```
+
+## Video evidence (m20 correction) — and a STANDING RULE for m21+
+
+The first-cut V-A video failed review with two defects, **both fixed with no physics change** (the
+verdict triple is byte-identical — asserted in `main`: with-markers `[6.001, 0.0, 0.0006]` == no-markers
+`[6.001, 0.0, 0.0006]`):
+
+1. **Invisible rotation (the m19 plain-screw lesson, recurred).** Every body is a rotationally
+   symmetric cylinder, so a spinning shaft looks static. Fix: **visual-only marker geoms** — thin radial
+   tabs, one contrasting colour per moving body (red input shaft, cyan hub, magenta output shaft), all
+   `contype=0/conaffinity=0` and **zero mass** (default `density=0`), so they add no inertia and no
+   contact. Plus a **SIDE camera** (perpendicular to the +Z shaft axis) — a near-axial view hides
+   rotation even with markers.
+2. **Incomplete recording.** The clip must cover the full criterion window (≥6 rev). Fix: the recorded
+   seed drives the **whole 6-rev drive including the rated-torque-load phase**, captured at 240 Hz and
+   emitted at 60 fps (**4× slow-motion**) so the sweep is smooth and the pass moment is on film; the HUD
+   timestamps + rev counters keep it honest.
+3. **Discrimination clip added.** A second mp4 records the **broken** coupling (equality inactive): the
+   input markers sweep 6 rev while the output marker is frozen — the broken-vs-intact contrast.
+
+**STANDING RULE (V-A videos, m21+).** Every V-A video MUST (a) contain at least one visually asymmetric
+feature per moving body, (b) show the HUD primary-DoF counter, and (c) cover the full criterion window
+including the pass moment. A video where nothing visibly moves, or that ends before the gate, is **not
+review evidence** — this rule exists because the defect recurred twice (m19 screw, m20 coupling), and
+videos are how reviewers catch what the numbers hide (the m10 precedent).
 
 ## Stage-by-stage (D-track, no stage skipped)
 

@@ -1,6 +1,6 @@
 {
   "decision_row": "D-M20-1 P-COUPLING V-A on compiled coupling_fixture (V-B VERIFIED \u2014 no curved contact)",
-  "compile_hash": "8318874",
+  "compile_hash": "ef28eaf",
   "card": "coupling",
   "element": "E1",
   "rule_chain": {
@@ -290,6 +290,19 @@
           "passed": true
         }
       ],
+      "markers_physics_identical": {
+        "with_markers (revs,ratio_resid,torque_resid)": [
+          6.001,
+          0.0,
+          0.0006
+        ],
+        "no_markers": [
+          6.001,
+          0.0,
+          0.0006
+        ],
+        "identical": true
+      },
       "discrimination_probe": {
         "intact_ratio_residual": 0.0,
         "intact_out_rev": 6.001,
@@ -298,6 +311,7 @@
         "discriminates": true,
         "note": "coupling INTACT: output tracks input 1:1; coupling BROKEN (equality inactive): input spins, output stays put \u2014 the tracking is the coupling, not a solver artifact"
       },
+      "discrimination_video": "t2_coupling_VA_broken.mp4",
       "plot": "t2_coupling_VA.png",
       "video": "t2_coupling_VA.mp4"
     }
