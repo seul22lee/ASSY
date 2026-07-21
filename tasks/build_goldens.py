@@ -833,6 +833,86 @@ def coupling_fixture() -> DesignPlan:
     return plan
 
 
+def ujoint_fixture() -> DesignPlan:
+    """Minimal universal_joint fixture (Cardan/Hooke, P&B §8.1, D-track m21): a rigid cross transmits
+    rotation between two shafts whose axes INTERSECT at a bend β. Two functional pieces (P1
+    shaft_carrier_in[base], P2 shaft_carrier_out_angled[mover, the β-tilted output shaft]), one element
+    (E1 universal_joint).
+
+    ONE use behaviour exercises the m18 axis-2 field for the FIRST time on a real intersecting pair:
+      B1  use / rotation  — the input turns, the output tracks at a MEAN 1:1 but pulsates (cos β…1/cos β
+                            twice per rev); nature=regular; **axis_relationship=intersecting** (axis-2 —
+                            the discriminator vs coupling's parallel). transmission ratio 1.0, bend_deg=β.
+      +imposed assembly shaft-insertion path (from the card, V-08).
+
+    EXPRESSIVENESS GAP (recorded, not silently patched — DRAFT D-M21-3): the schema's axis_relationship
+    is CATEGORICAL (parallel/intersecting/crossed) and carries no intersection ANGLE. β is expressed
+    three ways here — the element param angle_deg, the anchor geometry (shaft_in +Z vs shaft_out B), and
+    a transmission `bend_deg` hint the card reads — but there is no first-class scalar 'axis angle' field
+    at the behaviour level. A future schema field would express it cleanly; carried as a DRAFT row."""
+    beta = 30.0
+    bore_d, yoke_d, length = 8.0, 16.0, 20.0
+    joint_z = 30.0
+    carrier_in = HostTemplate(template_ref="shaft_carrier_in",
+        params={"base_l": 50.0, "base_w": 50.0, "base_t": 4.0, "shaft_d": bore_d, "shaft_h": joint_z},
+        anchors=[Anchor(name="shaft_in", kind="axis"), Anchor(name="cross_pivot", kind="axis")])
+    carrier_out = HostTemplate(template_ref="shaft_carrier_out_angled",
+        params={"shaft_d": bore_d, "beta_deg": beta, "joint_z": joint_z, "shaft_len": 24.0,
+                "clearance": 0.30},
+        anchors=[Anchor(name="shaft_out", kind="axis")])
+    pieces = [
+        Piece(id="P1", role="base", template_ref="shaft_carrier_in", is_base=True,
+              params=dict(carrier_in.params)),
+        Piece(id="P2", role="output_shaft", template_ref="shaft_carrier_out_angled",
+              params=dict(carrier_out.params)),
+    ]
+    elements = [ElementInstance(id="E1", card_ref="universal_joint", host_pieces=["P1", "P2"],
+                                params={"yoke_d": yoke_d, "bore_d": bore_d, "length": length,
+                                        "angle_deg": beta})]
+    bindings = [
+        Binding(element_id="E1", port="shaft_in", piece_id="P1", anchor="shaft_in",
+                mate="coincident_axis"),
+        Binding(element_id="E1", port="shaft_out", piece_id="P2", anchor="shaft_out",
+                mate="coincident_axis"),
+        Binding(element_id="E1", port="cross_pivot", piece_id="P1", anchor="cross_pivot",
+                mate="coincident_axis"),
+    ]
+    behaviors = [
+        Behavior(id="B1", phase="use",
+                 motion=MotionSpec(kind="rotation", axis_hint="vertical", nature="regular",
+                                   range_value=1080.0, range_unit="deg", bound="min",
+                                   transmission={"ratio": 1.0, "kind": "universal_joint",
+                                                 "bend_deg": beta}),
+                 axis_relationship="intersecting", realized_by="E1"),   # axis-2: FIRST real intersecting
+    ]
+    from knowledge.cards.base import CARD_REGISTRY as _C
+    card = _C["universal_joint"]
+    n = len(behaviors)
+    for tmpl in card.imposes:
+        n += 1
+        behaviors.append(Behavior(id=f"B{n}", phase=getattr(tmpl.phase, "value", tmpl.phase),
+                                  motion=MotionSpec(kind=getattr(tmpl.motion.kind, "value",
+                                                                 tmpl.motion.kind)),
+                                  imposed_by="E1", imposed_by_card="universal_joint"))
+    parameters = [
+        Parameter(name="angle_deg", value=beta, unit="deg", lo=0.0, hi=35.0, resolved_by="user"),
+        Parameter(name="bore_d", value=bore_d, unit="mm", lo=4.0, hi=16.0, resolved_by="user"),
+        Parameter(name="yoke_d", value=yoke_d, unit="mm", lo=10.0, hi=30.0, resolved_by="rule"),
+    ]
+    plan = DesignPlan(task_id="ujoint_fixture",
+        command="Transmit rotation between two shafts that meet at an angle. Plastic, 3D printing.",
+        functions=[Function(verb="transmit", object="rotation", qualifier="across intersecting axes"),
+                   Function(verb="connect", object="shafts", qualifier="angled, Cardan")],
+        behaviors=behaviors, pieces=pieces, templates=[carrier_in, carrier_out],
+        elements=elements, bindings=bindings, parameters=parameters)
+    for pr in card.verification(plan, elements[0]):   # attach P-UJOINT V-A
+        plan.protocols.append(pr)
+        b = next((x for x in plan.behaviors if x.id == pr.verifies), None)
+        if b is not None and not b.verified_by:
+            b.verified_by = pr.id
+    return plan
+
+
 def anchor_hard(variant: str = "drawer", stroke: float = 120.0,
                 load_kg: float = 0.5) -> DesignPlan:
     """THE HARD ANCHOR (MECHSYNTH §8.2, RETARGETED at D-M13-2) — one mechanism, two products.
@@ -1035,6 +1115,7 @@ def main() -> None:
         "rack_pinion_fixture.json": rack_pinion_fixture(),
         "lead_screw_fixture.json": lead_screw_fixture(),   # m19 D-track fixture
         "coupling_fixture.json": coupling_fixture(),        # m20 D-track fixture
+        "ujoint_fixture.json": ujoint_fixture(),            # m21 D-track fixture
         "anchor_lift.json": anchor_lift(),          # D-M13-2 PRIMARY: crank lift platform
         "anchor_hard.json": anchor_hard(),          # labeled ALTERNATE: horizontal drawer
     }

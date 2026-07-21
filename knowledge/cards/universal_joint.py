@@ -60,13 +60,18 @@ def ujoint_kinematics(g: UJointDims) -> dict:
             "mean_ratio": 1.0}   # mean over a full revolution is exactly 1:1 (it lags then leads)
 
 
+_YOKE_OVERLAP_MM = 3.0   # yoke sinks onto the input stub so the union is ONE solid (D-D-1 lesson)
+
+
 def ujoint_carve(pieces, inst, bindings) -> CarveResult:
+    """The INPUT yoke is rigidly on the input shaft end (a rigid coupling grips its shaft — the D-D-1
+    one-solid picture, same fix as m20). A solid yoke cylinder overlaps the input-stub top so hub∪stub
+    is one solid (a naive through-bore yoke floats free = two solids). One solid, added to the shaft_in
+    host."""
     g = ujoint_dims(getattr(inst, "params", {}) or {})
-    p = _anchor_point(pieces, bindings, "shaft_in")
-    yoke = Location(Pos(*p)) * (Cylinder(radius=g.yoke_d / 2, height=g.length,
-                                         align=(Align.CENTER, Align.CENTER, Align.MIN))
-                                - Cylinder(radius=g.bore_d / 2, height=g.length + 2,
-                                           align=(Align.CENTER, Align.CENTER, Align.MIN)))
+    x, y, z = _anchor_point(pieces, bindings, "shaft_in")
+    yoke = Location(Pos(x, y, z - _YOKE_OVERLAP_MM)) * Cylinder(
+        radius=g.yoke_d / 2, height=g.length, align=(Align.CENTER, Align.CENTER, Align.MIN))
     return CarveResult(parts=_add(pieces, _pid(bindings, "shaft_in"), yoke), tags={"yoke": yoke}, dims=g)
 
 
