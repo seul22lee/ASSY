@@ -1,0 +1,132 @@
+{
+  "probe": "m17 dt_scale_ladder (follow-up, dt*)",
+  "settle_s": 0.05,
+  "t_end": 0.25,
+  "clean_tol": 0.15,
+  "ladders": {
+    "wedge_2mm": {
+      "dt_star": 2e-05,
+      "rows": [
+        {
+          "dt": 0.0005,
+          "diverged": true,
+          "ratio": -0.198,
+          "peak_post_settle_N": 4.2706781194746886e+17,
+          "clean": false
+        },
+        {
+          "dt": 0.00025,
+          "diverged": false,
+          "ratio": -0.275,
+          "peak_post_settle_N": 0.15136346842452233,
+          "clean": false
+        },
+        {
+          "dt": 0.0001,
+          "diverged": false,
+          "ratio": -0.948,
+          "peak_post_settle_N": 0.30272693684904467,
+          "clean": false
+        },
+        {
+          "dt": 5e-05,
+          "diverged": false,
+          "ratio": -1.392,
+          "peak_post_settle_N": 0.30272693684904467,
+          "clean": false
+        },
+        {
+          "dt": 2e-05,
+          "diverged": false,
+          "ratio": -0.439,
+          "peak_post_settle_N": 0.30272693684904467,
+          "clean": true
+        }
+      ]
+    },
+    "sdf_2mm": {
+      "module_m": 0.002,
+      "seat_deg": 3.9,
+      "dt_star": null,
+      "rows": [
+        {
+          "dt": 0.0005,
+          "diverged": true,
+          "ratio": 0.151,
+          "peak_post_settle_N": 0.0,
+          "clean": false
+        },
+        {
+          "dt": 0.00025,
+          "diverged": true,
+          "ratio": 0.075,
+          "peak_post_settle_N": 0.0,
+          "clean": false
+        },
+        {
+          "dt": 0.0001,
+          "diverged": true,
+          "ratio": 0.122,
+          "peak_post_settle_N": 0.0,
+          "clean": false
+        },
+        {
+          "dt": 5e-05,
+          "diverged": true,
+          "ratio": 0.121,
+          "peak_post_settle_N": 1.7917917069939966e+16,
+          "clean": false
+        },
+        {
+          "dt": 2e-05,
+          "diverged": false,
+          "ratio": 0.095,
+          "peak_post_settle_N": 8.616732964056277e+16,
+          "clean": false
+        }
+      ]
+    },
+    "sdf_4mm": {
+      "module_m": 0.004,
+      "seat_deg": 4.0,
+      "dt_star": null,
+      "rows": [
+        {
+          "dt": 0.0005,
+          "diverged": true,
+          "ratio": 0.81,
+          "peak_post_settle_N": 0.0,
+          "clean": false
+        },
+        {
+          "dt": 0.00025,
+          "diverged": true,
+          "ratio": -0.247,
+          "peak_post_settle_N": 0.0,
+          "clean": false
+        },
+        {
+          "dt": 0.0001,
+          "diverged": true,
+          "ratio": -0.019,
+          "peak_post_settle_N": 0.0,
+          "clean": false
+        },
+        {
+          "dt": 5e-05,
+          "diverged": true,
+          "ratio": 0.102,
+          "peak_post_settle_N": 0.0,
+          "clean": false
+        },
+        {
+          "dt": 2e-05,
+          "diverged": true,
+          "ratio": 0.118,
+          "peak_post_settle_N": 0.0,
+          "clean": false
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,5 @@
+# Build intermediates — regenerable. Only the REVIEW artifacts (png / *_verdict.json / REVIEW.md)
+# and the source .py are committed; the emitted MJCF, meta, and mesh assets are housekeeping.
+out/assets/
+out/*.xml
+out/gear_*_meta.json

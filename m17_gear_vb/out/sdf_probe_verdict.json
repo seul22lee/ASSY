@@ -1,0 +1,30 @@
+{
+  "probe": "m17 sdf_probe (FILE 1)",
+  "conditions": {
+    "wedge_frozen_5e-4": {
+      "dt": 0.0005,
+      "peak_force_N": 2.0884084575162016e+16,
+      "diverged": true,
+      "t_final": 0.237,
+      "omega_pinion": -2518.369,
+      "omega_gear": -450.601,
+      "ratio": 0.179,
+      "ncon0": 0
+    },
+    "wedge_dt25_2e-5": {
+      "dt": 2e-05,
+      "peak_force_N": 0.6054538736980893,
+      "diverged": false,
+      "t_final": 0.35,
+      "omega_pinion": 1.895,
+      "omega_gear": -0.914,
+      "ratio": -0.482,
+      "ncon0": 0
+    }
+  },
+  "F1_ownmesh_sdf": {
+    "emitted_xml": "r2b_ownmesh_sdf.xml",
+    "compiles": false,
+    "error": "ValueError: XML Error: plugin mujoco.sdf.sdflib not found\nElement 'plugin', line 6\n"
+  }
+}
