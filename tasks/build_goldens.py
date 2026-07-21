@@ -759,6 +759,80 @@ def lead_screw_fixture() -> DesignPlan:
     return plan
 
 
+def coupling_fixture() -> DesignPlan:
+    """Minimal coupling fixture (Shigley §3-12 / P&B §8.1, D-track m20): a RIGID coupling joining two
+    COAXIAL shafts and transmitting rotation 1:1 (input → output). Two functional pieces
+    (P1 shaft_carrier_in[base], P2 shaft_carrier_out[mover], the output shaft), one element (E1 coupling).
+
+    ONE use behaviour exercises the m18 axes:
+      B1  use / rotation  — the input shaft turns, the output tracks 1:1; nature=regular;
+                            **axis_relationship=parallel** (axis-2 — the discriminator vs universal_joint,
+                            which joins INTERSECTING axes). transmission ratio 1.0.
+      +imposed assembly shaft-insertion path (from the card, V-08).
+
+    The NON-TAUTOLOGY (a rigid coupling's real content is TORQUE transmission, not the trivially-declared
+    1:1) is exercised by P-COUPLING V-A at Stage 4: a resisting torque SOURCED from the card's rated-torque
+    formula is applied on the output; the input must transmit it. No expressiveness gap was found — the
+    torque load rides in the rig (sourced from card knowledge), not a new schema field (logged, m20 REVIEW)."""
+    bore_d, tau_allow = 8.0, 25.0
+    body_d = round(max(20.0, 2.0 * bore_d), 1)     # hub proportion: OD ≥ 2·bore = 16 → 20
+    length = round(max(24.0, 1.5 * bore_d), 1)     # hub proportion: len ≥ 1.5·bore = 12 → 24
+    shaft_h, out_z0 = 30.0, 40.0
+    carrier_in = HostTemplate(template_ref="shaft_carrier_in",
+        params={"base_l": 50.0, "base_w": 50.0, "base_t": 4.0, "shaft_d": bore_d, "shaft_h": shaft_h},
+        anchors=[Anchor(name="shaft_in", kind="axis")])
+    carrier_out = HostTemplate(template_ref="shaft_carrier_out",
+        params={"shaft_d": bore_d, "z0": out_z0, "shaft_len": 24.0, "clearance": 0.30},
+        anchors=[Anchor(name="shaft_out", kind="axis")])
+    pieces = [
+        Piece(id="P1", role="base", template_ref="shaft_carrier_in", is_base=True,
+              params=dict(carrier_in.params)),
+        Piece(id="P2", role="output_shaft", template_ref="shaft_carrier_out", params=dict(carrier_out.params)),
+    ]
+    elements = [ElementInstance(id="E1", card_ref="coupling", host_pieces=["P1", "P2"],
+                                params={"bore_d": bore_d, "body_d": body_d, "length": length,
+                                        "tau_allow": tau_allow})]
+    bindings = [
+        Binding(element_id="E1", port="shaft_in", piece_id="P1", anchor="shaft_in",
+                mate="coincident_axis"),
+        Binding(element_id="E1", port="shaft_out", piece_id="P2", anchor="shaft_out",
+                mate="coincident_axis"),
+    ]
+    behaviors = [
+        Behavior(id="B1", phase="use",
+                 motion=MotionSpec(kind="rotation", axis_hint="vertical", nature="regular",
+                                   range_value=1080.0, range_unit="deg", bound="min",
+                                   transmission={"ratio": 1.0, "kind": "coupling"}),
+                 axis_relationship="parallel", realized_by="E1"),   # axis-2: coaxial (vs universal_joint)
+    ]
+    from knowledge.cards.base import CARD_REGISTRY as _C
+    card = _C["coupling"]
+    n = len(behaviors)
+    for tmpl in card.imposes:                  # card-sourced imposed behaviours (D5/V-08)
+        n += 1
+        behaviors.append(Behavior(id=f"B{n}", phase=getattr(tmpl.phase, "value", tmpl.phase),
+                                  motion=MotionSpec(kind=getattr(tmpl.motion.kind, "value",
+                                                                 tmpl.motion.kind)),
+                                  imposed_by="E1", imposed_by_card="coupling"))
+    parameters = [
+        Parameter(name="bore_d", value=bore_d, unit="mm", lo=4.0, hi=20.0, resolved_by="user"),
+        Parameter(name="body_d", value=body_d, unit="mm", lo=10.0, hi=40.0, resolved_by="rule"),
+        Parameter(name="length", value=length, unit="mm", lo=10.0, hi=60.0, resolved_by="rule"),
+    ]
+    plan = DesignPlan(task_id="coupling_fixture",
+        command="Join two in-line shafts so turning one turns the other 1:1. Plastic, 3D printing.",
+        functions=[Function(verb="transmit", object="rotation", qualifier="1:1 between coaxial shafts"),
+                   Function(verb="connect", object="shafts", qualifier="rigid, coaxial")],
+        behaviors=behaviors, pieces=pieces, templates=[carrier_in, carrier_out],
+        elements=elements, bindings=bindings, parameters=parameters)
+    for pr in card.verification(plan, elements[0]):   # attach P-COUPLING V-A
+        plan.protocols.append(pr)
+        b = next((x for x in plan.behaviors if x.id == pr.verifies), None)
+        if b is not None and not b.verified_by:
+            b.verified_by = pr.id
+    return plan
+
+
 def anchor_hard(variant: str = "drawer", stroke: float = 120.0,
                 load_kg: float = 0.5) -> DesignPlan:
     """THE HARD ANCHOR (MECHSYNTH §8.2, RETARGETED at D-M13-2) — one mechanism, two products.
@@ -960,6 +1034,7 @@ def main() -> None:
         "slide_fixture.json": slide_fixture(),
         "rack_pinion_fixture.json": rack_pinion_fixture(),
         "lead_screw_fixture.json": lead_screw_fixture(),   # m19 D-track fixture
+        "coupling_fixture.json": coupling_fixture(),        # m20 D-track fixture
         "anchor_lift.json": anchor_lift(),          # D-M13-2 PRIMARY: crank lift platform
         "anchor_hard.json": anchor_hard(),          # labeled ALTERNATE: horizontal drawer
     }

@@ -1,0 +1,227 @@
+{
+  "task_id": "coupling_fixture",
+  "command": "Join two in-line shafts so turning one turns the other 1:1. Plastic, 3D printing.",
+  "functions": [
+    {
+      "verb": "transmit",
+      "object": "rotation",
+      "qualifier": "1:1 between coaxial shafts"
+    },
+    {
+      "verb": "connect",
+      "object": "shafts",
+      "qualifier": "rigid, coaxial"
+    }
+  ],
+  "behaviors": [
+    {
+      "id": "B1",
+      "phase": "use",
+      "motion": {
+        "kind": "rotation",
+        "nature": "regular",
+        "axis_hint": "vertical",
+        "range_value": 1080.0,
+        "range_unit": "deg",
+        "bound": "min",
+        "transmission": {
+          "ratio": 1.0,
+          "kind": "coupling"
+        },
+        "event_force_window_N": null
+      },
+      "axis_relationship": "parallel",
+      "self_locking": false,
+      "load": null,
+      "realized_by": "E1",
+      "imposed_by": null,
+      "verified_by": "P-COUPLING-VA-E1",
+      "imposed_by_card": null
+    },
+    {
+      "id": "B2",
+      "phase": "assembly",
+      "motion": {
+        "kind": "translation",
+        "nature": "regular",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "axis_relationship": "parallel",
+      "self_locking": false,
+      "load": null,
+      "realized_by": null,
+      "imposed_by": "E1",
+      "verified_by": null,
+      "imposed_by_card": "coupling"
+    }
+  ],
+  "pieces": [
+    {
+      "id": "P1",
+      "role": "base",
+      "provenance": "functional",
+      "template_ref": "shaft_carrier_in",
+      "source_element": null,
+      "params": {
+        "base_l": 50.0,
+        "base_w": 50.0,
+        "base_t": 4.0,
+        "shaft_d": 8.0,
+        "shaft_h": 30.0
+      },
+      "is_base": true
+    },
+    {
+      "id": "P2",
+      "role": "output_shaft",
+      "provenance": "functional",
+      "template_ref": "shaft_carrier_out",
+      "source_element": null,
+      "params": {
+        "shaft_d": 8.0,
+        "z0": 40.0,
+        "shaft_len": 24.0,
+        "clearance": 0.3
+      },
+      "is_base": false
+    }
+  ],
+  "templates": [
+    {
+      "template_ref": "shaft_carrier_in",
+      "anchors": [
+        {
+          "name": "shaft_in",
+          "kind": "axis"
+        }
+      ],
+      "params": {
+        "base_l": 50.0,
+        "base_w": 50.0,
+        "base_t": 4.0,
+        "shaft_d": 8.0,
+        "shaft_h": 30.0
+      }
+    },
+    {
+      "template_ref": "shaft_carrier_out",
+      "anchors": [
+        {
+          "name": "shaft_out",
+          "kind": "axis"
+        }
+      ],
+      "params": {
+        "shaft_d": 8.0,
+        "z0": 40.0,
+        "shaft_len": 24.0,
+        "clearance": 0.3
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "E1",
+      "card_ref": "coupling",
+      "params": {
+        "bore_d": 8.0,
+        "body_d": 20.0,
+        "length": 24.0,
+        "tau_allow": 25.0
+      },
+      "host_pieces": [
+        "P1",
+        "P2"
+      ]
+    }
+  ],
+  "features": [],
+  "bindings": [
+    {
+      "element_id": "E1",
+      "port": "shaft_in",
+      "piece_id": "P1",
+      "anchor": "shaft_in",
+      "mate": "coincident_axis",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E1",
+      "port": "shaft_out",
+      "piece_id": "P2",
+      "anchor": "shaft_out",
+      "mate": "coincident_axis",
+      "offset_params": {}
+    }
+  ],
+  "assembly_rules": [],
+  "parameters": [
+    {
+      "name": "bore_d",
+      "value": 8.0,
+      "unit": "mm",
+      "lo": 4.0,
+      "hi": 20.0,
+      "resolved_by": "user",
+      "citation": null
+    },
+    {
+      "name": "body_d",
+      "value": 20.0,
+      "unit": "mm",
+      "lo": 10.0,
+      "hi": 40.0,
+      "resolved_by": "rule",
+      "citation": null
+    },
+    {
+      "name": "length",
+      "value": 24.0,
+      "unit": "mm",
+      "lo": 10.0,
+      "hi": 60.0,
+      "resolved_by": "rule",
+      "citation": null
+    }
+  ],
+  "protocols": [
+    {
+      "id": "P-COUPLING-VA-E1",
+      "verifies": "B1",
+      "actuation": {
+        "kind": "shaft_velocity",
+        "n_rev": 3.0,
+        "ratio_expected": 1.0,
+        "load": "resisting torque on OUTPUT sourced from T_rated (non-tautology: a rigid coupling's content is torque transmission, not the trivially-declared 1:1)"
+      },
+      "criteria": [
+        {
+          "name": "transmits_ratio",
+          "observable": "transmission_residual",
+          "op": "<=",
+          "threshold": 0.001,
+          "unit": ""
+        },
+        {
+          "name": "transmits_rated_torque",
+          "observable": "torque_residual",
+          "op": "<=",
+          "threshold": 0.05,
+          "unit": ""
+        }
+      ],
+      "observables": [],
+      "mode": "V-A",
+      "seeds": 5,
+      "seed_pass": 4
+    }
+  ],
+  "material": "PETG",
+  "variant": null,
+  "stage_log": []
+}

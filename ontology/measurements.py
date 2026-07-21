@@ -64,6 +64,10 @@ _M = [
                 "platform drop under gravity+load with the crank released (self-locking test)"),
     Measurement("pawl_drive_N", "N", "PR-PAWL",
                 "pawl click-over (drive-through) force during lift = P*fig18(alpha_drive)"),
+    # --- P-COUPLING (m20 D-track): torque transmission under load ----------------------
+    Measurement("torque_residual", "", "P-COUPLING",
+                "|T_transmitted/T_applied - 1|, output-vs-applied torque match under a rated load "
+                "(the non-tautological content of a rigid 1:1 coupling — ratio alone is trivial)"),
 ]
 
 MEASUREMENTS: dict[str, Measurement] = {m.name: m for m in _M}

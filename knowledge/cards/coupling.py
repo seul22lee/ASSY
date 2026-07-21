@@ -185,7 +185,7 @@ class CouplingCard(MechanicalElementCard):
             actuation={"kind": "shaft_velocity", "n_rev": 3.0, "ratio_expected": 1.0,
                        "load": "resisting torque on OUTPUT sourced from T_rated (non-tautology: a rigid "
                                "coupling's content is torque transmission, not the trivially-declared 1:1)"},
-            criteria=[Criterion(name="transmits_ratio", observable="ratio_residual", op="<=",
+            criteria=[Criterion(name="transmits_ratio", observable="transmission_residual", op="<=",
                                 threshold=0.001, unit=""),
                       Criterion(name="transmits_rated_torque", observable="torque_residual", op="<=",
                                 threshold=0.05, unit="")], observables=[])]
