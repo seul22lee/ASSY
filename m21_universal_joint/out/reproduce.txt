@@ -1,0 +1,28 @@
+
+========== m21 universal_joint — NUMERIC REPRODUCTION CHAIN ==========
+
+[1] CARDAN RULE CHAIN (P&B §8.1)   β = 30.0°
+  vel ratio min   cos β            = 0.8660
+  vel ratio max   1/cos β          = 1.1547
+  fluctuation     (1/cosβ − cosβ)  = 28.87 %
+  mean over a rev                  = 1.0000 (exactly 1:1)
+
+[2] FLUCTUATION measured vs formula (the discovery criterion)
+  measured band [0.866, 1.1547] vs formula [0.8660, 1.1547]
+  overlay residual max|meas−formula| = 0.080%   (gate ≤ 2%)   ok
+  phase φ0 predicted 90.0° vs measured 90.0°  → phase err 0.03° (amplitude AND phase)
+  mean ratio 0.99997 (resid 0.0030%)
+
+[3] DISCRIMINATION (β=0 flattens the pulsation)
+  β=30.0° band [0.866, 1.1547]  vs  β=0 band [0.9993, 1.0] (β=0 fluctuation 0.07%)  ⇒ discriminates=True
+
+[4] t1 COMPILE_DRIFT   (compiled geometry vs intent, incl. the β-tilt, ≤ 0.05 mm)
+  dimension                      intent   measured    drift   ok
+  base_l (P1.x)                  50.000     50.000   0.0000   ok
+  base_w (P1.y)                  50.000     50.000   0.0000   ok
+  yoke_top (P1.z)                47.000     47.000   0.0000   ok
+  out_bbox_z (L·cosβ+d·sinβ)     24.485     24.485   0.0000   ok
+  out_bbox_x (L·sinβ+d·cosβ)     18.409     18.409   0.0000   ok
+
+========== reproduction CLEAN — every number checks out ==========
+
