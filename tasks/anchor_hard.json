@@ -24,6 +24,7 @@
       "phase": "use",
       "motion": {
         "kind": "translation",
+        "nature": "regular",
         "axis_hint": "horizontal",
         "range_value": 120.0,
         "range_unit": "mm",
@@ -31,6 +32,8 @@
         "transmission": null,
         "event_force_window_N": null
       },
+      "axis_relationship": "parallel",
+      "self_locking": false,
       "load": null,
       "realized_by": "E1",
       "imposed_by": null,
@@ -42,6 +45,7 @@
       "phase": "use",
       "motion": {
         "kind": "translation",
+        "nature": "regular",
         "axis_hint": "horizontal",
         "range_value": 120.0,
         "range_unit": "mm",
@@ -49,6 +53,8 @@
         "transmission": null,
         "event_force_window_N": null
       },
+      "axis_relationship": "parallel",
+      "self_locking": false,
       "load": null,
       "realized_by": "E2",
       "imposed_by": null,
@@ -60,6 +66,7 @@
       "phase": "use",
       "motion": {
         "kind": "rot_to_trans",
+        "nature": "regular",
         "axis_hint": "horizontal",
         "range_value": 120.0,
         "range_unit": "mm",
@@ -71,6 +78,8 @@
         },
         "event_force_window_N": null
       },
+      "axis_relationship": "parallel",
+      "self_locking": false,
       "load": null,
       "realized_by": "E3",
       "imposed_by": null,
@@ -82,6 +91,7 @@
       "phase": "assembly",
       "motion": {
         "kind": "translation",
+        "nature": "regular",
         "axis_hint": null,
         "range_value": null,
         "range_unit": null,
@@ -89,6 +99,8 @@
         "transmission": null,
         "event_force_window_N": null
       },
+      "axis_relationship": "parallel",
+      "self_locking": false,
       "load": null,
       "realized_by": null,
       "imposed_by": "E1",
@@ -100,6 +112,7 @@
       "phase": "use",
       "motion": {
         "kind": "fixed",
+        "nature": "regular",
         "axis_hint": null,
         "range_value": null,
         "range_unit": null,
@@ -107,6 +120,8 @@
         "transmission": null,
         "event_force_window_N": null
       },
+      "axis_relationship": "parallel",
+      "self_locking": false,
       "load": null,
       "realized_by": null,
       "imposed_by": "E1",
@@ -118,6 +133,7 @@
       "phase": "assembly",
       "motion": {
         "kind": "translation",
+        "nature": "regular",
         "axis_hint": null,
         "range_value": null,
         "range_unit": null,
@@ -125,6 +141,8 @@
         "transmission": null,
         "event_force_window_N": null
       },
+      "axis_relationship": "parallel",
+      "self_locking": false,
       "load": null,
       "realized_by": null,
       "imposed_by": "E2",
@@ -136,6 +154,7 @@
       "phase": "use",
       "motion": {
         "kind": "fixed",
+        "nature": "regular",
         "axis_hint": null,
         "range_value": null,
         "range_unit": null,
@@ -143,6 +162,8 @@
         "transmission": null,
         "event_force_window_N": null
       },
+      "axis_relationship": "parallel",
+      "self_locking": false,
       "load": null,
       "realized_by": null,
       "imposed_by": "E2",
@@ -154,6 +175,7 @@
       "phase": "assembly",
       "motion": {
         "kind": "translation",
+        "nature": "regular",
         "axis_hint": null,
         "range_value": null,
         "range_unit": null,
@@ -161,6 +183,8 @@
         "transmission": null,
         "event_force_window_N": null
       },
+      "axis_relationship": "parallel",
+      "self_locking": false,
       "load": null,
       "realized_by": null,
       "imposed_by": "E3",

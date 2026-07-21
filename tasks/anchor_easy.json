@@ -19,6 +19,7 @@
       "phase": "use",
       "motion": {
         "kind": "rotation",
+        "nature": "regular",
         "axis_hint": "horizontal_rear",
         "range_value": 90.0,
         "range_unit": "deg",
@@ -26,6 +27,8 @@
         "transmission": null,
         "event_force_window_N": null
       },
+      "axis_relationship": "parallel",
+      "self_locking": false,
       "load": null,
       "realized_by": "E1",
       "imposed_by": null,
@@ -37,6 +40,7 @@
       "phase": "assembly",
       "motion": {
         "kind": "translation",
+        "nature": "regular",
         "axis_hint": "along_hinge_axis",
         "range_value": null,
         "range_unit": null,
@@ -44,6 +48,8 @@
         "transmission": null,
         "event_force_window_N": null
       },
+      "axis_relationship": "parallel",
+      "self_locking": false,
       "load": null,
       "realized_by": null,
       "imposed_by": "E1",
@@ -55,6 +61,7 @@
       "phase": "static",
       "motion": {
         "kind": "snap_event",
+        "nature": "regular",
         "axis_hint": null,
         "range_value": null,
         "range_unit": null,
@@ -65,6 +72,8 @@
           60.0
         ]
       },
+      "axis_relationship": "parallel",
+      "self_locking": false,
       "load": null,
       "realized_by": "E2",
       "imposed_by": null,
@@ -76,6 +85,7 @@
       "phase": "use",
       "motion": {
         "kind": "fixed",
+        "nature": "regular",
         "axis_hint": null,
         "range_value": null,
         "range_unit": null,
@@ -83,6 +93,8 @@
         "transmission": null,
         "event_force_window_N": null
       },
+      "axis_relationship": "parallel",
+      "self_locking": false,
       "load": null,
       "realized_by": null,
       "imposed_by": "E2",
@@ -94,6 +106,7 @@
       "phase": "assembly",
       "motion": {
         "kind": "translation",
+        "nature": "regular",
         "axis_hint": null,
         "range_value": null,
         "range_unit": null,
@@ -101,6 +114,8 @@
         "transmission": null,
         "event_force_window_N": null
       },
+      "axis_relationship": "parallel",
+      "self_locking": false,
       "load": null,
       "realized_by": null,
       "imposed_by": "E2",
@@ -112,6 +127,7 @@
       "phase": "use",
       "motion": {
         "kind": "rotation",
+        "nature": "regular",
         "axis_hint": "horizontal_rear",
         "range_value": 120.05,
         "range_unit": "deg",
@@ -119,6 +135,8 @@
         "transmission": null,
         "event_force_window_N": null
       },
+      "axis_relationship": "parallel",
+      "self_locking": false,
       "load": null,
       "realized_by": null,
       "imposed_by": "F1",
