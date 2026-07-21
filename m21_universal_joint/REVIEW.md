@@ -108,6 +108,48 @@ pin-class V-B, *earnable in a future D-track, not a fundamental contact-formulat
 | **5** numeric reproduction | ✅ | `reproduce.py` → `out/reproduce.txt` CLEAN (1fcb6d0) |
 | **6** REVIEW + D-M21-1 + STATUS | ✅ | this file; `DECISIONS_LOG.md` D-M21-1/-2/-3; `STATUS.md` M21 row |
 
+## Addendum (post-close) — spec §13, the fixture t0 gate, and video transparency
+
+**Timing (honest note).** A combined instruction — formalize the Element D-track as spec §13, add a
+fixture **t0 interference gate**, run it for m21, and do a video transparency pass — arrived **after**
+m21 Stages 5/6 had closed. It was executed as **append-only addendum commits** (no closed-stage commit
+rewritten), parts A–C below, each committed and pushed.
+
+**A — Spec §13 + D-M21-4.** The six-stage Element D-track (S1 card … S6 REVIEW) with a definition-of-done
+per stage is now written down as `MECHSYNTH_SPEC_v0.1.md` §13; S5 gains a **fixture t0 gate**. Recorded as
+**D-M21-4**. The gate closes a real hole the m21 video review exposed: a grep confirms the m19/m20/m21
+REVIEWs contained **zero t0 evidence** — no stage had ever checked compiled-fixture interference.
+(Retroactive t0 for the m19/m20 fixtures is parked.)
+
+**B — The m21 t0 gate: the coarse geometry FAILED, was fixed, re-run CLEAN.** The reviewer's "looks like
+interference" was **correct**: the original rig used a *solid* yoke cylinder, and a swept-pose probe
+measured the cross arms and output shaft **punching through it by 5–7 mm**. Fixed by redesigning the rig
+into a proper interference-clean U-joint proxy — **clevis yokes** (two prongs each; input opens along X
+for pin1, output along Y for pin2), a **compact cross** whose trunnion tips stop short of the prongs (a
+real clearance gap; MuJoCo primitives can't be bored), and an output shaft that starts 6 mm out along B
+to clear the joint. The t0 table (trimesh signed-distance, grouped by body, judged per **D22**) is now
+CLEAN over poses {0,22,45,67,90}°:
+
+| body pair | worst penetration | kind |
+|---|---|---|
+| cross × input | −0.20 mm | **intended** (pin1 trunnion ↔ yoke, clearance ok) |
+| cross × output | −0.20 mm | **intended** (pin2 trunnion ↔ yoke, clearance ok) |
+| base × input | −1.50 mm | intended (shaft ↔ bearing) |
+| input × output | −0.48 mm | unintended → **zero penetration** ✓ |
+| base × cross / base × output | −29 mm | unintended → clear ✓ |
+
+*(negative = clearance)*. **No verdict ships over geometry that failed the table** — `main` asserts it.
+The S4 verdict was re-stamped on the fixed geometry; the **V-A numbers are unchanged** (5/5, fluctuation
+0.08%, phase 0.03°) because the geometry is visual/inertial only — the joints define the kinematics.
+
+**C — Video transparency.** The yoke prongs are now α≈0.35 (distinct hues) so the **opaque, bright
+cross** (gold pin1 / blue pin2 / white hub) shows THROUGH — you can *see the cross inside the joint*,
+which is what "looks like interference" was really about. Added a second **~45° elevation clip**
+([`out/t2_ujoint_VA_iso45.mp4`](out/t2_ujoint_VA_iso45.mp4)) alongside the primary side clip, and a
+**LIVE ω_out/ω_in** on the HUD (finite-difference per frame — e.g. 1.152 near the band max). Asserted
+**physics-identical** (materials-only change): seed0 triple `[3.0, 0.0008, 3e-05]` byte-identical to the
+opaque verdict.
+
 ## Parked for future milestones (DRAFT, no build)
 
 - **DRAFT D-M21-2** — the **double-Cardan constant-velocity** arrangement: two U-joints in series,
