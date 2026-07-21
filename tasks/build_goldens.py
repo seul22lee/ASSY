@@ -678,6 +678,87 @@ def rack_pinion_fixture() -> DesignPlan:
     return plan
 
 
+def lead_screw_fixture() -> DesignPlan:
+    """Minimal lead_screw fixture (Shigley §8-2 / P&B §7.4.3, D-track m19): a base holding a VERTICAL
+    self-locking screw (a screw-jack) that drives a nut carriage up its `stroke`, and HOLDS a released
+    load by self-lock (no brake — the axis-4 discriminator vs rack_pinion, which needs a pawl, D-M13-4).
+    Two functional pieces (P1 screw_base[base], P2 nut_carriage[mover]), one element (E1 lead_screw).
+
+    THREE behaviours exercise the m18 axes:
+      B1  use / rot_to_trans  — the screw turns, the nut rises `stroke` mm; transmission = lead mm/rev;
+                                nature=regular; **self_locking=True** (axis-4).
+      B2  static / fixed + load — the released nut+load HOLDS (the self-lock realizes the hold). It is
+                                realized_by the SAME screw: a self-locking screw holds by itself, so
+                                the hold is a genuine realization, not a separate brake element. This
+                                is the D-M13-3 resolution made concrete — the schema expresses it with
+                                self_locking (on B1) + a static/fixed/load behaviour (B2) realized_by
+                                the screw. No expressiveness gap was found (logged, m19 REVIEW §3).
+      +imposed assembly threading path (from the card, V-08)."""
+    d_major, pitch, starts, stroke, load_kg = 8.0, 2.0, 1, 40.0, 0.5
+    lead = starts * pitch                      # RULE CHAIN: 1 × 2 = 2.0 mm/rev
+    length = round(stroke + 20.0, 1)           # 60 mm threaded length covers the 40 mm stroke + margin
+    screw_base = HostTemplate(template_ref="screw_base",
+        params={"base_l": 60.0, "base_w": 60.0, "base_t": 4.0},
+        anchors=[Anchor(name="screw_axis", kind="axis"), Anchor(name="travel_edge", kind="axis")])
+    nut_carriage = HostTemplate(template_ref="nut_carriage",
+        params={"nut_l": 26.0, "nut_w": 26.0, "nut_t": 10.0, "nut_z": 30.0, "d_major": d_major, "gap": 1.0},
+        anchors=[Anchor(name="nut_mount", kind="face"), Anchor(name="travel_axis", kind="axis")])
+    pieces = [
+        Piece(id="P1", role="base", template_ref="screw_base", is_base=True,
+              params=dict(screw_base.params)),
+        Piece(id="P2", role="nut", template_ref="nut_carriage", params=dict(nut_carriage.params)),
+    ]
+    elements = [ElementInstance(id="E1", card_ref="lead_screw", host_pieces=["P1", "P2"],
+                                params={"d_major": d_major, "pitch": pitch, "starts": starts,
+                                        "lead": lead, "length": length, "stroke": stroke})]
+    bindings = [
+        Binding(element_id="E1", port="screw_axis", piece_id="P1", anchor="screw_axis",
+                mate="coincident_axis"),
+        Binding(element_id="E1", port="nut_mount", piece_id="P2", anchor="nut_mount", mate="flush_face"),
+        Binding(element_id="E1", port="travel_axis", piece_id="P2", anchor="travel_axis",
+                mate="coincident_axis"),
+    ]
+    behaviors = [
+        Behavior(id="B1", phase="use",
+                 motion=MotionSpec(kind="rot_to_trans", axis_hint="vertical", nature="regular",
+                                   range_value=stroke, range_unit="mm", bound="min",
+                                   transmission={"mm_per_rev": round(lead, 3), "lead_mm": round(lead, 3),
+                                                 "kind": "lead_screw"}),
+                 self_locking=True, realized_by="E1"),
+        Behavior(id="B2", phase="static",
+                 motion=MotionSpec(kind="fixed", axis_hint="vertical"),
+                 load={"mass_kg": load_kg, "direction": "-z"},
+                 self_locking=True, realized_by="E1"),   # the self-lock HOLD (D-M13-3, axis-4)
+    ]
+    from knowledge.cards.base import CARD_REGISTRY as _C
+    card = _C["lead_screw"]
+    n = len(behaviors)
+    for tmpl in card.imposes:                  # card-sourced imposed behaviours (D5/V-08)
+        n += 1
+        behaviors.append(Behavior(id=f"B{n}", phase=getattr(tmpl.phase, "value", tmpl.phase),
+                                  motion=MotionSpec(kind=getattr(tmpl.motion.kind, "value",
+                                                                 tmpl.motion.kind)),
+                                  imposed_by="E1", imposed_by_card="lead_screw"))
+    parameters = [
+        Parameter(name="pitch", value=pitch, unit="mm", lo=0.5, hi=4.0, resolved_by="user"),
+        Parameter(name="lead", value=lead, unit="mm", lo=0.5, hi=8.0, resolved_by="rule"),
+        Parameter(name="stroke", value=stroke, unit="mm", lo=10.0, hi=180.0, resolved_by="user"),
+    ]
+    plan = DesignPlan(task_id="lead_screw_fixture",
+        command="A screw jack: turn the screw to raise a small load, and it holds when released. "
+                "Plastic, 3D printing.",
+        functions=[Function(verb="convert", object="motion", qualifier="rotation to translation"),
+                   Function(verb="support", object="load", qualifier="hold at set height, self-locking")],
+        behaviors=behaviors, pieces=pieces, templates=[screw_base, nut_carriage],
+        elements=elements, bindings=bindings, parameters=parameters)
+    for pr in card.verification(plan, elements[0]):   # attach P-SCREW V-A (V-B deferral rides in it)
+        plan.protocols.append(pr)
+        b = next((x for x in plan.behaviors if x.id == pr.verifies), None)
+        if b is not None and not b.verified_by:
+            b.verified_by = pr.id
+    return plan
+
+
 def anchor_hard(variant: str = "drawer", stroke: float = 120.0,
                 load_kg: float = 0.5) -> DesignPlan:
     """THE HARD ANCHOR (MECHSYNTH §8.2, RETARGETED at D-M13-2) — one mechanism, two products.
@@ -878,6 +959,7 @@ def main() -> None:
         "anchor_easy_nostop.json": anchor_easy("nostop"),
         "slide_fixture.json": slide_fixture(),
         "rack_pinion_fixture.json": rack_pinion_fixture(),
+        "lead_screw_fixture.json": lead_screw_fixture(),   # m19 D-track fixture
         "anchor_lift.json": anchor_lift(),          # D-M13-2 PRIMARY: crank lift platform
         "anchor_hard.json": anchor_hard(),          # labeled ALTERNATE: horizontal drawer
     }

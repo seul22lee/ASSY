@@ -1,0 +1,269 @@
+{
+  "task_id": "lead_screw_fixture",
+  "command": "A screw jack: turn the screw to raise a small load, and it holds when released. Plastic, 3D printing.",
+  "functions": [
+    {
+      "verb": "convert",
+      "object": "motion",
+      "qualifier": "rotation to translation"
+    },
+    {
+      "verb": "support",
+      "object": "load",
+      "qualifier": "hold at set height, self-locking"
+    }
+  ],
+  "behaviors": [
+    {
+      "id": "B1",
+      "phase": "use",
+      "motion": {
+        "kind": "rot_to_trans",
+        "nature": "regular",
+        "axis_hint": "vertical",
+        "range_value": 40.0,
+        "range_unit": "mm",
+        "bound": "min",
+        "transmission": {
+          "mm_per_rev": 2.0,
+          "lead_mm": 2.0,
+          "kind": "lead_screw"
+        },
+        "event_force_window_N": null
+      },
+      "axis_relationship": "parallel",
+      "self_locking": true,
+      "load": null,
+      "realized_by": "E1",
+      "imposed_by": null,
+      "verified_by": "P-SCREW-VA-E1",
+      "imposed_by_card": null
+    },
+    {
+      "id": "B2",
+      "phase": "static",
+      "motion": {
+        "kind": "fixed",
+        "nature": "regular",
+        "axis_hint": "vertical",
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "axis_relationship": "parallel",
+      "self_locking": true,
+      "load": {
+        "mass_kg": 0.5,
+        "direction": "-z"
+      },
+      "realized_by": "E1",
+      "imposed_by": null,
+      "verified_by": null,
+      "imposed_by_card": null
+    },
+    {
+      "id": "B3",
+      "phase": "assembly",
+      "motion": {
+        "kind": "translation",
+        "nature": "regular",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "axis_relationship": "parallel",
+      "self_locking": false,
+      "load": null,
+      "realized_by": null,
+      "imposed_by": "E1",
+      "verified_by": null,
+      "imposed_by_card": "lead_screw"
+    }
+  ],
+  "pieces": [
+    {
+      "id": "P1",
+      "role": "base",
+      "provenance": "functional",
+      "template_ref": "screw_base",
+      "source_element": null,
+      "params": {
+        "base_l": 60.0,
+        "base_w": 60.0,
+        "base_t": 4.0
+      },
+      "is_base": true
+    },
+    {
+      "id": "P2",
+      "role": "nut",
+      "provenance": "functional",
+      "template_ref": "nut_carriage",
+      "source_element": null,
+      "params": {
+        "nut_l": 26.0,
+        "nut_w": 26.0,
+        "nut_t": 10.0,
+        "nut_z": 30.0,
+        "d_major": 8.0,
+        "gap": 1.0
+      },
+      "is_base": false
+    }
+  ],
+  "templates": [
+    {
+      "template_ref": "screw_base",
+      "anchors": [
+        {
+          "name": "screw_axis",
+          "kind": "axis"
+        },
+        {
+          "name": "travel_edge",
+          "kind": "axis"
+        }
+      ],
+      "params": {
+        "base_l": 60.0,
+        "base_w": 60.0,
+        "base_t": 4.0
+      }
+    },
+    {
+      "template_ref": "nut_carriage",
+      "anchors": [
+        {
+          "name": "nut_mount",
+          "kind": "face"
+        },
+        {
+          "name": "travel_axis",
+          "kind": "axis"
+        }
+      ],
+      "params": {
+        "nut_l": 26.0,
+        "nut_w": 26.0,
+        "nut_t": 10.0,
+        "nut_z": 30.0,
+        "d_major": 8.0,
+        "gap": 1.0
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "E1",
+      "card_ref": "lead_screw",
+      "params": {
+        "d_major": 8.0,
+        "pitch": 2.0,
+        "starts": 1.0,
+        "lead": 2.0,
+        "length": 60.0,
+        "stroke": 40.0
+      },
+      "host_pieces": [
+        "P1",
+        "P2"
+      ]
+    }
+  ],
+  "features": [],
+  "bindings": [
+    {
+      "element_id": "E1",
+      "port": "screw_axis",
+      "piece_id": "P1",
+      "anchor": "screw_axis",
+      "mate": "coincident_axis",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E1",
+      "port": "nut_mount",
+      "piece_id": "P2",
+      "anchor": "nut_mount",
+      "mate": "flush_face",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E1",
+      "port": "travel_axis",
+      "piece_id": "P2",
+      "anchor": "travel_axis",
+      "mate": "coincident_axis",
+      "offset_params": {}
+    }
+  ],
+  "assembly_rules": [],
+  "parameters": [
+    {
+      "name": "pitch",
+      "value": 2.0,
+      "unit": "mm",
+      "lo": 0.5,
+      "hi": 4.0,
+      "resolved_by": "user",
+      "citation": null
+    },
+    {
+      "name": "lead",
+      "value": 2.0,
+      "unit": "mm",
+      "lo": 0.5,
+      "hi": 8.0,
+      "resolved_by": "rule",
+      "citation": null
+    },
+    {
+      "name": "stroke",
+      "value": 40.0,
+      "unit": "mm",
+      "lo": 10.0,
+      "hi": 180.0,
+      "resolved_by": "user",
+      "citation": null
+    }
+  ],
+  "protocols": [
+    {
+      "id": "P-SCREW-VA-E1",
+      "verifies": "B1",
+      "actuation": {
+        "kind": "shaft_velocity",
+        "n_rev": 3.0,
+        "v_b_gap": "helical thread flank is CURVED contact — bidirectional V-B deferred to preset_v2 (m17/D-M1-7), like rack_pinion"
+      },
+      "criteria": [
+        {
+          "name": "reaches_stroke",
+          "observable": "stroke_mm",
+          "op": ">=",
+          "threshold": 40.0,
+          "unit": "mm"
+        },
+        {
+          "name": "self_locks_holds",
+          "observable": "backdrive_mm",
+          "op": "<=",
+          "threshold": 1.0,
+          "unit": "mm"
+        }
+      ],
+      "observables": [],
+      "mode": "V-A",
+      "seeds": 5,
+      "seed_pass": 4
+    }
+  ],
+  "material": "PETG",
+  "variant": null,
+  "stage_log": []
+}
