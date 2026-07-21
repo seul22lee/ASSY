@@ -89,13 +89,72 @@ unchanged**. The composition adds no new emergent contact surface, and the assem
 ========== reproduction CLEAN — every number checks out ==========
 ```
 
+---
+
+## Task B — latched_drawer (fasten / retention composition)
+
+**Command:** *"A drawer that slides in, clicks shut, and pulls open by hand. Plastic, 3D printing."*
+Chain: **slide_rail** (guidance, M10) + **snap_hook** (closed retention, M3). The NEW content is a
+**snap engaging on a TRANSLATION path** — anchor_easy verified a snap on a *rotation* endpoint; this is
+the fresh axis. The golden validates CLEAN.
+
+**q3 — how does the IR state the snap_event occurs AT A POSITION on the slide's travel (engage at s=0,
+the closed end)?** **Answer: reuse the anchor_easy GEOMETRIC-position pattern.** The snap's
+`catch_window` binds to the frame at the closed end; the `snap_event` (a static retention behaviour)
+fires where the hook meets the catch. The engagement position is *geometric* (where the catch sits), not
+a new scalar field — exactly as anchor_easy placed the catch at the rotation-closed position. It fits
+with **no gap**; an explicit `snap_at_s` link on the travel axis would be cleaner for coordination but is
+not needed → **DRAFT D-M22-2a** (deferred).
+
+**Snap verification — the M3 division of labor (D3).** An elastic cantilever is not expressible in a
+rigid-body engine, so the snap's deflection is **BAYER-FORMULA-verified** (engagement geometry is rigid).
+From the card's Bayer functions (`out/latched_drawer_verify.txt`):
+
+| quantity | value | check |
+|---|---|---|
+| solved h / deflection force P | 2.09 mm / 17.7 N | Bayer |
+| **W_in** (insertion, α_in=30°) | **18.75 N** | ≤ 60 N ⇒ **clicks shut by hand** |
+| **W_out** (separation, α_out=45°) | **32.81 N** | ≥ 15 N ⇒ **holds a hand-open pull** |
+| self-lock angle atan(1/µ) | 73.3° | α_out 45° < 73.3° ⇒ **hand-releasable**, not permanent |
+
+**Bidirectional discrimination (the snap force window verified BOTH ways at assembly level):** a pull of
+**16.4 N** (< W_out) → the drawer **HOLDS** (stays latched); a pull of **49.2 N** (> W_out) → the drawer
+**OPENS**. This is the translation-path analogue of anchor_easy's latch, verified in both directions.
+
+**Slide travel + pull-out limit — inherited (M10).** Guidance, full stroke, and the retained DoF are
+`slide_rail` P-SLIDE V-A 5/5 + V-B 5/5 (M10, verified). The **pull-out limit is inherent in the slide**:
+the rail has finite length, so the carriage cannot slide past its end — no separate stop needed.
+
+**V-B disposition:** the slide is V-B-verified (M10); the snap's elastic deflection stays formula-only
+(D3, the M3 division). The assembly-level combination gap is stated: the snap engagement under real
+assembly is not rigid-physics-verified (it is Bayer-verified), inherited unchanged from M3.
+
+### Two ontology / geometry findings the composition surfaced (recorded, not patched)
+
+- **DRAFT D-M22-2b** — **stop_flange is a ROTATION-limit feature.** Its card imposes a use-phase rotation
+  limit (`_imposed_rotation_limit`), so binding it to a drawer's *translation* pull-out fails V-08 (the
+  imposed rotation behaviour cannot be the drawer's translation ceiling). stop_flange does **not** compose
+  onto a translation drawer; a translation-stop feature (or a generalized stop_flange) is the gap. The
+  pull-out limit is instead the finite rail. *(This is exactly the kind of thing a composition task exists
+  to surface — a verified element that does not carry to a new motion axis.)*
+- **DRAFT D-M22-2c** — **the snap CARVE needs a mating receiver wall.** The rigid engagement geometry
+  needs a front wall on the host + growth-aligned anchors; the flat `slide_base` lacks it, so the snap's
+  geometry *realization* on a rail base is host-template work. Per M3 the snap is FORMULA-verified, so this
+  does not block the verification — but it is a real host-geometry gap for a printable drawer.
+
 ## Morphological twins — the Phase-2 benchmark seed
 
-"Lift + hold" now has **TWO physics-verified solutions**: **rack_pinion + pawl_detent** (anchor_lift,
-m13) and **lead_screw + coupling** (screw_lift, m22). This is the Zwicky morphological matrix realized —
-`kg.candidates()` already offers both for a hold-under-load intent. That is exactly the **design-choice**
-the Phase-2 LLM evaluation will test (which mechanism does the model pick, and can it justify it), and it
-is now seeded with two verified ground-truth answers. Recorded as **D-M22-1**.
+The two tasks seed **TWO morphological pairs** — the Zwicky matrix realized, each intent with two
+verified ground-truth solutions:
+
+- **"lift + hold":** rack_pinion + pawl_detent (anchor_lift, m13) **vs** lead_screw + coupling
+  (screw_lift, Task A). `kg.candidates()` already offers both for a hold-under-load intent (**D-M22-1**).
+- **"retain + release":** pin_hinge + snap (anchor_easy, m3, on a *rotation* path) **vs** slide_rail +
+  snap (latched_drawer, Task B, on a *translation* path) (**D-M22-2**).
+
+That is exactly the **design-choice** the Phase-2 LLM evaluation will test — which mechanism the model
+picks and whether it can justify it — now seeded with four verified answers across two intents. Phase 2
+stays HELD with the lite/frontier column until user release.
 
 ## Stage checklist (Task A)
 
@@ -105,6 +164,20 @@ is now seeded with two verified ground-truth answers. Recorded as **D-M22-1**.
 | C2 compiled t0 gate | ✅ | `out/screw_lift_t0.txt` CLEAN over the lift sweep (commit 90fb855) |
 | C3 P-LIFT V-A | ✅ | 5/5; end-to-end 0.000%; hold 0.081 mm; both discriminations (commit 9804cf2) |
 | C4 reproduction + REVIEW + decisions | ✅ | `reproduce_screw_lift.txt` CLEAN; D-M22-1 (+DRAFT D-M22-1a) |
+
+## Stage checklist (Task B)
+
+| stage | done | evidence |
+|---|---|---|
+| C1 golden IR (q3 answered) | ✅ | `tasks/latched_drawer.json` CLEAN (commit 923e46d) |
+| C2 compile / t0 | 🔶 | slide compiles; the SNAP CARVE needs a receiver wall (DRAFT D-M22-2c) — snap is Bayer-verified per M3, so the compile gap does not block verification |
+| C3 snap verification + slide inherited | ✅ | Bayer W_in/W_out bidirectional (`out/latched_drawer_verify.txt`); slide P-SLIDE inherited (M10) (commit 923e46d) |
+| C4 REVIEW + decisions | ✅ | this section; D-M22-2 (+DRAFT D-M22-2a/2b/2c) |
+
+**Findings that make Task B valuable** (the composition surfaced real gaps): stop_flange is rotation-only
+(**D-M22-2b**); the snap carve needs a host wall (**D-M22-2c**); an explicit snap-position link would be
+cleaner though not needed (**D-M22-2a**). These are the milestone doing its job — a composition task
+exists to surface exactly which verified elements carry to a new motion axis and which do not.
 
 **Still HELD:** the lite admission gate + the m15 Pro/flash frontier column (Phase-2 LLM eval). All m22
 work is free/local (golden construction, composed-formula arithmetic, MuJoCo joint physics; no LLM/API).
