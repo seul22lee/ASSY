@@ -97,13 +97,13 @@ back-drive. `verdict.discrimination_probe.discriminates = true`.
 The declared pair looks trivial but the self-lock hold is delicate; each choice below was forced by a
 *measured* failure, and all are documented in [`p_screw_va.py`](p_screw_va.py):
 
-- **dt = 1e-4, not the R5 5e-4 (D-M19-3).** The hold is resolved by JOINT frictionloss, which **leaks
+- **dt = 1e-4, not the R5 5e-4 (D-M19-2).** The hold is resolved by JOINT frictionloss, which **leaks
   per-step** for the small plastic-screw inertia at 5e-4 (measured: a 0.00515 N·m frictionloss failed
   to hold a 0.00156 N·m sub-cap torque; holds to <0.1 mm at 1e-4). This is a **solver-accuracy** choice
   in a **contactless** declared-joint rig — the rig declares **no contact geoms** (contype/conaffinity
   =0, the joints are the mechanism), so the R5 FROZEN preset (a *contact* preset: SOLIMP/SOLREF/µ, dt
   5e-4) is **untouched and irrelevant here**; it never constrained a rig that runs no contacts. Any
-  V-B/contact run stays on the frozen R5 clock. Recorded as a standing recipe in **D-M19-3**.
+  V-B/contact run stays on the frozen R5 clock. Recorded as a standing recipe in **D-M19-2**.
 - **Rigid coupling** (`solref="-1e8 -1e4"`, direct stiffness, not timeconst). A soft/positive-timeconst
   equality is a **spring the load stretches** (>12 mm) while the screw never rotates — so the hinge
   friction never engages. Direct high stiffness makes the nut's weight transmit to a screw torque the
@@ -159,10 +159,10 @@ slip **18.4 mm** (233×). If the fine clock were *hiding* the physics (numerical
 regardless of friction), the low-friction case would also hold — it does not. So dt=1e-4 buys frictionloss
 integration *accuracy*, not a false pass; the self-lock is the sourced friction winning. This is a
 solver-clock choice on a contactless rig, **fully distinct from the frozen R5 contact preset** (dt=5e-4,
-SOLREF, SOLIMP, µ — untouched, and V-A declares no contacts). Formalized as **D-M19-3**; it is the
+SOLREF, SOLIMP, µ — untouched, and V-A declares no contacts). Formalized as **D-M19-2**; it is the
 standing recipe for the coupling / universal_joint / bearing declared-joint rigs to come.
 
-**Parked for a future milestone (DRAFT D-M19-2, reviewer insight — deliberately NOT built here).**
+**Parked for a future milestone (DRAFT D-M19-3, reviewer insight — deliberately NOT built here).**
 Retention-class contact (gravity-hold, no driving) may be verifiable *within* the R2b limits — the m8
 lid-fold and m10 T-rail retention already ran that contact class on the frozen preset. A future
 milestone could design a **generic settle/retention protocol** (criteria drawn only from IR-declared
