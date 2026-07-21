@@ -66,9 +66,19 @@ class ElementCard(ABC):
     is a knowledge property of the element type, not of any particular instance.
     """
 
-    # is this an active element or a passive feature? Set by the two subclasses; consulted by
-    # the validators (a passive feature may not be realized_by; V-08 spans both classes).
-    card_class: str = "element"  # "element" | "feature"
+    # is this an active element, a passive feature, or a connection? Set by the subclasses; consulted
+    # by the validators (a passive feature/connection may not be realized_by; V-08 spans all classes).
+    card_class: str = "element"  # "element" | "feature" | "connection" (D-M18-1)
+
+    # M18 axis-6 (P&B §8.1.3, elastic connection): RESERVED. Fixed "rigid" this milestone; the
+    # validator rejects "compliant" with a P-SPRING message (spring/damper/living_hinge are the future
+    # compliant=true, needing a protocol not built here). The field exists so it can't be misused.
+    compliance: str = "rigid"    # "rigid" | "compliant"  (D-M18-2)
+
+    # M18 7-axis taxonomy tag (D-M18-2; see m18_element_expansion/REVIEW.md §1). A dict with keys:
+    # working_motion=(type,nature), axis_relationship, connection_principle, self_locking,
+    # vb_verifiable, compliance, kinematic_dof(note). Every card sets it; the KG narrows on it.
+    taxonomy: dict = {}
 
     # --- declared interface (data; consumed by validators V-03/V-05/V-08) --------------
     card_id: str = ""
@@ -167,6 +177,27 @@ class PassiveFeatureCard(_StubCard):
     card_class = "feature"
 
 
+class ConnectionCard(_StubCard):
+    """Third card category (D-M18-1, P&B §8.1): FIXES / FASTENS parts together — it realizes no DoF
+    and supports no motion; it JOINS. Distinct from PassiveFeatureCard (which supports/constrains a
+    DoF, e.g. a stop or a bearing) — a connection is a joint BETWEEN parts.
+
+    Carries `connection_principle` ∈ {form, force, material} (axis 3, P&B §8.1): form = geometric
+    interlock (dowel), force = friction/preload (press-fit, screw clamp), material = fused (weld —
+    future). NOTE the anti-conflation rule (m18 REVIEW §2.1): connection_principle is a PROPERTY;
+    a ConnectionCard is an OBJECT — they share a word, not a level.
+
+    Orthogonal to hardware (m18 REVIEW §2.2): a threaded fastener is a ConnectionCard that ALSO
+    declares provides_pieces (its screw body is hardware, D-ONT-11). "Connection role" and "hardware
+    piece" are independent axes; one card can be both.
+
+    Referenceable by NEITHER realized_by (V-08: it realizes nothing) nor imposed_by-of-a-motion.
+    verification() is usually [] (a static fastener is checked by formula_check + t0, not a protocol).
+    """
+    card_class = "connection"
+    connection_principle: str = ""   # "form" | "force" | "material"  (axis 3, P&B §8.1)
+
+
 def _pin_hinge_imposes() -> list:
     """The pin hinge imposes an assembly-phase constraint: the pin-insertion path must be open
     along the axis (§3.3). Expressed as an assembly/translation behaviour template that V-08
@@ -188,6 +219,9 @@ class PinHingeCard(MechanicalElementCard):
     """
     card_id = "pin_hinge"
     has_functional_clearance = True  # the pin/bore rotational clearance (§3.3)
+    taxonomy = {"working_motion": ("rotation", "regular"), "axis_relationship": "parallel",
+                "connection_principle": None, "self_locking": False, "vb_verifiable": True,
+                "compliance": "rigid", "kinematic_dof": "1 revolute"}  # M18 tag (D-M18-2)
     selection_notes = (
         "Use when one piece must ROTATE about a FIXED AXIS relative to another, repeatedly and "
         "through a large angle (a lid, a door, a flap). Realizes a use-phase rotation.\n"
@@ -311,6 +345,9 @@ class SnapHookCantileverCard(MechanicalElementCard):
     """
     card_id = "snap_hook_cantilever"
     has_functional_clearance = True  # SNAPFIT §12 A1 (supersedes MECHSYNTH §3.4)
+    taxonomy = {"working_motion": ("snap_event", "regular"), "axis_relationship": "parallel",
+                "connection_principle": "form", "self_locking": False, "vb_verifiable": False,
+                "compliance": "rigid", "kinematic_dof": "fastens (reclass candidate -> ConnectionCard, m18 REVIEW §5)"}
     selection_notes = (
         "Use when two pieces must FASTEN to each other by hand — a cantilever beam deflects over a "
         "catch and snaps back, giving a tactile/audible click and a defined separation force. "
@@ -427,6 +464,9 @@ class SlideRailCard(MechanicalElementCard):
     translation; imposes an axial-insertion path + a travel keep-out."""
     card_id = "slide_rail"
     has_functional_clearance = True  # rail/carriage sliding clearance (§3.5)
+    taxonomy = {"working_motion": ("translation", "regular"), "axis_relationship": "parallel",
+                "connection_principle": None, "self_locking": False, "vb_verifiable": True,
+                "compliance": "rigid", "kinematic_dof": "1 prismatic"}
     imposes = _slide_rail_imposes()
     param_bounds = {"rail_h": (4.0, 10.0, "mm"), "rail_w": (4.0, 10.0, "mm"),
                     "clearance": (0.25, 0.45, "mm"), "engagement_len": (5.0, 200.0, "mm"),
@@ -551,6 +591,9 @@ class RackPinionCard(MechanicalElementCard):
     in knowledge/cards/rack_pinion.py (reuses M1's involute + L3 wedge decomposition)."""
     card_id = "rack_pinion"
     has_functional_clearance = True  # tooth-flank backlash (§3.6, D21)
+    taxonomy = {"working_motion": ("rot_to_trans", "regular"), "axis_relationship": "parallel",
+                "connection_principle": None, "self_locking": False, "vb_verifiable": False,
+                "compliance": "rigid", "kinematic_dof": "1 rot coupled to 1 trans"}  # curved contact -> V-B deferred (R2b)
     imposes = _rack_pinion_imposes()
     # §3.6 AMENDED: module bounds are LARGE {5,6}, and the reason is SIMULATION STABILITY, not
     # mechanics — mechanically a smaller module meshes fine, but R2b (D-M1-2/-3/-5) showed the rigid
@@ -657,6 +700,9 @@ class PawlDetentCard(MechanicalElementCard):
     arm carved on the tower + fine ratchet detents on the rack side."""
     card_id = "pawl_detent"
     has_functional_clearance = True   # the detent engagement clearance (D18/D21)
+    taxonomy = {"working_motion": ("fixed", "regular"), "axis_relationship": "parallel",
+                "connection_principle": None, "self_locking": True, "vb_verifiable": True,
+                "compliance": "rigid", "kinematic_dof": "unilateral ratchet (reclass candidate -> compliant, m18 REVIEW §5)"}
     imposes = _pawl_imposes()
     requires = {"eps_allow_pct": (">=", 3.0)}   # the spring arm must sustain the flexure strain
     param_bounds = {"L_mm": (8.0, 25.0, "mm"), "b_mm": (4.0, 10.0, "mm"), "h_mm": (0.8, 2.0, "mm"),
@@ -740,6 +786,9 @@ class StopFlangeCard(PassiveFeatureCard):
     """
     card_id = "stop_flange"
     has_functional_clearance = False
+    taxonomy = {"working_motion": ("rotation", "regular"), "axis_relationship": "parallel",
+                "connection_principle": None, "self_locking": False, "vb_verifiable": True,
+                "compliance": "rigid", "kinematic_dof": "constrains a rotation limit (realizes none)"}
     ports = [_p("contact", "face")]  # the flange face that lands on the base wall
     param_bounds = {"stop_angle": (0.0, 180.0, "deg"), "stop_flange_r": (2.0, 20.0, "mm")}
     imposes = _stop_flange_imposes()
@@ -822,11 +871,388 @@ class StopFlangeCard(PassiveFeatureCard):
                  Citation(doc="DECISIONS_LOG", section="D20 / D-M8-2 (stopping by contact)")]
 
 
+# ======================================================================================
+# M18 TIER-1 ELEMENTS (D-M18-1/-2/-3). Schema/ontology expansion, no new physics: V-A or static /
+# formula verified (NO curved-contact V-B — that is the next milestone). Geometry + cited formulas in
+# knowledge/cards/m18_tier1.py; every card carries its 7-axis taxonomy tag (m18 REVIEW §1).
+# ======================================================================================
+def _cit_pb(section, note=""):
+    return Citation(doc="Pahl & Beitz, Engineering Design", section=section + (f" — {note}" if note else ""))
+
+
+# --- MechanicalElementCards (realize a DoF) -------------------------------------------
+class LeadScrewCard(MechanicalElementCard):
+    """Power lead screw (P&B §7.4.3, Shigley §8-2): converts rotation to translation and — unlike a
+    plain rack_pinion — SELF-LOCKS when the lead angle ≤ the friction angle (holds a load with no
+    added brake). Resolves the ontology gap D-M13-3: 'holds under load' is now the axis-4
+    self_locking field. V-A only: the helical thread flank is CURVED contact, V-B deferred (cite m17
+    / D-M1-7), exactly as rack_pinion defers its tooth contact."""
+    card_id = "lead_screw"
+    has_functional_clearance = True   # thread flank backlash (curved) — V-B deferred, cite m17
+    taxonomy = {"working_motion": ("rot_to_trans", "regular"), "axis_relationship": "parallel",
+                "connection_principle": None, "self_locking": True, "vb_verifiable": False,
+                "compliance": "rigid", "kinematic_dof": "1 rot coupled to 1 trans (reserved axis-7)"}
+    param_bounds = {"d_major": (5.0, 20.0, "mm"), "lead": (1.0, 6.0, "mm"), "starts": (1.0, 2.0, "count"),
+                    "length": (20.0, 200.0, "mm"), "stroke": (10.0, 180.0, "mm")}
+    ports = [_p("screw_axis", "axis"), _p("nut_mount", "face")]
+    selection_notes = (
+        "Use when ROTATION must become TRANSLATION and the load must HOLD when released without a "
+        "brake (a screw-jack, a vice, a leadscrew stage). Realizes a use-phase rot_to_trans that "
+        "SELF-LOCKS (axis-4) — the discriminator vs rack_pinion, which back-drives and needs a "
+        "pawl_detent (D-M13-4). Self-locks iff lead angle λ=atan(lead/πd_p) ≤ friction angle "
+        "φ=atan(μ) (P&B §7.4.3); the cost is low efficiency (η≈0.2 at self-lock).\n"
+        "V-A only: the thread flank is curved contact — bidirectional V-B is deferred behind a "
+        "preset_v2 (m17/D-M1-7), like rack_pinion. Prefer rack_pinion for fast travel that need not "
+        "hold; prefer lead_screw when self-locking hold matters more than speed.")
+    citations = [_cit_pb("§7.4.3", "self-help / self-locking"),
+                 Citation(doc="Shigley's Mechanical Engineering Design", section="§8-2 Power Screws"),
+                 Citation(doc="DECISIONS_LOG", section="D-M13-3 (holds-under-load, now axis-4); m17 (V-B deferred)")]
+
+    def resolve_params(self, ir, inst):
+        from knowledge.cards.m18_tier1 import lead_screw_dims, lead_screw_mechanics
+        out = dict(inst.params or {})
+        b = next((x for x in ir.behaviors if x.realized_by == inst.id
+                  and getattr(x.motion.kind, "value", x.motion.kind) == "rot_to_trans"), None)
+        if b is not None and getattr(b.motion, "range_value", None):
+            out["stroke"] = float(b.motion.range_value)
+        out.setdefault("stroke", 40.0); out.setdefault("d_major", 8.0); out.setdefault("lead", 2.0)
+        out.setdefault("length", round(float(out["stroke"]) + 20.0, 1))
+        # keep it self-locking if the behaviour asked for it: shrink the lead until λ ≤ φ
+        if b is not None and getattr(b, "self_locking", False):
+            while not lead_screw_mechanics(lead_screw_dims(out))["self_locks"] and out["lead"] > 1.0:
+                out["lead"] = round(out["lead"] - 0.5, 2)
+        return out
+
+    def carve(self, host_parts, inst, bindings):
+        from knowledge.cards.m18_tier1 import lead_screw_carve
+        return lead_screw_carve(host_parts, inst, bindings)
+
+    def collision_hint(self, inst):
+        from knowledge.cards.m18_tier1 import lead_screw_collision
+        return lead_screw_collision(inst)
+
+    def formula_check(self, inst):
+        from knowledge.cards.m18_tier1 import lead_screw_dims, lead_screw_mechanics
+        return lead_screw_mechanics(lead_screw_dims(getattr(inst, "params", {}) or {}))
+
+    def verification(self, ir, inst):
+        from ontology.schema import Criterion, VerificationProtocol
+        b = next((x for x in ir.behaviors if x.realized_by == inst.id
+                  and getattr(x.phase, "value", x.phase) == "use"
+                  and getattr(x.motion.kind, "value", x.motion.kind) == "rot_to_trans"), None)
+        if b is None:
+            return []
+        stroke = float((inst.params or {}).get("stroke", 40.0))
+        return [VerificationProtocol(
+            id=f"P-SCREW-VA-{inst.id}", verifies=b.id, mode="V-A", seeds=5, seed_pass=4,
+            actuation={"kind": "shaft_velocity", "n_rev": 3.0,
+                       "v_b_gap": "helical thread flank is CURVED contact — bidirectional V-B "
+                                  "deferred to preset_v2 (m17/D-M1-7), like rack_pinion"},
+            criteria=[Criterion(name="reaches_stroke", observable="stroke_mm", op=">=",
+                                threshold=stroke, unit="mm"),
+                      Criterion(name="self_locks_holds", observable="backdrive_mm", op="<=",
+                                threshold=1.0, unit="mm")], observables=[])]
+
+
+class CouplingCard(MechanicalElementCard):
+    """Rigid shaft coupling (P&B §8.1, Shigley §3-12): transmits rotation 1:1 between two COAXIAL /
+    parallel shafts, no ratio. A rigid connection between shaft ends — V-A verifies the declared 1:1
+    pair (no curved contact)."""
+    card_id = "coupling"
+    has_functional_clearance = False
+    taxonomy = {"working_motion": ("rotation", "regular"), "axis_relationship": "parallel",
+                "connection_principle": None, "self_locking": False, "vb_verifiable": True,
+                "compliance": "rigid", "kinematic_dof": "1 revolute (through-transmitted)"}
+    param_bounds = {"bore_d": (4.0, 20.0, "mm"), "body_d": (10.0, 40.0, "mm"), "length": (10.0, 60.0, "mm")}
+    ports = [_p("shaft_in", "axis"), _p("shaft_out", "axis")]
+    selection_notes = ("Use to join two coaxial shafts and transmit rotation 1:1 (no ratio). "
+                       "axis_relationship=parallel/coaxial. V-A verifies the declared 1:1 pair.")
+    citations = [_cit_pb("§8.1", "connections"), Citation(doc="Shigley's", section="§3-12 (shaft torsion)")]
+
+    def resolve_params(self, ir, inst):
+        out = dict(inst.params or {})
+        out.setdefault("bore_d", 8.0); out.setdefault("body_d", 20.0); out.setdefault("length", 24.0)
+        return out
+
+    def carve(self, host_parts, inst, bindings):
+        from knowledge.cards.m18_tier1 import coupling_carve
+        return coupling_carve(host_parts, inst, bindings)
+
+    def formula_check(self, inst):
+        from knowledge.cards.m18_tier1 import coupling_dims, coupling_torque
+        return coupling_torque(coupling_dims(getattr(inst, "params", {}) or {}))
+
+    def verification(self, ir, inst):
+        from ontology.schema import Criterion, VerificationProtocol
+        b = next((x for x in ir.behaviors if x.realized_by == inst.id
+                  and getattr(x.phase, "value", x.phase) == "use"
+                  and getattr(x.motion.kind, "value", x.motion.kind) == "rotation"), None)
+        if b is None:
+            return []
+        return [VerificationProtocol(
+            id=f"P-COUPLING-VA-{inst.id}", verifies=b.id, mode="V-A", seeds=5, seed_pass=4,
+            actuation={"kind": "shaft_velocity", "n_rev": 3.0, "ratio_expected": 1.0},
+            criteria=[Criterion(name="transmits_1to1", observable="transmission_residual", op="<=",
+                                threshold=0.05, unit="")], observables=[])]
+
+
+class UniversalJointCard(MechanicalElementCard):
+    """Cardan universal joint (P&B §8.1): transmits rotation across INTERSECTING axes at an angle β.
+    Not constant-velocity (velocity ratio fluctuates cos β … 1/cos β over a rev — recorded, not a
+    defect). V-A verifies the declared angled pair."""
+    card_id = "universal_joint"
+    has_functional_clearance = False
+    taxonomy = {"working_motion": ("rotation", "regular"), "axis_relationship": "intersecting",
+                "connection_principle": None, "self_locking": False, "vb_verifiable": True,
+                "compliance": "rigid", "kinematic_dof": "2 revolute (cross) — reserved axis-7"}
+    param_bounds = {"yoke_d": (10.0, 30.0, "mm"), "bore_d": (4.0, 16.0, "mm"),
+                    "length": (10.0, 50.0, "mm"), "angle_deg": (5.0, 35.0, "deg")}
+    ports = [_p("shaft_in", "axis"), _p("shaft_out", "axis")]
+    selection_notes = ("Use to transmit rotation between shafts whose axes INTERSECT at an angle "
+                       "(axis_relationship=intersecting). Not constant-velocity — a single Cardan "
+                       "joint's output speed fluctuates by ±(1/cosβ−cosβ); pair two to cancel it. "
+                       "V-A verifies the declared angled pair.")
+    citations = [_cit_pb("§8.1", "connections / intersecting-axis transmission")]
+
+    def resolve_params(self, ir, inst):
+        out = dict(inst.params or {})
+        out.setdefault("angle_deg", 20.0); out.setdefault("bore_d", 8.0); out.setdefault("length", 20.0)
+        return out
+
+    def carve(self, host_parts, inst, bindings):
+        from knowledge.cards.m18_tier1 import ujoint_carve
+        return ujoint_carve(host_parts, inst, bindings)
+
+    def formula_check(self, inst):
+        from knowledge.cards.m18_tier1 import ujoint_dims, ujoint_kinematics
+        return ujoint_kinematics(ujoint_dims(getattr(inst, "params", {}) or {}))
+
+    def verification(self, ir, inst):
+        from ontology.schema import Criterion, Observable, VerificationProtocol
+        b = next((x for x in ir.behaviors if x.realized_by == inst.id
+                  and getattr(x.phase, "value", x.phase) == "use"
+                  and getattr(x.motion.kind, "value", x.motion.kind) == "rotation"), None)
+        if b is None:
+            return []
+        return [VerificationProtocol(
+            id=f"P-UJOINT-VA-{inst.id}", verifies=b.id, mode="V-A", seeds=5, seed_pass=4,
+            actuation={"kind": "shaft_velocity", "n_rev": 3.0},
+            criteria=[Criterion(name="transmits_rotation", observable="transmission_residual", op="<=",
+                                threshold=0.2, unit="")],   # looser: single Cardan fluctuates by design
+            observables=[Observable(name="cv_fluctuation", measured="transmission_residual",
+                                    note="single Cardan is NOT constant-velocity (cosβ..1/cosβ)")])]
+
+
+# --- PassiveFeatureCards (support a DoF; realize nothing) ------------------------------
+class JournalBearingCard(PassiveFeatureCard):
+    """Journal (plain) bearing (P&B §8.2): a low-friction bore that SUPPORTS a rotating shaft. It
+    realizes nothing (V-08). Generalises pin_hinge's bore. Static/optional-V-A; running clearance is
+    a functional clearance → collision_hint (D18/D21), an exact convex tube."""
+    card_id = "journal_bearing"
+    has_functional_clearance = True
+    taxonomy = {"working_motion": ("rotation", "regular"), "axis_relationship": "parallel",
+                "connection_principle": None, "self_locking": False, "vb_verifiable": True,
+                "compliance": "rigid", "kinematic_dof": "supports 1 revolute (realizes none)"}
+    param_bounds = {"bore_d": (3.0, 30.0, "mm"), "wall": (1.5, 6.0, "mm"), "length": (4.0, 40.0, "mm")}
+    ports = [_p("bore_mount", "face"), _p("shaft_axis", "axis")]
+    selection_notes = ("Use to SUPPORT a rotating shaft at low friction (a journal). Realizes "
+                       "nothing (imposed_by, never realized_by). Running clearance ≈ d/1000, floored "
+                       "at the print clearance so it is printable (Shigley §12).")
+    citations = [_cit_pb("§8.2", "bearings / guides"), Citation(doc="Shigley's", section="§12 (journal bearings)")]
+
+    def resolve_params(self, ir, inst):
+        out = dict(inst.params or {})
+        out.setdefault("bore_d", 8.0); out.setdefault("wall", 3.0); out.setdefault("length", 10.0)
+        return out
+
+    def carve(self, host_parts, inst, bindings):
+        from knowledge.cards.m18_tier1 import bearing_carve
+        return bearing_carve(host_parts, inst, bindings)
+
+    def collision_hint(self, inst):
+        from knowledge.cards.m18_tier1 import bearing_collision
+        return bearing_collision(inst, cid="journal_bearing")
+
+    def formula_check(self, inst):
+        from knowledge.cards.m18_tier1 import bearing_dims, bearing_fit
+        return bearing_fit(bearing_dims(getattr(inst, "params", {}) or {}))
+
+    def verification(self, ir, inst):
+        return []   # a passive support realizes nothing → no protocol of its own (like stop_flange)
+
+
+class BushingCard(PassiveFeatureCard):
+    """Bushing (P&B §8.2): a low-friction SLEEVE support — a shorter journal, often press-inserted as
+    a wear surface. Realizes nothing. Same fit knowledge as the journal_bearing."""
+    card_id = "bushing"
+    has_functional_clearance = True
+    taxonomy = {"working_motion": ("rotation", "regular"), "axis_relationship": "parallel",
+                "connection_principle": None, "self_locking": False, "vb_verifiable": True,
+                "compliance": "rigid", "kinematic_dof": "supports 1 revolute (realizes none)"}
+    param_bounds = {"bore_d": (3.0, 24.0, "mm"), "wall": (1.0, 4.0, "mm"), "length": (3.0, 24.0, "mm")}
+    ports = [_p("bore_mount", "face"), _p("shaft_axis", "axis")]
+    selection_notes = ("Use as a low-friction sleeve support / wear surface for a shaft or a sliding "
+                       "pin. Realizes nothing (imposed_by). A shorter journal_bearing.")
+    citations = [_cit_pb("§8.2", "bearings / guides")]
+
+    def resolve_params(self, ir, inst):
+        out = dict(inst.params or {})
+        out.setdefault("bore_d", 6.0); out.setdefault("wall", 2.0); out.setdefault("length", 8.0)
+        return out
+
+    def carve(self, host_parts, inst, bindings):
+        from knowledge.cards.m18_tier1 import bearing_carve
+        return bearing_carve(host_parts, inst, bindings)
+
+    def collision_hint(self, inst):
+        from knowledge.cards.m18_tier1 import bearing_collision
+        return bearing_collision(inst, cid="bushing")
+
+    def formula_check(self, inst):
+        from knowledge.cards.m18_tier1 import bearing_dims, bearing_fit
+        return bearing_fit(bearing_dims(getattr(inst, "params", {}) or {}))
+
+    def verification(self, ir, inst):
+        return []
+
+
+# --- ConnectionCards (fasten/fix; realize nothing, support no DoF) --------------------
+class DowelPinCard(ConnectionCard):
+    """Dowel pin (P&B §8.1, FORM connection): LOCATES two parts by geometric interlock — removes
+    in-plane DoF, transmits no load through friction. Static t0 check (bore receives pin, no
+    interference). Provides no separate hardware piece (the dowel IS the located feature)."""
+    card_id = "dowel_pin"
+    has_functional_clearance = False
+    connection_principle = "form"
+    taxonomy = {"working_motion": ("fixed", "regular"), "axis_relationship": "parallel",
+                "connection_principle": "form", "self_locking": False, "vb_verifiable": True,
+                "compliance": "rigid", "kinematic_dof": "removes 2 in-plane translations"}
+    param_bounds = {"pin_d": (2.0, 10.0, "mm"), "length": (5.0, 30.0, "mm"),
+                    "fit_clearance": (0.0, 0.1, "mm")}
+    ports = [_p("location", "point"), _p("mate", "point")]
+    selection_notes = ("Use to LOCATE two parts precisely with no degree of freedom (align a lid to "
+                       "a box, register two plates). FORM connection (geometric interlock, §8.1). A "
+                       "single dowel removes 2 in-plane translations; a pair also fixes rotation. "
+                       "Static — checked by t0 fit, not physics.")
+    citations = [_cit_pb("§8.1", "form-closed connection")]
+
+    def resolve_params(self, ir, inst):
+        out = dict(inst.params or {})
+        out.setdefault("pin_d", 4.0); out.setdefault("length", 12.0); out.setdefault("fit_clearance", 0.02)
+        return out
+
+    def carve(self, host_parts, inst, bindings):
+        from knowledge.cards.m18_tier1 import dowel_carve
+        return dowel_carve(host_parts, inst, bindings)
+
+    def formula_check(self, inst):
+        from knowledge.cards.m18_tier1 import dowel_dims, dowel_fit
+        return dowel_fit(dowel_dims(getattr(inst, "params", {}) or {}))
+
+    def verification(self, ir, inst):
+        return []
+
+
+class ScrewBossCard(ConnectionCard):
+    """Self-tapping screw boss (P&B §8.1, FORCE connection) — the FIRST force-connection card. A boss
+    receives a self-tapping screw (single PETG, D8); the clamp/preload is friction+thread interlock.
+    Provides the SCREW as a hardware piece (D-ONT-11) — a ConnectionCard that is ALSO a hardware
+    provider (connection-role and hardware-piece are orthogonal, m18 REVIEW §2.2). Static pull-out
+    formula (BASF/Bayer boss rules)."""
+    card_id = "screw_boss"
+    has_functional_clearance = False
+    connection_principle = "force"
+    taxonomy = {"working_motion": ("fixed", "regular"), "axis_relationship": "parallel",
+                "connection_principle": "force", "self_locking": False, "vb_verifiable": True,
+                "compliance": "rigid", "kinematic_dof": "fully constrains (fastened)"}
+    param_bounds = {"screw_d": (2.0, 6.0, "mm"), "engagement": (3.0, 20.0, "mm"),
+                    "tau_shear": (20.0, 45.0, "MPa")}
+    ports = [_p("boss_mount", "face"), _p("clamped", "face")]
+    provides_pieces = [ProvidedPiece("screw", ["screw_d", "screw_len"], role="fastener")]
+    selection_notes = ("Use to FASTEN two parts with a self-tapping screw into a moulded/printed boss "
+                       "(FORCE connection, §8.1). The screw is HARDWARE the card provides (D-ONT-11). "
+                       "Bayer boss rules: boss OD≈2·screw_d, pilot≈0.8·screw_d, engagement≥2·screw_d; "
+                       "pull-out = π·pilot·engagement·τ_shear. Prefer a dowel_pin if you only need to "
+                       "LOCATE (no clamp), or a snap_hook if you want tool-free hand assembly.")
+    citations = [_cit_pb("§8.1", "force-closed connection"),
+                 Citation(doc="BASF/Bayer Snap-Fit & Boss Design Guide", section="self-tap boss rules"),
+                 Citation(doc="DECISIONS_LOG", section="D8 (single-material PETG); D-ONT-11 (hardware)")]
+
+    def resolve_params(self, ir, inst):
+        out = dict(inst.params or {})
+        out.setdefault("screw_d", 3.0)
+        out["engagement"] = round(max(float(out.get("engagement", 0.0)), 2.0 * float(out["screw_d"])), 2)
+        out.setdefault("tau_shear", 30.0)
+        return out
+
+    def resolve_piece_params(self, name, inst):
+        if name != "screw":
+            return {}
+        d = float((inst.params or {}).get("screw_d", 3.0))
+        return {"screw_d": d, "screw_len": round(float((inst.params or {}).get("engagement", 6.0)) + 4.0, 1)}
+
+    def carve(self, host_parts, inst, bindings):
+        from knowledge.cards.m18_tier1 import screwboss_carve
+        return screwboss_carve(host_parts, inst, bindings)
+
+    def formula_check(self, inst):
+        from knowledge.cards.m18_tier1 import screwboss_dims, screwboss_design
+        return screwboss_design(screwboss_dims(getattr(inst, "params", {}) or {}))
+
+    def verification(self, ir, inst):
+        return []
+
+
+class PressFitCard(ConnectionCard):
+    """Press (interference) fit (P&B §8.1, FORCE connection): holds by radial interference pressure ×
+    friction. axis-6 BOUNDARY CASE — this is STATIC INTERFERENCE verified by FORMULA (Shigley §3-56),
+    not full compliant behaviour; a real PETG press-fit CREEPS (stress relaxation), so the holding
+    formula is an UPPER bound on long-term hold. Flagged honestly (compliance='rigid' at the field;
+    the creep caveat lives in the formula + selection_notes, since a P-SPRING protocol isn't built)."""
+    card_id = "press_fit"
+    has_functional_clearance = False
+    connection_principle = "force"
+    taxonomy = {"working_motion": ("fixed", "regular"), "axis_relationship": "parallel",
+                "connection_principle": "force", "self_locking": False, "vb_verifiable": True,
+                "compliance": "rigid", "kinematic_dof": "fully constrains (interference)",
+                "caveat": "static_interference — creeps in PETG (upper-bound hold)"}
+    param_bounds = {"d_nom": (3.0, 30.0, "mm"), "interference": (0.01, 0.15, "mm"),
+                    "length": (3.0, 30.0, "mm")}
+    ports = [_p("interface", "face"), _p("mate", "face")]
+    selection_notes = ("Use to FASTEN a pin/bore or shaft/hub by INTERFERENCE (FORCE connection, "
+                       "§8.1) — no separate part, no tool. Holding = π·d·L·p·μ with p=E·δ/d "
+                       "(Shigley §3-56). CAVEAT (honest): a PETG press-fit CREEPS under sustained "
+                       "load (stress relaxation), so the formula is an UPPER bound on long-term hold — "
+                       "prefer a screw_boss where a durable clamp matters. axis-6 boundary case: "
+                       "static-interference, verified by formula not physics.")
+    citations = [_cit_pb("§8.1", "force-closed connection"),
+                 Citation(doc="Shigley's", section="§3-56 (interference fits); Roark Table 13.1")]
+
+    def resolve_params(self, ir, inst):
+        out = dict(inst.params or {})
+        out.setdefault("d_nom", 8.0); out.setdefault("interference", 0.05); out.setdefault("length", 10.0)
+        return out
+
+    def carve(self, host_parts, inst, bindings):
+        from knowledge.cards.m18_tier1 import pressfit_carve
+        return pressfit_carve(host_parts, inst, bindings)
+
+    def formula_check(self, inst):
+        from knowledge.cards.m18_tier1 import pressfit_dims, pressfit_holding
+        return pressfit_holding(pressfit_dims(getattr(inst, "params", {}) or {}))
+
+    def verification(self, ir, inst):
+        return []
+
+
 # card_ref -> card instance. Validators look up ports/requires/imposes/card_class here.
 # The deprecated `snap_latch` alias (D-ONT-8) has been REMOVED now that the card has landed and
 # MECHSYNTH §3.4/§8.1 are reconciled to `snap_hook_cantilever` (D-ONT-8 resolution).
 _ALL_CARDS = (PinHingeCard, SnapHookCantileverCard, SlideRailCard, RackPinionCard, PawlDetentCard,
-              StopFlangeCard)
+              StopFlangeCard,
+              # M18 Tier-1 (D-M18-1/-2/-3)
+              LeadScrewCard, CouplingCard, UniversalJointCard, JournalBearingCard, BushingCard,
+              DowelPinCard, ScrewBossCard, PressFitCard)
 CARD_REGISTRY: dict[str, ElementCard] = {c.card_id: c() for c in _ALL_CARDS}
 
 

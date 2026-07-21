@@ -76,7 +76,8 @@ def test_candidates_is_honestly_empty_for_unknown_motion():
     than guess."""
     from ontology.schema import Behavior, MotionSpec
     b = Behavior(id="BX", phase="use", motion=MotionSpec(kind="rot_to_trans"))
-    assert candidates(b) == ["rack_pinion"]
+    # M18: rot_to_trans now offers BOTH rack_pinion and lead_screw (the self-locking alternative).
+    assert candidates(b) == ["rack_pinion", "lead_screw"]
     b2 = Behavior(id="BY", phase="static", motion=MotionSpec(kind="rot_to_trans"))
     assert candidates(b2) == [], "a static rot_to_trans has no realizer; must be honestly empty"
 

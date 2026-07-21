@@ -86,6 +86,10 @@ class Citation(_Base):
 
 class MotionSpec(_Base):
     kind: MotionKind
+    # M18 axis-1 (P&B §2.1.4): the NATURE of the working motion. "regular" = uniform/constant-ratio
+    # (a hinge, a gear, a slide); "irregular" = a profiled, non-uniform law (a cam's rise-dwell-fall).
+    # Default "regular" so every existing IR stays valid; only a cam-class element sets "irregular".
+    nature: Literal["regular", "irregular"] = "regular"  # SCHEMA-DECISION (D-M18-2, P&B §2.1.4)
     axis_hint: Optional[str] = None  # semantic hint ("horizontal_rear") — NOT a coordinate
     range_value: Optional[float] = None  # deg or mm
     range_unit: Optional[Literal["deg", "mm"]] = None
@@ -113,6 +117,15 @@ class Behavior(_Base):
     id: str
     phase: PhaseE
     motion: MotionSpec
+    # M18 axis-2 (P&B §2.1.4): relative arrangement of the input/output axes of a transmission.
+    # "parallel" (coupling, spur), "intersecting" (bevel, universal joint), "crossed" (worm). Default
+    # "parallel" so existing single-axis behaviours stay valid; a transmission sets it explicitly.
+    axis_relationship: Literal["parallel", "intersecting", "crossed"] = "parallel"  # D-M18-2, §2.1.4
+    # M18 axis-4 (P&B §7.4.3 self-help): does this behaviour HOLD its state against a back-driving
+    # load without an added brake? A lead_screw with lead angle <= friction angle self-locks (True);
+    # a plain rack_pinion does not (False → it needs a pawl_detent, D-M13-4). Default False (safe:
+    # most behaviours do not self-lock). Resolves the DRAFT D-M13-3. (D-M18-3)
+    self_locking: bool = False  # SCHEMA-DECISION (D-M18-3, P&B §7.4.3)
     load: Optional[dict] = None  # {"mass_kg": 0.5, "direction": "-z"}
     realized_by: Optional[str] = None  # element id
     imposed_by: Optional[str] = None  # constraint-imposing element id

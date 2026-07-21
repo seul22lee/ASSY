@@ -174,14 +174,24 @@ def v08(plan: DesignPlan) -> list[Violation]:
                                      f"{tmpl.phase.value}/{tmpl.motion.kind} behaviour that is "
                                      f"not registered in the IR"))
 
-    # class rule: realized_by must be a mechanical element, never a passive feature
-    feature_ids = {f.id for f in plan.features}
+    # class rule: realized_by must be a MechanicalElement, never a PassiveFeature (D-ONT-4) OR a
+    # ConnectionCard (D-M18-1). Checked by the target's CARD CLASS so it holds regardless of which
+    # instance list stores it — a feature supports a DoF, a connection fastens parts; neither
+    # realizes one.
     for b in plan.behaviors:
-        if b.realized_by and b.realized_by in feature_ids:
+        if not b.realized_by:
+            continue
+        inst = plan.instance(b.realized_by)
+        card = CARD_REGISTRY.get(inst.card_ref) if inst is not None else None
+        if card is not None and card.card_class in ("feature", "connection"):
+            kind = "PassiveFeature" if card.card_class == "feature" else "ConnectionCard"
             out.append(Violation("V-08",
-                                 f"behaviour '{b.id}' is realized_by '{b.realized_by}', which is "
-                                 f"a PassiveFeature — passive features constrain/support but "
-                                 f"realize nothing (D-ONT-4). Use imposed_by."))
+                                 f"behaviour '{b.id}' is realized_by '{b.realized_by}', a {kind} "
+                                 f"('{inst.card_ref}') — a {kind.lower()} "
+                                 f"{'constrains/supports' if card.card_class=='feature' else 'fastens parts'} "
+                                 f"but realizes no DoF "
+                                 f"({'D-ONT-4' if card.card_class=='feature' else 'D-M18-1'}). "
+                                 f"Use imposed_by."))
     return out
 
 
@@ -371,7 +381,30 @@ def v16(plan: DesignPlan) -> list[Violation]:
     return out
 
 
-ALL_RULES = [v01, v02, v03, v04, v05, v06, v07, v08, v09, v10, v11, v12, v13, v14, v15, v16]
+def v17(plan: DesignPlan) -> list[Violation]:
+    """D-M18-2 (axis-6, P&B §8.1.3): a card declaring compliance='compliant' is NOT YET SUPPORTED.
+    The compliance field is RESERVED — spring/damper/living_hinge (compliant=true) need a P-SPRING
+    verification protocol that is not built this milestone. Reject 'compliant' with that message so
+    the field exists but cannot be misused (a compliant element verified as if rigid would be exactly
+    the m8-class fabrication one level up). All Tier-1 cards are 'rigid'; this only fires when a future
+    milestone adds a compliant card before its protocol."""
+    out = []
+    seen = set()
+    for inst in list(plan.elements) + list(plan.features):
+        if inst.card_ref in seen:
+            continue
+        seen.add(inst.card_ref)
+        card = CARD_REGISTRY.get(inst.card_ref)
+        if card is not None and getattr(card, "compliance", "rigid") == "compliant":
+            out.append(Violation("V-17",
+                                 f"card '{inst.card_ref}' declares compliance='compliant', which is "
+                                 f"NOT YET SUPPORTED — a compliant element (spring/damper/living_hinge) "
+                                 f"needs a P-SPRING protocol not built this milestone (D-M18-2, axis-6). "
+                                 f"The field is reserved; keep compliance='rigid' until P-SPRING lands."))
+    return out
+
+
+ALL_RULES = [v01, v02, v03, v04, v05, v06, v07, v08, v09, v10, v11, v12, v13, v14, v15, v16, v17]
 
 
 def validate_all(plan: DesignPlan) -> list[Violation]:

@@ -50,25 +50,67 @@ EDGES: tuple[Edge, ...] = (
          "a rail/carriage pair is the canonical realizer of straight-line travel (§3.5)"),
     Edge("rack_pinion", "rot_to_trans", ("use",), "realizes",
          "converts rotation to translation at a defined ratio (§3.6); R2b-open — V-A only (D-M1-7)"),
+    # --- M18 Tier-1 (D-M18-1/-2/-3) ---------------------------------------------------------------
+    Edge("lead_screw", "rot_to_trans", ("use",), "realizes",
+         "a power screw converts rotation to translation and SELF-LOCKS when lead angle <= friction "
+         "angle (P&B §7.4.3) — the self-locking alternative to rack_pinion (which back-drives)"),
+    Edge("coupling", "rotation", ("use",), "realizes",
+         "a rigid coupling transmits rotation 1:1 between coaxial/parallel shafts (P&B §8.1)"),
+    Edge("universal_joint", "rotation", ("use",), "realizes",
+         "a Cardan joint transmits rotation across INTERSECTING axes at an angle (P&B §8.1)"),
+    Edge("journal_bearing", "rotation", ("use",), "supports",
+         "a journal bearing SUPPORTS a rotating shaft at low friction (P&B §8.2); realizes nothing"),
+    Edge("bushing", "rotation", ("use",), "supports",
+         "a bushing sleeve supports a rotating/sliding shaft (P&B §8.2); realizes nothing"),
+    Edge("dowel_pin", "fixed", ("assembly", "static"), "connects",
+         "a dowel LOCATES two parts by FORM interlock (P&B §8.1); removes DoF, realizes none"),
+    Edge("screw_boss", "fixed", ("assembly", "static"), "connects",
+         "a self-tapping screw boss FASTENS two parts by FORCE (P&B §8.1); provides the screw"),
+    Edge("press_fit", "fixed", ("assembly", "static"), "connects",
+         "a press-fit FASTENS by interference/FORCE (P&B §8.1); no separate part"),
 )
 
 
-def candidates(behavior) -> list[str]:
-    """Card ids that could serve this behaviour, narrowed by (motion.kind, phase).
+def candidates(behavior, connection_principle: str | None = None) -> list[str]:
+    """Card ids that could serve this behaviour, narrowed by (motion.kind, phase), then by the M18
+    MORPHOLOGICAL AXES (P&B §3.2.3, Zwicky box): the behaviour's declared axis_relationship /
+    self_locking, and an optional connection_principle. This is the morphological-matrix step — a
+    requirement is a set of axis values and the matrix keeps the elements that carry them:
+        rot_to_trans + self_locking  -> lead_screw (not rack_pinion, which back-drives)
+        rotation + intersecting-axis -> universal_joint (not a coupling/hinge)
+        fixed + connection_principle=form -> dowel_pin (a form CONNECTION, no DoF)
 
-    Returns [] when the graph knows no card for the behaviour — an HONEST empty, not a fallback to
-    "everything". An empty candidate set at ④ is a real signal (the ontology cannot express what ②
-    asked for) and must surface as a stage failure rather than be papered over with a guess.
+    Returns [] when the graph knows no card — an HONEST empty (not a fallback to "everything"): an
+    empty set at ④ means the ontology cannot express what ② asked for, and must surface as a failure.
     """
     kind = getattr(behavior.motion, "kind", None)
     kind = getattr(kind, "value", kind)          # tolerate str or Enum
     phase = getattr(behavior, "phase", None)
     phase = getattr(phase, "value", phase)
-    out = []
+    base = []
     for e in EDGES:
-        if e.motion_kind == kind and phase in e.phases and e.card_id not in out:
-            out.append(e.card_id)
-    return out
+        if e.motion_kind == kind and phase in e.phases and e.card_id not in base:
+            base.append(e.card_id)
+
+    # --- M18 morphological narrowing (only fires on a NON-default axis request) -------------------
+    req_axis = getattr(behavior, "axis_relationship", "parallel")
+    req_axis = getattr(req_axis, "value", req_axis)
+    req_lock = bool(getattr(behavior, "self_locking", False))
+    cp = connection_principle if connection_principle is not None \
+        else getattr(behavior, "connection_principle", None)
+
+    def keep(cid: str) -> bool:
+        tax = CARD_REGISTRY[cid].taxonomy or {}
+        if req_axis and req_axis != "parallel" and tax.get("axis_relationship", "parallel") != req_axis:
+            return False
+        if req_lock and not tax.get("self_locking", False):
+            return False
+        if cp is not None:                       # a connection of a specific principle (form/force/material)
+            if CARD_REGISTRY[cid].card_class != "connection" or tax.get("connection_principle") != cp:
+                return False
+        return True
+
+    return [c for c in base if keep(c)]
 
 
 def why(card_id: str, behavior) -> list[str]:
