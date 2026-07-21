@@ -92,9 +92,11 @@ def test_curved_contact_cards_defer_with_named_gap_statics_are_na():
     for cid in ("lead_screw", "rack_pinion", "snap_hook_cantilever"):
         ec = CARD_REGISTRY[cid].taxonomy["emergent_check"]
         assert ec.status == "deferred" and ec.reason and ec.risk, f"{cid} must name its gap"
-    # lead_screw's gap is exactly the one the milestone brief specified
+    # lead_screw's gap: the EMERGENT thread-flank contact is curved (deferred), and the risk now names
+    # the flank effects the declared pair cannot see. (m19 narrowed this: the self-lock CRITERION and
+    # sourced holding torque ARE physics-backed by P-SCREW V-A — so the risk is no longer "formula only".)
     lead = CARD_REGISTRY["lead_screw"].taxonomy["emergent_check"]
-    assert "curved" in lead.reason.lower() and "formula" in lead.risk.lower()
+    assert "curved" in lead.reason.lower() and "flank" in lead.risk.lower()
     # planar/joint elements with a REAL running V-B are verified; static ones are not_applicable
     for cid in ("pin_hinge", "slide_rail"):
         assert CARD_REGISTRY[cid].taxonomy["emergent_check"].status == "verified"
