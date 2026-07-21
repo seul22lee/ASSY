@@ -41,6 +41,7 @@ sys.path.insert(0, str(ROOT / "m0"))
 import imageio.v2 as imageio  # noqa: E402
 import mujoco as mj  # noqa: E402
 import numpy as np  # noqa: E402
+import trimesh  # noqa: E402  (S5 t0 interference gate, D-M21-4)
 
 from knowledge.cards.base import CARD_REGISTRY  # noqa: E402
 from knowledge.cards.universal_joint import ujoint_dims, ujoint_kinematics, ujoint_ratio_at  # noqa: E402
@@ -105,41 +106,60 @@ def build_va_mjcf(plan, meshdir: Path, beta_deg, markers=True):
     # SIDE camera: look along +Y (perpendicular to the XZ bend plane) so β AND both marker sweeps show
     ET.SubElement(world, "camera", name="side", pos="0 -0.16 0.0", xyaxes="1 0 0 0 0 1")
     # static base plate (cosmetic; the joint centre is the world origin)
-    ET.SubElement(world, "geom", name="base", type="box", pos=f"0 0 {-Hs-0.004}",
-                  size="0.022 0.022 0.002", material="base")
+    ET.SubElement(world, "geom", name="base_plate", type="box", pos="0 0 -0.0335",
+                  size="0.02 0.02 0.002", material="base")
     ET.SubElement(world, "site", name="wtip", pos=_v(tip), size="0.0012")
+
+    o0 = 0.006; ob = o0 * B; opp = 0.5 * o0 * B          # output shaft starts o0 out along B
+    mid = 0.5 * (ob + tip)
 
     def _marker(parent, name, mat, pos, size):
         if markers:
             ET.SubElement(parent, "geom", name=name, type="box", pos=_v(pos), size=_v(size), material=mat)
 
+    # INPUT body: shaft + a CLEVIS yoke — two prongs at ±X hold the cross pin1 trunnions (clearance fit,
+    # no bore since MuJoCo primitives can't be holed; the trunnion tips stop short of the prongs).
     binp = ET.SubElement(world, "body", name="input", pos="0 0 0")
     ET.SubElement(binp, "joint", name="jin", type="hinge", axis="0 0 1", pos="0 0 0",
                   damping=f"{JOINT_DAMPING}", armature=f"{ARMATURE}")
-    ET.SubElement(binp, "geom", name="in_shaft", type="cylinder", fromto=f"0 0 {-Hs} 0 0 0",
-                  size=f"{br}", material="input", mass="0.01")
-    ET.SubElement(binp, "geom", name="in_yoke", type="cylinder", fromto="0 0 -0.003 0 0 0.014",
-                  size=f"{yr}", material="input", mass="0.006")
-    _marker(binp, "mk_in", "mk_in", (yr + 0.002, 0, 0.006), (0.003, 0.001, 0.004))
+    ET.SubElement(binp, "geom", name="in_shaft", type="cylinder", fromto="0 0 -0.030 0 0 -0.007",
+                  size="0.003", material="input", mass="0.008")
+    ET.SubElement(binp, "geom", name="in_base", type="cylinder", fromto="0 0 -0.009 0 0 -0.005",
+                  size="0.0055", material="input", mass="0.002")
+    ET.SubElement(binp, "geom", name="in_prongxp", type="box", pos="0.0075 0 -0.0015",
+                  size="0.0015 0.004 0.005", material="input", mass="0.001")
+    ET.SubElement(binp, "geom", name="in_prongxn", type="box", pos="-0.0075 0 -0.0015",
+                  size="0.0015 0.004 0.005", material="input", mass="0.001")
+    _marker(binp, "mk_in", "mk_in", (0.0095, 0, 0.0015), (0.0012, 0.0012, 0.003))
 
+    # CROSS body: a compact spider — pin1 (±X) into the input clevis, pin2 (±Y) into the output clevis.
     bcross = ET.SubElement(binp, "body", name="cross", pos="0 0 0")
     ET.SubElement(bcross, "joint", name="pin1", type="hinge", axis="1 0 0", pos="0 0 0",
                   damping=f"{JOINT_DAMPING}", armature=f"{ARMATURE}")
-    ET.SubElement(bcross, "geom", name="cross_x", type="box", size="0.012 0.002 0.002",
-                  material="cross", mass="0.001")
-    ET.SubElement(bcross, "geom", name="cross_y", type="box", size="0.002 0.012 0.002",
-                  material="cross", mass="0.001")
-    _marker(bcross, "mk_cross", "mk_cross", (0, 0.013, 0), (0.0015, 0.003, 0.0015))
+    ET.SubElement(bcross, "geom", name="cr_hub", type="box", size="0.0025 0.0025 0.0025",
+                  material="cross", mass="0.0008")
+    ET.SubElement(bcross, "geom", name="cr_trx", type="cylinder", fromto="-0.0058 0 0 0.0058 0 0",
+                  size="0.0016", material="cross", mass="0.0006")
+    ET.SubElement(bcross, "geom", name="cr_try", type="cylinder", fromto="0 -0.0058 0 0 0.0058 0",
+                  size="0.0016", material="cross", mass="0.0006")
+    _marker(bcross, "mk_cross", "mk_cross", (0, 0, 0.0042), (0.0013, 0.0013, 0.0012))
 
+    # OUTPUT body: shaft along B (starts o0 out to clear the joint) + a CLEVIS yoke (prongs at ±Y).
     bout = ET.SubElement(bcross, "body", name="output", pos="0 0 0")
     ET.SubElement(bout, "joint", name="pin2", type="hinge", axis="0 1 0", pos="0 0 0",
                   damping=f"{JOINT_DAMPING}", armature=f"{ARMATURE}")
-    ET.SubElement(bout, "geom", name="out_shaft", type="cylinder", fromto=f"0 0 0 {tip[0]} {tip[1]} {tip[2]}",
-                  size=f"{br}", material="output", mass="0.01")
+    ET.SubElement(bout, "geom", name="out_shaft", type="cylinder",
+                  fromto=f"{ob[0]:.6f} 0 {ob[2]:.6f} {tip[0]:.6f} 0 {tip[2]:.6f}",
+                  size="0.003", material="output", mass="0.008")
+    ET.SubElement(bout, "geom", name="out_prongyp", type="box",
+                  pos=f"{opp[0]:.6f} 0.0075 {opp[2]:.6f}", size="0.004 0.0015 0.005",
+                  material="output", mass="0.001")
+    ET.SubElement(bout, "geom", name="out_prongyn", type="box",
+                  pos=f"{opp[0]:.6f} -0.0075 {opp[2]:.6f}", size="0.004 0.0015 0.005",
+                  material="output", mass="0.001")
     ET.SubElement(bout, "site", name="otip", pos=_v(tip), size="0.0012")
     ET.SubElement(bout, "site", name="omark", pos="0 0.012 0", size="0.0012")
-    # output marker: a radial tab perpendicular to B (in the ⊥B plane, along +Y at assembly)
-    _marker(bout, "mk_out", "mk_out", (0, 0.013, 0.020 * math.sin(b) + 0.0), (0.0015, 0.004, 0.0015))
+    _marker(bout, "mk_out", "mk_out", (mid[0], -0.005, mid[2]), (0.0013, 0.0016, 0.0013))
 
     eq = ET.SubElement(root, "equality")
     ET.SubElement(eq, "connect", body1="output", body2="world", anchor=_v(tip),
@@ -154,6 +174,49 @@ def build_va_mjcf(plan, meshdir: Path, beta_deg, markers=True):
             "fluctuation_pct": e1par["fluctuation_pct"], "n_rev": N_REV, "L_out_m": L_OUT,
             "B": list(B)}
     return xml, meta
+
+
+# intended kinematic-contact body pairs (D22): these MAY approach (clearance ok); all others must
+# report ZERO penetration. cross↔input & cross↔output are the trunnion-in-yoke pairs; base↔input is
+# the input shaft in its bearing.
+_T0_INTENDED = {("cross", "input"), ("cross", "output"), ("base", "input")}
+
+
+def t0_interference_table(model, poses_deg=(0, 22, 45, 67, 90)):
+    """The S5 FIXTURE t0 GATE (spec §13, D-M21-4): pairwise INTER-BODY interference over swept poses,
+    judged per D22. Groups geoms by body (name prefix in_/cr_/out_/base_), SKIPS intra-body pairs
+    (intended fusion — one rigid body) and markers (mk_*, visual overlays). Returns
+    {(bodyA,bodyB): (worst_penetration_mm, intended)} — penetration negative = clearance."""
+    d = mj.MjData(model)
+
+    def gmesh(gid):
+        t = model.geom_type[gid]; s = model.geom_size[gid]
+        me = (trimesh.creation.box(extents=2 * s[:3]) if t == mj.mjtGeom.mjGEOM_BOX
+              else trimesh.creation.cylinder(radius=s[0], height=2 * s[1], sections=20))
+        T = np.eye(4); T[:3, :3] = d.geom_xmat[gid].reshape(3, 3); T[:3, 3] = d.geom_xpos[gid]
+        me.apply_transform(T); return me
+
+    names = [mj.mj_id2name(model, mj.mjtObj.mjOBJ_GEOM, i) for i in range(model.ngeom)]
+    struct = [i for i in range(model.ngeom) if names[i] and not names[i].startswith("mk_")]
+
+    def body(n):
+        return {"in": "input", "cr": "cross", "out": "output", "base": "base"}.get(n.split("_")[0], n.split("_")[0])
+
+    ji = model.jnt_qposadr[mj.mj_name2id(model, mj.mjtObj.mjOBJ_JOINT, "jin")]
+    worst = {}
+    for pd in poses_deg:
+        d.qpos[ji] = math.radians(pd); mj.mj_forward(model, d)
+        mh = {names[i]: gmesh(i) for i in struct}
+        for ia in range(len(struct)):
+            for ib in range(ia + 1, len(struct)):
+                na, nb = names[struct[ia]], names[struct[ib]]
+                if body(na) == body(nb):
+                    continue
+                k = tuple(sorted([body(na), body(nb)]))
+                v = max(trimesh.proximity.signed_distance(mh[nb], mh[na].sample(400)).max(),
+                        trimesh.proximity.signed_distance(mh[na], mh[nb].sample(400)).max()) * 1000.0
+                worst[k] = max(worst.get(k, -99.0), float(v))
+    return {k: (round(v, 3), k in _T0_INTENDED) for k, v in worst.items()}
 
 
 def _theta_out(sp, e1, e2):
@@ -319,8 +382,23 @@ def main():
     model = mj.MjModel.from_xml_path(str(xf))
     gok, checks = g9_gconv(model)
 
+    # S5 FIXTURE t0 GATE (spec §13, D-M21-4): no verdict ships over geometry that failed the table.
+    t0 = t0_interference_table(model)
+    t0_dirty = [k for k, (v, intended) in t0.items() if v > 0.05]   # unintended penetration anywhere
+    t0_clean = not t0_dirty
+    print("\n=== S5 t0 interference gate (compiled fixture, swept poses, per D22) ===")
+    for k, (v, intended) in sorted(t0.items()):
+        kind = "INTENDED (clearance ok)" if intended else "unintended (zero-pen)"
+        print(f"   {k[0]:6s} × {k[1]:6s}: {v:+.2f} mm  [{kind}]  {'PENETRATE!' if v > 0.05 else 'clear'}")
+    print(f"   => t0 gate {'CLEAN' if t0_clean else 'FAILED (unintended penetration: '+str(t0_dirty)+')'}")
+    assert t0_clean, f"t0 gate FAILED — geometry interferes: {t0_dirty}. No verdict ships over it."
+
     result = {
         "decision_row": "D-M21-1 P-UJOINT V-A on compiled ujoint_fixture (Cardan fluctuation verified)",
+        "t0_interference_gate": {"clean": t0_clean, "judged_per": "D22 (intended=clearance, else zero-pen)",
+                                 "poses_deg": [0, 22, 45, 67, 90],
+                                 "pairs_mm": {f"{k[0]}×{k[1]}": {"worst_pen_mm": v, "intended": intended}
+                                              for k, (v, intended) in sorted(t0.items())}},
         "compile_hash": _hash(), "card": "universal_joint", "element": "E1",
         "rule_chain": {"beta_deg": beta_fix, "vel_ratio_min (cosβ)": meta["vel_ratio_min"],
                        "vel_ratio_max (1/cosβ)": meta["vel_ratio_max"], "fluctuation_pct": meta["fluctuation_pct"],

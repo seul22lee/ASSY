@@ -21,24 +21,29 @@
   <worldbody>
     <light pos="0.1 -0.2 0.3" dir="-0.2 0.4 -1" directional="true" diffuse="0.5 0.5 0.5"/>
     <camera name="side" pos="0 -0.16 0.0" xyaxes="1 0 0 0 0 1"/>
-    <geom name="base" type="box" pos="0 0 -0.03" size="0.022 0.022 0.002" material="base"/>
+    <geom name="base_plate" type="box" pos="0 0 -0.0335" size="0.02 0.02 0.002" material="base"/>
     <site name="wtip" pos="0.020000000 0.000000000 0.034641016" size="0.0012"/>
     <body name="input" pos="0 0 0">
       <joint name="jin" type="hinge" axis="0 0 1" pos="0 0 0" damping="1e-05" armature="1e-05"/>
-      <geom name="in_shaft" type="cylinder" fromto="0 0 -0.026 0 0 0" size="0.004" material="input" mass="0.01"/>
-      <geom name="in_yoke" type="cylinder" fromto="0 0 -0.003 0 0 0.014" size="0.008" material="input" mass="0.006"/>
-      <geom name="mk_in" type="box" pos="0.010000000 0.000000000 0.006000000" size="0.003000000 0.001000000 0.004000000" material="mk_in"/>
+      <geom name="in_shaft" type="cylinder" fromto="0 0 -0.030 0 0 -0.007" size="0.003" material="input" mass="0.008"/>
+      <geom name="in_base" type="cylinder" fromto="0 0 -0.009 0 0 -0.005" size="0.0055" material="input" mass="0.002"/>
+      <geom name="in_prongxp" type="box" pos="0.0075 0 -0.0015" size="0.0015 0.004 0.005" material="input" mass="0.001"/>
+      <geom name="in_prongxn" type="box" pos="-0.0075 0 -0.0015" size="0.0015 0.004 0.005" material="input" mass="0.001"/>
+      <geom name="mk_in" type="box" pos="0.009500000 0.000000000 0.001500000" size="0.001200000 0.001200000 0.003000000" material="mk_in"/>
       <body name="cross" pos="0 0 0">
         <joint name="pin1" type="hinge" axis="1 0 0" pos="0 0 0" damping="1e-05" armature="1e-05"/>
-        <geom name="cross_x" type="box" size="0.012 0.002 0.002" material="cross" mass="0.001"/>
-        <geom name="cross_y" type="box" size="0.002 0.012 0.002" material="cross" mass="0.001"/>
-        <geom name="mk_cross" type="box" pos="0.000000000 0.013000000 0.000000000" size="0.001500000 0.003000000 0.001500000" material="mk_cross"/>
+        <geom name="cr_hub" type="box" size="0.0025 0.0025 0.0025" material="cross" mass="0.0008"/>
+        <geom name="cr_trx" type="cylinder" fromto="-0.0058 0 0 0.0058 0 0" size="0.0016" material="cross" mass="0.0006"/>
+        <geom name="cr_try" type="cylinder" fromto="0 -0.0058 0 0 0.0058 0" size="0.0016" material="cross" mass="0.0006"/>
+        <geom name="mk_cross" type="box" pos="0.000000000 0.000000000 0.004200000" size="0.001300000 0.001300000 0.001200000" material="mk_cross"/>
         <body name="output" pos="0 0 0">
           <joint name="pin2" type="hinge" axis="0 1 0" pos="0 0 0" damping="1e-05" armature="1e-05"/>
-          <geom name="out_shaft" type="cylinder" fromto="0 0 0 0.019999999999999997 0.0 0.034641016151377546" size="0.004" material="output" mass="0.01"/>
+          <geom name="out_shaft" type="cylinder" fromto="0.003000 0 0.005196 0.020000 0 0.034641" size="0.003" material="output" mass="0.008"/>
+          <geom name="out_prongyp" type="box" pos="0.001500 0.0075 0.002598" size="0.004 0.0015 0.005" material="output" mass="0.001"/>
+          <geom name="out_prongyn" type="box" pos="0.001500 -0.0075 0.002598" size="0.004 0.0015 0.005" material="output" mass="0.001"/>
           <site name="otip" pos="0.020000000 0.000000000 0.034641016" size="0.0012"/>
           <site name="omark" pos="0 0.012 0" size="0.0012"/>
-          <geom name="mk_out" type="box" pos="0.000000000 0.013000000 0.010000000" size="0.001500000 0.004000000 0.001500000" material="mk_out"/>
+          <geom name="mk_out" type="box" pos="0.011500000 -0.005000000 0.019918584" size="0.001300000 0.001600000 0.001300000" material="mk_out"/>
         </body>
       </body>
     </body>

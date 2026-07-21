@@ -1,6 +1,43 @@
 {
   "decision_row": "D-M21-1 P-UJOINT V-A on compiled ujoint_fixture (Cardan fluctuation verified)",
-  "compile_hash": "5d3e2fa",
+  "t0_interference_gate": {
+    "clean": true,
+    "judged_per": "D22 (intended=clearance, else zero-pen)",
+    "poses_deg": [
+      0,
+      22,
+      45,
+      67,
+      90
+    ],
+    "pairs_mm": {
+      "base\u00d7cross": {
+        "worst_pen_mm": -29.0,
+        "intended": false
+      },
+      "base\u00d7input": {
+        "worst_pen_mm": -1.5,
+        "intended": true
+      },
+      "base\u00d7output": {
+        "worst_pen_mm": -29.098,
+        "intended": false
+      },
+      "cross\u00d7input": {
+        "worst_pen_mm": -0.2,
+        "intended": true
+      },
+      "cross\u00d7output": {
+        "worst_pen_mm": -0.2,
+        "intended": true
+      },
+      "input\u00d7output": {
+        "worst_pen_mm": -0.481,
+        "intended": false
+      }
+    }
+  },
+  "compile_hash": "76e9476",
   "card": "universal_joint",
   "element": "E1",
   "rule_chain": {
@@ -20,7 +57,7 @@
     [
       "(a) input: mass > 0",
       true,
-      "16.00 g"
+      "12.00 g"
     ],
     [
       "(a) cross: mass > 0",

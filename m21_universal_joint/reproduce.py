@@ -97,6 +97,19 @@ def main():
         drift = abs(intent - measured); good = drift <= DRIFT_TOL; ok &= good
         print(f"  {name:<28s}{intent:>9.3f}{measured:>11.3f}{drift:>9.4f}   {'ok' if good else 'FAIL'}")
 
+    print(f"\n[5] FIXTURE t0 INTERFERENCE GATE (spec §13 / D-M21-4; judged per D22, swept poses)")
+    if VERDICT.exists() and "t0_interference_gate" in vj:
+        t0 = vj["t0_interference_gate"]
+        print(f"  {'body pair':<18s}{'worst pen (mm)':>15s}   kind")
+        for name, rec in t0["pairs_mm"].items():
+            kind = "INTENDED (clearance ok)" if rec["intended"] else "unintended (zero-pen)"
+            pen = rec["worst_pen_mm"]
+            print(f"  {name:<18s}{pen:>15.2f}   {kind}   {'PENETRATE!' if pen > 0.05 else 'clear'}")
+        print(f"  => t0 gate {'CLEAN' if t0['clean'] else 'FAILED'}   (negative = clearance; no unintended penetration)")
+        ok &= bool(t0["clean"])
+    else:
+        print("  (t0 gate not in verdict — run p_ujoint_va.py)")
+
     print(f"\n========== reproduction {'CLEAN — every number checks out' if ok else 'FAILED'} ==========\n")
     return 0 if ok else 1
 

@@ -24,5 +24,15 @@
   out_bbox_z (L·cosβ+d·sinβ)     24.485     24.485   0.0000   ok
   out_bbox_x (L·sinβ+d·cosβ)     18.409     18.409   0.0000   ok
 
+[5] FIXTURE t0 INTERFERENCE GATE (spec §13 / D-M21-4; judged per D22, swept poses)
+  body pair          worst pen (mm)   kind
+  base×cross                 -29.00   unintended (zero-pen)   clear
+  base×input                  -1.50   INTENDED (clearance ok)   clear
+  base×output                -29.10   unintended (zero-pen)   clear
+  cross×input                 -0.20   INTENDED (clearance ok)   clear
+  cross×output                -0.20   INTENDED (clearance ok)   clear
+  input×output                -0.48   unintended (zero-pen)   clear
+  => t0 gate CLEAN   (negative = clearance; no unintended penetration)
+
 ========== reproduction CLEAN — every number checks out ==========
 
