@@ -265,6 +265,42 @@ def rack_carrier(**params) -> TemplateResult:
     return TemplateResult(part=part, anchors=anchors, params=p)
 
 
+def screw_base(**params) -> TemplateResult:
+    """lead_screw host (m19 D-track fixture) — a base plate the screw stands VERTICALLY on (a
+    screw-jack: rotation about +Z drives the nut up/down, gravity is the hold load). Mirrors
+    slide_base/pinion_carrier. Anchors: `screw_axis` (+Z rotation axis at the plate top, where the
+    card grows the screw) + `travel_edge` (the +Z travel line the nut rides)."""
+    p = {"base_l": 60.0, "base_w": 60.0, "base_t": 4.0, **params}
+    L, W, T = p["base_l"], p["base_w"], p["base_t"]
+    part = Box(L, W, T, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    anchors = {
+        "screw_axis": AnchorGeom("screw_axis", "axis", (0.0, 0.0, T), (0, 0, 1)),
+        "travel_edge": AnchorGeom("travel_edge", "axis", (0.0, 0.0, T), (0, 0, 1)),
+    }
+    return TemplateResult(part=part, anchors=anchors, params=p)
+
+
+def nut_carriage(**params) -> TemplateResult:
+    """lead_screw host — the driven nut block riding the screw (m19 D-track fixture). A clearance BORE
+    (radius d_major/2 + gap) lets the screw pass without interference — the THREAD is card knowledge
+    the card would carve, so this host provides only the clearance mount (the slide_carriage lesson:
+    the template is the host, the card owns the functional geometry, D-ONT-11). One connected solid
+    (block − bore). Anchors: `nut_mount` (the underside the card threads onto) + `travel_axis` (+Z)."""
+    p = {"nut_l": 26.0, "nut_w": 26.0, "nut_t": 10.0, "nut_z": 30.0, "d_major": 8.0, "gap": 1.0,
+         **params}
+    z = p["nut_z"]
+    block = Location((0, 0, z)) * Box(p["nut_l"], p["nut_w"], p["nut_t"],
+                                      align=(Align.CENTER, Align.CENTER, Align.MIN))
+    bore = Location((0, 0, z - 1)) * Cylinder(p["d_major"] / 2 + p["gap"], p["nut_t"] + 2,
+                                              align=(Align.CENTER, Align.CENTER, Align.MIN))
+    part = block - bore
+    anchors = {
+        "nut_mount": AnchorGeom("nut_mount", "face", (0.0, 0.0, z), (0, 0, -1)),
+        "travel_axis": AnchorGeom("travel_axis", "axis", (0.0, 0.0, z), (0, 0, 1)),
+    }
+    return TemplateResult(part=part, anchors=anchors, params={**p, "box_h": z})
+
+
 # =====================================================================================
 # The HARD ANCHOR host templates (MECHSYNTH §8.2 / D-track 3, m12). A hand-cranked drawer:
 # a cabinet with TWO parallel rails, a drawer tray riding them, a knob-shaft carrying the
@@ -467,6 +503,7 @@ TEMPLATES = {"box_shell": box_shell, "lid_panel": lid_panel,
              "slide_base": slide_base, "slide_carriage": slide_carriage,
              "slide_base_dual": slide_base_dual,
              "pinion_carrier": pinion_carrier, "rack_carrier": rack_carrier,
+             "screw_base": screw_base, "nut_carriage": nut_carriage,
              "cabinet_shell": cabinet_shell, "drawer_tray": drawer_tray,
              "knob_shaft": knob_shaft, "rack_bar": rack_bar,
              "flat_panel_mount": flat_panel_mount, "retained_board": retained_board}
