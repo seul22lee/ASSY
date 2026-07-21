@@ -431,6 +431,7 @@ def render_matrix():
               f"**{npass} PASS · {nweak} WEAK · {nmiss} MISSING · {nfalse} FALSE** "
               f"(n/a: {tally['n/a']}).", ""]
     gaps = _ordered_gaps()
+    gaps.sort(key=lambda pg: {"TOP": 0, "HIGH": 1, "MED": 2}.get(pg[0], 3))
     lines += ["## Ordered gaps to fix before Tier-2", ""]
     for i, (prio, g) in enumerate(gaps, 1):
         lines.append(f"{i}. **[{prio}]** {g}")
