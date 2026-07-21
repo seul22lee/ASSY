@@ -1,0 +1,7 @@
+
+=== t0 interference gate: screw_lift (compiled assembly, swept, per D22) ===
+  piece pair      worst pen (mm)   kind
+  P1×P2                    -0.00   INTENDED (clearance ok)   clear
+  P1×P3                     0.00   INTENDED (clearance ok)   clear
+  P2×P3                    -0.03   unintended (zero-pen)   clear
+  => t0 gate CLEAN   (negative = clearance)
