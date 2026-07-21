@@ -1,0 +1,305 @@
+{
+  "decision_row": "D-M19-1 P-SCREW V-A on compiled lead_screw_fixture (V-B DEFERRED, R2b/m17)",
+  "compile_hash": "8075064",
+  "card": "lead_screw",
+  "element": "E1",
+  "rule_chain": {
+    "lead_mm": 2.0,
+    "= starts\u00d7pitch": "1\u00d72.0",
+    "d_mean_mm": 7.0,
+    "lead_angle_deg": 5.197,
+    "tan_lambda": 0.09095,
+    "mu": 0.3,
+    "self_locks (tan\u03bb\u2264\u00b5)": true,
+    "polycoef_m_per_rad (lead/2\u03c0)": 0.0003183098861837907
+  },
+  "sourced_friction": {
+    "T_friction_Nm (\u00b5\u00b7W\u00b7d_mean/2)": 0.00515,
+    "T_backdrive_Nm (W\u00b7lead/2\u03c0)": 0.001561,
+    "hold_margin": 3.299,
+    "W_N": 4.905,
+    "note": "SOURCED from PETG.mu + card thread geometry \u2014 NOT invented (D-D-1)"
+  },
+  "g9_gconv": true,
+  "g9_checks": [
+    [
+      "(a) base: mass > 0",
+      true,
+      "18.29 g"
+    ],
+    [
+      "(a) screw: mass > 0",
+      true,
+      "3.82 g"
+    ],
+    [
+      "(a) nut: mass > 0",
+      true,
+      "7.59 g"
+    ],
+    [
+      "(b) no initial penetration",
+      true,
+      "0.0000 mm at t=0"
+    ],
+    [
+      "(b) no contact-force blow-up after 1 step",
+      true,
+      "max constraint force 6.921e-02 N"
+    ],
+    [
+      "(c) at rest 1 s under gravity",
+      true,
+      "max drift 0.397 mm/mrad, peak |v| 0.0004"
+    ]
+  ],
+  "v_b_gap": "helical thread flank is CURVED contact \u2014 bidirectional V-B deferred to preset_v2 (m17/D-M1-7), like rack_pinion",
+  "modes": {
+    "V-A": {
+      "ran": true,
+      "n_seeds": 5,
+      "seeds_passed": 5,
+      "passed": true,
+      "criteria_seed0": {
+        "reaches_design_stroke": {
+          "value": 40.0,
+          "threshold": 40.0,
+          "pass": true
+        },
+        "matches_lead_formula (|s/(lead\u00b7rev)\u22121| \u2264 0.1%)": {
+          "value": 0.0,
+          "threshold": 0.001,
+          "pass": true
+        },
+        "self_locks_holds (back-drive \u2264 1 mm)": {
+          "value": 0.079,
+          "threshold": 1.0,
+          "pass": true
+        },
+        "converged (no blow-up)": {
+          "value": false,
+          "threshold": false,
+          "pass": true
+        },
+        "all_parts_retained": {
+          "value": true,
+          "threshold": true,
+          "pass": true
+        }
+      },
+      "per_seed": [
+        {
+          "ran": true,
+          "mode": "V-A",
+          "seed": 0,
+          "diverged": false,
+          "revs_done": 19.961,
+          "travel_mm": 40.0,
+          "formula_travel_mm": 40.0,
+          "formula_residual": 0.0,
+          "backdrive_mm": 0.079,
+          "criteria": {
+            "reaches_design_stroke": {
+              "value": 40.0,
+              "threshold": 40.0,
+              "pass": true
+            },
+            "matches_lead_formula (|s/(lead\u00b7rev)\u22121| \u2264 0.1%)": {
+              "value": 0.0,
+              "threshold": 0.001,
+              "pass": true
+            },
+            "self_locks_holds (back-drive \u2264 1 mm)": {
+              "value": 0.079,
+              "threshold": 1.0,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "mode": "V-A",
+          "seed": 1,
+          "diverged": false,
+          "revs_done": 19.961,
+          "travel_mm": 40.0,
+          "formula_travel_mm": 40.0,
+          "formula_residual": 0.0,
+          "backdrive_mm": 0.079,
+          "criteria": {
+            "reaches_design_stroke": {
+              "value": 40.0,
+              "threshold": 40.0,
+              "pass": true
+            },
+            "matches_lead_formula (|s/(lead\u00b7rev)\u22121| \u2264 0.1%)": {
+              "value": 0.0,
+              "threshold": 0.001,
+              "pass": true
+            },
+            "self_locks_holds (back-drive \u2264 1 mm)": {
+              "value": 0.079,
+              "threshold": 1.0,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "mode": "V-A",
+          "seed": 2,
+          "diverged": false,
+          "revs_done": 19.961,
+          "travel_mm": 40.0,
+          "formula_travel_mm": 40.0,
+          "formula_residual": 0.0,
+          "backdrive_mm": 0.079,
+          "criteria": {
+            "reaches_design_stroke": {
+              "value": 40.0,
+              "threshold": 40.0,
+              "pass": true
+            },
+            "matches_lead_formula (|s/(lead\u00b7rev)\u22121| \u2264 0.1%)": {
+              "value": 0.0,
+              "threshold": 0.001,
+              "pass": true
+            },
+            "self_locks_holds (back-drive \u2264 1 mm)": {
+              "value": 0.079,
+              "threshold": 1.0,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "mode": "V-A",
+          "seed": 3,
+          "diverged": false,
+          "revs_done": 19.961,
+          "travel_mm": 40.0,
+          "formula_travel_mm": 40.0,
+          "formula_residual": 0.0,
+          "backdrive_mm": 0.079,
+          "criteria": {
+            "reaches_design_stroke": {
+              "value": 40.0,
+              "threshold": 40.0,
+              "pass": true
+            },
+            "matches_lead_formula (|s/(lead\u00b7rev)\u22121| \u2264 0.1%)": {
+              "value": 0.0,
+              "threshold": 0.001,
+              "pass": true
+            },
+            "self_locks_holds (back-drive \u2264 1 mm)": {
+              "value": 0.079,
+              "threshold": 1.0,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "mode": "V-A",
+          "seed": 4,
+          "diverged": false,
+          "revs_done": 19.961,
+          "travel_mm": 40.0,
+          "formula_travel_mm": 40.0,
+          "formula_residual": 0.0,
+          "backdrive_mm": 0.079,
+          "criteria": {
+            "reaches_design_stroke": {
+              "value": 40.0,
+              "threshold": 40.0,
+              "pass": true
+            },
+            "matches_lead_formula (|s/(lead\u00b7rev)\u22121| \u2264 0.1%)": {
+              "value": 0.0,
+              "threshold": 0.001,
+              "pass": true
+            },
+            "self_locks_holds (back-drive \u2264 1 mm)": {
+              "value": 0.079,
+              "threshold": 1.0,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "discrimination_probe": {
+        "weak_friction_Nm (0.5\u00b7T_backdrive)": 0.000781,
+        "weak_backdrive_mm": 18.43,
+        "sourced_backdrive_mm": 0.079,
+        "discriminates": true,
+        "note": "self-lock is NON-TAUTOLOGICAL: sourced friction holds (<1mm), sub-back-drive friction slips (\u226b1mm)"
+      },
+      "plot": "t2_lead_screw_VA.png",
+      "video": "t2_lead_screw_VA.mp4"
+    }
+  },
+  "verdict_VA": true,
+  "verdict_VB": "DEFERRED \u2014 helical thread contact is curved, R2b class (m17/D-M1-7); pending preset_v2",
+  "shape_assert": {
+    "va_present": true,
+    "vb_named_deferred": true,
+    "no_vb_pass_claimed": true
+  }
+}

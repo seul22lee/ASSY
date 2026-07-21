@@ -102,7 +102,7 @@ class LeadScrewCard(MechanicalElementCard):
     card_id = "lead_screw"
     has_functional_clearance = True   # thread flank backlash (curved) — V-B deferred, cite m17
     taxonomy = {"working_motion": ("rot_to_trans", "regular"), "axis_relationship": "parallel",
-                "connection_principle": None, "self_locking": True, "emergent_check": EmergentCheck(status="deferred", reason="thread contact is curved; rigid-body V-B limit (R2b class, m17)", risk="self-lock verified by formula only (tan(lead)<=mu); actual hold under load not physics-verified — cf. m13 where pawl self-lock needed physics to trust"),
+                "connection_principle": None, "self_locking": True, "emergent_check": EmergentCheck(status="deferred", reason="EMERGENT thread-flank contact is curved; rigid-body V-B limit (R2b class, m17). The DECLARED-PAIR self-lock IS physics-verified (m19 P-SCREW V-A): sourced friction µ·W·d_mean/2 holds the released load to 0.08 mm back-drive, and a sub-back-drive friction slips 18 mm (non-tautology probe) — but that is the declared kinematic pair, not the emergent flank contact", risk="thread-flank effects the declared pair cannot see (flank-normal load distribution, backlash, wear, off-axis binding) are unverified until V-B; the self-lock CRITERION (tan λ ≤ µ) and the sourced holding torque ARE now physics-backed, so this is narrower than pre-m19"),
                 "compliance": "rigid", "kinematic_dof": "1 rot coupled to 1 trans (reserved axis-7)"}
     param_bounds = {"d_major": (5.0, 20.0, "mm"), "pitch": (0.5, 4.0, "mm"),
                     "starts": (1.0, 2.0, "count"), "lead": (0.5, 8.0, "mm"),
