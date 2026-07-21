@@ -1,0 +1,26 @@
+
+========== m22 screw_lift — COMPOSED RULE CHAIN ==========
+
+[1] ELEMENT CHAIN (crank → coupling → lead_screw → platform)
+  coupling ratio (E1)          = 1.0000   (1:1, no ratio)
+  lead_screw lead (E2)         = starts×pitch = 1×2.0 = 2.0 mm/rev
+  self-locks (tanλ=0.09095 ≤ µ=0.3) = True
+
+[2] COMPOSED FORMULA (the assembly non-tautology)
+  H = N_rev × coupling(1:1) × lead = 20.0 × 1.0 × 2.0 = 40.00 mm
+  measured platform rise (P-LIFT seed0) = 40.00 mm   resid 0.0000%  (gate ≤0.1%)  ok
+
+[3] SOURCED HOLD (inherited m19, not invented)
+  T_friction = µ·W·d_mean/2 = 0.00515 Nm  ≥  back-drive W·lead/2π = 0.001561 Nm  (margin 3.299×)
+  measured back-drive at hold = 0.081 mm  (gate ≤1 mm)  ok
+
+[4] DISCRIMINATION (both probes, assembly level)
+  coupling BROKEN: crank 20.0 rev → platform rise 0.00 mm (input spins, NO rise)
+  friction WEAK (0.5·T_bd): back-drive 9.57 mm vs sourced 0.08 mm (SINKS)
+  ⇒ discriminates = True
+
+[5] t0 INTERFERENCE GATE (compiled assembly, swept over the lift) — see out/screw_lift_t0.txt
+  CLEAN (no unintended penetration over the sweep)
+
+========== reproduction CLEAN — every number checks out ==========
+
