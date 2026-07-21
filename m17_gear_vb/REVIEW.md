@@ -13,6 +13,7 @@ the small-dt requirement. R2b is two coupled limits, and SDF addresses only one.
 
 | figure | reading |
 |---|---|
+| ![](out/r2b_frozen_vs_fine_hud.png) · [`r2b_frozen_vs_fine_hud.mp4`](out/r2b_frozen_vs_fine_hud.mp4) | **the R2b money shot** — same conjugate pair, only dt differs; LEFT flings (**DIVERGED**, 2.1e16 N, "pinion flung"), RIGHT rolls calmly (0.6 N), with a **live log-scale contact-force trace** so the 16-order gap is visible as it happens. Reuses `m1_gear/r2b_viz.capture()` (m1_gear untouched). |
 | ![](out/r2b_sdf_probe_summary.png) | peak contact force across all 5 conditions — RED diverged / GREEN survived. Red (blow-up) at **frozen dt for both wedge AND SDF**; green (survived) **only at dt/25**. |
 
 Raw numbers: `out/sdf_probe_verdict.json` (FILE 1), `out/sdf_formulation_verdict.json` (FILE 2).
