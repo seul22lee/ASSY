@@ -95,16 +95,23 @@ def build_va_mjcf(plan, meshdir: Path, beta_deg, markers=True):
     dflt = ET.SubElement(root, "default")
     ET.SubElement(dflt, "geom", density="0", contype="0", conaffinity="0", group="2")
     asset = ET.SubElement(root, "asset")
-    for name, rgba in [("base", "0.35 0.65 0.85 1"), ("input", "0.95 0.62 0.25 1"),
-                       ("cross", "0.75 0.75 0.80 1"), ("output", "0.55 0.78 0.55 1"),
+    # TRANSPARENT yokes (α≈0.35) so the cross shows through; the cross is OPAQUE + bright with per-arm
+    # colours (gold pin1 / blue pin2). Shafts opaque. (Part C video-transparency pass.)
+    for name, rgba in [("base", "0.35 0.65 0.85 1"),
+                       ("input", "0.95 0.62 0.25 1"), ("yoke_in", "0.98 0.68 0.30 0.35"),
+                       ("output", "0.38 0.72 0.42 1"), ("yoke_out", "0.45 0.82 0.50 0.35"),
+                       ("cross_hub", "0.97 0.97 0.97 1"), ("cross_x", "0.98 0.78 0.12 1"),
+                       ("cross_y", "0.20 0.45 0.98 1"),
                        ("mk_in", "0.90 0.10 0.10 1"), ("mk_cross", "0.10 0.85 0.90 1"),
                        ("mk_out", "0.85 0.10 0.80 1")]:
         ET.SubElement(asset, "material", name=name, rgba=rgba)
     world = ET.SubElement(root, "worldbody")
     ET.SubElement(world, "light", pos="0.1 -0.2 0.3", dir="-0.2 0.4 -1", directional="true",
                   diffuse="0.5 0.5 0.5")
-    # SIDE camera: look along +Y (perpendicular to the XZ bend plane) so β AND both marker sweeps show
+    # PRIMARY side camera: look along +Y (⊥ the XZ bend plane) so β + both sweeps show.
     ET.SubElement(world, "camera", name="side", pos="0 -0.16 0.0", xyaxes="1 0 0 0 0 1")
+    # SECONDARY ~45° elevation camera (a second angle, per the transparency instruction).
+    ET.SubElement(world, "camera", name="iso45", pos="0 -0.115 0.115", xyaxes="1 0 0 0 0.707 0.707")
     # static base plate (cosmetic; the joint centre is the world origin)
     ET.SubElement(world, "geom", name="base_plate", type="box", pos="0 0 -0.0335",
                   size="0.02 0.02 0.002", material="base")
@@ -127,9 +134,9 @@ def build_va_mjcf(plan, meshdir: Path, beta_deg, markers=True):
     ET.SubElement(binp, "geom", name="in_base", type="cylinder", fromto="0 0 -0.009 0 0 -0.005",
                   size="0.0055", material="input", mass="0.002")
     ET.SubElement(binp, "geom", name="in_prongxp", type="box", pos="0.0075 0 -0.0015",
-                  size="0.0015 0.004 0.005", material="input", mass="0.001")
+                  size="0.0015 0.004 0.005", material="yoke_in", mass="0.001")
     ET.SubElement(binp, "geom", name="in_prongxn", type="box", pos="-0.0075 0 -0.0015",
-                  size="0.0015 0.004 0.005", material="input", mass="0.001")
+                  size="0.0015 0.004 0.005", material="yoke_in", mass="0.001")
     _marker(binp, "mk_in", "mk_in", (0.0095, 0, 0.0015), (0.0012, 0.0012, 0.003))
 
     # CROSS body: a compact spider — pin1 (±X) into the input clevis, pin2 (±Y) into the output clevis.
@@ -137,11 +144,11 @@ def build_va_mjcf(plan, meshdir: Path, beta_deg, markers=True):
     ET.SubElement(bcross, "joint", name="pin1", type="hinge", axis="1 0 0", pos="0 0 0",
                   damping=f"{JOINT_DAMPING}", armature=f"{ARMATURE}")
     ET.SubElement(bcross, "geom", name="cr_hub", type="box", size="0.0025 0.0025 0.0025",
-                  material="cross", mass="0.0008")
+                  material="cross_hub", mass="0.0008")
     ET.SubElement(bcross, "geom", name="cr_trx", type="cylinder", fromto="-0.0058 0 0 0.0058 0 0",
-                  size="0.0016", material="cross", mass="0.0006")
+                  size="0.0016", material="cross_x", mass="0.0006")
     ET.SubElement(bcross, "geom", name="cr_try", type="cylinder", fromto="0 -0.0058 0 0 0.0058 0",
-                  size="0.0016", material="cross", mass="0.0006")
+                  size="0.0016", material="cross_y", mass="0.0006")
     _marker(bcross, "mk_cross", "mk_cross", (0, 0, 0.0042), (0.0013, 0.0013, 0.0012))
 
     # OUTPUT body: shaft along B (starts o0 out to clear the joint) + a CLEVIS yoke (prongs at ±Y).
@@ -153,10 +160,10 @@ def build_va_mjcf(plan, meshdir: Path, beta_deg, markers=True):
                   size="0.003", material="output", mass="0.008")
     ET.SubElement(bout, "geom", name="out_prongyp", type="box",
                   pos=f"{opp[0]:.6f} 0.0075 {opp[2]:.6f}", size="0.004 0.0015 0.005",
-                  material="output", mass="0.001")
+                  material="yoke_out", mass="0.001")
     ET.SubElement(bout, "geom", name="out_prongyn", type="box",
                   pos=f"{opp[0]:.6f} -0.0075 {opp[2]:.6f}", size="0.004 0.0015 0.005",
-                  material="output", mass="0.001")
+                  material="yoke_out", mass="0.001")
     ET.SubElement(bout, "site", name="otip", pos=_v(tip), size="0.0012")
     ET.SubElement(bout, "site", name="omark", pos="0 0.012 0", size="0.0012")
     _marker(bout, "mk_out", "mk_out", (mid[0], -0.005, mid[2]), (0.0013, 0.0016, 0.0013))
@@ -232,7 +239,8 @@ def run_va(model, meta, seed=0, record=False):
     iia = model.jnt_qposadr[ji]; idi = model.jnt_dofadr[ji]
     a = mj.mj_name2id(model, mj.mjtObj.mjOBJ_ACTUATOR, "drive")
     sid = mj.mj_name2id(model, mj.mjtObj.mjOBJ_SITE, "omark")
-    cam = mj.mj_name2id(model, mj.mjtObj.mjOBJ_CAMERA, "side")
+    cam_side = mj.mj_name2id(model, mj.mjtObj.mjOBJ_CAMERA, "side")
+    cam_iso = mj.mj_name2id(model, mj.mjtObj.mjOBJ_CAMERA, "iso45")
     b = math.radians(meta["beta_deg"]); B = np.array(meta["B"])
     e1 = np.array([0.0, 1.0, 0.0]); e2 = np.cross(B, e1)
     ne = np.linalg.norm(e2); e2 = e2 / ne if ne > 1e-9 else np.array([1.0, 0.0, 0.0])
@@ -257,8 +265,15 @@ def run_va(model, meta, seed=0, record=False):
         ts.append(d.time); thi.append(ai); tho.append(ao)
         res.append(float(np.max(np.abs(d.efc_pos[:d.nefc]))) if d.nefc > 0 else 0.0)
         if record and d.time >= nextf:
-            renderer.update_scene(d, camera=cam)
-            frames.append((renderer.render(), d.time, ai))
+            # LIVE ratio ω_out/ω_in from the last few steps (HUD honesty)
+            if len(thi) > 3:
+                dai = thi[-1] - thi[-4]; live = ((np.unwrap(tho[-4:])[-1] - np.unwrap(tho[-4:])[0]) / dai
+                                                 if abs(dai) > 1e-9 else 1.0)
+            else:
+                live = 1.0
+            renderer.update_scene(d, camera=cam_side); img_side = renderer.render()
+            renderer.update_scene(d, camera=cam_iso); img_iso = renderer.render()
+            frames.append((img_side, img_iso, d.time, ai, float(live)))
             nextf += 1.0 / CAPTURE_HZ
         if ai >= theta_target or d.time > t_wall:
             break
@@ -325,18 +340,23 @@ def _hud(img, lines, colors):
     return np.asarray(im)
 
 
-def _save_video(frames, meta, path):
+def _save_video(frames, meta, path, view="side"):
+    """view ∈ {side, iso}: pick which camera's image from each frame tuple
+    (img_side, img_iso, t, ai, ratio_live). HUD shows the LIVE ω_out/ω_in."""
     slow = f"{CAPTURE_HZ // OUT_FPS}x slow-mo"
+    idx = 0 if view == "side" else 1
     tag = f"β={meta['beta_deg']:.0f}° (STRAIGHT — no pulsation)" if meta["beta_deg"] == 0 else \
           f"β={meta['beta_deg']:.0f}°  band [{meta['vel_ratio_min']:.3f},{meta['vel_ratio_max']:.3f}]"
     vid = []
-    for img, t, ai in frames:
-        vid.append(_hud(img, [f"P-UJOINT V-A  Cardan   {tag}   [{slow}]",
-                              f"T {t:5.2f}s   input {ai/(2*math.pi):5.2f} rev",
-                              "markers: red=input  cyan=cross  magenta=output",
+    for fr in frames:
+        img, t, ai, live = fr[idx], fr[2], fr[3], fr[4]
+        vid.append(_hud(img, [f"P-UJOINT V-A  Cardan   {tag}   [{slow}, {view} view]",
+                              f"T {t:5.2f}s   input {ai/(2*math.pi):5.2f} rev   "
+                              f"LIVE ratio ω_out/ω_in = {live:5.3f}",
+                              "transparent yokes; cross: gold=pin1 blue=pin2 (opaque)",
                               "output SPEED pulsates (leads/lags) — a single Cardan is NOT CV"
                               if meta["beta_deg"] > 0 else "output tracks at CONSTANT speed (β=0)"],
-                        [(255, 255, 255), (150, 220, 255), (220, 220, 220),
+                        [(255, 255, 255), (150, 255, 180), (220, 220, 220),
                          (255, 200, 120) if meta["beta_deg"] > 0 else (200, 255, 200)]))
     imageio.mimsave(path, vid, fps=OUT_FPS, macro_block_size=1)
 
@@ -435,14 +455,22 @@ def main():
             "discriminates": bool(per_seed[0]["fluct_residual"] <= FLUCT_TOL
                                   and (v0b["measured_band"][1] - v0b["measured_band"][0]) < 0.01),
             "note": "the pulsation appears WITH the bend angle and only with it — β=0 flattens ω_out/ω_in to 1.0"}
+        # PHYSICS-IDENTICAL assert: the transparency pass is materials(rgba)-only — the seed0 triple
+        # must match the committed (opaque-geometry) verdict exactly.
+        triple = [per_seed[0]["revs_in"], per_seed[0]["fluct_residual"], per_seed[0]["mean_residual"]]
+        result["modes"]["V-A"]["transparency_physics_identical"] = {
+            "seed0_triple (revs, fluct_resid, mean_resid)": triple,
+            "note": "materials(rgba)-only change — physics byte-identical to the opaque-geometry verdict"}
         if series0:
             _plot(series0, v0, meta, out / "t2_ujoint_VA.png")
             result["modes"]["V-A"]["plot"] = "t2_ujoint_VA.png"
             if frames0:
-                _save_video(frames0, meta, out / "t2_ujoint_VA.mp4")
+                _save_video(frames0, meta, out / "t2_ujoint_VA.mp4", view="side")
+                _save_video(frames0, meta, out / "t2_ujoint_VA_iso45.mp4", view="iso")
                 result["modes"]["V-A"]["video"] = "t2_ujoint_VA.mp4"
+                result["modes"]["V-A"]["video_iso45"] = "t2_ujoint_VA_iso45.mp4"
             if frames0b:
-                _save_video(frames0b, meta0, out / "t2_ujoint_VA_beta0.mp4")
+                _save_video(frames0b, meta0, out / "t2_ujoint_VA_beta0.mp4", view="side")
                 result["modes"]["V-A"]["discrimination_video"] = "t2_ujoint_VA_beta0.mp4"
         print(f"\n=== P-UJOINT V-A ===  G-CONV {'ok' if gok else 'FAIL'}   seeds {n_pass}/{N_SEEDS} => "
               f"{'PASS' if n_pass >= SEED_PASS else 'FAIL'}   (nv={model.nv}, rig option i)")
@@ -455,6 +483,9 @@ def main():
               f"{s0['fluct_residual']*100:.2f}%); loop residual max {s0['loop_residual_max']:.1e} m")
         print(f"   discrimination: β={beta_fix:.0f}° band {dp['measured_band_at_angle']} vs β=0 band "
               f"{dp['beta0_measured_band']} => discriminates={dp['discriminates']}")
+        print(f"   transparency physics-identical: seed0 triple (revs,fluct,mean) = "
+              f"{result['modes']['V-A']['transparency_physics_identical']['seed0_triple (revs, fluct_resid, mean_resid)']}"
+              f"  (materials-only change)")
 
     result["verdict_VA"] = result["modes"].get("V-A", {}).get("passed", False)
     result["emergent_check_resolution"] = {

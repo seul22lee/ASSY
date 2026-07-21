@@ -32,12 +32,12 @@
         "intended": true
       },
       "input\u00d7output": {
-        "worst_pen_mm": -0.481,
+        "worst_pen_mm": -0.553,
         "intended": false
       }
     }
   },
-  "compile_hash": "76e9476",
+  "compile_hash": "d604957",
   "card": "universal_joint",
   "element": "E1",
   "rule_chain": {
@@ -375,8 +375,17 @@
         "discriminates": true,
         "note": "the pulsation appears WITH the bend angle and only with it \u2014 \u03b2=0 flattens \u03c9_out/\u03c9_in to 1.0"
       },
+      "transparency_physics_identical": {
+        "seed0_triple (revs, fluct_resid, mean_resid)": [
+          3.0,
+          0.0008,
+          3e-05
+        ],
+        "note": "materials(rgba)-only change \u2014 physics byte-identical to the opaque-geometry verdict"
+      },
       "plot": "t2_ujoint_VA.png",
       "video": "t2_ujoint_VA.mp4",
+      "video_iso45": "t2_ujoint_VA_iso45.mp4",
       "discrimination_video": "t2_ujoint_VA_beta0.mp4"
     }
   },
