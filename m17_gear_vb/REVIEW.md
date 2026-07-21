@@ -13,7 +13,7 @@ the small-dt requirement. R2b is two coupled limits, and SDF addresses only one.
 
 | figure | reading |
 |---|---|
-| ![](out/r2b_frozen_vs_fine_hud.png) · [`r2b_frozen_vs_fine_hud.mp4`](out/r2b_frozen_vs_fine_hud.mp4) | **the R2b money shot** — same conjugate pair, only dt differs; LEFT flings (**DIVERGED**, 2.1e16 N, "pinion flung"), RIGHT rolls calmly (0.6 N), with a **live log-scale contact-force trace** so the 16-order gap is visible as it happens. Reuses `m1_gear/r2b_viz.capture()` (m1_gear untouched). |
+| ![](out/r2b_frozen_vs_fine_hud.png) · [`r2b_frozen_vs_fine_hud.mp4`](out/r2b_frozen_vs_fine_hud.mp4) | **the R2b money shot** (9.3 s, **0.25× real-time**, painted reference teeth) — same conjugate pair, only dt differs. LEFT frozen dt=5e-4 blows up at 0.24 s (2.1e16 N, "pinion flung"); RIGHT dt/25=2e-5 rolls **~5.6× longer** (to 1.33 s) **then ALSO blows up** (4.5e17 N) — the fine timestep **DELAYS R2b, it does not remove it** (dt/25 is *metastable*, D-M17-2/-3). A live log-scale contact-force trace shows both spikes. Reuses `m1_gear/r2b_viz.capture()` (m1_gear untouched); preset intact (frozen still 2.09e16 @ 0.237 s). |
 | ![](out/r2b_sdf_probe_summary.png) | peak contact force across all 5 conditions — RED diverged / GREEN survived. Red (blow-up) at **frozen dt for both wedge AND SDF**; green (survived) **only at dt/25**. |
 
 Raw numbers: `out/sdf_probe_verdict.json` (FILE 1), `out/sdf_formulation_verdict.json` (FILE 2).
@@ -121,6 +121,16 @@ a proven zero. `dt_scale_ladder.png` shows the dt* per collider/scale.
 The honest R2b deliverable is therefore **"V-B requires dt ≤ 2e-5 at the m=2 mm gear scale"** (a
 versioned `preset_v2` *timestep*, D-M17-3), NOT a collider swap — and that amendment still needs the
 full R5 regression + G-H sign-off before it is anything but a DRAFT.
+
+**⚠️ dt/25 is METASTABLE, not stable (found while building the money-shot video).** The dt\* ladder
+above judged "clean roll" over a SHORT window (0.25 s). Driven to a longer horizon, **dt/25 = 2e-5
+ITSELF diverges — at t ≈ 1.33 s (peak 4.5e17 N)**, ~5.6× later than the frozen preset (0.24 s) but a
+blow-up all the same (video `r2b_frozen_vs_fine_hud.mp4`). So the fine timestep *delays* R2b, it does
+not remove it: `dt* = 2e-5` is a **lower bound that buys a longer fuse, not a guaranteed-stable
+timestep**. Finer still is not a simple fix either — dt/50 (1e-5) and dt/125 (4e-6) diverge even
+*earlier* (t ≈ 0.027 s), a velocity-servo/dt interaction. This sharpens D-M17-3: a `preset_v2`
+timestep amendment cannot be justified by "dt/25 rolls clean" — it does not, over enough revolutions.
+The preset was NOT touched anywhere (the frozen R2b is unchanged: 2.09e16 N @ 0.237 s).
 
 ## Status
 
