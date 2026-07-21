@@ -913,6 +913,87 @@ def ujoint_fixture() -> DesignPlan:
     return plan
 
 
+def latched_drawer() -> DesignPlan:
+    """m22 Task B — the FASTEN-family composition: a drawer that slides in, clicks shut, and pulls open
+    by hand. Three VERIFIED elements: E1 slide_rail (guidance, M10) + E2 snap_hook (closed retention, M3)
+    + F1 stop_flange (pull-out limit, M8). Command: "A drawer that slides in, clicks shut, and pulls open
+    by hand. Plastic, 3D printing." The NEW content is the COMBINATION — a snap engaging on a TRANSLATION
+    path (anchor_easy verified a snap on a ROTATION path; this is the fresh axis).
+
+    q3 (the ontology question) — how the IR states the snap_event occurs AT A POSITION on the slide's
+    travel (engage at s=0, the closed end): **REUSE the anchor_easy geometric-position pattern.** The
+    snap's catch_window binds to the FRAME at the closed end (slide_base.catch_window at −X); the
+    snap_event (a static retention behaviour) fires where the hook meets the catch — exactly as
+    anchor_easy placed the catch at the rotation-closed position. The engagement position is GEOMETRIC
+    (where the catch is), not a new scalar field. It fits with no gap; an explicit 'snap_at_s' link on
+    the travel axis would be cleaner for coordination but is NOT needed (DRAFT D-M22-2a, deferred)."""
+    stroke = 60.0
+    slide_base_t = HostTemplate(template_ref="slide_base",
+        params={"base_l": 120.0, "base_w": 40.0, "base_t": 3.0, "front_wall": 0.0},
+        anchors=[Anchor(name="rail_face", kind="face"), Anchor(name="travel_edge", kind="axis"),
+                 Anchor(name="catch_window", kind="face"), Anchor(name="stop_face", kind="face")])
+    carriage_t = HostTemplate(template_ref="slide_carriage",
+        params={"car_l": 24.0, "car_w": 30.0, "car_t": 3.0, "car_z": 3.0},
+        anchors=[Anchor(name="groove_face", kind="face"), Anchor(name="beam_root", kind="face")])
+    pieces = [
+        Piece(id="P1", role="base", template_ref="slide_base", is_base=True, params=dict(slide_base_t.params)),
+        Piece(id="P2", role="drawer", template_ref="slide_carriage", params=dict(carriage_t.params)),
+    ]
+    elements = [
+        ElementInstance(id="E1", card_ref="slide_rail", host_pieces=["P1", "P2"],
+                        params={"rail_w": 8.0, "rail_h": 8.0, "clearance": 0.35, "stroke": stroke}),
+        ElementInstance(id="E2", card_ref="snap_hook_cantilever", host_pieces=["P2", "P1"],
+                        params={"L_mm": 12.0, "b_mm": 8.0, "y_mm": 1.5, "n_hooks": 1,
+                                "design_type": 2, "alpha_in_deg": 30.0, "alpha_out_deg": 45.0}),
+    ]
+    bindings = [
+        Binding(element_id="E1", port="rail_mount", piece_id="P1", anchor="rail_face", mate="flush_face"),
+        Binding(element_id="E1", port="carriage_mount", piece_id="P2", anchor="groove_face", mate="flush_face"),
+        Binding(element_id="E1", port="travel_axis", piece_id="P1", anchor="travel_edge", mate="coincident_axis"),
+        # E2 snap: hook on the DRAWER (P2, moving); catch on the FRAME (P1) at the closed end (q3).
+        Binding(element_id="E2", port="beam_root", piece_id="P2", anchor="beam_root", mate="flush_face"),
+        Binding(element_id="E2", port="catch_window", piece_id="P1", anchor="catch_window", mate="flush_face"),
+    ]
+    behaviors = [
+        # B1 — the drawer slides its stroke (the guidance). realized_by the slide.
+        Behavior(id="B1", phase="use", motion=MotionSpec(kind="translation", axis_hint="horizontal",
+                 range_value=stroke, range_unit="mm", bound="min"), realized_by="E1"),
+        # B2 — the snap RETENTION (static): the closed drawer holds within the Bayer force window.
+        Behavior(id="B2", phase="static", motion=MotionSpec(kind="snap_event",
+                 event_force_window_N=(15.0, 60.0)), realized_by="E2", verified_by="PR-LATCH"),
+    ]
+    from knowledge.cards.base import CARD_REGISTRY as _C
+    n = len(behaviors)
+    for eid, cref in [("E1", "slide_rail"), ("E2", "snap_hook_cantilever")]:
+        for tmpl in _C[cref].imposes:
+            n += 1
+            behaviors.append(Behavior(id=f"B{n}", phase=getattr(tmpl.phase, "value", tmpl.phase),
+                                      motion=MotionSpec(kind=getattr(tmpl.motion.kind, "value", tmpl.motion.kind)),
+                                      imposed_by=eid, imposed_by_card=cref))
+    # PULL-OUT LIMIT — an ONTOLOGY FINDING (DRAFT D-M22-2b): stop_flange does NOT compose here. Its
+    # card IMPOSES a use-phase ROTATION limit (_imposed_rotation_limit), so binding it to a drawer's
+    # TRANSLATION pull-out fails V-08 (the imposed rotation behaviour is not — and cannot be — the
+    # drawer's translation ceiling). stop_flange is a rotation-stop feature; a translation pull-out
+    # stop needs a translation-stop feature (or a generalized stop_flange). NOT patched. The pull-out
+    # limit is instead INHERENT in the slide_rail: the rail has finite length, so the carriage cannot
+    # slide past its end — the composition already bounds the pull-out (M10 verified the retained DoF).
+    parameters = [Parameter(name="stroke", value=stroke, unit="mm", lo=10.0, hi=180.0, resolved_by="user"),
+                  Parameter(name="clearance", value=0.35, unit="mm", lo=0.2, hi=0.4, resolved_by="rule")]
+    plan = DesignPlan(task_id="latched_drawer",
+        command="A drawer that slides in, clicks shut, and pulls open by hand. Plastic, 3D printing.",
+        functions=[Function(verb="guide", object="drawer", qualifier="slide in/out"),
+                   Function(verb="retain", object="drawer", qualifier="click shut, hand-releasable")],
+        behaviors=behaviors, pieces=pieces, templates=[slide_base_t, carriage_t],
+        elements=elements, bindings=bindings, parameters=parameters)
+    for e in elements:
+        for pr in _C[e.card_ref].verification(plan, e):
+            plan.protocols.append(pr)
+            bb = next((x for x in plan.behaviors if x.id == pr.verifies), None)
+            if bb is not None and not bb.verified_by:
+                bb.verified_by = pr.id
+    return plan
+
+
 def screw_lift() -> DesignPlan:
     """m22 Task A — FIRST COMPOSITION TASK: a hand-crank screw jack that raises a platform and HOLDS it
     when released. Two VERIFIED elements chained: E1 coupling (crank→screw, 1:1) + E2 lead_screw
@@ -1229,6 +1310,7 @@ def main() -> None:
         "coupling_fixture.json": coupling_fixture(),        # m20 D-track fixture
         "ujoint_fixture.json": ujoint_fixture(),            # m21 D-track fixture
         "screw_lift.json": screw_lift(),                    # m22 Task A: first composition (coupling+lead_screw)
+        "latched_drawer.json": latched_drawer(),            # m22 Task B: fasten composition (slide_rail+snap_hook)
         "anchor_lift.json": anchor_lift(),          # D-M13-2 PRIMARY: crank lift platform
         "anchor_hard.json": anchor_hard(),          # labeled ALTERNATE: horizontal drawer
     }

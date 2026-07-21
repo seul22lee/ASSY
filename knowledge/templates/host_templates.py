@@ -186,12 +186,21 @@ def retained_board(**params) -> TemplateResult:
 def slide_base(**params) -> TemplateResult:
     """Minimal slide fixture host — a flat base plate the rail grows on (§3.5 / D-track fixture).
     Anchors: `rail_face` (top face, where the T-rail grows, +Z) + `travel_edge` (the +X travel axis)."""
-    p = {"base_l": 120.0, "base_w": 40.0, "base_t": 3.0, **params}
+    p = {"base_l": 120.0, "base_w": 40.0, "base_t": 3.0, "front_wall": 0.0, **params}
     L, W, T = p["base_l"], p["base_w"], p["base_t"]
     part = Box(L, W, T, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    fw = p["front_wall"]                         # m22: a front wall at −X the snap latches onto (0 = off)
+    if fw > 0:
+        wall_h = 14.0
+        part += Location((-L / 2 + fw / 2, 0, T - 0.5)) * Box(fw, W, wall_h,
+                                                              align=(Align.CENTER, Align.CENTER, Align.MIN))
     anchors = {
         "rail_face": AnchorGeom("rail_face", "face", (0.0, 0.0, T), (0, 0, 1)),
         "travel_edge": AnchorGeom("travel_edge", "axis", (0.0, 0.0, T), (1, 0, 0)),
+        # m22 latched_drawer: the snap CATCH on the front-wall inner face (faces +X, toward the incoming
+        # drawer) at mid-wall height; the hook grows −X from the drawer front into it. Unused by m10.
+        "catch_window": AnchorGeom("catch_window", "face", (-L / 2 + fw, 0.0, T + 7.0), (1, 0, 0)),
+        "stop_face": AnchorGeom("stop_face", "face", (L / 2 - 2.0, 0.0, T), (-1, 0, 0)),
     }
     return TemplateResult(part=part, anchors=anchors, params=p)
 
@@ -205,6 +214,9 @@ def slide_carriage(**params) -> TemplateResult:
                                               align=(Align.CENTER, Align.CENTER, Align.MIN))
     anchors = {
         "groove_face": AnchorGeom("groove_face", "face", (0.0, 0.0, p["car_z"]), (0, 0, -1)),
+        # m22 latched_drawer: the snap hook grows −X from the drawer FRONT into the frame's front-wall
+        # catch (normal −X = the growth direction; height matched to the catch). Unused by m10.
+        "beam_root": AnchorGeom("beam_root", "face", (-p["car_l"] / 2, 0.0, p["car_z"] + 7.0), (-1, 0, 0)),
     }
     return TemplateResult(part=part, anchors=anchors, params={**p, "box_h": p["car_z"]})
 

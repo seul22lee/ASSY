@@ -1,0 +1,36 @@
+
+========== m22 latched_drawer — slide_rail + snap_hook (translation fasten) ==========
+
+[snap params] L=12.0 b=8.0 y(undercut)=1.5 n_hooks=1  α_in=30.0° α_out=45.0°  µ=0.3
+
+[1] BAYER SNAP FORCES (M3 division — deflection by formula, engagement by rigid geometry)
+  solved h = 2.093 mm   deflection force P = 17.67 N
+  W_in  (insertion, α_in=30.0°)  = 18.75 N   → CLOSE
+  W_out (separation, α_out=45.0°) = 32.81 N  → RETAIN/RELEASE
+  self-locking angle atan(1/µ) = 73.3°  (α_out 45.0° < 73.3° ⇒ hand-RELEASABLE, not permanent)
+
+[2] (a) CLOSE — hand-closeable force window
+  W_in 18.75 N ≤ 60.0 N ceiling  ⇒ ok (clicks shut by hand)
+
+[3] (b) RETAIN vs RELEASE — the snap force window verified BIDIRECTIONALLY at assembly level
+  retention floor: W_out 32.81 N ≥ 15.0 N  ⇒ holds a hand-open pull
+  DISCRIMINATION: a pull 16.4 N (< W_out) → drawer HOLDS (stays latched)
+                  a pull 49.2 N (> W_out) → drawer OPENS (releases)
+  ⇒ the snap engagement is verified in BOTH directions (below holds / above opens), the drawer-on-translation version of anchor_easy's snap (q3 fresh axis)
+
+[4] SLIDE TRAVEL + PULL-OUT LIMIT (inherited M10, rigid physics)
+  guidance + full stroke + retained DoF: slide_rail P-SLIDE V-A 5/5 + V-B 5/5 (M10, verified).
+  PULL-OUT LIMIT is INHERENT in the slide: the rail has finite length, so the carriage
+  cannot slide past its end (no stop_flange needed — see the finding below).
+
+[5] ONTOLOGY / GEOMETRY FINDINGS (the point of the composition — recorded, not patched)
+  D-M22-2b: stop_flange is a ROTATION-limit feature (imposes _imposed_rotation_limit); it
+            CANNOT express a drawer's TRANSLATION pull-out stop (fails V-08). The pull-out
+            limit is instead inherent in the finite rail. A translation-stop feature is a gap.
+  D-M22-2c: the snap CARVE needs a mating receiver WALL + growth-aligned anchors; the flat
+            slide_base lacks it, so the geometry realization of the snap on a rail base is
+            host-template work. Per M3 the snap is FORMULA-verified (above), so this does
+            NOT block the verification — but it is a real host-geometry gap for a printable drawer.
+
+========== latched_drawer: snap Bayer-verified bidirectionally + slide inherited (CLEAN) ==========
+

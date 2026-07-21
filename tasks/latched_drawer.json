@@ -1,0 +1,448 @@
+{
+  "task_id": "latched_drawer",
+  "command": "A drawer that slides in, clicks shut, and pulls open by hand. Plastic, 3D printing.",
+  "functions": [
+    {
+      "verb": "guide",
+      "object": "drawer",
+      "qualifier": "slide in/out"
+    },
+    {
+      "verb": "retain",
+      "object": "drawer",
+      "qualifier": "click shut, hand-releasable"
+    }
+  ],
+  "behaviors": [
+    {
+      "id": "B1",
+      "phase": "use",
+      "motion": {
+        "kind": "translation",
+        "nature": "regular",
+        "axis_hint": "horizontal",
+        "range_value": 60.0,
+        "range_unit": "mm",
+        "bound": "min",
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "axis_relationship": "parallel",
+      "self_locking": false,
+      "load": null,
+      "realized_by": "E1",
+      "imposed_by": null,
+      "verified_by": "P-SLIDE-VA-E1",
+      "imposed_by_card": null
+    },
+    {
+      "id": "B2",
+      "phase": "static",
+      "motion": {
+        "kind": "snap_event",
+        "nature": "regular",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": [
+          15.0,
+          60.0
+        ]
+      },
+      "axis_relationship": "parallel",
+      "self_locking": false,
+      "load": null,
+      "realized_by": "E2",
+      "imposed_by": null,
+      "verified_by": "PR-LATCH",
+      "imposed_by_card": null
+    },
+    {
+      "id": "B3",
+      "phase": "assembly",
+      "motion": {
+        "kind": "translation",
+        "nature": "regular",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "axis_relationship": "parallel",
+      "self_locking": false,
+      "load": null,
+      "realized_by": null,
+      "imposed_by": "E1",
+      "verified_by": null,
+      "imposed_by_card": "slide_rail"
+    },
+    {
+      "id": "B4",
+      "phase": "use",
+      "motion": {
+        "kind": "fixed",
+        "nature": "regular",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "axis_relationship": "parallel",
+      "self_locking": false,
+      "load": null,
+      "realized_by": null,
+      "imposed_by": "E1",
+      "verified_by": "PR-KEEPOUT-E1",
+      "imposed_by_card": "slide_rail"
+    },
+    {
+      "id": "B5",
+      "phase": "assembly",
+      "motion": {
+        "kind": "translation",
+        "nature": "regular",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "axis_relationship": "parallel",
+      "self_locking": false,
+      "load": null,
+      "realized_by": null,
+      "imposed_by": "E2",
+      "verified_by": null,
+      "imposed_by_card": "snap_hook_cantilever"
+    },
+    {
+      "id": "B6",
+      "phase": "use",
+      "motion": {
+        "kind": "fixed",
+        "nature": "regular",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "axis_relationship": "parallel",
+      "self_locking": false,
+      "load": null,
+      "realized_by": null,
+      "imposed_by": "E2",
+      "verified_by": "PR-SWEEP-E2",
+      "imposed_by_card": "snap_hook_cantilever"
+    }
+  ],
+  "pieces": [
+    {
+      "id": "P1",
+      "role": "base",
+      "provenance": "functional",
+      "template_ref": "slide_base",
+      "source_element": null,
+      "params": {
+        "base_l": 120.0,
+        "base_w": 40.0,
+        "base_t": 3.0,
+        "front_wall": 0.0
+      },
+      "is_base": true
+    },
+    {
+      "id": "P2",
+      "role": "drawer",
+      "provenance": "functional",
+      "template_ref": "slide_carriage",
+      "source_element": null,
+      "params": {
+        "car_l": 24.0,
+        "car_w": 30.0,
+        "car_t": 3.0,
+        "car_z": 3.0
+      },
+      "is_base": false
+    }
+  ],
+  "templates": [
+    {
+      "template_ref": "slide_base",
+      "anchors": [
+        {
+          "name": "rail_face",
+          "kind": "face"
+        },
+        {
+          "name": "travel_edge",
+          "kind": "axis"
+        },
+        {
+          "name": "catch_window",
+          "kind": "face"
+        },
+        {
+          "name": "stop_face",
+          "kind": "face"
+        }
+      ],
+      "params": {
+        "base_l": 120.0,
+        "base_w": 40.0,
+        "base_t": 3.0,
+        "front_wall": 0.0
+      }
+    },
+    {
+      "template_ref": "slide_carriage",
+      "anchors": [
+        {
+          "name": "groove_face",
+          "kind": "face"
+        },
+        {
+          "name": "beam_root",
+          "kind": "face"
+        }
+      ],
+      "params": {
+        "car_l": 24.0,
+        "car_w": 30.0,
+        "car_t": 3.0,
+        "car_z": 3.0
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "E1",
+      "card_ref": "slide_rail",
+      "params": {
+        "rail_w": 8.0,
+        "rail_h": 8.0,
+        "clearance": 0.35,
+        "stroke": 60.0
+      },
+      "host_pieces": [
+        "P1",
+        "P2"
+      ]
+    },
+    {
+      "id": "E2",
+      "card_ref": "snap_hook_cantilever",
+      "params": {
+        "L_mm": 12.0,
+        "b_mm": 8.0,
+        "y_mm": 1.5,
+        "n_hooks": 1.0,
+        "design_type": 2.0,
+        "alpha_in_deg": 30.0,
+        "alpha_out_deg": 45.0
+      },
+      "host_pieces": [
+        "P2",
+        "P1"
+      ]
+    }
+  ],
+  "features": [],
+  "bindings": [
+    {
+      "element_id": "E1",
+      "port": "rail_mount",
+      "piece_id": "P1",
+      "anchor": "rail_face",
+      "mate": "flush_face",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E1",
+      "port": "carriage_mount",
+      "piece_id": "P2",
+      "anchor": "groove_face",
+      "mate": "flush_face",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E1",
+      "port": "travel_axis",
+      "piece_id": "P1",
+      "anchor": "travel_edge",
+      "mate": "coincident_axis",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E2",
+      "port": "beam_root",
+      "piece_id": "P2",
+      "anchor": "beam_root",
+      "mate": "flush_face",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E2",
+      "port": "catch_window",
+      "piece_id": "P1",
+      "anchor": "catch_window",
+      "mate": "flush_face",
+      "offset_params": {}
+    }
+  ],
+  "assembly_rules": [],
+  "parameters": [
+    {
+      "name": "stroke",
+      "value": 60.0,
+      "unit": "mm",
+      "lo": 10.0,
+      "hi": 180.0,
+      "resolved_by": "user",
+      "citation": null
+    },
+    {
+      "name": "clearance",
+      "value": 0.35,
+      "unit": "mm",
+      "lo": 0.2,
+      "hi": 0.4,
+      "resolved_by": "rule",
+      "citation": null
+    }
+  ],
+  "protocols": [
+    {
+      "id": "P-SLIDE-VA-E1",
+      "verifies": "B1",
+      "actuation": {
+        "kind": "force_ramp_axial"
+      },
+      "criteria": [
+        {
+          "name": "reaches_stroke",
+          "observable": "stroke_mm",
+          "op": ">=",
+          "threshold": 60.0,
+          "unit": "mm"
+        },
+        {
+          "name": "tracks_straight",
+          "observable": "offaxis_rot_deg",
+          "op": "<=",
+          "threshold": 3.0,
+          "unit": "deg"
+        }
+      ],
+      "observables": [],
+      "mode": "V-A",
+      "seeds": 5,
+      "seed_pass": 4
+    },
+    {
+      "id": "P-SLIDE-VB-E1",
+      "verifies": "B1",
+      "actuation": {
+        "kind": "force_ramp_axial"
+      },
+      "criteria": [
+        {
+          "name": "reaches_stroke",
+          "observable": "stroke_mm",
+          "op": ">=",
+          "threshold": 60.0,
+          "unit": "mm"
+        },
+        {
+          "name": "tracks_straight",
+          "observable": "offaxis_rot_deg",
+          "op": "<=",
+          "threshold": 3.0,
+          "unit": "deg"
+        }
+      ],
+      "observables": [],
+      "mode": "V-B",
+      "seeds": 5,
+      "seed_pass": 4
+    },
+    {
+      "id": "PR-KEEPOUT-E1",
+      "verifies": "B4",
+      "actuation": {
+        "kind": "tier0_sweep"
+      },
+      "criteria": [
+        {
+          "name": "no_travel_intrusion",
+          "observable": "offaxis_rot_deg",
+          "op": "<=",
+          "threshold": 3.0,
+          "unit": "deg"
+        }
+      ],
+      "observables": [],
+      "mode": null,
+      "seeds": 5,
+      "seed_pass": 4
+    },
+    {
+      "id": "PR-LATCH-E2",
+      "verifies": "B2",
+      "actuation": {
+        "kind": "formula_recheck"
+      },
+      "criteria": [
+        {
+          "name": "hand_closeable",
+          "observable": "mating_force_total_N",
+          "op": "<=",
+          "threshold": 80.0,
+          "unit": "N"
+        },
+        {
+          "name": "retention_floor",
+          "observable": "retention_force_N",
+          "op": ">=",
+          "threshold": 15.0,
+          "unit": "N"
+        }
+      ],
+      "observables": [],
+      "mode": null,
+      "seeds": 5,
+      "seed_pass": 4
+    },
+    {
+      "id": "PR-SWEEP-E2",
+      "verifies": "B6",
+      "actuation": {
+        "kind": "tier0_sweep"
+      },
+      "criteria": [
+        {
+          "name": "no_defect_interference",
+          "observable": "pen_travel_mm",
+          "op": "<=",
+          "threshold": 0.2,
+          "unit": "mm"
+        }
+      ],
+      "observables": [],
+      "mode": null,
+      "seeds": 5,
+      "seed_pass": 4
+    }
+  ],
+  "material": "PETG",
+  "variant": null,
+  "stage_log": []
+}
