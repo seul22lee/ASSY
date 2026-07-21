@@ -21,7 +21,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Optional
 
-from ontology.schema import Citation
+from ontology.schema import Citation, EmergentCheck
 
 if TYPE_CHECKING:
     from ontology.schema import Behavior, Port
@@ -29,6 +29,14 @@ if TYPE_CHECKING:
 
 class CollisionHintRequired(TypeError):
     """Raised at class definition when a functional-clearance card omits collision_hint()."""
+
+
+class EmergentCheckRequired(TypeError):
+    """Raised at class definition (card registration) when a card omits its axis-5 emergent_check tag
+    (D-M18-4). Mirrors CollisionHintRequired: a curved-contact element that ships without NAMING its
+    unverified emergent gap is exactly the failure this makes structurally impossible — so every
+    concrete card MUST declare taxonomy['emergent_check'], and a 'deferred' one MUST carry reason+risk
+    (the EmergentCheck model enforces the latter at construction; this enforces the former)."""
 
 
 class ProvidedPiece:
@@ -77,7 +85,7 @@ class ElementCard(ABC):
 
     # M18 7-axis taxonomy tag (D-M18-2; see m18_element_expansion/REVIEW.md §1). A dict with keys:
     # working_motion=(type,nature), axis_relationship, connection_principle, self_locking,
-    # vb_verifiable, compliance, kinematic_dof(note). Every card sets it; the KG narrows on it.
+    # emergent_check (axis-5 struct, D-M18-4), compliance, kinematic_dof(note). Every card sets it.
     taxonomy: dict = {}
 
     # --- declared interface (data; consumed by validators V-03/V-05/V-08) --------------
@@ -111,6 +119,17 @@ class ElementCard(ABC):
                     f"override collision_hint() (D18/D21). A functional clearance destroyed by "
                     f"a generic collision approximation is exactly the M0 failure this rule "
                     f"prevents."
+                )
+            # D-M18-4: every concrete card MUST declare its axis-5 emergent_check tag — no curved-
+            # contact element may ship without naming its (deferred) emergent gap. The EmergentCheck
+            # model enforces reason+risk for 'deferred' at construction; this enforces the tag exists.
+            ec = (cls.taxonomy or {}).get("emergent_check")
+            if not isinstance(ec, EmergentCheck):
+                raise EmergentCheckRequired(
+                    f"card '{cls.card_id}' does not declare taxonomy['emergent_check'] as an "
+                    f"EmergentCheck (D-M18-4). Every card must state whether its assembly-level "
+                    f"emergent behaviour is verified / deferred (with reason+risk) / not_applicable — "
+                    f"a curved-contact element that hides its unverified gap is what this prevents."
                 )
 
     # --- knowledge (OUT OF SCOPE this session; kept abstract) ---------------------------
@@ -220,7 +239,7 @@ class PinHingeCard(MechanicalElementCard):
     card_id = "pin_hinge"
     has_functional_clearance = True  # the pin/bore rotational clearance (§3.3)
     taxonomy = {"working_motion": ("rotation", "regular"), "axis_relationship": "parallel",
-                "connection_principle": None, "self_locking": False, "vb_verifiable": True,
+                "connection_principle": None, "self_locking": False, "emergent_check": EmergentCheck(status="verified"),
                 "compliance": "rigid", "kinematic_dof": "1 revolute"}  # M18 tag (D-M18-2)
     selection_notes = (
         "Use when one piece must ROTATE about a FIXED AXIS relative to another, repeatedly and "
@@ -346,7 +365,7 @@ class SnapHookCantileverCard(MechanicalElementCard):
     card_id = "snap_hook_cantilever"
     has_functional_clearance = True  # SNAPFIT §12 A1 (supersedes MECHSYNTH §3.4)
     taxonomy = {"working_motion": ("snap_event", "regular"), "axis_relationship": "parallel",
-                "connection_principle": "form", "self_locking": False, "vb_verifiable": False,
+                "connection_principle": "form", "self_locking": False, "emergent_check": EmergentCheck(status="deferred", reason="elastic cantilever deflection is not expressible in a rigid-body engine (D3)", risk="snap mate/separation forces are Bayer-formula-verified only; the engagement event under real assembly is not physics-verified"),
                 "compliance": "rigid", "kinematic_dof": "fastens (reclass candidate -> ConnectionCard, m18 REVIEW §5)"}
     selection_notes = (
         "Use when two pieces must FASTEN to each other by hand — a cantilever beam deflects over a "
@@ -465,7 +484,7 @@ class SlideRailCard(MechanicalElementCard):
     card_id = "slide_rail"
     has_functional_clearance = True  # rail/carriage sliding clearance (§3.5)
     taxonomy = {"working_motion": ("translation", "regular"), "axis_relationship": "parallel",
-                "connection_principle": None, "self_locking": False, "vb_verifiable": True,
+                "connection_principle": None, "self_locking": False, "emergent_check": EmergentCheck(status="verified"),
                 "compliance": "rigid", "kinematic_dof": "1 prismatic"}
     imposes = _slide_rail_imposes()
     param_bounds = {"rail_h": (4.0, 10.0, "mm"), "rail_w": (4.0, 10.0, "mm"),
@@ -592,7 +611,7 @@ class RackPinionCard(MechanicalElementCard):
     card_id = "rack_pinion"
     has_functional_clearance = True  # tooth-flank backlash (§3.6, D21)
     taxonomy = {"working_motion": ("rot_to_trans", "regular"), "axis_relationship": "parallel",
-                "connection_principle": None, "self_locking": False, "vb_verifiable": False,
+                "connection_principle": None, "self_locking": False, "emergent_check": EmergentCheck(status="deferred", reason="tooth flank contact is CURVED; bidirectional V-B diverges at the frozen preset (R2b, D-M1-5/-7, m17)", risk="declared-shaft ratio is V-A-verified; emergent bidirectional meshing / backlash-crossing under load is not physics-verified — formalizes the card v_b_gap/shape_assert"),
                 "compliance": "rigid", "kinematic_dof": "1 rot coupled to 1 trans"}  # curved contact -> V-B deferred (R2b)
     imposes = _rack_pinion_imposes()
     # §3.6 AMENDED: module bounds are LARGE {5,6}, and the reason is SIMULATION STABILITY, not
@@ -701,7 +720,7 @@ class PawlDetentCard(MechanicalElementCard):
     card_id = "pawl_detent"
     has_functional_clearance = True   # the detent engagement clearance (D18/D21)
     taxonomy = {"working_motion": ("fixed", "regular"), "axis_relationship": "parallel",
-                "connection_principle": None, "self_locking": True, "vb_verifiable": True,
+                "connection_principle": None, "self_locking": True, "emergent_check": EmergentCheck(status="verified"),
                 "compliance": "rigid", "kinematic_dof": "unilateral ratchet (reclass candidate -> compliant, m18 REVIEW §5)"}
     imposes = _pawl_imposes()
     requires = {"eps_allow_pct": (">=", 3.0)}   # the spring arm must sustain the flexure strain
@@ -787,7 +806,7 @@ class StopFlangeCard(PassiveFeatureCard):
     card_id = "stop_flange"
     has_functional_clearance = False
     taxonomy = {"working_motion": ("rotation", "regular"), "axis_relationship": "parallel",
-                "connection_principle": None, "self_locking": False, "vb_verifiable": True,
+                "connection_principle": None, "self_locking": False, "emergent_check": EmergentCheck(status="verified"),
                 "compliance": "rigid", "kinematic_dof": "constrains a rotation limit (realizes none)"}
     ports = [_p("contact", "face")]  # the flange face that lands on the base wall
     param_bounds = {"stop_angle": (0.0, 180.0, "deg"), "stop_flange_r": (2.0, 20.0, "mm")}
@@ -890,7 +909,7 @@ class LeadScrewCard(MechanicalElementCard):
     card_id = "lead_screw"
     has_functional_clearance = True   # thread flank backlash (curved) — V-B deferred, cite m17
     taxonomy = {"working_motion": ("rot_to_trans", "regular"), "axis_relationship": "parallel",
-                "connection_principle": None, "self_locking": True, "vb_verifiable": False,
+                "connection_principle": None, "self_locking": True, "emergent_check": EmergentCheck(status="deferred", reason="thread contact is curved; rigid-body V-B limit (R2b class, m17)", risk="self-lock verified by formula only (tan(lead)<=mu); actual hold under load not physics-verified — cf. m13 where pawl self-lock needed physics to trust"),
                 "compliance": "rigid", "kinematic_dof": "1 rot coupled to 1 trans (reserved axis-7)"}
     param_bounds = {"d_major": (5.0, 20.0, "mm"), "lead": (1.0, 6.0, "mm"), "starts": (1.0, 2.0, "count"),
                     "length": (20.0, 200.0, "mm"), "stroke": (10.0, 180.0, "mm")}
@@ -961,7 +980,7 @@ class CouplingCard(MechanicalElementCard):
     card_id = "coupling"
     has_functional_clearance = False
     taxonomy = {"working_motion": ("rotation", "regular"), "axis_relationship": "parallel",
-                "connection_principle": None, "self_locking": False, "vb_verifiable": True,
+                "connection_principle": None, "self_locking": False, "emergent_check": EmergentCheck(status="verified"),
                 "compliance": "rigid", "kinematic_dof": "1 revolute (through-transmitted)"}
     param_bounds = {"bore_d": (4.0, 20.0, "mm"), "body_d": (10.0, 40.0, "mm"), "length": (10.0, 60.0, "mm")}
     ports = [_p("shaft_in", "axis"), _p("shaft_out", "axis")]
@@ -1003,7 +1022,7 @@ class UniversalJointCard(MechanicalElementCard):
     card_id = "universal_joint"
     has_functional_clearance = False
     taxonomy = {"working_motion": ("rotation", "regular"), "axis_relationship": "intersecting",
-                "connection_principle": None, "self_locking": False, "vb_verifiable": True,
+                "connection_principle": None, "self_locking": False, "emergent_check": EmergentCheck(status="verified"),
                 "compliance": "rigid", "kinematic_dof": "2 revolute (cross) — reserved axis-7"}
     param_bounds = {"yoke_d": (10.0, 30.0, "mm"), "bore_d": (4.0, 16.0, "mm"),
                     "length": (10.0, 50.0, "mm"), "angle_deg": (5.0, 35.0, "deg")}
@@ -1051,7 +1070,7 @@ class JournalBearingCard(PassiveFeatureCard):
     card_id = "journal_bearing"
     has_functional_clearance = True
     taxonomy = {"working_motion": ("rotation", "regular"), "axis_relationship": "parallel",
-                "connection_principle": None, "self_locking": False, "vb_verifiable": True,
+                "connection_principle": None, "self_locking": False, "emergent_check": EmergentCheck(status="not_applicable"),
                 "compliance": "rigid", "kinematic_dof": "supports 1 revolute (realizes none)"}
     param_bounds = {"bore_d": (3.0, 30.0, "mm"), "wall": (1.5, 6.0, "mm"), "length": (4.0, 40.0, "mm")}
     ports = [_p("bore_mount", "face"), _p("shaft_axis", "axis")]
@@ -1087,7 +1106,7 @@ class BushingCard(PassiveFeatureCard):
     card_id = "bushing"
     has_functional_clearance = True
     taxonomy = {"working_motion": ("rotation", "regular"), "axis_relationship": "parallel",
-                "connection_principle": None, "self_locking": False, "vb_verifiable": True,
+                "connection_principle": None, "self_locking": False, "emergent_check": EmergentCheck(status="not_applicable"),
                 "compliance": "rigid", "kinematic_dof": "supports 1 revolute (realizes none)"}
     param_bounds = {"bore_d": (3.0, 24.0, "mm"), "wall": (1.0, 4.0, "mm"), "length": (3.0, 24.0, "mm")}
     ports = [_p("bore_mount", "face"), _p("shaft_axis", "axis")]
@@ -1125,7 +1144,7 @@ class DowelPinCard(ConnectionCard):
     has_functional_clearance = False
     connection_principle = "form"
     taxonomy = {"working_motion": ("fixed", "regular"), "axis_relationship": "parallel",
-                "connection_principle": "form", "self_locking": False, "vb_verifiable": True,
+                "connection_principle": "form", "self_locking": False, "emergent_check": EmergentCheck(status="not_applicable"),
                 "compliance": "rigid", "kinematic_dof": "removes 2 in-plane translations"}
     param_bounds = {"pin_d": (2.0, 10.0, "mm"), "length": (5.0, 30.0, "mm"),
                     "fit_clearance": (0.0, 0.1, "mm")}
@@ -1163,7 +1182,7 @@ class ScrewBossCard(ConnectionCard):
     has_functional_clearance = False
     connection_principle = "force"
     taxonomy = {"working_motion": ("fixed", "regular"), "axis_relationship": "parallel",
-                "connection_principle": "force", "self_locking": False, "vb_verifiable": True,
+                "connection_principle": "force", "self_locking": False, "emergent_check": EmergentCheck(status="not_applicable"),
                 "compliance": "rigid", "kinematic_dof": "fully constrains (fastened)"}
     param_bounds = {"screw_d": (2.0, 6.0, "mm"), "engagement": (3.0, 20.0, "mm"),
                     "tau_shear": (20.0, 45.0, "MPa")}
@@ -1213,7 +1232,7 @@ class PressFitCard(ConnectionCard):
     has_functional_clearance = False
     connection_principle = "force"
     taxonomy = {"working_motion": ("fixed", "regular"), "axis_relationship": "parallel",
-                "connection_principle": "force", "self_locking": False, "vb_verifiable": True,
+                "connection_principle": "force", "self_locking": False, "emergent_check": EmergentCheck(status="not_applicable"),
                 "compliance": "rigid", "kinematic_dof": "fully constrains (interference)",
                 "caveat": "static_interference — creeps in PETG (upper-bound hold)"}
     param_bounds = {"d_nom": (3.0, 30.0, "mm"), "interference": (0.01, 0.15, "mm"),

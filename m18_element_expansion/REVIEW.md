@@ -23,17 +23,34 @@ axis 6 is RESERVED (field exists, value fixed); axis 7 is a documented note, no 
 | 2 | **axis_relationship** | parallel \| intersecting \| crossed | P&B **§2.1.4** (relative arrangement of axes) | **IMPLEMENT** — `Behavior.axis_relationship` (worm=crossed, bevel=intersecting) |
 | 3 | **connection_principle** | form \| force \| material | P&B **§8.1** (types of connection) | **IMPLEMENT** enum; only form/force used now (material = welding/adhesive, future) |
 | 4 | **self_locking** | bool | P&B **§7.4.3** (self-help / self-locking) | **IMPLEMENT** — `Behavior.self_locking` (lead_screw; resolves D-M13-3) |
-| 5 | **vb_verifiable** | bool | **OUR contribution (cite m17)**, not P&B | **IMPLEMENT** — rigid planar/joint contact ⇒ true; curved contact ⇒ defer |
+| 5 | **emergent_check** | `EmergentCheck{status, reason, risk}` — status ∈ {verified, deferred, not_applicable} | **OUR contribution (cite m17)**, not P&B | **IMPLEMENT** (D-M18-4) — a STRUCT, not a bool: it carries WHY a check is deferred and WHAT risk that leaves |
 | 6 | **compliance** | rigid \| compliant | P&B **§8.1.3** (elastic force connection) | **RESERVE** — field on ElementCard, value fixed `rigid`; `compliant` needs a P-SPRING protocol not built here (spring/damper/living_hinge are the future compliant=true) |
 | 7 | **kinematic_dof** | Roth joint matrix | P&B **§8.1.1 p.439** (joint / DoF matrix) | **RESERVE as a note only** — no field; documented so future linkage/4-bar multi-DoF work does not reinvent it |
 
-**Axis 5 (`vb_verifiable`) is ours, not P&B's.** m17 proved the frozen-preset rigid contact rig is
-metastable on *curved* tooth contact (R2b: even dt/25 only delays the blow-up, D-M17-2/-3). So an
-element's honest verifiability depends on whether its working contact is **planar/joint** (a slide
-groove, a declared prismatic/revolute pair → V-A/V-B OK) or **curved** (an involute flank, a worm
-thread → V-B deferred to a versioned preset). This axis records that split at the card level so a
-card can never silently claim contact-level meshing it cannot show (the rack_pinion `v_b_gap`
-pattern, generalised).
+**Axis 5 (`emergent_check`) is ours, not P&B's — and it is a STRUCT, not a bool (D-M18-4).** The
+distinction it encodes: formula/geometry checks verify a SINGLE element is built to spec (necessary);
+**V-B physics is the DISCRIMINATING gate** — it verifies the ASSEMBLY actually functions and surfaces
+**emergent requirements the spec never stated**. V-B is what found the **stop** a lid needs to not
+fold flat (m8) and the **brake** a lift needs to not back-drive (m13). m17 proved the frozen-preset
+rigid rig is metastable on *curved* contact (R2b: even dt/25 only delays the blow-up), so a
+curved-contact element **cannot get that safety net** — and must say so.
+
+A bool ("verifiable?") cannot express "deferred + why + what's unverified"; the struct
+`EmergentCheck{status, reason, risk}` can, and a `deferred` status **requires both reason and risk**
+(build-enforced — see the validator below). Meaning:
+
+| status | meaning | example |
+|---|---|---|
+| **verified** | the emergent safety net is PRESENT (V-B, or V-A fully covers the declared pair) — this is what catches the m8 stop and the m13 brake | pin_hinge, slide_rail (V-B 5/5), coupling / universal_joint (V-A covers the declared pair, no curved-contact emergence) |
+| **deferred** | the net is ABSENT by a TOOL LIMIT; the risk is carried EXPLICITLY (reason+risk required) | **lead_screw** (curved thread, R2b — self-lock is formula-only, hold under load not physics-verified); **rack_pinion** (curved tooth, R2b — bidirectional meshing unverified); **snap_hook** (elastic beam, D3 — snap event Bayer-formula-only) |
+| **not_applicable** | a static element with no assembly-level emergent DoF — formula/geometry/t0 closes it | journal_bearing, bushing, dowel_pin, screw_boss, press_fit |
+
+This **generalises rack_pinion's existing `v_b_gap`/`shape_assert`** (M11) to *every* element: the
+curved-contact prototype rack_pinion already carried its gap in prose; `EmergentCheck` makes it a
+structured, build-enforced field every curved-contact element (and the future cam/worm/bevel
+milestone) uses. **coupling / universal_joint** are marked `verified` (not `deferred`): their function
+is a DECLARED kinematic pair fully covered by V-A with no curved-contact emergent gap — the Cardan
+velocity fluctuation is a known analytic property (recorded as an observable), not an unverified risk.
 
 **Axis 7 intent (reserved, no field).** A future linkage/4-bar/slider-crank element has a
 **multi-DoF kinematic pair matrix** (Roth, P&B §8.1.1 p.439): each joint contributes a 6-vector of
@@ -157,6 +174,12 @@ Existing cards are only **tagged** this milestone; re-filing is deferred (would 
   §8.1.1); axis 5 (`vb_verifiable`) is our m17-grounded contribution. Axes 1–5 implemented as fields;
   axis 6 (`compliance`) reserved (fixed `rigid`, validator rejects `compliant` with a P-SPRING
   message); axis 7 (`kinematic_dof`) a documented note only.
+- **D-M18-4** — **axis-5 is an `EmergentCheck` struct, not a bool.** `EmergentCheck{status ∈
+  {verified, deferred, not_applicable}, reason, risk}`. A `deferred` status **requires reason+risk**
+  (enforced at construction), and every card **must** declare an `emergent_check` (build-enforced in
+  `__init_subclass__`, mirroring the D18/D21 collision_hint rule) — so no curved-contact element can
+  ship without naming its unverified emergent gap. Generalises rack_pinion's `v_b_gap`/`shape_assert`
+  (M11) to all elements; the future cam/worm/bevel milestone uses the same struct.
 - **D-M18-3** — **`self_locking` promoted to first-class** (P&B §7.4.3), a `Behavior` field. This
   **resolves the DRAFT D-M13-3**: whether "holds under load" deserved first-class ontology status.
   It does — a lead_screw's self-lock and a plain rack_pinion's *lack* of it (needing the pawl,

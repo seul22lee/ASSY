@@ -23,7 +23,7 @@ from ontology.schema import Behavior, MotionSpec
 NEW = ["lead_screw", "coupling", "universal_joint", "journal_bearing", "bushing",
        "dowel_pin", "screw_boss", "press_fit"]
 AXES = {"working_motion", "axis_relationship", "connection_principle", "self_locking",
-        "vb_verifiable", "compliance", "kinematic_dof"}
+        "emergent_check", "compliance", "kinematic_dof"}
 
 
 class _I:
@@ -55,6 +55,51 @@ def test_three_card_categories_present():
     assert CARD_REGISTRY["press_fit"].connection_principle == "force"
     for cid in conns:
         assert isinstance(CARD_REGISTRY[cid], ConnectionCard)
+
+
+# --- axis-5 EmergentCheck struct (D-M18-4): deferred carries reason+risk, build-enforced -----------
+def test_emergent_check_deferred_requires_reason_and_risk():
+    from ontology.schema import EmergentCheck
+    # a deferred check WITHOUT reason/risk must fail at construction (no hidden gap)
+    for bad in ({"status": "deferred"}, {"status": "deferred", "reason": "x"},
+                {"status": "deferred", "risk": "y"}):
+        try:
+            EmergentCheck(**bad)
+            assert False, f"deferred {bad} must require both reason and risk"
+        except Exception:
+            pass
+    # a valid deferred check exposes both
+    ok = EmergentCheck(status="deferred", reason="R2b curved contact (m17)", risk="hold unverified")
+    assert ok.reason and ok.risk
+    # verified / not_applicable need neither
+    assert EmergentCheck(status="verified").status == "verified"
+    assert EmergentCheck(status="not_applicable").status == "not_applicable"
+
+
+def test_card_omitting_emergent_check_fails_registration():
+    from knowledge.cards.base import MechanicalElementCard, EmergentCheckRequired
+    try:
+        class _Bad(MechanicalElementCard):
+            card_id = "bad_no_emergent"
+            taxonomy = {"self_locking": False}      # no emergent_check tag
+        assert False, "a card without an emergent_check tag must fail registration (D-M18-4)"
+    except EmergentCheckRequired:
+        pass
+
+
+def test_curved_contact_cards_defer_with_named_gap_statics_are_na():
+    # curved / no-V-B elements carry a DEFERRED check with a real reason + risk (the safety-net gap)
+    for cid in ("lead_screw", "rack_pinion", "snap_hook_cantilever"):
+        ec = CARD_REGISTRY[cid].taxonomy["emergent_check"]
+        assert ec.status == "deferred" and ec.reason and ec.risk, f"{cid} must name its gap"
+    # lead_screw's gap is exactly the one the milestone brief specified
+    lead = CARD_REGISTRY["lead_screw"].taxonomy["emergent_check"]
+    assert "curved" in lead.reason.lower() and "formula" in lead.risk.lower()
+    # planar/joint elements are verified; static connections/supports are not_applicable
+    for cid in ("pin_hinge", "slide_rail", "coupling", "universal_joint"):
+        assert CARD_REGISTRY[cid].taxonomy["emergent_check"].status == "verified"
+    for cid in ("journal_bearing", "bushing", "dowel_pin", "screw_boss", "press_fit"):
+        assert CARD_REGISTRY[cid].taxonomy["emergent_check"].status == "not_applicable"
 
 
 # --- formulas (cited; reproduced to tolerance) ---------------------------------------------------
@@ -217,6 +262,9 @@ def test_new_schema_defaults_keep_goldens_valid():
 
 if __name__ == "__main__":
     fns = [test_every_card_carries_the_7_axis_taxonomy, test_three_card_categories_present,
+           test_emergent_check_deferred_requires_reason_and_risk,
+           test_card_omitting_emergent_check_fails_registration,
+           test_curved_contact_cards_defer_with_named_gap_statics_are_na,
            test_lead_screw_self_locks_when_lead_angle_le_friction_angle,
            test_self_locking_resolves_d_m13_3_axis_distinguishes_leadscrew_from_rackpinion,
            test_screw_boss_pullout_matches_thread_shear_area_formula,

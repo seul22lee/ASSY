@@ -105,6 +105,33 @@ class MotionSpec(_Base):
     event_force_window_N: Optional[tuple[float, float]] = None  # SCHEMA-DECISION (M-S)
 
 
+class EmergentCheck(_Base):
+    """Axis-5 (M18, D-M18-4): the element's EMERGENT-behaviour safety net — does V-B physics verify
+    the ASSEMBLY actually functions (not just that a single part is built to spec)?
+
+    WHY a struct, not a bool: formula/geometry checks verify one element meets its spec (necessary).
+    V-B physics is the DISCRIMINATING gate — it surfaces emergent requirements the spec never stated
+    (the m8 STOP a lid needs to not fold flat; the m13 BRAKE a lift needs to not back-drive). A
+    CURVED-contact element cannot get V-B (R2b rigid-body limit, m17), so it ships WITHOUT that net —
+    and must SAY SO: what is deferred, why, and what risk that leaves. A bool cannot carry that; this
+    struct generalises rack_pinion's existing v_b_gap/shape_assert to every element.
+
+      verified       — V-B (or an equivalent emergent check) covers the element's assembly function.
+      deferred       — the net is ABSENT by a tool limit; reason+risk are REQUIRED (build-enforced).
+      not_applicable — a static element with no assembly-level emergent DoF (formula/geometry/t0 close it).
+    """
+    status: Literal["verified", "deferred", "not_applicable"]
+    reason: Optional[str] = None   # required when deferred: WHY (e.g. "R2b curved contact, rigid-body limit, m17")
+    risk: Optional[str] = None     # required when deferred: WHAT emergent behaviour is left unverified
+
+    @model_validator(mode="after")
+    def _deferred_needs_reason_and_risk(self):
+        if self.status == "deferred" and (not self.reason or not self.risk):
+            raise ValueError("emergent_check.status='deferred' requires both reason and risk "
+                             "(no unverified curved-contact element may hide its gap)")
+        return self
+
+
 class Function(_Base):
     """User-level purpose (spec §2.2). §2.4 typed this as a bare dict; promoted to a model so
     the Functional-Basis verb is a checkable field, not free-form JSON."""  # SCHEMA-DECISION
@@ -395,7 +422,7 @@ class DesignPlan(_Base):
 
 __all__ = [
     "PhaseE", "PortKind", "MateE", "ResolvedBy", "MotionKind", "CompareOp",
-    "Citation", "MotionSpec", "Function", "Behavior", "Port", "Anchor", "HostTemplate",
+    "Citation", "EmergentCheck", "MotionSpec", "Function", "Behavior", "Port", "Anchor", "HostTemplate",
     "Binding", "Parameter", "Rule", "Piece", "ElementInstance", "FeatureInstance",
     "Criterion", "Observable", "VerificationProtocol", "Material", "DesignPlan",
 ]
