@@ -68,6 +68,13 @@ _M = [
     Measurement("torque_residual", "", "P-COUPLING",
                 "|T_transmitted/T_applied - 1|, output-vs-applied torque match under a rated load "
                 "(the non-tautological content of a rigid 1:1 coupling — ratio alone is trivial)"),
+    # --- P-UJOINT (m21 D-track): Cardan transmission across intersecting axes -----------
+    Measurement("mean_ratio_residual", "", "P-UJOINT",
+                "|mean(omega_out/omega_in) over one rev − 1|; a single Cardan lags then leads but the "
+                "MEAN ratio is exactly 1:1 (the transmission criterion)"),
+    Measurement("cardan_fluctuation_residual", "", "P-UJOINT",
+                "max|measured omega_out/omega_in − Cardan formula cosβ/(1−sin²β sin²θ)| over a rev; the "
+                "emergent speed pulsation verified as physics vs formula (amplitude AND phase)"),
 ]
 
 MEASUREMENTS: dict[str, Measurement] = {m.name: m for m in _M}
