@@ -60,7 +60,12 @@ class UniversalJointCard(MechanicalElementCard):
     card_id = "universal_joint"
     has_functional_clearance = False
     taxonomy = {"working_motion": ("rotation", "regular"), "axis_relationship": "intersecting",
-                "connection_principle": None, "self_locking": False, "emergent_check": EmergentCheck(status="verified"),
+                "connection_principle": None, "self_locking": False,
+                "emergent_check": EmergentCheck(status="deferred",
+                    reason="declared-pair V-A protocol not yet implemented (no rig)",
+                    risk="intersecting-axis transmission unverified; the Cardan velocity fluctuation "
+                         "(cos beta .. 1/cos beta) is computed by formula but UNOBSERVED in physics; "
+                         "D-track pending (D-M19-0)"),
                 "compliance": "rigid", "kinematic_dof": "2 revolute (cross) — reserved axis-7"}
     param_bounds = {"yoke_d": (10.0, 30.0, "mm"), "bore_d": (4.0, 16.0, "mm"),
                     "length": (10.0, 50.0, "mm"), "angle_deg": (5.0, 35.0, "deg")}

@@ -56,7 +56,11 @@ class CouplingCard(MechanicalElementCard):
     card_id = "coupling"
     has_functional_clearance = False
     taxonomy = {"working_motion": ("rotation", "regular"), "axis_relationship": "parallel",
-                "connection_principle": None, "self_locking": False, "emergent_check": EmergentCheck(status="verified"),
+                "connection_principle": None, "self_locking": False,
+                "emergent_check": EmergentCheck(status="deferred",
+                    reason="declared-pair V-A protocol not yet implemented (no rig)",
+                    risk="1:1 transmission behaviour unverified — the coupling's function is not "
+                         "physics-checked; D-track pending (D-M19-0)"),
                 "compliance": "rigid", "kinematic_dof": "1 revolute (through-transmitted)"}
     param_bounds = {"bore_d": (4.0, 20.0, "mm"), "body_d": (10.0, 40.0, "mm"), "length": (10.0, 60.0, "mm")}
     ports = [_p("shaft_in", "axis"), _p("shaft_out", "axis")]

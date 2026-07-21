@@ -95,9 +95,13 @@ def test_curved_contact_cards_defer_with_named_gap_statics_are_na():
     # lead_screw's gap is exactly the one the milestone brief specified
     lead = CARD_REGISTRY["lead_screw"].taxonomy["emergent_check"]
     assert "curved" in lead.reason.lower() and "formula" in lead.risk.lower()
-    # planar/joint elements are verified; static connections/supports are not_applicable
-    for cid in ("pin_hinge", "slide_rail", "coupling", "universal_joint"):
+    # planar/joint elements with a REAL running V-B are verified; static ones are not_applicable
+    for cid in ("pin_hinge", "slide_rail"):
         assert CARD_REGISTRY[cid].taxonomy["emergent_check"].status == "verified"
+    # D-M19-0 honesty retag: coupling/universal_joint have NO running V-A yet -> honest deferred
+    for cid in ("coupling", "universal_joint"):
+        ec = CARD_REGISTRY[cid].taxonomy["emergent_check"]
+        assert ec.status == "deferred" and ec.reason and ec.risk, f"{cid} must be honestly deferred"
     for cid in ("journal_bearing", "bushing", "dowel_pin", "screw_boss", "press_fit"):
         assert CARD_REGISTRY[cid].taxonomy["emergent_check"].status == "not_applicable"
 
