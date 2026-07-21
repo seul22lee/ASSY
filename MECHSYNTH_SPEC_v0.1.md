@@ -672,3 +672,48 @@ snapshots only. **"Tests pass" without a REVIEW.md is an incomplete milestone.**
 - Amendments and experiment-driven decisions accumulate in DECISIONS_LOG.md (D13+);
   where they conflict with this body, the log wins and this body is edited to match at
   the next revision bump.
+
+**Changelog (this revision):** added §13 (Element D-track, six stages + definition-of-done,
+incl. the S5 fixture t0 gate) — formalizes the process m10/m11 (D-D-1/-2) and m19/m20/m21
+(D-M19-1/D-M20-1/D-M21-1) already practiced; recorded as **D-M21-4**. The t0 gate is NEW
+(it closes a gap the m21 video review exposed: no prior stage checked compiled-fixture
+interference — the m19/m20/m21 REVIEWs contained zero t0 evidence).
+
+## 13. Element D-track (per-element milestone shape)
+
+A new mechanical element earns admission to the library by passing a **six-stage D-track**.
+Each stage has a **definition-of-done (DoD)**; no stage may be skipped, and a stage's DoD must
+be evidenced (a test count, a CLEAN validation, a verdict, a reproduction) before the next
+begins. This formalizes m10 (`slide_rail`, D-D-1), m11 (`rack_pinion`, D-D-2), m19
+(`lead_screw`), m20 (`coupling`), m21 (`universal_joint`).
+
+- **S1 — Card.** Complete the element card to the library standard. **DoD:** every param resolves
+  (zero None — the m18-audit class of bug); ports declared; a CITED rule chain (handbook §, e.g.
+  Shigley/P&B) reproduced against a HAND-WORKED numeric anchor in the test docstring ("if this
+  fails the CODE is wrong, not the arithmetic"); `imposes` (V-08); `carve` producing ONE solid
+  (the D-D-1 lesson); `collision_hint` source-stamped (D-M8-4); `verification()` returning the
+  element's P-protocol with criteria split from observables. Card test green.
+- **S2 — Fixture templates.** The minimal host templates (reuse existing where possible, STATE the
+  choice). **DoD:** each one solid; anchors declared; `is_base` per D23; collision hints self-sourced.
+- **S3 — Golden IR.** `tasks/<elem>_fixture.json` by construction (functions → behaviours → pieces →
+  element + bindings → protocol). **DoD:** validator-CLEAN; compiles to the expected one-solid parts;
+  any expressiveness gap is a DRAFT decision row, NOT a silent patch.
+- **S4 — Physics (V-A).** The element's declared-pair/kinematic rig. **DoD:** V-A ≥4/5 seeds; guard
+  trio + G-CONV + all_parts_retained; the criterion is NON-TAUTOLOGICAL (measured vs an INDEPENDENT
+  formula, or an emergent property); a **discrimination probe** (break the mechanism / null the
+  parameter → the property must vanish); contact-free joint rigs use the D-M19-2 clock (dt=1e-4,
+  R5 untouched); video per the standing rule (D-M20: an asymmetric marker per moving body, the HUD
+  primary-DoF counter, the FULL criterion window). V-B / emergent_check decided honestly per the
+  element's contact class (argued, not copied).
+- **S5 — Numeric reproduction + FIXTURE t0 GATE.** **DoD (reproduction):** the rule chain, the
+  measured-vs-formula numbers, and a t1 COMPILE_DRIFT re-measure (≤0.05 mm) reproduced free/local.
+  **DoD (t0 gate, NEW — D-M21-4):** a **pairwise interference/clearance table on the compiled
+  fixture** at the initial pose AND swept poses through the mechanism's motion, judged **per D22**
+  (contact-intent stratification): *intended* contact pairs (e.g. a trunnion in a yoke bore, teeth
+  in mesh) report **positive clearance**; every *unintended* inter-body pair reports **zero
+  penetration**. **No verdict ships over geometry that failed the table.** A failure is a carve/geometry
+  bug: fix the geometry, recompile, re-run the table CLEAN, and re-stamp the S4 verdict's
+  `compile_hash` on the fixed geometry (declared-joint V-A numbers are expected unchanged).
+- **S6 — REVIEW + decisions + STATUS.** **DoD:** `mN_<elem>/REVIEW.md` (outcome first, per-stage
+  evidence with paths, plots/videos inline, the t0 table); the D-track decision row (CONFIRMED) +
+  any DRAFT rows; the STATUS milestone row; full suite green (report the count). Commit per stage.
