@@ -913,6 +913,118 @@ def ujoint_fixture() -> DesignPlan:
     return plan
 
 
+def screw_lift() -> DesignPlan:
+    """m22 Task A — FIRST COMPOSITION TASK: a hand-crank screw jack that raises a platform and HOLDS it
+    when released. Two VERIFIED elements chained: E1 coupling (crank→screw, 1:1) + E2 lead_screw
+    (screw→platform, self-locking hold). Command: "A hand-crank jack that raises a small platform and
+    holds it when released. Plastic, 3D printing."
+
+    THE ONTOLOGY ANSWERS (m22 REVIEW):
+      q1 ELEMENT CHAINING — how the IR states coupling.shaft_out and lead_screw's screw axis are the
+         SAME physical axis: **a SHARED PIECE bound to the SAME anchor**. The screw shaft is ONE piece
+         (P1); both E1.shaft_out and E2.screw_axis bind to P1.screw_axis → coaxial BY CONSTRUCTION
+         (nothing to check, nothing to violate). Precedent: anchor_hard's E3.mesh_line + E4.ratchet_line
+         both bind P4.rack_line. (An AssemblyRule 'coaxial' would be needed only for elements on
+         DIFFERENT pieces — and the current alignment kind is parallel+level, NOT coaxial → DRAFT D-M22-1a.)
+      q2 PROTOCOL COMPOSITION — per-element (P-COUPLING, P-SCREW, inherited/verified) PLUS one END-TO-END
+         P-LIFT: crank N rev → platform rises H = N × (coupling 1:1) × lead; release → holds. The
+         COMPOSED formula chain vs measured H is the assembly-level non-tautology (the anchor_lift
+         P-HOLD/P-FULL precedent). P-LIFT criteria use registered measurements (stroke_mm, backdrive_mm)."""
+    # lead_screw params (m19 fixture) + coupling params (m20 fixture)
+    d_major, pitch, starts, stroke, load_kg = 8.0, 2.0, 1, 40.0, 0.5
+    lead = starts * pitch                       # 2.0 mm/rev
+    length = round(stroke + 20.0, 1)            # 60 mm
+    bore_d, body_d, coup_len, tau = 8.0, 20.0, 24.0, 25.0
+    screw_base_t = HostTemplate(template_ref="screw_base",
+        params={"base_l": 60.0, "base_w": 60.0, "base_t": 4.0},
+        anchors=[Anchor(name="screw_axis", kind="axis"), Anchor(name="travel_edge", kind="axis")])
+    platform_t = HostTemplate(template_ref="nut_carriage",
+        params={"nut_l": 26.0, "nut_w": 26.0, "nut_t": 10.0, "nut_z": 30.0, "d_major": d_major, "gap": 1.0},
+        anchors=[Anchor(name="nut_mount", kind="face"), Anchor(name="travel_axis", kind="axis")])
+    crank_t = HostTemplate(template_ref="shaft_carrier_out",
+        params={"shaft_d": bore_d, "z0": -24.0, "shaft_len": 24.0, "clearance": 0.30},
+        anchors=[Anchor(name="shaft_out", kind="axis")])
+    pieces = [
+        Piece(id="P1", role="base", template_ref="screw_base", is_base=True, params=dict(screw_base_t.params)),
+        Piece(id="P2", role="platform", template_ref="nut_carriage", params=dict(platform_t.params)),
+        Piece(id="P3", role="crank", template_ref="shaft_carrier_out", params=dict(crank_t.params)),
+    ]
+    elements = [
+        ElementInstance(id="E1", card_ref="coupling", host_pieces=["P3", "P1"],
+                        params={"bore_d": bore_d, "body_d": body_d, "length": coup_len, "tau_allow": tau}),
+        ElementInstance(id="E2", card_ref="lead_screw", host_pieces=["P1", "P2"],
+                        params={"d_major": d_major, "pitch": pitch, "starts": starts,
+                                "lead": lead, "length": length, "stroke": stroke}),
+    ]
+    bindings = [
+        # E1 coupling: crank (P3) → screw base (P1). shaft_out binds the SHARED screw axis (q1).
+        Binding(element_id="E1", port="shaft_in", piece_id="P3", anchor="shaft_out", mate="coincident_axis"),
+        Binding(element_id="E1", port="shaft_out", piece_id="P1", anchor="screw_axis", mate="coincident_axis"),
+        # E2 lead_screw: screw_axis binds the SAME P1.screw_axis anchor (the chaining, q1).
+        Binding(element_id="E2", port="screw_axis", piece_id="P1", anchor="screw_axis", mate="coincident_axis"),
+        Binding(element_id="E2", port="nut_mount", piece_id="P2", anchor="nut_mount", mate="flush_face"),
+        Binding(element_id="E2", port="travel_axis", piece_id="P2", anchor="travel_axis", mate="coincident_axis"),
+    ]
+    behaviors = [
+        # B0 — the coupling transmits the crank to the screw 1:1 (axis-2 parallel/coaxial).
+        Behavior(id="B0", phase="use",
+                 motion=MotionSpec(kind="rotation", axis_hint="vertical", nature="regular",
+                                   transmission={"ratio": 1.0, "kind": "coupling"}),
+                 axis_relationship="parallel", realized_by="E1"),
+        # B1 — the lift: crank/screw → platform rises `stroke`, self-locking, under the load W.
+        Behavior(id="B1", phase="use",
+                 motion=MotionSpec(kind="rot_to_trans", axis_hint="vertical", nature="regular",
+                                   range_value=stroke, range_unit="mm", bound="min",
+                                   transmission={"mm_per_rev": round(lead, 3), "lead_mm": round(lead, 3),
+                                                 "coupling_ratio": 1.0, "kind": "screw_lift"}),
+                 self_locking=True, load={"mass_kg": load_kg, "direction": "-z"}, realized_by="E2"),
+        # B2 — the HOLD: the released platform+load must not back-drive (self-lock, D-M13-3/axis-4).
+        Behavior(id="B2", phase="static", motion=MotionSpec(kind="fixed", axis_hint="vertical"),
+                 load={"mass_kg": load_kg, "direction": "-z"}, self_locking=True, realized_by="E2"),
+    ]
+    from knowledge.cards.base import CARD_REGISTRY as _C
+    n = len(behaviors)
+    for eid, cref in [("E1", "coupling"), ("E2", "lead_screw")]:      # card-sourced assembly paths (V-08)
+        for tmpl in _C[cref].imposes:
+            n += 1
+            behaviors.append(Behavior(id=f"B{n}", phase=getattr(tmpl.phase, "value", tmpl.phase),
+                                      motion=MotionSpec(kind=getattr(tmpl.motion.kind, "value", tmpl.motion.kind)),
+                                      imposed_by=eid, imposed_by_card=cref))
+    parameters = [
+        Parameter(name="lead", value=lead, unit="mm", lo=0.5, hi=8.0, resolved_by="rule"),
+        Parameter(name="stroke", value=stroke, unit="mm", lo=10.0, hi=180.0, resolved_by="user"),
+        Parameter(name="coupling_ratio", value=1.0, unit="", lo=1.0, hi=1.0, resolved_by="rule"),
+    ]
+    plan = DesignPlan(task_id="screw_lift",
+        command="A hand-crank jack that raises a small platform and holds it when released. "
+                "Plastic, 3D printing.",
+        functions=[Function(verb="raise", object="platform", qualifier="by hand crank"),
+                   Function(verb="hold", object="platform", qualifier="at height when released, self-locking")],
+        behaviors=behaviors, pieces=pieces, templates=[screw_base_t, platform_t, crank_t],
+        elements=elements, bindings=bindings, parameters=parameters)
+    # per-element protocols (inherited/verified): P-COUPLING (E1), P-SCREW (E2).
+    for e in elements:
+        for pr in _C[e.card_ref].verification(plan, e):
+            plan.protocols.append(pr)
+            bb = next((x for x in plan.behaviors if x.id == pr.verifies), None)
+            if bb is not None and not bb.verified_by:
+                bb.verified_by = pr.id
+    # END-TO-END P-LIFT (q2): the composed formula chain (crank N rev → H = N·1·lead) + hold.
+    plan.protocols.append(VerificationProtocol(
+        id="P-LIFT-VA", verifies="B1", mode="V-A", seeds=5, seed_pass=4,
+        actuation={"kind": "crank_velocity", "n_rev": round(stroke / lead, 2),
+                   "composed_chain": "H = N_rev × coupling(1:1) × lead", "load_kg": load_kg,
+                   "note": "assembly-level non-tautology: measured platform rise vs the COMPOSED formula"},
+        criteria=[Criterion(name="platform_reaches_height", observable="stroke_mm", op=">=",
+                            threshold=stroke, unit="mm"),
+                  Criterion(name="holds_released_load", observable="backdrive_mm", op="<=",
+                            threshold=1.0, unit="mm")], observables=[]))
+    b1 = next((x for x in plan.behaviors if x.id == "B1"), None)
+    if b1 is not None:
+        b1.verified_by = "P-LIFT-VA"
+    return plan
+
+
 def anchor_hard(variant: str = "drawer", stroke: float = 120.0,
                 load_kg: float = 0.5) -> DesignPlan:
     """THE HARD ANCHOR (MECHSYNTH §8.2, RETARGETED at D-M13-2) — one mechanism, two products.
@@ -1116,6 +1228,7 @@ def main() -> None:
         "lead_screw_fixture.json": lead_screw_fixture(),   # m19 D-track fixture
         "coupling_fixture.json": coupling_fixture(),        # m20 D-track fixture
         "ujoint_fixture.json": ujoint_fixture(),            # m21 D-track fixture
+        "screw_lift.json": screw_lift(),                    # m22 Task A: first composition (coupling+lead_screw)
         "anchor_lift.json": anchor_lift(),          # D-M13-2 PRIMARY: crank lift platform
         "anchor_hard.json": anchor_hard(),          # labeled ALTERNATE: horizontal drawer
     }
