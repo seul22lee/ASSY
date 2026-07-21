@@ -73,3 +73,47 @@ against it — our logs predict today added **≤ ~$0.05** (the gate: 11 calls, 
 names where the $15 actually accrued. Our instrumentation is now correct going forward (every call
 logs real prompt+output tokens with a self-check), so from here on the logs and the dashboard should
 track — any divergence *after* today points at a shared-key/other-user source, not MechSynth.
+
+---
+
+## CORRECTION (2026-07-18, after the dashboard showed **$5+ spent TODAY**)
+
+The dashboard's *today* figure (~$5+) is ~100× my "≤ $0.05 today" prediction above. **That prediction
+was wrong, and the error is instructive.** It counted only calls that landed in a stage_log and
+ignored the dominant unlogged mechanism:
+
+> **Client-side timeout ≠ no bill.** A `generateContent` call that times out or is aborted
+> **client-side** may have **completed server-side** — Google generated the response and BILLED it —
+> while our process wrote nothing to disk (it died / moved on before the stage_log flush). My earlier
+> "unlogged ceiling < $0.5" assumed aborted calls don't bill. They can.
+
+**Live-process check (asked: is a zombie still billing?):** NO MechSynth/Gemini process is alive —
+every wedged/killed run is dead; the only live processes I own are VSCode-server + the Claude
+extension, none of which use the key. Separately, `ss` showed **175 CLOSE-WAIT sockets to Google IPs
+that are NOT attributable to any of my PIDs** — i.e. other users' processes on this shared host are
+holding many half-closed Google connections. Live evidence of non-MechSynth Google traffic.
+
+**Worst-case recount** (assume every killed/wedged process today completed its calls up to timeout,
+each billing a max-size full-pipeline generation, at pro pricing):
+
+| scenario | calls today | est. cost |
+|---|---:|---:|
+| **Absolute worst case** — every wedged call billed server-side, max output | ~124 | **$5.5 – $12** |
+| **Realistic worst case** — post-cap bulk runs returned 429 (rejected = NOT billed) | ~46 pre-cap | **< $1** |
+
+The swing factor is **when the spend cap tripped**: the flash-vs-pro **attempt #1** (a ~25-min wedge
+on the OLD 600 s timeout) plus the early bulk relaunches are the prime suspects for timed-out-but-
+billed full-pipeline calls. If they billed, the absolute worst case **reconciles with $5+ today**; if
+they 429'd, MechSynth today is **< $1** and the rest is the shared key.
+
+**Fixes already committed that stop the recurrence:** (1) request timeout cut from 600 s → caller sets
+30–120 s, so a stall fails fast instead of hanging into a server-completed bill; (2) **billing-429
+fail-fast** — a spend-cap 429 is no longer retried; (3) full token instrumentation with a self-check,
+so from today every billed call is logged. Going forward, logs and dashboard should track to the
+cent; any residual divergence isolates the shared-key source.
+
+**Still needed to fully separate MechSynth-timeout billing from shared-key billing:** the dashboard's
+**hourly + per-API breakdown**. If today's $5+ concentrates in the Generative Language API inside the
+~11:50–12:20 run windows, it's our timeout mechanism; if it's spread across the day or other APIs,
+it's the shared key. Frontier column stays parked (per user) until a day or two of idle dashboard
+watching confirms spend stays at zero.
