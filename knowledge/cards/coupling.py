@@ -124,13 +124,16 @@ class CouplingCard(MechanicalElementCard):
     has_functional_clearance = False
     taxonomy = {"working_motion": ("rotation", "regular"), "axis_relationship": "parallel",
                 "connection_principle": None, "self_locking": False,
-                "emergent_check": EmergentCheck(status="deferred",
-                    reason="declared-pair V-A protocol defined (P-COUPLING) but the rig lands in m20 "
-                           "Stage 4; a rigid coupling is concentric clamped solids with NO curved-contact "
-                           "gap, so once V-A runs this becomes verified (not an R2b defer)",
-                    risk="1:1 transmission + torque capacity not yet physics-checked until the m20 rig; "
-                         "the hub↔shaft FORCE-closure grip (clamp/set-screw slip) is a preload question "
-                         "the transmission rig will not test regardless"),
+                "emergent_check": EmergentCheck(status="verified",
+                    reason="P-COUPLING V-A (m20) covers the declared behaviour — 1:1 ratio to 0.000% AND "
+                           "torque transmission under a rated-torque load (input carries the output's "
+                           "resisting torque to <0.1%), with a discrimination probe (break the coupling → "
+                           "output stalls). A rigid coupling is concentric CLAMPED solids: NO curved "
+                           "conjugate contact, so there is no m17/R2b emergent-contact gap to defer "
+                           "(this REVERSES the D-M19-0 no-rig retag, honestly, now that the rig exists)",
+                    risk="the hub↔shaft FORCE-closure grip (clamp/set-screw slip vs applied torque) is "
+                         "idealized as rigid — a fastening-PRELOAD question (a future clamp-torque check), "
+                         "NOT a deferred curved-contact V-B"),
                 "compliance": "rigid", "kinematic_dof": "1 revolute (through-transmitted)"}
     param_bounds = {"bore_d": (4.0, 20.0, "mm"), "body_d": (10.0, 40.0, "mm"),
                     "length": (10.0, 60.0, "mm"), "tau_allow": (10.0, 40.0, "MPa")}

@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<mujoco model="t2_coupling_VA">
+  <compiler angle="radian" meshdir="assets" autolimits="true"/>
+  <option timestep="0.0001" integrator="implicitfast" cone="elliptic" impratio="10" gravity="0 0 0"/>
+  <visual>
+    <headlight ambient="0.5 0.5 0.5" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2"/>
+    <global offwidth="1280" offheight="960" azimuth="130" elevation="-20"/>
+  </visual>
+  <default>
+    <geom solref="0.001 1.0" solimp="0.99 0.9999 0.0001" density="0" contype="0" conaffinity="0" group="2"/>
+  </default>
+  <asset>
+    <material name="base" rgba="0.35 0.65 0.85 1"/>
+    <material name="input" rgba="0.95 0.62 0.25 1"/>
+    <material name="output" rgba="0.55 0.78 0.55 1"/>
+    <mesh name="base_vis" file="cp_base_vis.stl"/>
+    <mesh name="input_vis" file="cp_input_vis.stl"/>
+    <mesh name="output_vis" file="cp_output_vis.stl"/>
+  </asset>
+  <worldbody>
+    <light pos="0.1 -0.15 0.4" dir="-0.2 0.3 -1" directional="true" diffuse="0.5 0.5 0.5"/>
+    <camera name="iso" pos="0.10 -0.13 0.11" xyaxes="0.79 0.61 0 -0.20 0.26 0.94"/>
+    <body name="base" pos="0 0 0">
+      <inertial pos="0.000000000 0.000000000 0.002000000" mass="0.012700000" fullinertia="0.000002662767 0.000002662767 0.000005291667 -0.000000000000 -0.000000000000 -0.000000000000"/>
+      <geom name="base_vis" type="mesh" mesh="base_vis" material="base"/>
+    </body>
+    <body name="input" pos="0 0 0">
+      <joint name="input_hinge" type="hinge" axis="0.000000000 0.000000000 1.000000000" pos="0.000000000 0.000000000 0.000000000" damping="1e-05" armature="1e-05"/>
+      <inertial pos="-0.000000000 0.000000000 0.034257886" mass="0.010101425" fullinertia="0.000001356930 0.000001356930 0.000000481520 0.000000000000 0.000000000000 0.000000000000"/>
+      <geom name="input_vis" type="mesh" mesh="input_vis" material="input"/>
+    </body>
+    <body name="output" pos="0 0 0">
+      <joint name="output_hinge" type="hinge" axis="0.000000000 0.000000000 1.000000000" pos="0.000000000 0.000000000 0.000000000" damping="1e-05" armature="1e-05"/>
+      <inertial pos="0.000000000 -0.000000000 0.052000000" mass="0.001308724" fullinertia="0.000000067290 0.000000067290 0.000000008943 -0.000000000000 0.000000000000 0.000000000000"/>
+      <geom name="output_vis" type="mesh" mesh="output_vis" material="output"/>
+    </body>
+  </worldbody>
+  <equality>
+    <joint name="couple" joint1="output_hinge" joint2="input_hinge" polycoef="0 1.0 0 0 0" solref="-1e8 -1e4" solimp="0.9999 0.99999 0.000001 0.5 2"/>
+  </equality>
+  <actuator>
+    <velocity name="drive" joint="input_hinge" kv="1.0"/>
+  </actuator>
+</mujoco>

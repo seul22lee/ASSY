@@ -97,13 +97,14 @@ def test_curved_contact_cards_defer_with_named_gap_statics_are_na():
     # sourced holding torque ARE physics-backed by P-SCREW V-A — so the risk is no longer "formula only".)
     lead = CARD_REGISTRY["lead_screw"].taxonomy["emergent_check"]
     assert "curved" in lead.reason.lower() and "flank" in lead.risk.lower()
-    # planar/joint elements with a REAL running V-B are verified; static ones are not_applicable
-    for cid in ("pin_hinge", "slide_rail"):
+    # planar/joint elements with a REAL running V-B are verified; static ones are not_applicable.
+    # coupling is now verified too (m20/D-M20-1: P-COUPLING V-A ran; a rigid coupling has no
+    # curved-contact gap — properly reversing the D-M19-0 no-rig retag).
+    for cid in ("pin_hinge", "slide_rail", "coupling"):
         assert CARD_REGISTRY[cid].taxonomy["emergent_check"].status == "verified"
-    # D-M19-0 honesty retag: coupling/universal_joint have NO running V-A yet -> honest deferred
-    for cid in ("coupling", "universal_joint"):
-        ec = CARD_REGISTRY[cid].taxonomy["emergent_check"]
-        assert ec.status == "deferred" and ec.reason and ec.risk, f"{cid} must be honestly deferred"
+    # universal_joint still has NO running V-A yet -> honest deferred (D-M19-0; earns its own D-track)
+    ec = CARD_REGISTRY["universal_joint"].taxonomy["emergent_check"]
+    assert ec.status == "deferred" and ec.reason and ec.risk, "universal_joint must be honestly deferred"
     for cid in ("journal_bearing", "bushing", "dowel_pin", "screw_boss", "press_fit"):
         assert CARD_REGISTRY[cid].taxonomy["emergent_check"].status == "not_applicable"
 

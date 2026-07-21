@@ -1,0 +1,312 @@
+{
+  "decision_row": "D-M20-1 P-COUPLING V-A on compiled coupling_fixture (V-B VERIFIED \u2014 no curved contact)",
+  "compile_hash": "8318874",
+  "card": "coupling",
+  "element": "E1",
+  "rule_chain": {
+    "ratio": 1.0,
+    "bore_d_mm": 8.0,
+    "body_d_mm": 20.0,
+    "length_mm": 24.0,
+    "tau_allow_MPa": 25.0,
+    "T_rated_Nmm (\u03c4\u00b7\u03c0\u00b7d\u00b3/16)": 2513.27
+  },
+  "sourced_load": {
+    "T_rated_Nm": 2.51327,
+    "load_fraction": 0.5,
+    "T_load_Nm (0.5\u00b7T_rated)": 1.256635,
+    "note": "resisting torque SOURCED from the card's rated torque \u2014 NOT invented (D-D-1)"
+  },
+  "g9_gconv": true,
+  "g9_checks": [
+    [
+      "(a) base: mass > 0",
+      true,
+      "12.70 g"
+    ],
+    [
+      "(a) input: mass > 0",
+      true,
+      "10.10 g"
+    ],
+    [
+      "(a) output: mass > 0",
+      true,
+      "1.31 g"
+    ],
+    [
+      "(b) no initial penetration",
+      true,
+      "0.0000 mm at t=0"
+    ],
+    [
+      "(b) no contact-force blow-up after 1 step",
+      true,
+      "max constraint force 0.000e+00 N"
+    ],
+    [
+      "(c) at rest 1 s under gravity",
+      true,
+      "max drift 0.000 mm/mrad, peak |v| 0.0000"
+    ]
+  ],
+  "modes": {
+    "V-A": {
+      "ran": true,
+      "n_seeds": 5,
+      "seeds_passed": 5,
+      "passed": true,
+      "criteria_seed0": {
+        "reaches_drive (input \u2265 N_rev)": {
+          "value": 6.001,
+          "threshold": 6.0,
+          "pass": true
+        },
+        "transmits_ratio (|out/in\u22121| \u2264 0.1%)": {
+          "value": 0.0,
+          "threshold": 0.001,
+          "pass": true
+        },
+        "transmits_rated_torque (|T_in/T_load\u22121| \u2264 5%)": {
+          "value": 0.0006,
+          "threshold": 0.05,
+          "pass": true
+        },
+        "converged (no blow-up)": {
+          "value": false,
+          "threshold": false,
+          "pass": true
+        },
+        "all_parts_retained": {
+          "value": true,
+          "threshold": true,
+          "pass": true
+        }
+      },
+      "per_seed": [
+        {
+          "ran": true,
+          "mode": "V-A",
+          "seed": 0,
+          "diverged": false,
+          "broke_coupling": false,
+          "revs_in": 6.001,
+          "revs_out": 6.001,
+          "ratio": 1.0,
+          "ratio_residual": 0.0,
+          "T_meas_Nm": 1.25741,
+          "torque_residual": 0.0006,
+          "criteria": {
+            "reaches_drive (input \u2265 N_rev)": {
+              "value": 6.001,
+              "threshold": 6.0,
+              "pass": true
+            },
+            "transmits_ratio (|out/in\u22121| \u2264 0.1%)": {
+              "value": 0.0,
+              "threshold": 0.001,
+              "pass": true
+            },
+            "transmits_rated_torque (|T_in/T_load\u22121| \u2264 5%)": {
+              "value": 0.0006,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "mode": "V-A",
+          "seed": 1,
+          "diverged": false,
+          "broke_coupling": false,
+          "revs_in": 6.001,
+          "revs_out": 6.001,
+          "ratio": 1.0,
+          "ratio_residual": 0.0,
+          "T_meas_Nm": 1.25741,
+          "torque_residual": 0.0006,
+          "criteria": {
+            "reaches_drive (input \u2265 N_rev)": {
+              "value": 6.001,
+              "threshold": 6.0,
+              "pass": true
+            },
+            "transmits_ratio (|out/in\u22121| \u2264 0.1%)": {
+              "value": 0.0,
+              "threshold": 0.001,
+              "pass": true
+            },
+            "transmits_rated_torque (|T_in/T_load\u22121| \u2264 5%)": {
+              "value": 0.0006,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "mode": "V-A",
+          "seed": 2,
+          "diverged": false,
+          "broke_coupling": false,
+          "revs_in": 6.001,
+          "revs_out": 6.001,
+          "ratio": 1.0,
+          "ratio_residual": 0.0,
+          "T_meas_Nm": 1.25741,
+          "torque_residual": 0.0006,
+          "criteria": {
+            "reaches_drive (input \u2265 N_rev)": {
+              "value": 6.001,
+              "threshold": 6.0,
+              "pass": true
+            },
+            "transmits_ratio (|out/in\u22121| \u2264 0.1%)": {
+              "value": 0.0,
+              "threshold": 0.001,
+              "pass": true
+            },
+            "transmits_rated_torque (|T_in/T_load\u22121| \u2264 5%)": {
+              "value": 0.0006,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "mode": "V-A",
+          "seed": 3,
+          "diverged": false,
+          "broke_coupling": false,
+          "revs_in": 6.001,
+          "revs_out": 6.001,
+          "ratio": 1.0,
+          "ratio_residual": 0.0,
+          "T_meas_Nm": 1.25741,
+          "torque_residual": 0.0006,
+          "criteria": {
+            "reaches_drive (input \u2265 N_rev)": {
+              "value": 6.001,
+              "threshold": 6.0,
+              "pass": true
+            },
+            "transmits_ratio (|out/in\u22121| \u2264 0.1%)": {
+              "value": 0.0,
+              "threshold": 0.001,
+              "pass": true
+            },
+            "transmits_rated_torque (|T_in/T_load\u22121| \u2264 5%)": {
+              "value": 0.0006,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "mode": "V-A",
+          "seed": 4,
+          "diverged": false,
+          "broke_coupling": false,
+          "revs_in": 6.001,
+          "revs_out": 6.001,
+          "ratio": 1.0,
+          "ratio_residual": 0.0,
+          "T_meas_Nm": 1.25741,
+          "torque_residual": 0.0006,
+          "criteria": {
+            "reaches_drive (input \u2265 N_rev)": {
+              "value": 6.001,
+              "threshold": 6.0,
+              "pass": true
+            },
+            "transmits_ratio (|out/in\u22121| \u2264 0.1%)": {
+              "value": 0.0,
+              "threshold": 0.001,
+              "pass": true
+            },
+            "transmits_rated_torque (|T_in/T_load\u22121| \u2264 5%)": {
+              "value": 0.0006,
+              "threshold": 0.05,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "discrimination_probe": {
+        "intact_ratio_residual": 0.0,
+        "intact_out_rev": 6.001,
+        "broken_out_rev": 0.0,
+        "broken_in_rev": 6.0,
+        "discriminates": true,
+        "note": "coupling INTACT: output tracks input 1:1; coupling BROKEN (equality inactive): input spins, output stays put \u2014 the tracking is the coupling, not a solver artifact"
+      },
+      "plot": "t2_coupling_VA.png",
+      "video": "t2_coupling_VA.mp4"
+    }
+  },
+  "verdict_VA": true,
+  "verdict_VB": "VERIFIED \u2014 a rigid coupling is concentric clamped solids with NO curved conjugate contact, so there is no m17/R2b emergent-contact gap; V-A covers the declared 1:1 + torque transmission (reverses the D-M19-0 no-rig retag)",
+  "emergent_check_resolution": {
+    "status": "verified",
+    "why": "no curved-contact V-B of the m17 class exists for a concentric rigid hub",
+    "named_assumption": "the hub\u2194shaft FORCE-closure grip (clamp/set-screw slip vs applied torque) is idealized as rigid; that is a fastening-preload question, NOT a deferred curved-contact V-B \u2014 a future clamp-torque check, not an R2b defer"
+  }
+}

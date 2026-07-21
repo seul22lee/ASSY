@@ -95,11 +95,13 @@ def test_card_surface_complete():
     assert {"transmits_ratio", "transmits_rated_torque"} <= names
 
 
-def test_emergent_check_names_the_rigid_no_curved_contact_reasoning():
+def test_emergent_check_verified_no_curved_contact_gap():
     ec = CARD.taxonomy["emergent_check"]
-    # concentric/rigid hub → the reason must explain there is no curved-contact V-B gap
+    # m20/D-M20-1: verified (V-A ran); a rigid concentric hub has NO curved-contact V-B gap
+    assert ec.status == "verified"
     assert "concentric" in ec.reason.lower() or "curved" in ec.reason.lower()
-    assert ec.risk
+    # the residual is named as a force-closure/preload assumption, not a deferred curved-contact V-B
+    assert ec.risk and ("force-closure" in ec.risk.lower() or "preload" in ec.risk.lower())
 
 
 if __name__ == "__main__":
@@ -108,7 +110,7 @@ if __name__ == "__main__":
            test_resolve_params_zero_None_all_within_bounds,
            test_resolve_enforces_hub_proportions_for_a_large_bore,
            test_card_surface_complete,
-           test_emergent_check_names_the_rigid_no_curved_contact_reasoning]
+           test_emergent_check_verified_no_curved_contact_gap]
     for f in fns:
         f()
     print(f"{len(fns)}/{len(fns)} passed  — coupling card: Shigley §3-12 rule chain (T=τ·π·d³/16, "
