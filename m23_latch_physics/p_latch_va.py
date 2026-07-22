@@ -67,6 +67,59 @@ def _sourced_W_out(plan):
             "self_lock_deg": round(self_locking_angle(mu), 1), "alpha_out_deg": a_out}
 
 
+def t0_rig(model, meta):
+    """The RIG t0 (D22 split): sweep the drawer over the stroke; the enlarged BARB must CLEAR the
+    closing path against the cabinet EXCEPT the intended latch pair (barb ↔ receiver), which overlaps
+    only in the engagement zone near closed. Groups geoms drawer(dr_/latch_) vs world(cab_/receiver/recv_);
+    skips markers. Returns rows + clean + the engagement-zone width."""
+    import trimesh
+    d = mj.MjData(model)
+    ji = model.jnt_qposadr[mj.mj_name2id(model, mj.mjtObj.mjOBJ_JOINT, "drawer_slide")]
+
+    def gmesh(gid):
+        t = model.geom_type[gid]; s = model.geom_size[gid]
+        me = (trimesh.creation.box(extents=2 * s[:3]) if t == mj.mjtGeom.mjGEOM_BOX
+              else trimesh.creation.cylinder(radius=s[0], height=2 * s[1], sections=16))
+        T = np.eye(4); T[:3, :3] = d.geom_xmat[gid].reshape(3, 3); T[:3, 3] = d.geom_xpos[gid]
+        me.apply_transform(T); return me
+
+    names = [mj.mj_id2name(model, mj.mjtObj.mjOBJ_GEOM, i) for i in range(model.ngeom)]
+
+    def grp(nm):
+        if nm.startswith("mk_"):
+            return None
+        if nm.startswith("dr_"):
+            return "drawer"
+        if nm.startswith("latch_"):
+            return "latch"
+        if nm.startswith("cab_"):
+            return "cabinet"
+        if nm.startswith("receiver") or nm.startswith("recv"):
+            return "receiver"
+        return None
+    gid = [i for i in range(model.ngeom) if grp(names[i])]
+    worst, eng_zone = {}, 0.0
+    for s in np.linspace(0, meta["stroke_m"], 25):
+        d.qpos[ji] = s; mj.mj_forward(model, d)
+        mh = {i: gmesh(i) for i in gid}
+        for ii in range(len(gid)):
+            for jj in range(ii + 1, len(gid)):
+                a, b = gid[ii], gid[jj]
+                ga, gb = grp(names[a]), grp(names[b])
+                if ga == gb:
+                    continue
+                pen = max(float(trimesh.proximity.signed_distance(mh[b], mh[a].sample(200)).max()),
+                          float(trimesh.proximity.signed_distance(mh[a], mh[b].sample(200)).max())) * 1000
+                key = tuple(sorted([ga, gb]))
+                worst[key] = max(worst.get(key, -1e9), pen)
+                if key == ("latch", "receiver") and pen > 0.05:
+                    eng_zone = max(eng_zone, s / MM)
+    intended = {("latch", "receiver")}
+    rows = {f"{k[0]}×{k[1]}": {"worst_pen_mm": round(v, 3), "intended": k in intended} for k, v in sorted(worst.items())}
+    clean = all((kk in intended) or vv <= 0.05 for kk, vv in worst.items())
+    return rows, clean, round(eng_zone, 1)
+
+
 def build_latch_mjcf(plan, W_out, markers=True):
     """A legible CUTAWAY cabinet (floor + far wall + receiver ledge; near wall omitted so the hook +
     receiver are visible) + a drawer TRAY that slides in/out on a finite rail, latched at closed by a
@@ -91,14 +144,18 @@ def build_latch_mjcf(plan, W_out, markers=True):
     ET.SubElement(world, "light", pos="0.02 -0.2 0.3", dir="-0.05 0.3 -1", directional="true", diffuse="0.5 0.5 0.5")
     # side/cutaway camera: look +Y into the open (−Y) side, so hook + receiver are visible
     ET.SubElement(world, "camera", name="cutaway", pos="0.03 -0.11 0.05", xyaxes="1 0 0 0 0.4 0.92")
+    # ZOOM camera framed tight on the engagement zone (barb ↔ receiver) — the click + pop close up
+    ET.SubElement(world, "camera", name="zoom", pos="0.040 -0.040 0.024", xyaxes="1 0 0 0 0.45 0.89")
 
     # CABINET (weld, cutaway): floor + far (+Y) wall + back (−X) wall + a receiver LEDGE at the front.
     cx = stroke_m / 2
     ET.SubElement(world, "geom", name="cab_floor", type="box", pos=f"{cx} 0 -0.001", size=f"{cx+0.026} 0.018 0.0015", material="cab")
     ET.SubElement(world, "geom", name="cab_farwall", type="box", pos=f"{cx} 0.017 0.009", size=f"{cx+0.026} 0.0015 0.010", material="cab")
     ET.SubElement(world, "geom", name="cab_back", type="box", pos="-0.026 0 0.009", size="0.0015 0.017 0.010", material="cab")
-    # receiver ledge at the front opening: a small tab the hook nose tucks UNDER when closed
-    ET.SubElement(world, "geom", name="receiver", type="box", pos="0.0265 0 0.0135", size="0.002 0.006 0.0015", material="recv")
+    # ramped RECEIVER ledge at the front opening: the overhang the barb tucks UNDER when closed (the
+    # matching ramp lets the barb slide in on close; the overhang catches it on pull-out).
+    ET.SubElement(world, "geom", name="receiver", type="box", pos="0.0375 0 0.0170", size="0.0032 0.006 0.0013", material="recv")
+    ET.SubElement(world, "geom", name="recv_ramp", type="box", pos="0.0405 0 0.0158", euler="0 35 0", size="0.0016 0.006 0.0010", material="recv")
 
     # DRAWER (slide +X, range [0, stroke]) — a tray (floor + back + far wall) + a front HOOK.
     bd = ET.SubElement(world, "body", name="drawer", pos="0 0 0")
@@ -110,9 +167,13 @@ def build_latch_mjcf(plan, W_out, markers=True):
     ET.SubElement(bd, "geom", name="dr_floor", type="box", pos="0 0 0.003", size="0.020 0.015 0.0015", material="drawer", mass="0.04")
     ET.SubElement(bd, "geom", name="dr_back", type="box", pos="-0.019 0 0.008", size="0.0015 0.015 0.005", material="drawer", mass="0.004")
     ET.SubElement(bd, "geom", name="dr_farwall", type="box", pos="0 0.014 0.008", size="0.020 0.0012 0.005", material="drawer", mass="0.004")
-    # front HOOK: an L reaching +X then a small up-nose that engages under the receiver ledge
-    ET.SubElement(bd, "geom", name="hook_arm", type="box", pos="0.022 0 0.011", size="0.003 0.0018 0.0012", material="hook", mass="0.002")
-    ET.SubElement(bd, "geom", name="hook_nose", type="box", pos="0.0245 0 0.0128", size="0.0012 0.0018 0.0018", material="hook", mass="0.001")
+    # SNAP LATCH PROFILE (visual, reshaped for legibility): a cantilever ARM along the drawer front, an
+    # angled BARB (up-hook + ramped nose) at its tip — ~5 mm tall, a recognizable snap. It tucks UNDER
+    # the cabinet's ramped receiver ledge when closed (the interlock). Rigid geoms; the physics is the
+    # declared constraint. (Barb ~15-20% of the drawer height, per the review.)
+    ET.SubElement(bd, "geom", name="latch_arm", type="box", pos="0.028 0 0.0105", size="0.008 0.0018 0.0011", material="hook", mass="0.002")
+    ET.SubElement(bd, "geom", name="latch_barb", type="box", pos="0.0355 0 0.0128", size="0.0016 0.0018 0.0026", material="hook", mass="0.001")
+    ET.SubElement(bd, "geom", name="latch_ramp", type="box", pos="0.0375 0 0.0128", euler="0 35 0", size="0.0016 0.0018 0.0009", material="hook", mass="0.0005")
     if markers:
         ET.SubElement(bd, "geom", name="mk_drawer", type="box", pos="0 -0.012 0.006", size="0.004 0.0015 0.004", material="mk")
 
@@ -136,7 +197,8 @@ def run_latch(model, meta, seed=0, record=False):
     iq, idf = model.jnt_qposadr[ji], model.jnt_dofadr[ji]
     a = mj.mj_name2id(model, mj.mjtObj.mjOBJ_ACTUATOR, "drive")
     leq = mj.mj_name2id(model, mj.mjtObj.mjOBJ_EQUALITY, "latch")
-    cam = mj.mj_name2id(model, mj.mjtObj.mjOBJ_CAMERA, "cutaway")
+    cam_cut = mj.mj_name2id(model, mj.mjtObj.mjOBJ_CAMERA, "cutaway")
+    cam_zoom = mj.mj_name2id(model, mj.mjtObj.mjOBJ_CAMERA, "zoom")
     W_out = meta["W_out_N"]; stroke = meta["stroke_m"]
     rng = np.random.default_rng(seed)
     eq0 = model.eq_active0.copy(); g0 = float(model.actuator_gainprm[a, 0]); b0 = float(model.actuator_biasprm[a, 2])
@@ -172,8 +234,9 @@ def run_latch(model, meta, seed=0, record=False):
         if phase in ("hold", "release"):
             peak_open = max(peak_open, s_mm)
         if record and d.time >= nextf:
-            renderer.update_scene(d, camera=cam)
-            frames.append((renderer.render(), d.time, s_mm, pull, states[-1], phase)); nextf += 1.0 / CAPTURE_HZ
+            renderer.update_scene(d, camera=cam_cut); img_cut = renderer.render()
+            renderer.update_scene(d, camera=cam_zoom); img_zoom = renderer.render()
+            frames.append((img_cut, img_zoom, d.time, s_mm, pull, states[-1], phase)); nextf += 1.0 / CAPTURE_HZ
         # transitions
         if phase == "close" and float(d.qpos[iq]) <= 0.0004:
             click_s = s_mm; click_t = d.time
@@ -224,12 +287,14 @@ def _hud(img, lines, colors):
     return np.asarray(im)
 
 
-def _save_video(frames, meta, path):
+def _save_video(frames, meta, path, view="cutaway"):
     slow = f"{CAPTURE_HZ // OUT_FPS}x slow-mo"
+    idx = 0 if view == "cutaway" else 1
     vid = []
-    for img, t, s_mm, pull, state, phase in frames:
+    for fr in frames:
+        img, t, s_mm, pull, state, phase = fr[idx], fr[2], fr[3], fr[4], fr[5], fr[6]
         ptag = {"close": "CLOSE (pushing shut)", "hold": "HOLD (pull 0.5·W_out)", "release": "RELEASE (pull 1.5·W_out)"}[phase]
-        vid.append(_hud(img, [f"P-LATCH  latched_drawer  snap breakaway = SOURCED Bayer W_out={meta['W_out_N']:.1f} N   [{slow}]",
+        vid.append(_hud(img, [f"P-LATCH  latched_drawer  breakaway=SOURCED Bayer W_out={meta['W_out_N']:.1f}N  [{slow}, {view}]",
                               f"T {t:5.2f}s   drawer {s_mm:5.1f} / {meta['stroke_mm']:.0f} mm   {ptag}",
                               f"applied pull {pull:5.1f} N   latch: {state}",
                               "blue=hook  red=receiver  (the click engages, the pop releases)"],
@@ -273,13 +338,19 @@ def main():
     model = mj.MjModel.from_xml_path(str(xf))
     gok, _ = g9_gconv(model)
 
+    # RIG t0 (D22 split): the enlarged barb clears the closing path except the engagement zone.
+    rig_rows, rig_clean, eng_zone = t0_rig(model, meta)
+    # + the compiled-drawer t0 (P1×P2 on the golden geometry) for the record
     from m22_composition.t0_gate import latched_drawer_gate
-    t0_rows, t0_clean = latched_drawer_gate(out / "t0_assets")
+    comp_rows, comp_clean = latched_drawer_gate(out / "t0_assets")
+    t0_rows, t0_clean = rig_rows, (rig_clean and comp_clean)
 
     result = {"decision_row": "D-M22-3 P-LATCH — sourced-threshold latch (close/hold/release)",
               "compile_hash": _hash(), "task": "latched_drawer / m23_latch_physics",
               "sourced_breakaway": {**src, "note": "W_out is SOURCED from the Bayer M3 formula (D3), applied as the rig breakaway — the m19 sourced-parameter pattern; NOT invented"},
-              "t0_gate": {"clean": t0_clean, "judged_per": "D22", "pairs": {k: {"worst_pen_mm": r["worst_pen_mm"], "intended": r["intended"]} for k, r in t0_rows.items()}},
+              "t0_gate": {"clean": t0_clean, "judged_per": "D22 split (barb↔receiver intended at engagement, else clear)",
+                          "engagement_zone_mm": eng_zone, "rig_pairs": {k: r for k, r in rig_rows.items()},
+                          "compiled_drawer_clean": comp_clean},
               "emergent_check": {"status": "deferred", "reason": "the elastic cantilever DEFLECTION over the catch is not rigid-body expressible (D3) — the snap FORCES are Bayer-verified and the breakaway is SOURCED here; the compliant-beam engagement remains Tier-3 deferred", "risk": "beam fatigue / exact click dynamics not physics-verified; the HOLD/RELEASE threshold IS (sourced W_out)"},
               "g9_gconv": bool(gok), "modes": {}}
     per_seed, s0, f0, v0 = [], None, None, None
@@ -294,7 +365,13 @@ def main():
     if s0:
         _plot(s0, v0, meta, out / "t2_latch.png")
         if f0:
-            _save_video(f0, meta, out / "t2_latch.mp4"); result["modes"]["P-LATCH"]["video"] = "t2_latch.mp4"
+            _save_video(f0, meta, out / "t2_latch.mp4", view="cutaway")
+            _save_video(f0, meta, out / "t2_latch_zoom.mp4", view="zoom")   # engagement-zone close-up
+            result["modes"]["P-LATCH"]["video"] = "t2_latch.mp4"
+            result["modes"]["P-LATCH"]["video_zoom"] = "t2_latch_zoom.mp4"
+            # a static close-up PNG of the ENGAGED (latched) state, from the zoom camera
+            eng = next((fr for fr in f0 if fr[6] == "hold"), f0[len(f0) // 2])
+            imageio.imwrite(str(out / "engaged_closeup.png"), eng[1])
     result["verdict"] = result["modes"]["P-LATCH"]["passed"]
     (out / "t2_latch_verdict.json").write_text(json.dumps(result, indent=2))
     print(f"\n=== P-LATCH (sourced-threshold latch) ===  G-CONV {'ok' if gok else 'FAIL'}  seeds {n_pass}/{N_SEEDS} => {'PASS' if n_pass>=SEED_PASS else 'FAIL'}")

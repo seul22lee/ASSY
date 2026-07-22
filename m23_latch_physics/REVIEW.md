@@ -39,14 +39,25 @@ the threshold **discriminates** (holds below, releases above), and it is sourced
 **Discrimination (d) is (b)+(c) jointly:** the same SOURCED threshold both holds the 0.5·W_out pull and
 yields to the 1.5·W_out pull. If the threshold were invented, one of the two would fail.
 
-## Fixture legibility (the reviewer's other note)
+## Fixture legibility (reviewer note + reshape addendum)
 
 A **cutaway cabinet** (floor + far wall + back wall; the near wall omitted so the mechanism is visible) +
-a **drawer TRAY** (not a bare block) + a **blue hook** on the drawer front + a **red receiver** ledge on
-the cabinet. Every geom has a reason — the enclosure, the tray, the hook/receiver (the latch), and one
-marker (the standing rule). The **click** (hook meeting the receiver) and the **pop** (hook separating,
-drawer sliding out) are both visible motions; the HUD shows drawer position, applied pull, and latch state
-(ENGAGED / RELEASED).
+a **drawer TRAY** (not a bare block). The latch is reshaped into a **recognizable snap profile** (the
+review: "no latch-like design visible"): a **blue cantilever ARM** along the drawer front + an angled
+**BARB** (up-hook + ramped nose, ~15–20% of the drawer height) that visibly tucks **UNDER** the cabinet's
+**red ramped RECEIVER ledge** when closed — the two shapes **interlock**. Every geom has a reason.
+
+![engaged latch (close-up)](out/engaged_closeup.png)
+
+Two clips: the wide cutaway [`out/t2_latch.mp4`](out/t2_latch.mp4) and a **ZOOM** framed on the engagement
+zone [`out/t2_latch_zoom.mp4`](out/t2_latch_zoom.mp4) — the **click** (barb snaps under the ledge) and the
+**pop** (barb pulls free) close enough to read the interlock. The HUD shows drawer position, applied pull,
+and latch state (ENGAGED / RELEASED); both motions are visible (damping 150 = a visible ~0.2 s pop).
+
+The reshape is **visual-only** — the declared constraint still carries all the physics, and the P-LATCH
+criteria are **byte-identical before/after** (engage 0.399 mm, hold creep 0.449 mm, release 59.73 mm,
+5/5). The rig **t0 (D22 split)** is CLEAN: `latch×receiver` = +0.93 mm (the intended interlock, engagement
+zone 7.5 mm), every other pair (drawer/latch × cabinet, drawer × receiver) clears the closing path.
 
 ## t0 gate + reproduction
 

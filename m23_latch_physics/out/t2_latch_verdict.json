@@ -1,6 +1,6 @@
 {
   "decision_row": "D-M22-3 P-LATCH \u2014 sourced-threshold latch (close/hold/release)",
-  "compile_hash": "65a7f0c",
+  "compile_hash": "44ac9a7",
   "task": "latched_drawer / m23_latch_physics",
   "sourced_breakaway": {
     "W_out_N": 32.807,
@@ -13,13 +13,35 @@
   },
   "t0_gate": {
     "clean": true,
-    "judged_per": "D22",
-    "pairs": {
-      "P1\u00d7P2": {
-        "worst_pen_mm": 0.0,
+    "judged_per": "D22 split (barb\u2194receiver intended at engagement, else clear)",
+    "engagement_zone_mm": 7.5,
+    "rig_pairs": {
+      "cabinet\u00d7drawer": {
+        "worst_pen_mm": -0.3,
+        "intended": false
+      },
+      "cabinet\u00d7latch": {
+        "worst_pen_mm": -8.9,
+        "intended": false
+      },
+      "cabinet\u00d7receiver": {
+        "worst_pen_mm": -9.5,
+        "intended": false
+      },
+      "drawer\u00d7latch": {
+        "worst_pen_mm": -4.9,
+        "intended": false
+      },
+      "drawer\u00d7receiver": {
+        "worst_pen_mm": -1.215,
+        "intended": false
+      },
+      "latch\u00d7receiver": {
+        "worst_pen_mm": 0.934,
         "intended": true
       }
-    }
+    },
+    "compiled_drawer_clean": true
   },
   "emergent_check": {
     "status": "deferred",
@@ -257,7 +279,8 @@
           "passed": true
         }
       ],
-      "video": "t2_latch.mp4"
+      "video": "t2_latch.mp4",
+      "video_zoom": "t2_latch_zoom.mp4"
     }
   },
   "verdict": true
