@@ -121,9 +121,14 @@ From the card's Bayer functions (`out/latched_drawer_verify.txt`):
 **16.4 N** (< W_out) → the drawer **HOLDS** (stays latched); a pull of **49.2 N** (> W_out) → the drawer
 **OPENS**. This is the translation-path analogue of anchor_easy's latch, verified in both directions.
 
-**Slide travel + pull-out limit — inherited (M10).** Guidance, full stroke, and the retained DoF are
-`slide_rail` P-SLIDE V-A 5/5 + V-B 5/5 (M10, verified). The **pull-out limit is inherent in the slide**:
-the rail has finite length, so the carriage cannot slide past its end — no separate stop needed.
+**Slide travel + pull-out limit — RUN on the compiled drawer (P-SLIDE V-A 5/5).** `p_drawer_va.py`
+compiles the drawer (slide-guided geometry; the snap stays Bayer-formula-level per D-M22-2c), runs the t0
+gate (P1×P2 CLEAN over the 60 mm stroke, in the verdict `t0_gate` field), and drives the drawer OUT: it
+reaches the **full 60 mm stroke** and the **finite rail RETAINS it** at the pull-out end (pull past → peak
+**60.07 mm** ≤ stroke+0.5), all_parts_retained, 5 seeds, marker video
+([`out/t2_latched_drawer.mp4`](out/t2_latched_drawer.mp4)). The pull-out limit is inherent in the finite
+rail — no separate stop. *(This is the assembly run the earlier draft was missing — see the correction
+block.)*
 
 **V-B disposition:** the slide is V-B-verified (M10); the snap's elastic deflection stays formula-only
 (D3, the M3 division). The assembly-level combination gap is stated: the snap engagement under real
@@ -170,9 +175,22 @@ stays HELD with the lite/frontier column until user release.
 | stage | done | evidence |
 |---|---|---|
 | C1 golden IR (q3 answered) | ✅ | `tasks/latched_drawer.json` CLEAN (commit 923e46d) |
-| C2 compile / t0 | 🔶 | slide compiles; the SNAP CARVE needs a receiver wall (DRAFT D-M22-2c) — snap is Bayer-verified per M3, so the compile gap does not block verification |
-| C3 snap verification + slide inherited | ✅ | Bayer W_in/W_out bidirectional (`out/latched_drawer_verify.txt`); slide P-SLIDE inherited (M10) (commit 923e46d) |
-| C4 REVIEW + decisions | ✅ | this section; D-M22-2 (+DRAFT D-M22-2a/2b/2c) |
+| C2 compile + t0 gate | ✅ | drawer COMPILES (slide-guided; snap formula-level per D-M22-2c); t0 gate CLEAN over the 60 mm stroke, in `out/screw_lift_t0.txt`-style + the verdict `t0_gate` field |
+| C3 assembly physics + snap Bayer | ✅ | **P-SLIDE V-A 5/5 on the COMPILED drawer** (full stroke + finite-rail retention, marker video `t2_latched_drawer.mp4`); snap force window Bayer-verified bidirectional (`latched_drawer_verify.txt`) |
+| C4 REVIEW + decisions | ✅ | this section; D-M22-2 (+DRAFT 2a/2b/2c/**3**) |
+
+### Correction block (Task B honesty-retag — the m19 pattern)
+
+An earlier version of Task B **overclaimed**: it cited "slide inherited (M10)" as the assembly-level
+travel evidence and shipped `verify_latched_drawer.py` with **zero physics** and **no t0 table** for the
+drawer assembly — i.e. C2 and C3(c) were not actually executed, yet D-M22-2 read "second composition
+verified." A reviewer caught it. **Fix (no new machinery, no snap carve):** the drawer is now **compiled**
+(slide-guided geometry), the **t0 gate is run** on it (CLEAN, D22-judged, in the verdict's `t0_gate`
+field), and **P-SLIDE V-A 5/5** is run on the compiled drawer — the drawer reaches the full stroke and the
+**finite rail retains it** at the pull-out end (peak 60.07 mm ≤ stroke+0.5), with a marker video (the
+missing artifact). D-M22-2 is amended to its true scope: *verified at IR + t0 + slide-travel physics; snap
+window Bayer-verified (D3); latch ENGAGEMENT physics parked pending **D-M22-3*** (receiver-wall template +
+stop_flange translation generalization). An element-verdict citation is not an assembly run — corrected.
 
 **Findings that make Task B valuable** (the composition surfaced real gaps): stop_flange is rotation-only
 (**D-M22-2b**); the snap carve needs a host wall (**D-M22-2c**); an explicit snap-position link would be

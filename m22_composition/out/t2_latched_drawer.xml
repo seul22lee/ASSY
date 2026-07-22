@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<mujoco model="t2_latched_drawer">
+  <option timestep="0.0001" integrator="implicitfast" gravity="0 0 0"/>
+  <visual>
+    <headlight ambient="0.5 0.5 0.5" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2"/>
+    <global offwidth="1280" offheight="960"/>
+  </visual>
+  <default>
+    <geom density="0" contype="0" conaffinity="0" group="2"/>
+  </default>
+  <asset>
+    <material name="frame" rgba="0.35 0.65 0.85 1"/>
+    <material name="rail" rgba="0.55 0.6 0.65 1"/>
+    <material name="drawer" rgba="0.90 0.62 0.30 1"/>
+    <material name="mk" rgba="0.90 0.10 0.10 1"/>
+    <material name="mkrail" rgba="0.10 0.55 0.95 1"/>
+  </asset>
+  <worldbody>
+    <light pos="0.05 -0.2 0.3" dir="-0.1 0.3 -1" directional="true" diffuse="0.5 0.5 0.5"/>
+    <camera name="side" pos="0.03 -0.16 0.06" xyaxes="1 0 0 0 0.3 0.95"/>
+    <geom name="frame" type="box" pos="0.03 0 0" size="0.04 0.02 0.003" material="frame"/>
+    <geom name="rail" type="box" pos="0.03 0 0.005" size="0.03 0.004 0.002" material="rail"/>
+    <geom name="mk_railend" type="box" pos="0.06 0 0.008" size="0.001 0.006 0.003" material="mkrail"/>
+    <body name="drawer" pos="0 0 0.012">
+      <joint name="drawer_slide" type="slide" axis="1 0 0" pos="0 0 0" limited="true" range="0 0.060000" damping="0.05" solreflimit="0.002 1" solimplimit="0.99 0.9999 1e-5 0.5 2"/>
+      <geom name="drawer_body" type="box" pos="0 0 0" size="0.012 0.014 0.008" material="drawer" mass="0.05"/>
+      <geom name="mk_drawer" type="box" pos="0.013 0 0" size="0.001 0.003 0.005" material="mk"/>
+    </body>
+  </worldbody>
+  <actuator>
+    <velocity name="pull" joint="drawer_slide" kv="25.0"/>
+  </actuator>
+</mujoco>

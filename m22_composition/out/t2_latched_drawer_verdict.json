@@ -1,0 +1,212 @@
+{
+  "decision_row": "D-M22-2 latched_drawer \u2014 slide-travel physics + t0 + Bayer snap (Phase 1)",
+  "compile_hash": "69273da",
+  "task": "latched_drawer",
+  "elements": [
+    "slide_rail(E1) [carved+physics]",
+    "snap_hook(E2) [IR + Bayer formula, D3]"
+  ],
+  "t0_gate": {
+    "clean": true,
+    "judged_per": "D22",
+    "poses_mm": [
+      0,
+      15,
+      30,
+      45,
+      60
+    ],
+    "pairs": {
+      "P1\u00d7P2": {
+        "worst_pen_mm": 0.0,
+        "intended": true
+      }
+    }
+  },
+  "snap_bayer": {
+    "note": "W_in/W_out bidirectional in verify_latched_drawer.py (M3 division, D3)",
+    "W_in_N": 18.75,
+    "W_out_N": 32.81,
+    "hand_releasable": true
+  },
+  "g9_gconv": true,
+  "modes": {
+    "P-SLIDE": {
+      "ran": true,
+      "n_seeds": 5,
+      "seeds_passed": 5,
+      "passed": true,
+      "criteria_seed0": {
+        "reaches_full_stroke": {
+          "value": 60.07,
+          "threshold": 60.0,
+          "pass": true
+        },
+        "finite_rail_retains (x \u2264 stroke+0.5)": {
+          "value": 60.072,
+          "threshold": 60.5,
+          "pass": true
+        },
+        "converged (no blow-up)": {
+          "value": false,
+          "threshold": false,
+          "pass": true
+        },
+        "all_parts_retained": {
+          "value": true,
+          "threshold": true,
+          "pass": true
+        }
+      },
+      "per_seed": [
+        {
+          "ran": true,
+          "seed": 0,
+          "diverged": false,
+          "peak_travel_mm": 60.072,
+          "criteria": {
+            "reaches_full_stroke": {
+              "value": 60.07,
+              "threshold": 60.0,
+              "pass": true
+            },
+            "finite_rail_retains (x \u2264 stroke+0.5)": {
+              "value": 60.072,
+              "threshold": 60.5,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "seed": 1,
+          "diverged": false,
+          "peak_travel_mm": 60.076,
+          "criteria": {
+            "reaches_full_stroke": {
+              "value": 60.08,
+              "threshold": 60.0,
+              "pass": true
+            },
+            "finite_rail_retains (x \u2264 stroke+0.5)": {
+              "value": 60.076,
+              "threshold": 60.5,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "seed": 2,
+          "diverged": false,
+          "peak_travel_mm": 60.075,
+          "criteria": {
+            "reaches_full_stroke": {
+              "value": 60.08,
+              "threshold": 60.0,
+              "pass": true
+            },
+            "finite_rail_retains (x \u2264 stroke+0.5)": {
+              "value": 60.075,
+              "threshold": 60.5,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "seed": 3,
+          "diverged": false,
+          "peak_travel_mm": 60.071,
+          "criteria": {
+            "reaches_full_stroke": {
+              "value": 60.07,
+              "threshold": 60.0,
+              "pass": true
+            },
+            "finite_rail_retains (x \u2264 stroke+0.5)": {
+              "value": 60.071,
+              "threshold": 60.5,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "seed": 4,
+          "diverged": false,
+          "peak_travel_mm": 60.07,
+          "criteria": {
+            "reaches_full_stroke": {
+              "value": 60.07,
+              "threshold": 60.0,
+              "pass": true
+            },
+            "finite_rail_retains (x \u2264 stroke+0.5)": {
+              "value": 60.07,
+              "threshold": 60.5,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "video": "t2_latched_drawer.mp4"
+    }
+  },
+  "verdict": true
+}

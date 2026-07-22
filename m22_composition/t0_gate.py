@@ -79,6 +79,18 @@ def screw_lift_gate(tmpdir: Path):
     return t0_gate(plan, "P2", np.array([0.0, 0.0, 1.0]), sweep, intended, tmpdir)
 
 
+def latched_drawer_gate(tmpdir: Path):
+    from tasks.build_goldens import latched_drawer
+    plan = latched_drawer()
+    # COMPILED DRAWER = slide-guided geometry only. The snap stays FORMULA-level (DRAFT D-M22-2c: its
+    # carve needs a receiver wall, parked); the pull-out limit is the finite rail (DRAFT D-M22-2b).
+    plan.elements = [e for e in plan.elements if e.card_ref != "snap_hook_cantilever"]
+    plan.bindings = [b for b in plan.bindings if b.element_id != "E2"]
+    sweep = [0, 15, 30, 45, 60]                      # the drawer (P2) travels +X over the 60 mm stroke
+    intended = {frozenset({"P1", "P2"})}             # drawer rides the rail (the retained DoF, clearance)
+    return t0_gate(plan, "P2", np.array([1.0, 0.0, 0.0]), sweep, intended, tmpdir)
+
+
 def _print(name, rows, clean):
     print(f"\n=== t0 interference gate: {name} (compiled assembly, swept, per D22) ===")
     print(f"  {'piece pair':<14s}{'worst pen (mm)':>16s}   kind")
@@ -94,6 +106,8 @@ if __name__ == "__main__":
     tmp = Path(__file__).resolve().parent / "out" / "t0_assets"
     if which == "screw_lift":
         rows, clean = screw_lift_gate(tmp)
+    elif which == "latched_drawer":
+        rows, clean = latched_drawer_gate(tmp)
     else:
         raise SystemExit(f"unknown task {which}")
     _print(which, rows, clean)
