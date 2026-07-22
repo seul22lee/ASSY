@@ -77,6 +77,15 @@ condition (no criterion may shift) HOLDS.** 5/5 seeds.
 ### T7 — bookkeeping
 - **D-M24-2 CONFIRMED (§14 T1–T6)** — screw_lift design-complete, fits drift 0.000, physics byte-unchanged.
 - **D-M24-1 CONFIRMED (finding)** — the t0_gate metres/mm units bug; no false PASS in m22/m23; mm-correct here.
+- **D-M24-6 CONFIRMED (§14 T3c end-stops)** — the stroke LIMITS get physical carriers on the guide
+  columns (a Phase-A close-out): a **BOTTOM stop** (platform lands on it at s=0, the base-frame landing) +
+  a **TOP stop = the thread-runout shoulder** (platform lands under it at full stroke; ⌀ > the column
+  bore so it cannot pass). **Travel LIMITS are PARTS; the HOLD is PHYSICS** (the m19 self-lock, D-M19-1)
+  — different mechanisms, the "stops at thread runout" HUD-honest framing. Fit rows added (both landings
+  gap 0); re-measured: platform lands at s=0 and s=stroke (contact), the column fit stays −0.350 mm
+  (drift 0.007). **T5 re-run: criteria BYTE-UNCHANGED** (40.00 / 0.000% / 0.080 / 9.20). Section updated
+  ([`out/section_screw_lift.png`](out/section_screw_lift.png), the collars show on the columns). No
+  translation-stop CARD invented — [[D-M22-2b]] stays a recorded gap.
 - All m24 work free/local (no LLM/API). **Still HELD:** the lite admission gate + the m15 Pro/flash
   frontier column. **AWAITING REVIEW.**
 

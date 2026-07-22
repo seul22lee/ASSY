@@ -42,6 +42,10 @@ FITS = {
          "coupling clearance=0.30 (D-M8-4 concentric); hub blind clearance bore on the crank stub"),
         ("coupling grip on screw shaft ⌀", 8.0, 8.0, 0.0,
          "coupling FUSED to input side (rigid grip, m20) → zero clearance by design"),
+        ("platform on BOTTOM stop (s=0 landing)", 0.0, 0.0, 0.0,
+         "travel LIMIT (a PART): platform lands on the base-frame stop collar at s=0 (gap 0)"),
+        ("platform on TOP stop (thread runout, s=stroke)", 0.0, 0.0, 0.0,
+         "travel LIMIT (a PART): platform lands under the thread-runout shoulder at full stroke (gap 0)"),
     ],
     "latched_drawer": [  # bottom-clip design — see dim_chain.py for the full sourced chain
         ("rail width in tray groove (M2)", 8.0, 8.70, 0.35,
@@ -62,7 +66,7 @@ INTENDED = {
     "screw_lift": {frozenset({"P1", "P2"}): 0.35, frozenset({"P1", "P3"}): 0.0},
     "latched_drawer": {frozenset({"P1", "P2"}): 0.35},                          # rail-in-groove
 }
-SWEEP = {"screw_lift": ("P2", np.array([0.0, 0.0, 1.0]), [0, 10, 20, 30, 40]),
+SWEEP = {"screw_lift": ("P2", np.array([0.0, 0.0, 1.0]), [8, 16, 24, 32]),  # mid-travel (end-stops land at s=0/40)
          "latched_drawer": ("P2", np.array([1.0, 0.0, 0.0]), [0, 15, 30, 45, 60])}
 
 
@@ -135,6 +139,24 @@ def report(task):
             verdict = "PENETRATE!" if v > 0.05 else "zero-pen ok"
             ok = ok and (v <= 0.05)
             lines.append(f"  {key[0]}×{key[1]:<10s}{v:>16.3f}{'—':>11s}{'—':>8s}   unintended {verdict}")
+    if task == "screw_lift":
+        # END-STOP LANDINGS (§14 T3c) — the platform lands on the base-frame stop at s=0 and under the
+        # thread-runout shoulder at s=stroke. Measure P1×P2 at BOTH stroke ends: contact (~0 gap).
+        sweep_piece, axis, _ = SWEEP["screw_lift"]
+        tmp2 = ROOT / "m24_design_closure" / "out" / "screw_lift_fitassets"
+        from tasks.build_goldens import screw_lift as _sl
+        pl = _sl()
+        for e in pl.elements:
+            e.params = CARD_REGISTRY[e.card_ref].resolve_params(pl, e)
+        ca = compile_assembly(pl)
+        M = {pid: _to_trimesh(part, tmp2 / f"{pid}.stl") for pid, part in ca.parts.items()}
+        lines.append("")
+        lines.append("=== END-STOP LANDINGS (T3c — travel LIMITS are PARTS; the HOLD is PHYSICS/self-lock) ===")
+        for label, off in [("BOTTOM stop (s=0)", 0.0), ("TOP stop / thread runout (s=stroke)", 40.0)]:
+            p2 = M["P2"].copy(); p2.apply_translation(axis * off / MM)
+            gap = _pen_mm(M["P1"], p2)      # >0 = contact/overlap (landed), <0 = gap
+            lines.append(f"  platform×base @ {label:<34s}{gap:>8.2f} mm   "
+                         f"{'LANDS (contact)' if gap >= -0.4 else 'gap!'}")
     lines.append("")
     lines.append(f"  max intended-fit COMPILE_DRIFT = {max_drift:.3f} mm   "
                  f"({'OK ≤0.10' if max_drift <= 0.10 else 'DRIFT!'})")

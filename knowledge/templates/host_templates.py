@@ -350,7 +350,8 @@ def screw_base(**params) -> TemplateResult:
     them the slide DoF has no geometry). Columns rise to `col_top` so they span the full lift travel.
     m19 passes no `frame`, so its plate is byte-identical."""
     p = {"base_l": 60.0, "base_w": 60.0, "base_t": 4.0, "frame": False,
-         "boss_d": 16.0, "boss_h": 10.0, "col_d": 6.0, "col_y": 15.0, "col_top": 82.0, **params}
+         "boss_d": 16.0, "boss_h": 10.0, "col_d": 6.0, "col_y": 15.0, "col_top": 82.0,
+         "end_stops": False, "stop_bot_z": 22.0, "stop_top_z": 80.0, "stop_d": 10.0, **params}
     L, W, T = p["base_l"], p["base_w"], p["base_t"]
     part = Box(L, W, T, align=(Align.CENTER, Align.CENTER, Align.MIN))
     if p["frame"]:
@@ -362,12 +363,24 @@ def screw_base(**params) -> TemplateResult:
         for sy in (-1, 1):
             part += Location((0, sy * p["col_y"], T - 0.5)) * Cylinder(
                 p["col_d"] / 2, p["col_top"] - T + 0.5, align=(Align.CENTER, Align.CENTER, Align.MIN))
+        # m24 Phase A (§14 T3c) travel-limit PARTS (distinct from the self-lock HOLD, which is physics):
+        # a BOTTOM stop collar (the platform lands on it at s=0 — the base-frame landing) and a TOP stop
+        # collar (⌀ > the platform's column bore, so the platform cannot rise past it — the thread-runout
+        # shoulder at full stroke). ⌀stop_d rings on each column; the platform bore (⌀col_d+2·clr) hits them.
+        if p["end_stops"]:
+            for sy in (-1, 1):
+                part += Location((0, sy * p["col_y"], p["stop_bot_z"] - 2.0)) * Cylinder(
+                    p["stop_d"] / 2, 2.0, align=(Align.CENTER, Align.CENTER, Align.MIN))
+                part += Location((0, sy * p["col_y"], p["stop_top_z"])) * Cylinder(
+                    p["stop_d"] / 2, 2.0, align=(Align.CENTER, Align.CENTER, Align.MIN))
     anchors = {
         "screw_axis": AnchorGeom("screw_axis", "axis", (0.0, 0.0, T), (0, 0, 1)),
         "travel_edge": AnchorGeom("travel_edge", "axis", (0.0, 0.0, T), (0, 0, 1)),
         # the two column axes (platform bores align to these — the fit-schedule carrier rows)
         "guide_col_L": AnchorGeom("guide_col_L", "axis", (0.0, -p["col_y"], T), (0, 0, 1)),
         "guide_col_R": AnchorGeom("guide_col_R", "axis", (0.0, p["col_y"], T), (0, 0, 1)),
+        "bottom_stop": AnchorGeom("bottom_stop", "face", (0.0, 0.0, p["stop_bot_z"]), (0, 0, 1)),
+        "top_stop": AnchorGeom("top_stop", "face", (0.0, 0.0, p["stop_top_z"]), (0, 0, -1)),
     }
     return TemplateResult(part=part, anchors=anchors, params=p)
 

@@ -1035,11 +1035,17 @@ def screw_lift() -> DesignPlan:
     # spanning the lift travel). col_y/col_d feed the platform's column-bore fit (fit schedule).
     col_d, col_y, col_clear = 6.0, 15.0, 0.35
     col_top = round(30.0 + stroke + 12.0, 1)         # spans platform travel (nut_z + stroke + margin)
+    # m24 Phase A (§14 T3c): the stroke LIMITS get physical carriers (PARTS, distinct from the self-lock
+    # HOLD which is physics): a BOTTOM stop (platform lands on it at s=0) + a TOP stop (thread-runout
+    # shoulder the platform lands under at full stroke). stop_bot at the platform's s=0 bottom (z=22),
+    # stop_top at its full-stroke top (nut_z + nut_t + stroke = 30+10+40 = 80).
     screw_base_t = HostTemplate(template_ref="screw_base",
         params={"base_l": 60.0, "base_w": 60.0, "base_t": 4.0, "frame": True,
-                "boss_d": 16.0, "boss_h": 10.0, "col_d": col_d, "col_y": col_y, "col_top": col_top},
+                "boss_d": 16.0, "boss_h": 10.0, "col_d": col_d, "col_y": col_y, "col_top": col_top,
+                "end_stops": True, "stop_bot_z": 22.0, "stop_top_z": 80.0, "stop_d": 10.0},
         anchors=[Anchor(name="screw_axis", kind="axis"), Anchor(name="travel_edge", kind="axis"),
-                 Anchor(name="guide_col_L", kind="axis"), Anchor(name="guide_col_R", kind="axis")])
+                 Anchor(name="guide_col_L", kind="axis"), Anchor(name="guide_col_R", kind="axis"),
+                 Anchor(name="bottom_stop", kind="face"), Anchor(name="top_stop", kind="face")])
     # platform widened to 44 so both column bores sit fully inside; carries a nut BOSS (thread
     # engagement length) + two COLUMN BORES (⌀ = col_d + 2·col_clear, the slide fit onto the columns).
     platform_t = HostTemplate(template_ref="nut_carriage",

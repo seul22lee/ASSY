@@ -1,6 +1,6 @@
 {
   "decision_row": "D-M24-2 screw_lift T5 \u2014 visual bodies = compiled part meshes (physics-identical)",
-  "compile_hash": "520d8ef",
+  "compile_hash": "6298946",
   "task": "screw_lift",
   "physics_identical_bare_vs_mesh": true,
   "visual_bodies": {

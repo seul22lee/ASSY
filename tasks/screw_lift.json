@@ -150,7 +150,11 @@
         "boss_h": 10.0,
         "col_d": 6.0,
         "col_y": 15.0,
-        "col_top": 82.0
+        "col_top": 82.0,
+        "end_stops": 1.0,
+        "stop_bot_z": 22.0,
+        "stop_top_z": 80.0,
+        "stop_d": 10.0
       },
       "is_base": true
     },
@@ -215,6 +219,14 @@
         {
           "name": "guide_col_R",
           "kind": "axis"
+        },
+        {
+          "name": "bottom_stop",
+          "kind": "face"
+        },
+        {
+          "name": "top_stop",
+          "kind": "face"
         }
       ],
       "params": {
@@ -226,7 +238,11 @@
         "boss_h": 10.0,
         "col_d": 6.0,
         "col_y": 15.0,
-        "col_top": 82.0
+        "col_top": 82.0,
+        "end_stops": 1.0,
+        "stop_bot_z": 22.0,
+        "stop_top_z": 80.0,
+        "stop_d": 10.0
       }
     },
     {

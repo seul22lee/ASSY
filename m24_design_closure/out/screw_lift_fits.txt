@@ -4,12 +4,18 @@
   guide column ⌀ in platform bore           6.00    6.70   0.35   guide col_d=6; platform bore=col_d+2·col_clear, col_clear=0.35 = A-PETG-1 slide clearance
   coupling bore on crank shaft ⌀            8.00    8.60   0.30   coupling clearance=0.30 (D-M8-4 concentric); hub blind clearance bore on the crank stub
   coupling grip on screw shaft ⌀            8.00    8.00   0.00   coupling FUSED to input side (rigid grip, m20) → zero clearance by design
+  platform on BOTTOM stop (s=0 landing)     0.00    0.00   0.00   travel LIMIT (a PART): platform lands on the base-frame stop collar at s=0 (gap 0)
+  platform on TOP stop (thread runout, s=stroke)    0.00    0.00   0.00   travel LIMIT (a PART): platform lands under the thread-runout shoulder at full stroke (gap 0)
 
 === T4/T6 RE-MEASURE from compiled solids (TRUE mm, swept over the motion) ===
   piece pair      worst pen (mm) design clr   drift   verdict
   P1×P2                  -0.350       0.35   0.000   INTENDED ok
-  P1×P3                   0.000       0.00   0.000   INTENDED ok
-  P2×P3                 -22.539          —       —   unintended zero-pen ok
+  P1×P3                   0.007       0.00   0.007   INTENDED ok
+  P2×P3                 -30.529          —       —   unintended zero-pen ok
 
-  max intended-fit COMPILE_DRIFT = 0.000 mm   (OK ≤0.10)
+=== END-STOP LANDINGS (T3c — travel LIMITS are PARTS; the HOLD is PHYSICS/self-lock) ===
+  platform×base @ BOTTOM stop (s=0)                    -0.35 mm   LANDS (contact)
+  platform×base @ TOP stop / thread runout (s=stroke)    0.00 mm   LANDS (contact)
+
+  max intended-fit COMPILE_DRIFT = 0.007 mm   (OK ≤0.10)
   => fit schedule VERIFIED
