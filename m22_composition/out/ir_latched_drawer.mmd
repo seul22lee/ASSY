@@ -1,0 +1,44 @@
+flowchart LR
+  %% latched_drawer
+  FN0("🎯 guide: drawer"):::fn
+  FN1("🎯 retain: drawer"):::fn
+  P1["⏚ P1 base\nslide_base"]:::piece
+  P2["P2 drawer\nslide_carriage"]:::piece
+  E1("E1\nslide_rail"):::elem
+  E2("E2\nsnap_hook_cantilever"):::elem
+  B1["B1 · use\ntranslation ≥60mm"]:::use
+  B2["B2 · static\nsnap_event [15,60]N"]:::static
+  B3["B3 · assembly\ntranslation"]:::assembly
+  B4["B4 · use\nfixed"]:::use
+  B5["B5 · assembly\ntranslation"]:::assembly
+  B6["B6 · use\nfixed"]:::use
+  P_SLIDE_VA_E1["🔬 P-SLIDE-VA-E1\n2 gates / 0 obs"]:::proto
+  P_SLIDE_VB_E1["🔬 P-SLIDE-VB-E1\n2 gates / 0 obs"]:::proto
+  PR_KEEPOUT_E1["🔬 PR-KEEPOUT-E1\n1 gates / 0 obs"]:::proto
+  PR_LATCH_E2["🔬 PR-LATCH-E2\n2 gates / 0 obs"]:::proto
+  PR_SWEEP_E2["🔬 PR-SWEEP-E2\n1 gates / 0 obs"]:::proto
+  E1 -->|realizes| B1
+  B1 -->|verified_by| P_SLIDE_VA_E1
+  E2 -->|realizes| B2
+  B2 -->|verified_by| PR_LATCH
+  E1 -.->|imposes| B3
+  E1 -.->|imposes| B4
+  B4 -->|verified_by| PR_KEEPOUT_E1
+  E2 -.->|imposes| B5
+  E2 -.->|imposes| B6
+  B6 -->|verified_by| PR_SWEEP_E2
+  E1 ---|rail_mount@rail_face| P1
+  E1 ---|carriage_mount@groove_face| P2
+  E1 ---|travel_axis@travel_edge| P1
+  E2 ---|beam_root@beam_root| P2
+  E2 ---|catch_window@catch_window| P1
+  classDef hardware fill:#cbd5e0,stroke:#2d3748,stroke-width:2px;
+  classDef arule fill:#fefcbf,stroke:#b7791f,stroke-width:2px;
+  classDef use fill:#bee3f8,stroke:#3182ce;
+  classDef assembly fill:#fed7aa,stroke:#dd6b20;
+  classDef static fill:#e2e8f0,stroke:#718096;
+  classDef elem fill:#c6f6d5,stroke:#38a169;
+  classDef feat fill:#fefcbf,stroke:#d69e2e;
+  classDef piece fill:#edf2f7,stroke:#4a5568;
+  classDef proto fill:#ffffff,stroke:#805ad5;
+  classDef fn fill:#ebf8ff,stroke:#3182ce;

@@ -717,3 +717,55 @@ begins. This formalizes m10 (`slide_rail`, D-D-1), m11 (`rack_pinion`, D-D-2), m
 - **S6 — REVIEW + decisions + STATUS.** **DoD:** `mN_<elem>/REVIEW.md` (outcome first, per-stage
   evidence with paths, plots/videos inline, the t0 table); the D-track decision row (CONFIRMED) +
   any DRAFT rows; the STATUS milestone row; full suite green (report the count). Commit per stage.
+
+**Changelog (this revision):** added §14 (Task D-track — the composition/assembly-task standard, T1–T7 +
+T5v). It raises the bar the m22/m23 review exposed as a recurring failure chain — *missing assembly
+physics → missing t0 → missing latch → illegible geometry → missing IR diagrams → primitive-proxy
+rendering → FUNCTION WITHOUT DESIGN* — to two standards: **design completeness** (parts derive their
+dimensions from their mates; every joint has a physical carrier; fits are scheduled + verified) and
+**full reviewer visualization** (IR diagrams, section views, transparency, engagement close-ups — the
+m2_ontology standard extended to assemblies). Recorded as **D-M24-0**.
+
+## 14. Task D-track (per-composition/assembly-task standard)
+
+A TASK (a command → a working assembly of verified elements; the m8/m13 anchor-task lineage, NOT the
+§13 element D-track) passes a **seven-stage T-track**. Stages are ordered; none may be skipped; nothing
+is CLOSED without the reviewer seeing it. The two standards are **design completeness** and **full
+reviewer visualization**.
+
+- **T1 — GOLDEN IR + IR DIAGRAM.** `tasks/<task>.json` by construction; the ontology questions answered
+  in the REVIEW; gaps → DRAFT rows. **DoD:** the deliverable INCLUDES `ir_<task>.mmd` + `.svg` rendered
+  by the reusable tool `tools/render_ir.py` (the m2_ontology conventions: functions → behaviors →
+  pieces(roles) → elements(card ids) → bindings → protocols). *An IR without its diagram fails T1.*
+- **T2 — VALIDATE.** CLEAN through the full validator suite.
+- **T3 — DESIGN CLOSURE (the design stage).**
+  - **(a)** Every physical thing that appears on film is a compiled **PIECE** in the IR — no MJCF
+    world-geometry stand-ins for parts (a cabinet is a piece; frames, guides, enclosures are pieces).
+  - **(b)** Every mating dimension **DERIVES** from its mate + the card's fit formulas (the lid-fits-box
+    discipline: drawer width = opening − 2·clearance; bore = shaft + fit). **Deliverable: a FIT
+    SCHEDULE** per task — every mating interface as a row {nominal, clearance, source (card §/formula)}.
+    *Dimensions picked independently of their mate = T3 failure.*
+  - **(c)** Every declared joint names its **PHYSICAL CARRIER** in the design (jack slide ← guide
+    columns; screw hinge ← base bearing boss; drawer slide ← rail on the cabinet; latch constraint ←
+    carved cantilever+barb on the drawer + receiver ledge on the cabinet). *A joint with no carrier =
+    T3 failure.*
+  - **(d)** Elements **IMPOSE + CARVE** their features into bound pieces (nut boss/bore per the
+    lead_screw card; coupling bores to both shafts; snap cantilever + receiver).
+- **T4 — t0 GATE.** The intended pairs ARE the fit schedule's rows: t0 verifies each designed clearance,
+  pair × pose over the motion range, D22-judged, `t0_gate` field in the verdict JSON.
+- **T5 — PHYSICS.** Declared-joint V-A (sourced parameters, discrimination, 5 seeds, D-M19-2 clock),
+  with the **visual bodies = the COMPILED PART MESHES** (via `verify/t2_physics/mjcf.py`, collision off;
+  a physics-identical assert vs the bare declared-joint rig, printed). The standing video rule (markers,
+  HUD incl. phase/state lines, full criterion window with quiet phases labelled).
+- **T5v — REVIEWER VISUALIZATION PACK** (the m2_ontology standard, extended; every item a deliverable):
+  (1) `ir_<task>.svg` — the design as a graph (from T1); (2) an assembly **portrait** PNG (posed,
+  captioned); (3) **SECTION VIEW** PNGs — ≥1 cut plane through each mating interface (nut boss on the
+  screw; drawer inside the cabinet opening; barb under the ledge), rendered from the **compiled solids**
+  (build123d/trimesh section — real geometry, not rig sketches), with the designed clearance **annotated**
+  on the image; (4) a **TRANSPARENCY/CUTAWAY** video (occluders α≈0.35 or cut away) + a **ZOOM** clip of
+  each engagement event; (5) an **EXPLODED-VIEW** PNG (pieces separated along assembly axes, labelled).
+  All embedded in the task REVIEW, m2-style.
+- **T6 — NUMERIC REPRODUCTION.** The composed rule chain end-to-end + the fit schedule **RE-MEASURED**
+  from ⑥ geometry (COMPILE_DRIFT discipline applied to fits).
+- **T7 — REVIEW + decision rows + STATUS + push.** AWAITING REVIEW; CLOSED only after reviewer
+  confirmation.

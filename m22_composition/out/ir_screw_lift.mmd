@@ -1,0 +1,39 @@
+flowchart LR
+  %% screw_lift
+  FN0("🎯 raise: platform"):::fn
+  FN1("🎯 hold: platform"):::fn
+  P1["⏚ P1 base\nscrew_base"]:::piece
+  P2["P2 platform\nnut_carriage"]:::piece
+  P3["P3 crank\nshaft_carrier_out"]:::piece
+  E1("E1\ncoupling"):::elem
+  E2("E2\nlead_screw"):::elem
+  B0["B0 · use\nrotation"]:::use
+  B1["B1 · use\nrot_to_trans ≥40mm"]:::use
+  B2["B2 · static\nfixed"]:::static
+  B4["B4 · assembly\ntranslation"]:::assembly
+  B5["B5 · assembly\ntranslation"]:::assembly
+  P_COUPLING_VA_E1["🔬 P-COUPLING-VA-E1\n2 gates / 0 obs"]:::proto
+  P_SCREW_VA_E2["🔬 P-SCREW-VA-E2\n2 gates / 0 obs"]:::proto
+  P_LIFT_VA["🔬 P-LIFT-VA\n2 gates / 0 obs"]:::proto
+  E1 -->|realizes| B0
+  B0 -->|verified_by| P_COUPLING_VA_E1
+  E2 -->|realizes| B1
+  B1 -->|verified_by| P_LIFT_VA
+  E2 -->|realizes| B2
+  E1 -.->|imposes| B4
+  E2 -.->|imposes| B5
+  E1 ---|shaft_in@shaft_out| P3
+  E1 ---|shaft_out@screw_axis| P1
+  E2 ---|screw_axis@screw_axis| P1
+  E2 ---|nut_mount@nut_mount| P2
+  E2 ---|travel_axis@travel_axis| P2
+  classDef hardware fill:#cbd5e0,stroke:#2d3748,stroke-width:2px;
+  classDef arule fill:#fefcbf,stroke:#b7791f,stroke-width:2px;
+  classDef use fill:#bee3f8,stroke:#3182ce;
+  classDef assembly fill:#fed7aa,stroke:#dd6b20;
+  classDef static fill:#e2e8f0,stroke:#718096;
+  classDef elem fill:#c6f6d5,stroke:#38a169;
+  classDef feat fill:#fefcbf,stroke:#d69e2e;
+  classDef piece fill:#edf2f7,stroke:#4a5568;
+  classDef proto fill:#ffffff,stroke:#805ad5;
+  classDef fn fill:#ebf8ff,stroke:#3182ce;
