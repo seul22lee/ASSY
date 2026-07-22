@@ -82,68 +82,78 @@ condition (no criterion may shift) HOLDS.** 5/5 seeds.
 
 ---
 
-## B · latched_drawer (+m23) — §14 T1–T7 (AWAITING REVIEW)
+## B · latched_drawer — §14 T1–T7 (BOTTOM-CLIP COMPLETE REDESIGN, Phase A · AWAITING REVIEW)
 
-**The design gap the audit named:** the cabinet was MJCF world-geometry (not a piece), the drawer had
-no compiled cantilever/barb, and the flat slide_base had no receiver wall — **DRAFT D-M22-2c** parked
-exactly this (the snap carve needs a mating receiver wall + growth-aligned anchors; a naive carve HANGS;
-the `snap_hook_cantilever` card carve is a `_not_yet` stub).
+**Supersedes the receiver-ledge Task B.** Per the approved design plan: a desktop parts-drawer on a
+centre T-rail, held shut by a cantilever CLIP snapping over a floor BUMP, entirely hidden under the tray
+(**zero protrusion**); pull to release. Archetype committed BEFORE geometry (§14 **T3-ARCH**, D-M24-4):
+[`T3_ARCH_latched_drawer.md`](T3_ARCH_latched_drawer.md).
 
-### T3 — design closure (host templates; closes D-M22-2c at the template level)
-- **`latch_cabinet`** (is_base) — a designed box shell: floor + back(−X) + two side walls(±Y) + a
-  front lintel carrying a downward **RECEIVER LEDGE** the barb tucks under.
-- **`latch_drawer`** — a tray (floor + back + two side walls + front panel) with a **carved CANTILEVER
-  arm + up-hook ramped BARB** rooted in the front panel (one solid).
-- **`latch_design_parts()`** — the four compiled sub-solids (cabinet_body, receiver, drawer_body, barb)
-  for D22-grouped t0 + per-body meshes.
-- Golden rebound P1→latch_cabinet (role **cabinet**) / P2→latch_drawer; `tray_w` = opening 28 − 2·1.0;
-  validator-CLEAN; IR regenerated.
-- **The honest split:** the snap GEOMETRY is now a compiled host-template solid (D-M22-2c closed); the
-  snap FORCES stay Bayer-sourced (M3/D3) — the card carve remains a stub, recorded not faked. The
-  slide_rail rail-in-groove fit stays inherited (m22 P-SLIDE 5/5).
+### T3b — DIMENSION CHAIN / fit schedule · [`out/latched_drawer_chain.txt`](out/latched_drawer_chain.txt)
+Three free inputs (W_i=60 / D=60 / H=25); everything else DERIVES ([`dim_chain.py`](dim_chain.py)):
 
-### T3b/T4/T6 — fit schedule + re-measure · [`out/latched_drawer_fits.txt`](out/latched_drawer_fits.txt)
-
-| interface | clearance | source |
+| quantity | value | source |
 |---|---|---|
-| rail ⌀/width in carriage groove | 0.35 | slide_rail rail_w=8; groove=rail_w+2·clearance (A-PETG-1, M10) |
-| barb tip under receiver ledge (engagement) | 0.30 | snap_hook interlock; approach clearance A-PETG-1 (Bayer forces, D3) |
-| drawer body in cabinet opening | 1.00 | tray_w = cabinet inner opening − 2·1.0 (drawer-fits-opening) |
+| tray W_t / opening W_o / cabinet W_c | 64.8 / 66.8 / 71.6 | +2·wall, +2·side_gap, +2·wall |
+| front panel W_p | 74.8 | W_o + 2·proud(4) — lands on the face frame |
+| groove width | 8.7 | rail_w 8 + 2·clr 0.35 (A-PETG-1, M10) |
+| **CLIP (inverse Bayer)** L=12, b=6, undercut 1.35 | h_root **2.325** | solve_h = C·ε·L²/y |
+| CLIP W_out / W_in | **30.38 N** / 17.36 N | P·fig18(0.30,45°) / (30°); W_in ≤ 20 hand-insertable |
+| bump height | 1.70 | undercut 1.35 + clr 0.35 |
+| front-panel-to-face gap | 0 | the LANDING (closed hard stop, M1) |
+| stroke | 50 | D − margin |
 
-**Re-measured from the 4 compiled sub-solids (TRUE mm, D22-grouped, swept):** cabinet×drawer = **−1.000
-mm** (= the 1.0 mm side gap exactly) · receiver×barb = **+0.608 mm** (the INTENDED interlock; 5 mm
-engagement zone) · every other cross-group pair clears → **VERIFIED**.
+### T4/T6 — t0 + reproduction · [`out/latched_drawer_fits.txt`](out/latched_drawer_fits.txt) · [`out/reproduce_latched_drawer.txt`](out/reproduce_latched_drawer.txt)
+D22-grouped over the stroke from the 4 compiled sub-solids: **clip×bump +0.744 mm INTENDED catch** (12 mm
+zone), **cabinet×drawer 0.000 mm INTENDED landing** (panel on face frame), clip & tray clear the cabinet
+→ VERIFIED. Reproduction re-measures the compiled solids vs the chain (cabinet W_c, panel W_p, bump
+height) → **max COMPILE_DRIFT 0.000 mm**, and reproduces W_out=30.38 N independently → CLEAN.
 
-### T5 — physics from the compiled meshes · [`out/t2_latch_mesh_verdict.json`](out/t2_latch_mesh_verdict.json)
+### T5 — physics from the compiled meshes · [`out/t2_ld_mesh_verdict.json`](out/t2_ld_mesh_verdict.json)
+The m23 sourced-latch pattern with the **DESIGNED breakaway W_out=30.38 N** (fit chain, not the m23
+fixture) and the **closed stop = the front-panel-on-face-frame landing** (the slide lower limit at s=0, a
+PART not a drive-off). Visuals = the compiled sub-solid meshes (drawer inertia pinned from the mesh).
+**PHYSICS-IDENTICAL ASSERT: bare declared-latch rig vs mesh rig → criteria BYTE-IDENTICAL**; 5/5 seeds.
 
-The m23 latch physics is kept EXACTLY (the drawer slide + the rigid latch equality whose **breakaway =
-SOURCED Bayer W_out = 32.807 N**; the drawer mass+inertia **pinned via `<inertial>`**). Visuals become
-the compiled sub-solid meshes (cabinet body + receiver → world, translucent cutaway; drawer body + barb
-→ the slide body).
+**Criteria OLD (m23 fixture) vs NEW (bottom-clip, designed) — the change is legitimate (W_out designed,
+stroke 60→50):**
 
-| criterion | bare | mesh | recorded m23 |
+| criterion | m23 fixture | bottom-clip designed | chain |
 |---|---|---|---|
-| CLOSE engages at closed | 0.399 mm | 0.399 mm | 0.399 |
-| HOLD at 0.5·W_out (16.4 N) | 0.449 mm | 0.449 mm | 0.449 |
-| RELEASE at 1.5·W_out (49.2 N) → rail | 59.73 mm | 59.73 mm | 59.73 |
-
-**Criteria BYTE-IDENTICAL bare vs mesh, and every number matches the recorded m23 verdict — the T5 STOP
-condition HOLDS.** 5/5 seeds.
+| W_out | 32.81 N | **30.38 N** | inverse Bayer: undercut 1.35 → P 16.36 → ×fig18(0.30,45°) |
+| pull hold / release | 16.4 / 49.2 N | **15.19 / 45.57 N** | 0.5·W_out / 1.5·W_out |
+| engage | 0.399 mm | 0.399 mm | (limit dynamics — unchanged) |
+| hold creep | 0.449 mm | 0.449 mm | (unchanged) |
+| release (opens to rail) | 59.73 mm | **49.72 mm** | stroke 50 (was 60) |
 
 ### T5v — reviewer visualization pack
 ![section](out/section_latched_drawer.png)
-- [`out/section_latched_drawer.png`](out/section_latched_drawer.png) — XZ section from the compiled
-  solids: the **barb-under-receiver interlock** (+0.6 mm overlap annotated).
-- [`out/exploded_latched_drawer.png`](out/exploded_latched_drawer.png) — the drawer pulled +X from the cabinet.
-- ![engaged](out/engaged_closeup_mesh.png) [`out/engaged_closeup_mesh.png`](out/engaged_closeup_mesh.png)
-  — the blue barb tucked under the red receiver ledge (translucent cutaway).
-- [`out/t2_latch_mesh.mp4`](out/t2_latch_mesh.mp4) (close→hold→release, translucent cutaway) ·
-  [`out/t2_latch_mesh_zoom.mp4`](out/t2_latch_mesh_zoom.mp4) (engagement zoom) ·
-  [`out/portrait_latched_drawer.png`](out/portrait_latched_drawer.png) ·
-  [`out/ir_latched_drawer.svg`](../m22_composition/out/ir_latched_drawer.svg).
+- [`out/section_latched_drawer.png`](out/section_latched_drawer.png) — TWO section planes from the
+  compiled solids (a furniture maker's drawing): y=0 the panel LANDING on the face frame (M1) + tray on
+  the T-rail (M2); y=15 the clip barb snapped behind the floor bump (M3, W_out 30.4 N) in the tray/floor
+  gap (zero protrusion). · [`out/exploded_latched_drawer.png`](out/exploded_latched_drawer.png) ·
+  [`out/portrait_latched_drawer.png`](out/portrait_latched_drawer.png) (closed drawer, latch hidden) ·
+  [`out/t2_ld_mesh.mp4`](out/t2_ld_mesh.mp4) cutaway + [`out/t2_ld_mesh_zoom.mp4`](out/t2_ld_mesh_zoom.mp4)
+  · [`ir_latched_drawer.svg`](../m22_composition/out/ir_latched_drawer.svg).
+
+### IR-TRUTH TABLE (§14 T3 / D-IR-EXPR-1) — where each design decision LIVES
+| design decision | home | type | debt |
+|---|---|---|---|
+| cabinet / tray / opening widths | P1·P2 template params (from dim_chain) | template param | — |
+| latch force W_out=30.38 N | E2 snap params L/b/y → Bayer | element param + formula | — |
+| rail-in-groove fit | E1 slide_rail params + template geometry | element param + template | — |
+| **panel-on-face LANDING (closed stop)** | template geometry (panel + ∏-frame) | **hardcode geometry** | no "hard-stop" relation in the IR |
+| **bump position** (engagement on travel) | template param `bump_x` (= barb_x) | **hardcode** | no scalar snap-position ([[D-M22-2a]]) |
+| **zero-protrusion** rule | clip built in the tray/floor gap | **hardcode geometry** | no "envelope/exclusion" field |
+| ride clearance / undercut / bump height | template params | template param | — |
+
+**Most design decisions land in template params or hardcoded geometry, NOT IR fields** — the schema
+carries element CHOICE, not assembly DESIGN. Debts collected in the standing DRAFT **D-IR-EXPR-1** (fix
+parked as the m25 candidate, gated on a ROUND-TRIP proof).
 
 ### T7 — bookkeeping
-- **D-M24-3 CONFIRMED (§14 T1–T6)** — latched_drawer design-complete; **DRAFT D-M22-2c CLOSED** at the
-  template level (snap geometry compiled; forces Bayer-sourced); physics byte-unchanged.
-- All m24 work free/local (no LLM/API). **Still HELD:** the lite admission gate + the m15 Pro/flash
-  frontier column. **AWAITING REVIEW.**
+- **D-M24-5 CONFIRMED (§14 T1–T6)** — latched_drawer rebuilt to the bottom-clip organizer archetype;
+  every dimension sourced (fit chain), fits re-measured drift 0.000, physics-identical, designed W_out.
+- **D-M24-4** (T3-ARCH) + **D-IR-EXPR-1** (IR-expressiveness standing DRAFT) recorded.
+- All Phase-A work free/local (no LLM/API). **Still HELD:** the lite gate + the m15 frontier column.
+  **AWAITING REVIEW** (Phase B — the push_latch element — may start while awaiting).
