@@ -1,0 +1,27 @@
+=== latched_drawer DIMENSION CHAIN / FIT SCHEDULE (§14 T3b) — 3 free inputs, else derived ===
+  quantity                        value   source
+  W_i (free: inner width)        60.000   storage requirement (free input)
+  D (free: depth)                60.000   storage requirement (free input)
+  H (free: height)               25.000   storage requirement (free input)
+  tray outer W_t                 64.800   W_i + 2·wall(2.4)
+  opening W_o                    66.800   W_t + 2·side_gap(1.0) — drawer-fits-opening
+  cabinet outer W_c              71.600   W_o + 2·wall(2.4)
+  front panel W_p                74.800   W_o + 2·proud(4.0) — covers the opening, lands on face frame
+  groove width                    8.700   rail_w(8.0) + 2·clr(0.35) A-PETG-1 (M10)
+  ride clearance                  6.350   rail_h(6.0) + clr(0.35)
+  CLIP beam L                    12.000   chosen; feeds inverse-Bayer
+  CLIP beam b                     6.000   chosen; feeds inverse-Bayer
+  CLIP undercut y                 1.350   chosen deflection; feeds solve_h → W_out target
+  CLIP root h                     2.325   solve_h(eps=0.02,L=12.0,y=1.35,d2)=C·eps·L²/y
+  CLIP P_deflect                 16.357   (b·h²/6)(Es·eps/L), Es=1815.0
+  CLIP W_out (sep,45°)           30.377   P·fig18(mu=0.3,45.0°)=1.857 — target ≈30.0
+  CLIP W_in (mate,30°)           17.357   P·fig18(mu=0.3,30.0°)=1.061 — ≤20 hand-insertable
+  self-lock angle                73.301   atan(1/mu=0.3) — >45.0° ⇒ releasable
+  bump height                     1.700   undercut(1.35) + clr(0.35) — h overlap at closed, no ride contact
+  barb rest above floor           0.350   clr(0.35) — no contact while riding
+  front-panel-to-face gap         0.000   0 = the LANDING (closed hard stop, M1)
+  stroke                         50.000   D(60.0) − margin(10)
+  rail length                    55.000   stroke + 5 overlap
+
+  SOURCED latch forces: W_out=30.38 N (designed), hold 0.5·W_out=15.19 N, release 1.5·W_out=45.57 N
+  (m23 old W_out=32.81 N → new DESIGNED W_out=30.38 N — criteria scale accordingly)
