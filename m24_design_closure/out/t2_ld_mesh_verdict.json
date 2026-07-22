@@ -1,0 +1,271 @@
+{
+  "decision_row": "D-M24-5 latched_drawer bottom-clip T5 \u2014 designed W_out, panel-on-face stop",
+  "compile_hash": "d4b3dfb",
+  "task": "latched_drawer (bottom-clip)",
+  "physics_identical_bare_vs_mesh": true,
+  "closed_stop": "front panel lands on the face frame (the slide lower limit at s=0) \u2014 a PART, not a drive-off",
+  "sourced_breakaway": {
+    "W_out_N": 30.377,
+    "chain": "inverse Bayer: L=12,b=6,undercut=1.35 \u2192 P=16.36 N, W_out=P\u00b7fig18(0.30,45\u00b0)=30.38 N (DESIGNED)"
+  },
+  "criteria_old_vs_new": {
+    "W_out_N": {
+      "m23_fixture": 32.81,
+      "bottom_clip_designed": 30.377
+    },
+    "pull_hold_N": {
+      "m23": 16.4,
+      "new": 15.19
+    },
+    "pull_release_N": {
+      "m23": 49.2,
+      "new": 45.57
+    },
+    "engage_mm": {
+      "m23": 0.399,
+      "new": 0.399
+    },
+    "hold_creep_mm": {
+      "m23": 0.449,
+      "new": 0.449
+    },
+    "release_mm": {
+      "m23": 59.73,
+      "new": 49.72
+    },
+    "note": "criteria CHANGE is expected: W_out is now DESIGNED (30.38 N) via the fit chain, not the m23 fixture (32.81 N); stroke 50 (was 60)"
+  },
+  "g9_gconv": true,
+  "V-A": {
+    "n_seeds": 5,
+    "seeds_passed": 5,
+    "passed": true,
+    "criteria_seed0": {
+      "close_engages_at_closed": {
+        "value": 0.399,
+        "threshold": 0.5,
+        "pass": true
+      },
+      "holds_at_0.5\u00b7W_out (\u2264 tol)": {
+        "value": 0.449,
+        "threshold": 0.6,
+        "pass": true
+      },
+      "releases_at_1.5\u00b7W_out (opens to rail)": {
+        "value": 49.72,
+        "threshold": 50.0,
+        "pass": true
+      },
+      "converged (no blow-up)": {
+        "value": false,
+        "threshold": false,
+        "pass": true
+      },
+      "all_parts_retained": {
+        "value": true,
+        "threshold": true,
+        "pass": true
+      }
+    },
+    "per_seed": [
+      {
+        "ran": true,
+        "seed": 0,
+        "diverged": false,
+        "click_s_mm": 0.399,
+        "hold_disp_mm": 0.449,
+        "peak_open_mm": 49.72,
+        "pull_hold_N": 15.19,
+        "pull_release_N": 45.57,
+        "W_out_N": 30.376737320634927,
+        "criteria": {
+          "close_engages_at_closed": {
+            "value": 0.399,
+            "threshold": 0.5,
+            "pass": true
+          },
+          "holds_at_0.5\u00b7W_out (\u2264 tol)": {
+            "value": 0.449,
+            "threshold": 0.6,
+            "pass": true
+          },
+          "releases_at_1.5\u00b7W_out (opens to rail)": {
+            "value": 49.72,
+            "threshold": 50.0,
+            "pass": true
+          },
+          "converged (no blow-up)": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": true,
+            "threshold": true,
+            "pass": true
+          }
+        },
+        "passed": true
+      },
+      {
+        "ran": true,
+        "seed": 1,
+        "diverged": false,
+        "click_s_mm": 0.397,
+        "hold_disp_mm": 0.446,
+        "peak_open_mm": 49.72,
+        "pull_hold_N": 15.19,
+        "pull_release_N": 45.57,
+        "W_out_N": 30.376737320634927,
+        "criteria": {
+          "close_engages_at_closed": {
+            "value": 0.397,
+            "threshold": 0.5,
+            "pass": true
+          },
+          "holds_at_0.5\u00b7W_out (\u2264 tol)": {
+            "value": 0.446,
+            "threshold": 0.6,
+            "pass": true
+          },
+          "releases_at_1.5\u00b7W_out (opens to rail)": {
+            "value": 49.72,
+            "threshold": 50.0,
+            "pass": true
+          },
+          "converged (no blow-up)": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": true,
+            "threshold": true,
+            "pass": true
+          }
+        },
+        "passed": true
+      },
+      {
+        "ran": true,
+        "seed": 2,
+        "diverged": false,
+        "click_s_mm": 0.393,
+        "hold_disp_mm": 0.441,
+        "peak_open_mm": 49.72,
+        "pull_hold_N": 15.19,
+        "pull_release_N": 45.57,
+        "W_out_N": 30.376737320634927,
+        "criteria": {
+          "close_engages_at_closed": {
+            "value": 0.393,
+            "threshold": 0.5,
+            "pass": true
+          },
+          "holds_at_0.5\u00b7W_out (\u2264 tol)": {
+            "value": 0.441,
+            "threshold": 0.6,
+            "pass": true
+          },
+          "releases_at_1.5\u00b7W_out (opens to rail)": {
+            "value": 49.72,
+            "threshold": 50.0,
+            "pass": true
+          },
+          "converged (no blow-up)": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": true,
+            "threshold": true,
+            "pass": true
+          }
+        },
+        "passed": true
+      },
+      {
+        "ran": true,
+        "seed": 3,
+        "diverged": false,
+        "click_s_mm": 0.393,
+        "hold_disp_mm": 0.441,
+        "peak_open_mm": 49.72,
+        "pull_hold_N": 15.19,
+        "pull_release_N": 45.57,
+        "W_out_N": 30.376737320634927,
+        "criteria": {
+          "close_engages_at_closed": {
+            "value": 0.393,
+            "threshold": 0.5,
+            "pass": true
+          },
+          "holds_at_0.5\u00b7W_out (\u2264 tol)": {
+            "value": 0.441,
+            "threshold": 0.6,
+            "pass": true
+          },
+          "releases_at_1.5\u00b7W_out (opens to rail)": {
+            "value": 49.72,
+            "threshold": 50.0,
+            "pass": true
+          },
+          "converged (no blow-up)": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": true,
+            "threshold": true,
+            "pass": true
+          }
+        },
+        "passed": true
+      },
+      {
+        "ran": true,
+        "seed": 4,
+        "diverged": false,
+        "click_s_mm": 0.397,
+        "hold_disp_mm": 0.446,
+        "peak_open_mm": 49.72,
+        "pull_hold_N": 15.19,
+        "pull_release_N": 45.57,
+        "W_out_N": 30.376737320634927,
+        "criteria": {
+          "close_engages_at_closed": {
+            "value": 0.397,
+            "threshold": 0.5,
+            "pass": true
+          },
+          "holds_at_0.5\u00b7W_out (\u2264 tol)": {
+            "value": 0.446,
+            "threshold": 0.6,
+            "pass": true
+          },
+          "releases_at_1.5\u00b7W_out (opens to rail)": {
+            "value": 49.72,
+            "threshold": 50.0,
+            "pass": true
+          },
+          "converged (no blow-up)": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": true,
+            "threshold": true,
+            "pass": true
+          }
+        },
+        "passed": true
+      }
+    ]
+  },
+  "video": "t2_ld_mesh.mp4",
+  "video_zoom": "t2_ld_mesh_zoom.mp4",
+  "plot": "t2_ld_mesh.png"
+}
