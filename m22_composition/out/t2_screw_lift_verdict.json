@@ -1,6 +1,6 @@
 {
   "decision_row": "D-M22-1 P-LIFT V-A on compiled screw_lift (first composition)",
-  "compile_hash": "90fb855",
+  "compile_hash": "3e5b30e",
   "task": "screw_lift",
   "elements": [
     "coupling(E1)",
@@ -36,7 +36,7 @@
           "pass": true
         },
         "holds_released_load (back-drive \u2264 1 mm)": {
-          "value": 0.081,
+          "value": 0.08,
           "threshold": 1.0,
           "pass": true
         },
@@ -62,7 +62,7 @@
           "travel_mm": 40.001,
           "formula_mm": 40.001,
           "formula_residual": 0.0,
-          "backdrive_mm": 0.081,
+          "backdrive_mm": 0.08,
           "criteria": {
             "platform_reaches_height": {
               "value": 40.0,
@@ -75,7 +75,7 @@
               "pass": true
             },
             "holds_released_load (back-drive \u2264 1 mm)": {
-              "value": 0.081,
+              "value": 0.08,
               "threshold": 1.0,
               "pass": true
             },
@@ -102,7 +102,7 @@
           "travel_mm": 40.001,
           "formula_mm": 40.001,
           "formula_residual": 0.0,
-          "backdrive_mm": 0.081,
+          "backdrive_mm": 0.08,
           "criteria": {
             "platform_reaches_height": {
               "value": 40.0,
@@ -115,7 +115,7 @@
               "pass": true
             },
             "holds_released_load (back-drive \u2264 1 mm)": {
-              "value": 0.081,
+              "value": 0.08,
               "threshold": 1.0,
               "pass": true
             },
@@ -142,7 +142,7 @@
           "travel_mm": 40.001,
           "formula_mm": 40.001,
           "formula_residual": 0.0,
-          "backdrive_mm": 0.081,
+          "backdrive_mm": 0.08,
           "criteria": {
             "platform_reaches_height": {
               "value": 40.0,
@@ -155,7 +155,7 @@
               "pass": true
             },
             "holds_released_load (back-drive \u2264 1 mm)": {
-              "value": 0.081,
+              "value": 0.08,
               "threshold": 1.0,
               "pass": true
             },
@@ -182,7 +182,7 @@
           "travel_mm": 40.001,
           "formula_mm": 40.001,
           "formula_residual": 0.0,
-          "backdrive_mm": 0.081,
+          "backdrive_mm": 0.08,
           "criteria": {
             "platform_reaches_height": {
               "value": 40.0,
@@ -195,7 +195,7 @@
               "pass": true
             },
             "holds_released_load (back-drive \u2264 1 mm)": {
-              "value": 0.081,
+              "value": 0.08,
               "threshold": 1.0,
               "pass": true
             },
@@ -222,7 +222,7 @@
           "travel_mm": 40.001,
           "formula_mm": 40.001,
           "formula_residual": 0.0,
-          "backdrive_mm": 0.081,
+          "backdrive_mm": 0.08,
           "criteria": {
             "platform_reaches_height": {
               "value": 40.0,
@@ -235,7 +235,7 @@
               "pass": true
             },
             "holds_released_load (back-drive \u2264 1 mm)": {
-              "value": 0.081,
+              "value": 0.08,
               "threshold": 1.0,
               "pass": true
             },
@@ -261,8 +261,8 @@
         },
         "friction_weak": {
           "weak_friction_Nm (0.5\u00b7T_bd)": 0.000781,
-          "backdrive_mm": 9.567,
-          "sourced_backdrive_mm": 0.081,
+          "backdrive_mm": 9.204,
+          "sourced_backdrive_mm": 0.08,
           "expect": "released platform SINKS"
         },
         "discriminates": true,

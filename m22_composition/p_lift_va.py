@@ -100,36 +100,42 @@ def build_lift_mjcf(plan, meshdir: Path, markers=True):
     asset = ET.SubElement(root, "asset")
     for name, rgba in [("base", "0.35 0.65 0.85 1"), ("crank", "0.85 0.35 0.35 1"),
                        ("screw", "0.95 0.62 0.25 1"), ("nut", "0.45 0.78 0.5 1"),
+                       ("coupling", "0.60 0.30 0.82 1"), ("boss", "0.50 0.55 0.60 1"),
+                       ("knob", "0.80 0.20 0.20 1"),
                        ("mk_crank", "0.90 0.10 0.10 1"), ("mk_screw", "0.98 0.85 0.10 1"),
                        ("mk_nut", "0.10 0.55 0.95 1")]:
         ET.SubElement(asset, "material", name=name, rgba=rgba)
     world = ET.SubElement(root, "worldbody")
     ET.SubElement(world, "light", pos="0.1 -0.2 0.4", dir="-0.2 0.3 -1", directional="true",
                   diffuse="0.5 0.5 0.5")
-    ET.SubElement(world, "camera", name="side", pos="0.16 -0.20 0.055", xyaxes="0.78 0.62 0 -0.16 0.20 0.97")
-    ET.SubElement(world, "geom", name="base_plate", type="box", pos="0 0 -0.006",
-                  size="0.03 0.03 0.002", material="base")
+    ET.SubElement(world, "camera", name="side", pos="0.17 -0.22 0.045", xyaxes="0.78 0.62 0 -0.14 0.18 0.98")
+
+    # BASE FRAME (welded, visual): a floor plate + an upright + a bearing bracket the screw passes
+    # through — so the jack reads as standing on something. (Reviewer: no base/frame was visible.)
+    ET.SubElement(world, "geom", name="base_plate", type="box", pos="0 0 -0.037", size="0.030 0.022 0.0018", material="base")
+    ET.SubElement(world, "geom", name="frame_upright", type="box", pos="-0.017 0 -0.018", size="0.003 0.005 0.020", material="boss")
+    ET.SubElement(world, "geom", name="bearing_bracket", type="box", pos="-0.008 0 0.001", size="0.010 0.005 0.0025", material="boss")
 
     def _mk(parent, name, mat, pos, size):
         if markers:
             ET.SubElement(parent, "geom", name=name, type="box", pos=_v(pos), size=_v(size), material=mat)
 
-    # CRANK — hinge +Z, below the base; a shaft + a radial handle (the input the hand turns)
+    # CRANK — hinge +Z, below the bracket: an axle stub + an offset ARM + a HANDLE KNOB (a real crank).
     bc = ET.SubElement(world, "body", name="crank", pos="0 0 0")
     ET.SubElement(bc, "joint", name="crank_hinge", type="hinge", axis="0 0 1", pos="0 0 0",
                   damping=f"{JOINT_DAMPING}", armature=f"{ARMATURE}")
-    ET.SubElement(bc, "geom", name="crank_shaft", type="cylinder", fromto="0 0 -0.028 0 0 -0.004",
-                  size=f"{rs}", material="crank", mass="0.01")
-    ET.SubElement(bc, "geom", name="crank_arm", type="box", pos="0.010 0 -0.026", size="0.010 0.002 0.002",
-                  material="crank", mass="0.002")
-    _mk(bc, "mk_crank", "mk_crank", (0.019, 0, -0.026), (0.002, 0.0025, 0.002))
+    ET.SubElement(bc, "geom", name="crank_shaft", type="cylinder", fromto="0 0 -0.033 0 0 -0.011", size=f"{rs}", material="crank", mass="0.01")
+    ET.SubElement(bc, "geom", name="crank_arm", type="box", pos="0.012 0 -0.031", size="0.012 0.0025 0.0022", material="crank", mass="0.002")
+    ET.SubElement(bc, "geom", name="crank_knob", type="cylinder", fromto="0.023 0 -0.036 0.023 0 -0.024", size="0.0035", material="knob", mass="0.002")
+    _mk(bc, "mk_crank", "mk_crank", (0.023, 0, -0.020), (0.0025, 0.0025, 0.002))
 
-    # SCREW — hinge +Z, the SOURCED thread friction lives here (the hold)
+    # SCREW — hinge +Z, the SOURCED thread friction lives here (the hold). A COUPLING HUB sleeve spans
+    # the crank/screw junction (rotates with the screw = crank 1:1) so the chain reads crank→coupling→screw.
     bs = ET.SubElement(world, "body", name="screw", pos="0 0 0")
     ET.SubElement(bs, "joint", name="screw_hinge", type="hinge", axis="0 0 1", pos="0 0 0",
                   damping=f"{JOINT_DAMPING}", armature=f"{ARMATURE}", frictionloss=f"{T_friction:.9f}")
-    ET.SubElement(bs, "geom", name="screw_rod", type="cylinder", fromto=f"0 0 0 0 0 {length_m:.6f}",
-                  size=f"{rs}", material="screw", mass="0.01")
+    ET.SubElement(bs, "geom", name="coupling_hub", type="cylinder", fromto="0 0 -0.012 0 0 -0.002", size="0.0075", material="coupling", mass="0.004")
+    ET.SubElement(bs, "geom", name="screw_rod", type="cylinder", fromto=f"0 0 0 0 0 {length_m:.6f}", size=f"{rs}", material="screw", mass="0.01")
     _mk(bs, "mk_screw", "mk_screw", (rs + 0.002, 0, 0.020), (0.003, 0.0012, 0.004))
 
     # NUT / platform — slide +Z; its mass carries the design load at the hold
@@ -277,8 +283,9 @@ def _save_video(frames, meta, path):
     slow = f"{CAPTURE_HZ // OUT_FPS}x slow-mo"
     vid = []
     for img, t, cr, s_mm, phase in frames:
-        tag = "DRIVE (cranking up)" if phase == "drive" else "HOLD (crank released)"
-        vid.append(_hud(img, [f"P-LIFT V-A  screw_lift  crank→coupling→lead_screw   [{slow}]",
+        tag = ("DRIVE (cranking up)" if phase == "drive"
+               else f"HOLD: platform STAYS at {meta['stroke_mm']:.0f} mm (crank released, self-locking)")
+        vid.append(_hud(img, [f"P-LIFT V-A  screw_lift  crank(knob→arm)→coupling(hub)→screw→platform   [{slow}]",
                               f"T {t:5.2f}s   crank {cr/(2*math.pi):5.2f} rev   {tag}",
                               f"platform rise {s_mm:6.2f} / {meta['stroke_mm']:.0f} mm   "
                               f"(= crank rev x 1:1 x lead {meta['lead_mm']})",

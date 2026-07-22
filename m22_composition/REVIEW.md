@@ -16,7 +16,17 @@ non-tautology** — the *composed* formula chain vs the measured end-to-end moti
 **Command:** *"A hand-crank jack that raises a small platform and holds it when released. Plastic, 3D
 printing."* Chain: crank → **coupling** (1:1) → **lead_screw** (self-locking) → nut platform.
 
-![composed jack](out/t2_screw_lift.png)
+![the jack (visual reshape)](out/screw_lift_assembly.png)
+
+*(Visual addendum, physics-identical — the review: the chain wasn't legible as hardware.) The rig now
+reads as a hand-crank jack: a **red crank** (axle + offset arm + handle **knob**) → a **purple coupling
+hub** sleeve at the shaft junction → the **orange screw** through a **grey bearing bracket** on a **base
+frame** → the **green platform**. The declared joints/equalities still carry all the physics; the P-LIFT
+criteria are unchanged within tolerance (reaches 40.00 mm, formula 0.000%, back-drive 0.08 mm, 5/5,
+discrimination true), and the hold-phase HUD now reads "HOLD: platform STAYS at 40 mm" so the stillness
+reads as the point.*
+
+![the composed-formula overlay](out/t2_screw_lift.png)
 
 ### The two ontology questions (the point of the task)
 

@@ -14,22 +14,29 @@
     <material name="crank" rgba="0.85 0.35 0.35 1"/>
     <material name="screw" rgba="0.95 0.62 0.25 1"/>
     <material name="nut" rgba="0.45 0.78 0.5 1"/>
+    <material name="coupling" rgba="0.60 0.30 0.82 1"/>
+    <material name="boss" rgba="0.50 0.55 0.60 1"/>
+    <material name="knob" rgba="0.80 0.20 0.20 1"/>
     <material name="mk_crank" rgba="0.90 0.10 0.10 1"/>
     <material name="mk_screw" rgba="0.98 0.85 0.10 1"/>
     <material name="mk_nut" rgba="0.10 0.55 0.95 1"/>
   </asset>
   <worldbody>
     <light pos="0.1 -0.2 0.4" dir="-0.2 0.3 -1" directional="true" diffuse="0.5 0.5 0.5"/>
-    <camera name="side" pos="0.16 -0.20 0.055" xyaxes="0.78 0.62 0 -0.16 0.20 0.97"/>
-    <geom name="base_plate" type="box" pos="0 0 -0.006" size="0.03 0.03 0.002" material="base"/>
+    <camera name="side" pos="0.17 -0.22 0.045" xyaxes="0.78 0.62 0 -0.14 0.18 0.98"/>
+    <geom name="base_plate" type="box" pos="0 0 -0.037" size="0.030 0.022 0.0018" material="base"/>
+    <geom name="frame_upright" type="box" pos="-0.017 0 -0.018" size="0.003 0.005 0.020" material="boss"/>
+    <geom name="bearing_bracket" type="box" pos="-0.008 0 0.001" size="0.010 0.005 0.0025" material="boss"/>
     <body name="crank" pos="0 0 0">
       <joint name="crank_hinge" type="hinge" axis="0 0 1" pos="0 0 0" damping="1e-05" armature="1e-05"/>
-      <geom name="crank_shaft" type="cylinder" fromto="0 0 -0.028 0 0 -0.004" size="0.004" material="crank" mass="0.01"/>
-      <geom name="crank_arm" type="box" pos="0.010 0 -0.026" size="0.010 0.002 0.002" material="crank" mass="0.002"/>
-      <geom name="mk_crank" type="box" pos="0.019000000 0.000000000 -0.026000000" size="0.002000000 0.002500000 0.002000000" material="mk_crank"/>
+      <geom name="crank_shaft" type="cylinder" fromto="0 0 -0.033 0 0 -0.011" size="0.004" material="crank" mass="0.01"/>
+      <geom name="crank_arm" type="box" pos="0.012 0 -0.031" size="0.012 0.0025 0.0022" material="crank" mass="0.002"/>
+      <geom name="crank_knob" type="cylinder" fromto="0.023 0 -0.036 0.023 0 -0.024" size="0.0035" material="knob" mass="0.002"/>
+      <geom name="mk_crank" type="box" pos="0.023000000 0.000000000 -0.020000000" size="0.002500000 0.002500000 0.002000000" material="mk_crank"/>
     </body>
     <body name="screw" pos="0 0 0">
       <joint name="screw_hinge" type="hinge" axis="0 0 1" pos="0 0 0" damping="1e-05" armature="1e-05" frictionloss="0.005150250"/>
+      <geom name="coupling_hub" type="cylinder" fromto="0 0 -0.012 0 0 -0.002" size="0.0075" material="coupling" mass="0.004"/>
       <geom name="screw_rod" type="cylinder" fromto="0 0 0 0 0 0.060000" size="0.004" material="screw" mass="0.01"/>
       <geom name="mk_screw" type="box" pos="0.006000000 0.000000000 0.020000000" size="0.003000000 0.001200000 0.004000000" material="mk_screw"/>
     </body>
