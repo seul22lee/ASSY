@@ -82,6 +82,68 @@ condition (no criterion may shift) HOLDS.** 5/5 seeds.
 
 ---
 
-## B · latched_drawer (+m23) — §14 T1–T7
+## B · latched_drawer (+m23) — §14 T1–T7 (AWAITING REVIEW)
 
-_(in progress — see the redesign commits)_
+**The design gap the audit named:** the cabinet was MJCF world-geometry (not a piece), the drawer had
+no compiled cantilever/barb, and the flat slide_base had no receiver wall — **DRAFT D-M22-2c** parked
+exactly this (the snap carve needs a mating receiver wall + growth-aligned anchors; a naive carve HANGS;
+the `snap_hook_cantilever` card carve is a `_not_yet` stub).
+
+### T3 — design closure (host templates; closes D-M22-2c at the template level)
+- **`latch_cabinet`** (is_base) — a designed box shell: floor + back(−X) + two side walls(±Y) + a
+  front lintel carrying a downward **RECEIVER LEDGE** the barb tucks under.
+- **`latch_drawer`** — a tray (floor + back + two side walls + front panel) with a **carved CANTILEVER
+  arm + up-hook ramped BARB** rooted in the front panel (one solid).
+- **`latch_design_parts()`** — the four compiled sub-solids (cabinet_body, receiver, drawer_body, barb)
+  for D22-grouped t0 + per-body meshes.
+- Golden rebound P1→latch_cabinet (role **cabinet**) / P2→latch_drawer; `tray_w` = opening 28 − 2·1.0;
+  validator-CLEAN; IR regenerated.
+- **The honest split:** the snap GEOMETRY is now a compiled host-template solid (D-M22-2c closed); the
+  snap FORCES stay Bayer-sourced (M3/D3) — the card carve remains a stub, recorded not faked. The
+  slide_rail rail-in-groove fit stays inherited (m22 P-SLIDE 5/5).
+
+### T3b/T4/T6 — fit schedule + re-measure · [`out/latched_drawer_fits.txt`](out/latched_drawer_fits.txt)
+
+| interface | clearance | source |
+|---|---|---|
+| rail ⌀/width in carriage groove | 0.35 | slide_rail rail_w=8; groove=rail_w+2·clearance (A-PETG-1, M10) |
+| barb tip under receiver ledge (engagement) | 0.30 | snap_hook interlock; approach clearance A-PETG-1 (Bayer forces, D3) |
+| drawer body in cabinet opening | 1.00 | tray_w = cabinet inner opening − 2·1.0 (drawer-fits-opening) |
+
+**Re-measured from the 4 compiled sub-solids (TRUE mm, D22-grouped, swept):** cabinet×drawer = **−1.000
+mm** (= the 1.0 mm side gap exactly) · receiver×barb = **+0.608 mm** (the INTENDED interlock; 5 mm
+engagement zone) · every other cross-group pair clears → **VERIFIED**.
+
+### T5 — physics from the compiled meshes · [`out/t2_latch_mesh_verdict.json`](out/t2_latch_mesh_verdict.json)
+
+The m23 latch physics is kept EXACTLY (the drawer slide + the rigid latch equality whose **breakaway =
+SOURCED Bayer W_out = 32.807 N**; the drawer mass+inertia **pinned via `<inertial>`**). Visuals become
+the compiled sub-solid meshes (cabinet body + receiver → world, translucent cutaway; drawer body + barb
+→ the slide body).
+
+| criterion | bare | mesh | recorded m23 |
+|---|---|---|---|
+| CLOSE engages at closed | 0.399 mm | 0.399 mm | 0.399 |
+| HOLD at 0.5·W_out (16.4 N) | 0.449 mm | 0.449 mm | 0.449 |
+| RELEASE at 1.5·W_out (49.2 N) → rail | 59.73 mm | 59.73 mm | 59.73 |
+
+**Criteria BYTE-IDENTICAL bare vs mesh, and every number matches the recorded m23 verdict — the T5 STOP
+condition HOLDS.** 5/5 seeds.
+
+### T5v — reviewer visualization pack
+![section](out/section_latched_drawer.png)
+- [`out/section_latched_drawer.png`](out/section_latched_drawer.png) — XZ section from the compiled
+  solids: the **barb-under-receiver interlock** (+0.6 mm overlap annotated).
+- [`out/exploded_latched_drawer.png`](out/exploded_latched_drawer.png) — the drawer pulled +X from the cabinet.
+- ![engaged](out/engaged_closeup_mesh.png) [`out/engaged_closeup_mesh.png`](out/engaged_closeup_mesh.png)
+  — the blue barb tucked under the red receiver ledge (translucent cutaway).
+- [`out/t2_latch_mesh.mp4`](out/t2_latch_mesh.mp4) (close→hold→release, translucent cutaway) ·
+  [`out/t2_latch_mesh_zoom.mp4`](out/t2_latch_mesh_zoom.mp4) (engagement zoom) ·
+  [`out/portrait_latched_drawer.png`](out/portrait_latched_drawer.png) ·
+  [`out/ir_latched_drawer.svg`](../m22_composition/out/ir_latched_drawer.svg).
+
+### T7 — bookkeeping
+- **D-M24-3 CONFIRMED (§14 T1–T6)** — latched_drawer design-complete; **DRAFT D-M22-2c CLOSED** at the
+  template level (snap geometry compiled; forces Bayer-sourced); physics byte-unchanged.
+- All m24 work free/local (no LLM/API). **Still HELD:** the lite admission gate + the m15 Pro/flash
+  frontier column. **AWAITING REVIEW.**
