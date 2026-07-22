@@ -28,15 +28,15 @@ MM = 1000.0
 def _load_meshes(task):
     """the compiled per-body meshes exported by the T5 rig (metres, world frame)."""
     import trimesh
-    mdir = ROOT / "m24_design_closure" / "out" / ("mesh_assets" if task == "screw_lift" else "latch_mesh_assets")
+    mdir = ROOT / "m24_design_closure" / "out" / ("mesh_assets" if task == "screw_lift" else "ld_mesh_assets")
     names = {"screw_lift": ["base", "screw", "nut", "crank"],
-             "latched_drawer": ["cabinet_body", "receiver", "drawer_body", "barb"]}[task]
+             "latched_drawer": ["cabinet_body", "bump", "drawer_body", "clip"]}[task]
     return {n: trimesh.load(mdir / f"{n}.stl", force="mesh") for n in names
             if (mdir / f"{n}.stl").exists()}
 
 
 COLORS = {"base": "#9aa4b0", "screw": "#e8a044", "nut": "#5fb87f", "crank": "#d05a5a",
-          "cabinet_body": "#9aa4b0", "receiver": "#d05a5a", "drawer_body": "#e0b050", "barb": "#4a90d0"}
+          "cabinet_body": "#9aa4b0", "bump": "#d05a5a", "drawer_body": "#e0b050", "clip": "#4a90d0"}
 
 
 def _section(ax, meshes, origin, normal, callouts, title, xlabel, ylabel, view_axes):
@@ -104,35 +104,40 @@ def screw_lift_pack(out: Path):
 
 
 def latched_drawer_pack(out: Path):
+    """bottom-clip design: TWO section planes — y=0 (panel-on-face landing + tray-on-rail) and y=15
+    (clip-over-bump catch) — the drawing a furniture maker recognizes, from the compiled solids."""
     meshes = _load_meshes("latched_drawer")
-    # SECTION at XZ plane (y=0): cuts the drawer tray, the cantilever+barb, and the receiver ledge —
-    # the barb-under-ledge engagement, from the compiled solids.
-    fig, ax = plt.subplots(figsize=(8.2, 4.6))
-    callouts = [
-        (35.5, 22, "barb tucks UNDER receiver ledge\n→ +0.6 mm interlock overlap (engages)"),
-        (10, 22, "cantilever arm (carved snap;\nforces Bayer-sourced, D3)"),
-    ]
-    _section(ax, meshes, (0, 0, 0), (0, 1, 0), callouts,
-             "latched_drawer — XZ section (y=0): the barb-under-receiver interlock (closed)",
+    fig, axs = plt.subplots(1, 2, figsize=(13.5, 4.8))
+    _section(axs[0], meshes, (0, 0, 0), (0, 1, 0),
+             [(30, 22, "front panel LANDS on\nface frame (M1, gap 0 = closed stop)"),
+              (-2, 3.2, "tray rides the T-rail (M2)")],
+             "latched_drawer — y=0 section: panel-on-face landing + tray-on-rail",
              "x (mm)", "z (mm)", view_axes=(0, 2))
-    ax.set_xlim(-30, 55); ax.set_ylim(-6, 30)
+    axs[0].set_xlim(-38, 40); axs[0].set_ylim(-5, 30)
+    _section(axs[1], meshes, (0, 15, 0), (0, 1, 0),
+             [(18, 5.5, "clip barb snapped BEHIND\nthe floor bump (M3 catch)\nW_out=30.4 N inverse-Bayer"),
+              (-2, 3.2, "clip hangs in the tray↔floor gap\n(zero protrusion)")],
+             "latched_drawer — y=15 section: the bottom clip catches the floor bump (closed)",
+             "x (mm)", "z (mm)", view_axes=(0, 2))
+    axs[1].set_xlim(-38, 40); axs[1].set_ylim(-5, 30)
     fig.tight_layout(); fig.savefig(out / "section_latched_drawer.png", dpi=140); plt.close(fig)
 
-    # EXPLODED — the drawer (tray+barb) pulled out +X from the cabinet (body+receiver), XZ silhouettes.
-    fig, ax = plt.subplots(figsize=(8.6, 4.8))
-    offx = {"cabinet_body": 0, "receiver": 0, "drawer_body": 55, "barb": 55}
-    for name in ["cabinet_body", "receiver", "drawer_body", "barb"]:
+    # EXPLODED — the drawer (body+clip) pulled +X from the cabinet (body+bump), y=8 silhouettes.
+    fig, ax = plt.subplots(figsize=(9.0, 4.6))
+    offx = {"cabinet_body": 0, "bump": 0, "drawer_body": 70, "clip": 70}
+    for name in ["cabinet_body", "bump", "drawer_body", "clip"]:
         m = meshes.get(name)
         if m is None:
             continue
-        sec = m.section(plane_origin=(0, 0, 0), plane_normal=(0, 1, 0))
-        if sec is None:
-            continue
-        for entity in sec.discrete:
-            pts = np.array(entity) * MM
-            ax.fill(pts[:, 0] + offx[name], pts[:, 2], color=COLORS[name], alpha=0.6,
-                    edgecolor=COLORS[name], lw=1.1, label=name)
-    ax.annotate("pull-out +X", xy=(120, 8), xytext=(70, 8),
+        for yc in (0.0, 15.0):
+            sec = m.section(plane_origin=(0, yc / MM, 0), plane_normal=(0, 1, 0))
+            if sec is None:
+                continue
+            for entity in sec.discrete:
+                pts = np.array(entity) * MM
+                ax.fill(pts[:, 0] + offx[name], pts[:, 2], color=COLORS[name], alpha=0.55,
+                        edgecolor=COLORS[name], lw=1.0, label=name)
+    ax.annotate("pull-out +X", xy=(120, 10), xytext=(60, 10),
                 arrowprops=dict(arrowstyle="->", color="#555", lw=1.4), fontsize=8, va="center", color="#555")
     ax.set_aspect("equal"); ax.set_title("latched_drawer — exploded (drawer pulled +X from cabinet)", fontsize=9)
     ax.set_xlabel("x (mm, exploded)"); ax.set_ylabel("z (mm)"); ax.grid(alpha=0.2)
