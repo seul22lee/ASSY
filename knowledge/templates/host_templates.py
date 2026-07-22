@@ -438,10 +438,11 @@ def latch_cabinet(**params) -> TemplateResult:
     back = Location((-D / 2 - w / 2, 0, H / 2)) * Box(w, Wc, H, align=(Align.CENTER,) * 3)
     sideP = Location((-w / 2, Wo / 2 + w / 2, H / 2)) * Box(D + w, w, H, align=(Align.CENTER,) * 3)
     sideN = Location((-w / 2, -Wo / 2 - w / 2, H / 2)) * Box(D + w, w, H, align=(Align.CENTER,) * 3)
-    # FACE FRAME: a front border plate (INSIDE the opening plane, front face at x=fx) with the opening
-    # cut out; the drawer's oversized front panel lands on its front face (M1).
+    # FACE FRAME: a front border (front face at x=fx) with a ∏-shaped opening — top + two side borders,
+    # OPEN AT THE BOTTOM so the drawer floor + clip slide out freely along the cabinet floor. The
+    # oversized front panel lands on its front face (M1).
     frame = (Location((fx - w / 2, 0, H / 2)) * Box(w, Wc, H, align=(Align.CENTER,) * 3)
-             - Location((fx - w / 2, 0, H / 2)) * Box(w * 3, Wo, H - 2 * w, align=(Align.CENTER,) * 3))
+             - Location((fx - w / 2, 0, (H - w) / 2)) * Box(w * 3, Wo, H, align=(Align.CENTER,) * 3))
     # centred inverted-T RAIL on the floor (web + top flange), running X.
     rail = (Location((-w / 2, 0, rh / 2)) * Box(rl, 3.0, rh, align=(Align.CENTER,) * 3)
             + Location((-w / 2, 0, rh - 1.0)) * Box(rl, rw, 2.0, align=(Align.CENTER,) * 3))

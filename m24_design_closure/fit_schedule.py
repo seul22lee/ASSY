@@ -43,13 +43,15 @@ FITS = {
         ("coupling grip on screw shaft ⌀", 8.0, 8.0, 0.0,
          "coupling FUSED to input side (rigid grip, m20) → zero clearance by design"),
     ],
-    "latched_drawer": [
-        ("rail ⌀/width in carriage groove", 8.0, 8.70, 0.35,
-         "slide_rail rail_w=8; groove=rail_w+2·clearance, clearance=0.35 = A-PETG-1 (M10)"),
-        ("barb tip under receiver ledge (engagement)", 0.0, 0.0, 0.30,
-         "snap_hook interlock: barb overlaps the ledge; approach clearance = A-PETG-1 (Bayer forces D3)"),
-        ("drawer body in cabinet opening", 0.0, 0.0, 1.00,
-         "drawer_tray width = cabinet inner opening − 2·1.0 side gap (drawer-fits-opening)"),
+    "latched_drawer": [  # bottom-clip design — see dim_chain.py for the full sourced chain
+        ("rail width in tray groove (M2)", 8.0, 8.70, 0.35,
+         "slide_rail rail_w=8; groove=rail_w+2·clr=8.7, clr=0.35 A-PETG-1 (M10)"),
+        ("clip barb over floor bump (M3 catch)", 0.0, 0.0, 1.35,
+         "INVERSE BAYER: undercut y=1.35 → W_out=30.38 N; bump_h=y+0.35 (overlap at closed)"),
+        ("front panel on face frame (M1 landing)", 0.0, 0.0, 0.00,
+         "panel proud 4mm/side; back lands flat on the face frame = the closed hard stop, gap 0"),
+        ("drawer body in cabinet opening (M4)", 64.8, 66.8, 1.00,
+         "W_t=64.8 in W_o=66.8 → 1.0 mm side gap (drawer-fits-opening)"),
     ],
 }
 
@@ -145,20 +147,23 @@ def report(task):
 
 
 def latched_drawer_report():
-    """latched_drawer T4/T6 — re-measure from the FOUR compiled sub-solids, D22-grouped: the barb ↔
-    receiver interlock is INTENDED (positive engagement near closed); the drawer BODY must CLEAR the
-    cabinet over the whole travel. Sweeps the drawer parts +X over the stroke."""
+    """latched_drawer T4/T6 (bottom-clip design) — the full sourced fit chain (dim_chain) + a re-measure
+    from the FOUR compiled sub-solids, D22-grouped. INTENDED cross-group pairs: clip×bump (the M3 catch,
+    positive overlap at closed) and drawer_body×cabinet_body (the M1 panel landing, ~0 at closed). The
+    clip must CLEAR the cabinet away from the bump; the tray must clear the bump. Sweeps the drawer parts
+    +X over the stroke (closed→open)."""
     from knowledge.templates.host_templates import latch_design_parts
-    import trimesh
+    from dim_chain import chain, print_schedule
     tmp = ROOT / "m24_design_closure" / "out" / "latched_drawer_fitassets"
     tmp.mkdir(parents=True, exist_ok=True)
     parts = latch_design_parts()
-    group = {"cabinet_body": "cabinet", "receiver": "cabinet", "drawer_body": "drawer", "barb": "drawer"}
-    moving = {"drawer_body", "barb"}
+    group = {"cabinet_body": "cabinet", "bump": "cabinet", "drawer_body": "drawer", "clip": "drawer"}
+    moving = {"drawer_body", "clip"}
+    intended = [{"clip", "bump"}, {"drawer_body", "cabinet_body"}]
     base = {k: _to_trimesh(v, tmp / f"{k}.stl") for k, v in parts.items()}
-    stroke_m = 60.0 / MM
-    worst, eng = {}, 0.0
-    for s in np.linspace(0, stroke_m, 25):
+    stroke_m = 50.0 / MM
+    worst, catch_zone = {}, 0.0
+    for s in np.linspace(0, stroke_m, 26):
         meshes = {}
         for k, m in base.items():
             mm = m.copy()
@@ -172,29 +177,26 @@ def latched_drawer_report():
                 if group[a] == group[b]:
                     continue
                 v = _pen_mm(meshes[a], meshes[b])
-                pair = tuple(sorted([group[a], group[b], a, b]))
-                key = (group[a], group[b], a, b) if group[a] < group[b] else (group[b], group[a], b, a)
+                key = tuple(sorted([a, b]))
                 worst[key] = max(worst.get(key, -1e9), v)
-                if {a, b} == {"barb", "receiver"} and v > 0.05:
-                    eng = max(eng, s * MM)
-    lines = [f"=== FIT SCHEDULE — latched_drawer (spec §14 T3b) ===",
-             f"  {'interface':<40s}{'clearance':>10s}   source"]
-    for name, inner, outer, clr, src in FITS["latched_drawer"]:
-        lines.append(f"  {name:<40s}{clr:>10.2f}   {src}")
-    lines += ["", "=== T4/T6 RE-MEASURE from the 4 compiled sub-solids (TRUE mm, swept, D22-grouped) ===",
-              f"  {'sub-pair':<34s}{'worst pen (mm)':>16s}   kind"]
+                if {a, b} == {"clip", "bump"} and v > 0.05:
+                    catch_zone = max(catch_zone, s * MM)
+    lines = [print_schedule(chain()), "",
+             "=== T4/T6 RE-MEASURE from the 4 compiled sub-solids (TRUE mm, swept, D22-grouped) ===",
+             f"  {'sub-pair':<30s}{'worst pen (mm)':>16s}   kind"]
     ok = True
     for key in sorted(worst):
-        ga, gb, a, b = key
+        a, b = key
         v = worst[key]
-        intended = {a, b} == {"barb", "receiver"}
-        kind = "INTENDED interlock" if intended else "unintended (must clear)"
-        verdict = "engages" if intended else ("PENETRATE!" if v > 0.05 else "clear")
-        if not intended:
+        is_int = {a, b} in intended
+        kind = "INTENDED" if is_int else "unintended (must clear)"
+        verdict = ("engages" if {a, b} == {"clip", "bump"} else "lands") if is_int else \
+                  ("PENETRATE!" if v > 0.05 else "clear")
+        if not is_int:
             ok = ok and (v <= 0.05)
-        lines.append(f"  {a}×{b:<24s}{v:>16.3f}   {kind}  {verdict}")
-    lines += ["", f"  barb↔receiver engagement zone (near closed) = {eng:.1f} mm",
-              f"  => fit schedule {'VERIFIED (drawer body clears; barb engages)' if ok else 'FAILED'}"]
+        lines.append(f"  {a}×{b:<20s}{v:>16.3f}   {kind}  {verdict}")
+    lines += ["", f"  clip↔bump catch zone (near closed) = {catch_zone:.1f} mm",
+              f"  => fit schedule {'VERIFIED (clip catches the bump; panel lands; bodies clear)' if ok else 'FAILED'}"]
     out = "\n".join(lines)
     (ROOT / "m24_design_closure" / "out" / "latched_drawer_fits.txt").write_text(out + "\n")
     print(out)
