@@ -448,9 +448,9 @@ def latch_cabinet(**params) -> TemplateResult:
             + Location((-w / 2, 0, rh - 1.0)) * Box(rl, rw, 2.0, align=(Align.CENTER,) * 3))
     # double-ramped catch BUMP near the front, offset in Y from the rail (under the clip path).
     bh, bx, by = p["bump_h"], p["bump_x"], p["bump_y"]
-    bump = (Location((bx, by, bh / 2)) * Box(2.0, p.get("bump_w", 7.0), bh, align=(Align.CENTER,) * 3)
-            + Location((bx - 1.4, by, bh / 2)) * Rotation(0, 35, 0) * Box(1.8, 7.0, bh * 0.9, align=(Align.CENTER,) * 3)
-            + Location((bx + 1.4, by, bh / 2)) * Rotation(0, -35, 0) * Box(1.8, 7.0, bh * 0.9, align=(Align.CENTER,) * 3))
+    bw = p.get("bump_w", 7.0)
+    bump = (Location((bx, by, bh / 2)) * Box(2.2, bw, bh, align=(Align.CENTER,) * 3)         # flat peak (= bump_h)
+            + Location((bx, by, 0.3)) * Box(6.0, bw, 0.6, align=(Align.CENTER,) * 3))        # wide low base (double ramp)
     part = floor + back + sideP + sideN + frame + rail + bump
     anchors = {
         "rail_face": AnchorGeom("rail_face", "face", (0.0, 0.0, 0.0), (0, 0, 1)),
@@ -511,9 +511,9 @@ def latch_design_parts(cab_params=None, dr_params=None) -> dict:
     dr_full = latch_drawer(**dp).part
     # rebuild the two catch sub-solids in isolation so the groups are separable
     bh, bx, by = cp["bump_h"], cp["bump_x"], cp["bump_y"]
-    bump = (Location((bx, by, bh / 2)) * Box(2.0, cp.get("bump_w", 7.0), bh, align=(Align.CENTER,) * 3)
-            + Location((bx - 1.4, by, bh / 2)) * Rotation(0, 35, 0) * Box(1.8, 7.0, bh * 0.9, align=(Align.CENTER,) * 3)
-            + Location((bx + 1.4, by, bh / 2)) * Rotation(0, -35, 0) * Box(1.8, 7.0, bh * 0.9, align=(Align.CENTER,) * 3))
+    bw = cp.get("bump_w", 7.0)
+    bump = (Location((bx, by, bh / 2)) * Box(2.2, bw, bh, align=(Align.CENTER,) * 3)
+            + Location((bx, by, 0.3)) * Box(6.0, bw, 0.6, align=(Align.CENTER,) * 3))
     L, b, cy = dp["clip_L"], dp["clip_b"], dp["clip_y"]
     bx2, uc, brest, rc, ft = dp["barb_x"], dp["undercut"], dp["barb_rest"], dp["ride_clr"], dp["floor_t"]
     z_beam = brest + uc + 0.6

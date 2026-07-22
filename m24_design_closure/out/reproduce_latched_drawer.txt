@@ -1,0 +1,12 @@
+=== latched_drawer (bottom-clip) — REPRODUCTION (§14 T6) ===
+
+[1] CLIP inverse-Bayer reproduced: solve_h=2.325 mm, P=16.36 N, W_out=30.38 N  (chain W_out=30.38)  OK
+
+[2] COMPILE_DRIFT — re-measured from the compiled solids:
+  quantity                 design  measured   drift
+  cabinet outer W_c        71.600    71.600   0.000   OK
+  front panel W_p          74.800    74.800   0.000   OK
+  bump height               1.700     1.700   0.000   OK
+
+  max COMPILE_DRIFT = 0.000 mm   (CLEAN ≤0.10)
+  => reproduction CLEAN
