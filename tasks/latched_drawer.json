@@ -21,7 +21,7 @@
         "kind": "translation",
         "nature": "regular",
         "axis_hint": "horizontal",
-        "range_value": 60.0,
+        "range_value": 50.0,
         "range_unit": "mm",
         "bound": "min",
         "transmission": null,
@@ -152,12 +152,17 @@
       "template_ref": "latch_cabinet",
       "source_element": null,
       "params": {
-        "stroke": 60.0,
-        "wall": 3.0,
-        "depth": 34.0,
-        "height": 20.0,
-        "recv_x": 37.5,
-        "recv_z": 16.0
+        "D": 60.0,
+        "W_c": 71.6,
+        "W_o": 66.8,
+        "H": 25.0,
+        "wall": 2.4,
+        "rail_w": 8.0,
+        "rail_h": 6.0,
+        "rail_len": 55.0,
+        "bump_x": 18.0,
+        "bump_y": 15.0,
+        "bump_h": 1.7
       },
       "is_base": true
     },
@@ -168,11 +173,20 @@
       "template_ref": "latch_drawer",
       "source_element": null,
       "params": {
-        "tray_l": 40.0,
-        "tray_w": 26.0,
-        "arm_x": 27.0,
-        "arm_len": 18.0,
-        "barb_x": 35.5
+        "tray_depth": 52.0,
+        "W_t": 64.8,
+        "W_p": 74.8,
+        "panel_h": 27.0,
+        "floor_t": 2.4,
+        "ride_clr": 6.35,
+        "groove_w": 8.7,
+        "clip_L": 12.0,
+        "clip_b": 6.0,
+        "clip_y": 15.0,
+        "barb_x": 17.8,
+        "undercut": 1.35,
+        "barb_rest": 0.35,
+        "front_x": 30.0
       },
       "is_base": false
     }
@@ -199,12 +213,17 @@
         }
       ],
       "params": {
-        "stroke": 60.0,
-        "wall": 3.0,
-        "depth": 34.0,
-        "height": 20.0,
-        "recv_x": 37.5,
-        "recv_z": 16.0
+        "D": 60.0,
+        "W_c": 71.6,
+        "W_o": 66.8,
+        "H": 25.0,
+        "wall": 2.4,
+        "rail_w": 8.0,
+        "rail_h": 6.0,
+        "rail_len": 55.0,
+        "bump_x": 18.0,
+        "bump_y": 15.0,
+        "bump_h": 1.7
       }
     },
     {
@@ -217,14 +236,27 @@
         {
           "name": "beam_root",
           "kind": "face"
+        },
+        {
+          "name": "panel_back",
+          "kind": "face"
         }
       ],
       "params": {
-        "tray_l": 40.0,
-        "tray_w": 26.0,
-        "arm_x": 27.0,
-        "arm_len": 18.0,
-        "barb_x": 35.5
+        "tray_depth": 52.0,
+        "W_t": 64.8,
+        "W_p": 74.8,
+        "panel_h": 27.0,
+        "floor_t": 2.4,
+        "ride_clr": 6.35,
+        "groove_w": 8.7,
+        "clip_L": 12.0,
+        "clip_b": 6.0,
+        "clip_y": 15.0,
+        "barb_x": 17.8,
+        "undercut": 1.35,
+        "barb_rest": 0.35,
+        "front_x": 30.0
       }
     }
   ],
@@ -234,9 +266,9 @@
       "card_ref": "slide_rail",
       "params": {
         "rail_w": 8.0,
-        "rail_h": 8.0,
+        "rail_h": 6.0,
         "clearance": 0.35,
-        "stroke": 60.0
+        "stroke": 50.0
       },
       "host_pieces": [
         "P1",
@@ -248,8 +280,8 @@
       "card_ref": "snap_hook_cantilever",
       "params": {
         "L_mm": 12.0,
-        "b_mm": 8.0,
-        "y_mm": 1.5,
+        "b_mm": 6.0,
+        "y_mm": 1.35,
         "n_hooks": 1.0,
         "design_type": 2.0,
         "alpha_in_deg": 30.0,
@@ -308,7 +340,7 @@
   "parameters": [
     {
       "name": "stroke",
-      "value": 60.0,
+      "value": 50.0,
       "unit": "mm",
       "lo": 10.0,
       "hi": 180.0,
@@ -337,7 +369,7 @@
           "name": "reaches_stroke",
           "observable": "stroke_mm",
           "op": ">=",
-          "threshold": 60.0,
+          "threshold": 50.0,
           "unit": "mm"
         },
         {
@@ -364,7 +396,7 @@
           "name": "reaches_stroke",
           "observable": "stroke_mm",
           "op": ">=",
-          "threshold": 60.0,
+          "threshold": 50.0,
           "unit": "mm"
         },
         {

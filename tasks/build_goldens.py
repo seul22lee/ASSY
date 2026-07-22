@@ -914,41 +914,50 @@ def ujoint_fixture() -> DesignPlan:
 
 
 def latched_drawer() -> DesignPlan:
-    """m22 Task B — the FASTEN-family composition: a drawer that slides in, clicks shut, and pulls open
-    by hand. Three VERIFIED elements: E1 slide_rail (guidance, M10) + E2 snap_hook (closed retention, M3)
-    + F1 stop_flange (pull-out limit, M8). Command: "A drawer that slides in, clicks shut, and pulls open
-    by hand. Plastic, 3D printing." The NEW content is the COMBINATION — a snap engaging on a TRANSLATION
-    path (anchor_easy verified a snap on a ROTATION path; this is the fresh axis).
+    """latched_drawer (m24 Phase A COMPLETE REDESIGN — the BOTTOM-CLIP ORGANIZER DRAWER). Command: "A
+    drawer that slides in, clicks shut, and pulls open by hand. Plastic, 3D printing." Two VERIFIED
+    elements: E1 slide_rail (guidance, M10) + E2 snap_hook (closed retention, M3). Archetype +
+    mating-face map in m24_design_closure/T3_ARCH_latched_drawer.md; dimensions in dim_chain.py.
 
-    q3 (the ontology question) — how the IR states the snap_event occurs AT A POSITION on the slide's
-    travel (engage at s=0, the closed end): **REUSE the anchor_easy geometric-position pattern.** The
-    snap's catch_window binds to the FRAME at the closed end (slide_base.catch_window at −X); the
-    snap_event (a static retention behaviour) fires where the hook meets the catch — exactly as
-    anchor_easy placed the catch at the rotation-closed position. The engagement position is GEOMETRIC
-    (where the catch is), not a new scalar field. It fits with no gap; an explicit 'snap_at_s' link on
-    the travel axis would be cleaner for coordination but is NOT needed (DRAFT D-M22-2a, deferred)."""
-    stroke = 60.0
-    # m24 (§14 T3): the cabinet + drawer are DESIGNED compiled pieces (closes DRAFT D-M22-2c at the
-    # template level — the receiver WALL + growth-aligned catch the flat slide_base lacked). The cabinet
-    # carries the receiver LEDGE; the drawer carries the carved cantilever + ramped BARB. The snap FORCES
-    # stay Bayer-sourced (M3/D3); this is the host GEOMETRY the forces act on.
+    DESIGN (per the approved plan): a desktop parts-drawer. The CABINET is floor + two side walls +
+    back wall + a FACE FRAME around the front opening + ONE centred floor T-rail + a double-ramped catch
+    BUMP near the front. The DRAWER is a tray + an oversized FRONT PANEL (proud 4 mm/side — lands on the
+    face frame at closed = the closed stop; bottom edge is the pull lip) + a groove riding the rail + a
+    downward cantilever CLIP (beam + barb) under the floor near the front, offset from the groove. ZERO
+    protrusion: the whole latch lives between the drawer bottom and the cabinet floor.
+
+    q3 (snap on a TRANSLATION path, engaging at a POSITION): the snap_event fires GEOMETRICALLY where
+    the clip barb meets the floor bump (bump_x = the barb-at-closed position). The clip's beam_root binds
+    the DRAWER; the catch (catch_window anchor = the bump top) binds the CABINET floor. The engagement
+    position is where the bump is — geometric, not a scalar field (D-M22-2a stays deferred). The snap
+    FORCES are Bayer-sourced (M3/D3): the CLIP is dimensioned by INVERSE BAYER to W_out ≈ 30 N."""
+    # m24 Phase A (§14, bottom-clip organizer drawer). All dimensions DERIVE from the fit chain (three
+    # free inputs W_i=60/D=60/H=25) in m24_design_closure/dim_chain.py — reproduced here as the golden's
+    # resolved values (source per row in the fit schedule). The CLIP is dimensioned by INVERSE BAYER:
+    # L=12, b=6, undercut y=1.35 → W_out=30.38 N (target ≈30), W_in=17.36 N (≤20). The latch lives
+    # entirely in the tray-underside↔floor gap (zero protrusion); the front panel lands on the face frame.
+    stroke = 50.0                                        # D(60) − margin(10)
     slide_base_t = HostTemplate(template_ref="latch_cabinet",
-        params={"stroke": stroke, "wall": 3.0, "depth": 34.0, "height": 20.0, "recv_x": 37.5, "recv_z": 16.0},
+        params={"D": 60.0, "W_c": 71.6, "W_o": 66.8, "H": 25.0, "wall": 2.4, "rail_w": 8.0,
+                "rail_h": 6.0, "rail_len": 55.0, "bump_x": 18.0, "bump_y": 15.0, "bump_h": 1.70},
         anchors=[Anchor(name="rail_face", kind="face"), Anchor(name="travel_edge", kind="axis"),
                  Anchor(name="catch_window", kind="face"), Anchor(name="stop_face", kind="face")])
-    # tray_w = cabinet inner opening (depth 34 − 2·wall 3 = 28) − 2·1.0 side gap = 26 (drawer-fits-opening).
     carriage_t = HostTemplate(template_ref="latch_drawer",
-        params={"tray_l": 40.0, "tray_w": 26.0, "arm_x": 27.0, "arm_len": 18.0, "barb_x": 35.5},
-        anchors=[Anchor(name="groove_face", kind="face"), Anchor(name="beam_root", kind="face")])
+        params={"tray_depth": 52.0, "W_t": 64.8, "W_p": 74.8, "panel_h": 27.0, "floor_t": 2.4,
+                "ride_clr": 6.35, "groove_w": 8.7, "clip_L": 12.0, "clip_b": 6.0, "clip_y": 15.0,
+                "barb_x": 17.8, "undercut": 1.35, "barb_rest": 0.35, "front_x": 30.0},
+        anchors=[Anchor(name="groove_face", kind="face"), Anchor(name="beam_root", kind="face"),
+                 Anchor(name="panel_back", kind="face")])
     pieces = [
         Piece(id="P1", role="cabinet", template_ref="latch_cabinet", is_base=True, params=dict(slide_base_t.params)),
         Piece(id="P2", role="drawer", template_ref="latch_drawer", params=dict(carriage_t.params)),
     ]
     elements = [
         ElementInstance(id="E1", card_ref="slide_rail", host_pieces=["P1", "P2"],
-                        params={"rail_w": 8.0, "rail_h": 8.0, "clearance": 0.35, "stroke": stroke}),
+                        params={"rail_w": 8.0, "rail_h": 6.0, "clearance": 0.35, "stroke": stroke}),
+        # E2 CLIP dimensioned by inverse Bayer (dim_chain): b=6, y=1.35 → W_out≈30 N (D3, forces by formula).
         ElementInstance(id="E2", card_ref="snap_hook_cantilever", host_pieces=["P2", "P1"],
-                        params={"L_mm": 12.0, "b_mm": 8.0, "y_mm": 1.5, "n_hooks": 1,
+                        params={"L_mm": 12.0, "b_mm": 6.0, "y_mm": 1.35, "n_hooks": 1,
                                 "design_type": 2, "alpha_in_deg": 30.0, "alpha_out_deg": 45.0}),
     ]
     bindings = [
