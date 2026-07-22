@@ -738,6 +738,18 @@ reviewer visualization**.
   by the reusable tool `tools/render_ir.py` (the m2_ontology conventions: functions → behaviors →
   pieces(roles) → elements(card ids) → bindings → protocols). *An IR without its diagram fails T1.*
 - **T2 — VALIDATE.** CLEAN through the full validator suite.
+- **T3-ARCH — ARCHETYPE (committed BEFORE any geometry).** A one-page design brief naming the
+  **archetype** the assembly instantiates (e.g. "bottom-clip organizer drawer"), a **mating-face map**
+  (which face of which piece lands/rides/catches on which), and a **section sketch** of the closed
+  state. It fixes the configuration — the arrangement of pieces and their interfaces — before a single
+  dimension is chosen, so T3's fit chain has a skeleton to hang on. **Why this stage exists (finding
+  D-M24-4):** the element cards carry FORMULA knowledge (Bayer forces, Shigley torque) but no
+  CONFIGURATION knowledge — the Pahl & Beitz *embodiment* layer (how parts are arranged into a working
+  product) is absent from the library. Until a configuration-knowledge milestone lands (a catalogue of
+  embodiment archetypes with their mating rules), T3-ARCH is the **human/reviewer-supplied stopgap**:
+  the archetype is stated and cited, not derived. **DoD:** `T3_ARCH.md` in the task/milestone folder
+  (archetype name + source, mating-face map, ASCII/section sketch), committed as its own stage before
+  T3 geometry.
 - **T3 — DESIGN CLOSURE (the design stage).**
   - **(a)** Every physical thing that appears on film is a compiled **PIECE** in the IR — no MJCF
     world-geometry stand-ins for parts (a cabinet is a piece; frames, guides, enclosures are pieces).
