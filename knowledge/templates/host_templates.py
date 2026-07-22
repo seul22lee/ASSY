@@ -407,95 +407,121 @@ def nut_carriage(**params) -> TemplateResult:
     return TemplateResult(part=part, anchors=anchors, params={**p, "box_h": z})
 
 
-def latch_design_parts(cab_params=None, dr_params=None) -> dict:
-    """m24 (§14 T4/T5) — the latched_drawer design split into its FOUR compiled sub-solids, so t0 can
-    group them per D22 (the barb↔receiver interlock is INTENDED; the drawer BODY must clear the cabinet)
-    and the T5 rig can attach them as per-body visual meshes. Returns {cabinet_body, receiver, drawer_body,
-    barb} — build123d Parts in the shared world frame (mm), the same geometry the union templates emit."""
-    cp = {"stroke": 60.0, "wall": 3.0, "depth": 34.0, "height": 20.0, "recv_x": 37.5, "recv_z": 16.0,
-          **(cab_params or {})}
-    dp = {"tray_l": 40.0, "tray_w": 26.0, "wall": 2.4, "floor_z": 1.5, "floor_t": 3.0,
-          "arm_x": 27.0, "arm_len": 18.0, "barb_x": 35.5, **(dr_params or {})}
-    stroke, w, D, H = cp["stroke"], cp["wall"], cp["depth"], cp["height"]
-    cx = stroke / 2.0; L = stroke + 52.0
-    cab = (Location((cx, 0, -cp.get("floor_t", 3.0) / 2)) * Box(L, D, cp.get("floor_t", 3.0), align=(Align.CENTER,) * 3)
-           + Location((-26.0, 0, H / 2)) * Box(w, D, H, align=(Align.CENTER,) * 3)
-           + Location((cx, D / 2 - w / 2, H / 2)) * Box(L, w, H, align=(Align.CENTER,) * 3)
-           + Location((cx, -D / 2 + w / 2, H / 2)) * Box(L, w, H, align=(Align.CENTER,) * 3)
-           + Location((cp["recv_x"] + 1.5, 0, H - w / 2)) * Box(w, D, w, align=(Align.CENTER,) * 3))
-    recv = Location((cp["recv_x"], 0, cp["recv_z"] + 1.3)) * Box(6.4, 12.0, 2.6, align=(Align.CENTER,) * 3)
-    L2, W, wt, fz, ft = dp["tray_l"], dp["tray_w"], dp["wall"], dp["floor_z"], dp["floor_t"]
-    tray = Location((0, 0, fz + ft / 2)) * Box(L2, W, ft, align=(Align.CENTER,) * 3)
-    for (cxx, cyy, sx, sy) in [(-L2 / 2 + wt / 2, 0, wt, W), (0, W / 2 - wt / 2, L2, wt),
-                               (0, -W / 2 + wt / 2, L2, wt), (L2 / 2 - wt / 2, 0, wt, W)]:
-        tray += Location((cxx, cyy, fz + ft + 3.5)) * Box(sx, sy, 10.0, align=(Align.CENTER,) * 3)
-    barb = (Location((dp["arm_x"], 0, 10.5)) * Box(dp["arm_len"], 3.6, 2.2, align=(Align.CENTER,) * 3)
-            + Location((dp["barb_x"], 0, 14.0)) * Box(3.2, 3.6, 5.2, align=(Align.CENTER,) * 3)
-            + Location((dp["barb_x"] + 0.6, 0, 14.0)) * Rotation(0, 35, 0) * Box(3.2, 3.6, 1.8, align=(Align.CENTER,) * 3))
-    return {"cabinet_body": cab, "receiver": recv, "drawer_body": tray, "barb": barb}
+# =====================================================================================
+# latched_drawer v2 — the BOTTOM-CLIP ORGANIZER DRAWER (m24 Phase A, §14 T3; archetype in
+# m24_design_closure/T3_ARCH_latched_drawer.md, dimensions in m24_design_closure/dim_chain.py).
+# Frame: origin at the cabinet floor-top centre, +X = FRONT (pull-out), +Z up. Interior depth D
+# along X (front opening at +D/2); the drawer opens +X, closed at s=0. The latch (clip + bump)
+# lives entirely in the tray-underside ↔ floor gap — ZERO protrusion. All numbers arrive as
+# params from the golden, which computes them via dim_chain (single source of truth).
+# =====================================================================================
+
+_LD_CAB = {"D": 60.0, "W_c": 71.6, "W_o": 66.8, "H": 25.0, "wall": 2.4, "rail_w": 8.0,
+           "rail_h": 6.0, "rail_len": 55.0, "bump_x": 18.0, "bump_y": 15.0, "bump_h": 1.70}
+_LD_DR = {"tray_depth": 52.0, "W_t": 64.8, "W_p": 74.8, "panel_h": 27.0, "floor_t": 2.4,
+          "ride_clr": 6.35, "groove_w": 8.7, "clip_L": 12.0, "clip_b": 6.0, "clip_y": 15.0,
+          "barb_x": 17.8, "undercut": 1.35, "barb_rest": 0.35, "front_x": 30.0}
 
 
 def latch_cabinet(**params) -> TemplateResult:
-    """m24 (§14 T3) latched_drawer host — the CABINET as a DESIGNED compiled piece (is_base). Closes
-    DRAFT D-M22-2c at the TEMPLATE level: the receiver WALL + growth-aligned catch the flat slide_base
-    lacked. A box shell open at the front (+X, where the drawer pulls out) — floor + back(−X) + two side
-    walls(±Y) + a front-top lintel carrying a downward RECEIVER LEDGE the drawer's barb tucks UNDER when
-    closed. Coordinates match the m23 P-LATCH rig (mm) so the compiled mesh overlays the declared physics.
-
-    Anchors: `rail_face` (floor top, +Z — where slide_rail grows the rail) · `travel_edge` (+X travel) ·
-    `catch_window` (the receiver ledge underside, −Z — the snap catch site) · `stop_face` (back wall)."""
-    p = {"stroke": 60.0, "wall": 3.0, "depth": 34.0, "height": 20.0, "floor_t": 3.0,
-         "recv_x": 37.5, "recv_z": 16.0, **params}
-    stroke, w, D, H, ft = p["stroke"], p["wall"], p["depth"], p["height"], p["floor_t"]
-    cx = stroke / 2.0
-    L = stroke + 52.0                                     # floor length (back overhang + front reach)
-    floor = Location((cx, 0, -ft / 2)) * Box(L, D, ft, align=(Align.CENTER, Align.CENTER, Align.CENTER))
-    back = Location((-26.0, 0, H / 2)) * Box(w, D, H, align=(Align.CENTER, Align.CENTER, Align.CENTER))
-    sideP = Location((cx, D / 2 - w / 2, H / 2)) * Box(L, w, H, align=(Align.CENTER, Align.CENTER, Align.CENTER))
-    sideN = Location((cx, -D / 2 + w / 2, H / 2)) * Box(L, w, H, align=(Align.CENTER, Align.CENTER, Align.CENTER))
-    lintel = Location((p["recv_x"] + 1.5, 0, H - w / 2)) * Box(w, D, w, align=(Align.CENTER, Align.CENTER, Align.CENTER))
-    recv = Location((p["recv_x"], 0, p["recv_z"] + 1.3)) * Box(6.4, 12.0, 2.6,
-                                                               align=(Align.CENTER, Align.CENTER, Align.CENTER))
-    part = floor + back + sideP + sideN + lintel + recv
+    """latched_drawer CABINET (is_base) — floor + back(−X) + two side walls(±Y) + a FACE FRAME around
+    the front(+X) opening + a centred floor T-RAIL + a double-ramped catch BUMP near the front. The
+    front panel lands on the face frame (M1); the T-rail carries the drawer groove (M2); the bump
+    catches the clip barb (M3). Anchors: `rail_face` (floor top, where slide_rail sits) · `travel_edge`
+    (+X) · `catch_window` (the bump top, the clip's catch site) · `stop_face` (face-frame front, the
+    LANDING). One solid."""
+    p = {**_LD_CAB, **params}
+    D, Wc, Wo, H, w = p["D"], p["W_c"], p["W_o"], p["H"], p["wall"]
+    rw, rh, rl = p["rail_w"], p["rail_h"], p["rail_len"]
+    fx = D / 2                                          # front opening plane
+    floor = Location((-w / 2, 0, -w / 2)) * Box(D + w, Wc, w, align=(Align.CENTER,) * 3)     # top at z=0
+    back = Location((-D / 2 - w / 2, 0, H / 2)) * Box(w, Wc, H, align=(Align.CENTER,) * 3)
+    sideP = Location((-w / 2, Wo / 2 + w / 2, H / 2)) * Box(D + w, w, H, align=(Align.CENTER,) * 3)
+    sideN = Location((-w / 2, -Wo / 2 - w / 2, H / 2)) * Box(D + w, w, H, align=(Align.CENTER,) * 3)
+    # FACE FRAME: a front border plate (INSIDE the opening plane, front face at x=fx) with the opening
+    # cut out; the drawer's oversized front panel lands on its front face (M1).
+    frame = (Location((fx - w / 2, 0, H / 2)) * Box(w, Wc, H, align=(Align.CENTER,) * 3)
+             - Location((fx - w / 2, 0, H / 2)) * Box(w * 3, Wo, H - 2 * w, align=(Align.CENTER,) * 3))
+    # centred inverted-T RAIL on the floor (web + top flange), running X.
+    rail = (Location((-w / 2, 0, rh / 2)) * Box(rl, 3.0, rh, align=(Align.CENTER,) * 3)
+            + Location((-w / 2, 0, rh - 1.0)) * Box(rl, rw, 2.0, align=(Align.CENTER,) * 3))
+    # double-ramped catch BUMP near the front, offset in Y from the rail (under the clip path).
+    bh, bx, by = p["bump_h"], p["bump_x"], p["bump_y"]
+    bump = (Location((bx, by, bh / 2)) * Box(2.0, p.get("bump_w", 7.0), bh, align=(Align.CENTER,) * 3)
+            + Location((bx - 1.4, by, bh / 2)) * Rotation(0, 35, 0) * Box(1.8, 7.0, bh * 0.9, align=(Align.CENTER,) * 3)
+            + Location((bx + 1.4, by, bh / 2)) * Rotation(0, -35, 0) * Box(1.8, 7.0, bh * 0.9, align=(Align.CENTER,) * 3))
+    part = floor + back + sideP + sideN + frame + rail + bump
     anchors = {
-        "rail_face": AnchorGeom("rail_face", "face", (cx, 0.0, 0.0), (0, 0, 1)),
-        "travel_edge": AnchorGeom("travel_edge", "axis", (cx, 0.0, 0.0), (1, 0, 0)),
-        "catch_window": AnchorGeom("catch_window", "face", (p["recv_x"], 0.0, p["recv_z"]), (0, 0, -1)),
-        "stop_face": AnchorGeom("stop_face", "face", (-24.5, 0.0, H / 2), (1, 0, 0)),
+        "rail_face": AnchorGeom("rail_face", "face", (0.0, 0.0, 0.0), (0, 0, 1)),
+        "travel_edge": AnchorGeom("travel_edge", "axis", (0.0, 0.0, 0.0), (1, 0, 0)),
+        "catch_window": AnchorGeom("catch_window", "face", (bx, by, bh), (0, 0, 1)),
+        "stop_face": AnchorGeom("stop_face", "face", (fx, 0.0, H / 2), (1, 0, 0)),
     }
     return TemplateResult(part=part, anchors=anchors, params={**p, "box_h": H})
 
 
 def latch_drawer(**params) -> TemplateResult:
-    """m24 (§14 T3) latched_drawer host — the DRAWER TRAY with a CARVED CANTILEVER + ramped BARB (the
-    snap geometry, host-template level per D-M22-2c; its FORCES stay Bayer-sourced, M3/D3). An open-top
-    tray (floor + back + two side walls) that rides the rail; a cantilever ARM along the front (+X) with
-    an up-hook BARB at its tip that tucks under the cabinet receiver when closed. m23-rig coordinates (mm).
-
-    Anchors: `groove_face` (tray underside, −Z — where slide_rail carves the groove) · `beam_root` (the
-    cantilever root on the front face, +X — the snap beam origin)."""
-    p = {"tray_l": 40.0, "tray_w": 30.0, "wall": 2.4, "floor_z": 1.5, "floor_t": 3.0,
-         "arm_x": 27.0, "arm_len": 18.0, "barb_x": 35.5, **params}
-    L, W, w, fz, ft = p["tray_l"], p["tray_w"], p["wall"], p["floor_z"], p["floor_t"]
-    floor = Location((0, 0, fz + ft / 2)) * Box(L, W, ft, align=(Align.CENTER, Align.CENTER, Align.CENTER))
+    """latched_drawer TRAY (mover) — an open-top tray riding the rail on two downward guide flanges (the
+    groove, M2), an oversized FRONT PANEL that lands on the face frame (M1, the pull lip), and a downward
+    cantilever CLIP (beam + barb) under the floor near the front, offset in Y, catching the floor bump
+    (M3). Zero protrusion — the clip hangs in the tray↔floor gap. Anchors: `groove_face` (tray underside)
+    · `beam_root` (clip root) · `panel_back` (the landing face). One solid."""
+    p = {**_LD_DR, **params}
+    D, Wt, Wp, ph, ft = p["tray_depth"], p["W_t"], p["W_p"], p["panel_h"], p["floor_t"]
+    rc, gw = p["ride_clr"], p["groove_w"]
+    fz = rc                                             # tray floor bottom (rides ride_clr above floor)
+    frontx = p["front_x"]
+    floor = Location((-D / 2 + frontx, 0, fz + ft / 2)) * Box(D, Wt, ft, align=(Align.CENTER,) * 3)
     walls = Part()
-    walls += Location((-L / 2 + w / 2, 0, fz + ft + 3.5)) * Box(w, W, 10.0, align=(Align.CENTER, Align.CENTER, Align.CENTER))
-    walls += Location((0, W / 2 - w / 2, fz + ft + 3.5)) * Box(L, w, 10.0, align=(Align.CENTER, Align.CENTER, Align.CENTER))
-    walls += Location((0, -W / 2 + w / 2, fz + ft + 3.5)) * Box(L, w, 10.0, align=(Align.CENTER, Align.CENTER, Align.CENTER))
-    # front panel (the pull face at +X) — the cantilever roots into it.
-    front = Location((L / 2 - w / 2, 0, fz + ft + 3.5)) * Box(w, W, 10.0, align=(Align.CENTER, Align.CENTER, Align.CENTER))
-    # the CANTILEVER snap: a slender arm reaching +X past the front panel, an up-hook BARB at its tip;
-    # rooted into the front panel (overlaps it → one solid with the tray, D14).
-    arm = Location((p["arm_x"], 0, 10.5)) * Box(p["arm_len"], 3.6, 2.2, align=(Align.CENTER, Align.CENTER, Align.CENTER))
-    barb = Location((p["barb_x"], 0, 14.0)) * Box(3.2, 3.6, 5.2, align=(Align.CENTER, Align.CENTER, Align.CENTER))
-    ramp = Location((p["barb_x"] + 0.6, 0, 14.0)) * Rotation(0, 35, 0) * Box(3.2, 3.6, 1.8,
-                                                                            align=(Align.CENTER, Align.CENTER, Align.CENTER))
-    part = floor + walls + front + arm + barb + ramp
+    walls += Location((-D / 2 + frontx, Wt / 2 - 1.2, fz + ft + 5)) * Box(D, 2.4, 12.0, align=(Align.CENTER,) * 3)
+    walls += Location((-D / 2 + frontx, -Wt / 2 + 1.2, fz + ft + 5)) * Box(D, 2.4, 12.0, align=(Align.CENTER,) * 3)
+    walls += Location((-D + frontx + 1.2, 0, fz + ft + 5)) * Box(2.4, Wt, 12.0, align=(Align.CENTER,) * 3)  # back
+    # two downward GUIDE FLANGES straddling the rail = the groove (M2), width gw between them.
+    guide = Part()
+    for sy in (-1, 1):
+        guide += Location((-D / 2 + frontx, sy * (gw / 2 + 0.75), (fz - 0.5) / 2 + 0.5)) * Box(
+            D - 4, 1.5, fz - 0.5, align=(Align.CENTER,) * 3)
+    # oversized FRONT PANEL at the front (+X): lands on the face frame (M1); bottom edge = pull lip.
+    panel = Location((frontx + 1.5, 0, ph / 2 - 1)) * Box(3.0, Wp, ph, align=(Align.CENTER,) * 3)
+    # the downward cantilever CLIP: a riser from the tray floor + a horizontal beam + a down-BARB tip.
+    L, b, cy = p["clip_L"], p["clip_b"], p["clip_y"]
+    bx, uc, brest = p["barb_x"], p["undercut"], p["barb_rest"]
+    z_beam = brest + uc + 0.6                            # beam mid-height in the gap
+    riser = Location((bx - L, cy, (fz + z_beam) / 2)) * Box(2.5, b, fz - z_beam, align=(Align.CENTER,) * 3)
+    beam = Location((bx - L / 2, cy, z_beam)) * Box(L, b, 2.0, align=(Align.CENTER,) * 3)
+    barb_h = uc + 0.5
+    barb = Location((bx, cy, brest + barb_h / 2)) * Box(2.4, b, barb_h, align=(Align.CENTER,) * 3)
+    part = floor + walls + guide + panel + riser + beam + barb
     anchors = {
-        "groove_face": AnchorGeom("groove_face", "face", (0.0, 0.0, fz), (0, 0, -1)),
-        "beam_root": AnchorGeom("beam_root", "face", (p["arm_x"] - p["arm_len"] / 2, 0.0, 10.5), (1, 0, 0)),
+        "groove_face": AnchorGeom("groove_face", "face", (-D / 2 + frontx, 0.0, fz), (0, 0, -1)),
+        "beam_root": AnchorGeom("beam_root", "face", (bx - L, cy, z_beam), (1, 0, 0)),
+        "panel_back": AnchorGeom("panel_back", "face", (frontx, 0.0, ph / 2 - 1), (-1, 0, 0)),
     }
-    return TemplateResult(part=part, anchors=anchors, params={**p, "box_h": fz + ft + 10.0})
+    return TemplateResult(part=part, anchors=anchors, params={**p, "box_h": ph})
+
+
+def latch_design_parts(cab_params=None, dr_params=None) -> dict:
+    """latched_drawer split into FOUR compiled sub-solids for D22-grouped t0 + per-body T5 meshes:
+    {cabinet_body, bump, drawer_body, clip}. cabinet_body = cabinet minus the bump; clip = riser+beam+barb;
+    drawer_body = the rest. Shared world frame (mm), the same geometry the union templates emit."""
+    cp = {**_LD_CAB, **(cab_params or {})}
+    dp = {**_LD_DR, **(dr_params or {})}
+    cab_full = latch_cabinet(**cp).part
+    dr_full = latch_drawer(**dp).part
+    # rebuild the two catch sub-solids in isolation so the groups are separable
+    bh, bx, by = cp["bump_h"], cp["bump_x"], cp["bump_y"]
+    bump = (Location((bx, by, bh / 2)) * Box(2.0, cp.get("bump_w", 7.0), bh, align=(Align.CENTER,) * 3)
+            + Location((bx - 1.4, by, bh / 2)) * Rotation(0, 35, 0) * Box(1.8, 7.0, bh * 0.9, align=(Align.CENTER,) * 3)
+            + Location((bx + 1.4, by, bh / 2)) * Rotation(0, -35, 0) * Box(1.8, 7.0, bh * 0.9, align=(Align.CENTER,) * 3))
+    L, b, cy = dp["clip_L"], dp["clip_b"], dp["clip_y"]
+    bx2, uc, brest, rc, ft = dp["barb_x"], dp["undercut"], dp["barb_rest"], dp["ride_clr"], dp["floor_t"]
+    z_beam = brest + uc + 0.6
+    clip = (Location((bx2 - L, cy, (rc + z_beam) / 2)) * Box(2.5, b, rc - z_beam, align=(Align.CENTER,) * 3)
+            + Location((bx2 - L / 2, cy, z_beam)) * Box(L, b, 2.0, align=(Align.CENTER,) * 3)
+            + Location((bx2, cy, brest + (uc + 0.5) / 2)) * Box(2.4, b, uc + 0.5, align=(Align.CENTER,) * 3))
+    cabinet_body = cab_full - bump
+    drawer_body = dr_full - clip
+    return {"cabinet_body": cabinet_body, "bump": bump, "drawer_body": drawer_body, "clip": clip}
 
 
 # =====================================================================================
