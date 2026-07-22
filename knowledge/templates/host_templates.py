@@ -319,9 +319,19 @@ def shaft_carrier_out(**params) -> TemplateResult:
     nut_carriage). A floating stub that inserts into the coupling's blind bore with print clearance
     (undersized by the A-PETG-1 clearance so it slides in). Anchor `shaft_out` (−Z, the end that
     enters the bore)."""
-    p = {"shaft_d": 8.0, "z0": 40.0, "shaft_len": 24.0, "clearance": 0.30, **params}
+    p = {"shaft_d": 8.0, "z0": 40.0, "shaft_len": 24.0, "clearance": 0.30, "crank": False,
+         "arm_len": 26.0, "arm_w": 8.0, "arm_t": 6.0, "knob_d": 10.0, "knob_h": 16.0, **params}
     sd, z0, sl, c = p["shaft_d"], p["z0"], p["shaft_len"], p["clearance"]
     part = Location((0, 0, z0)) * Cylinder(sd / 2 - c, sl, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    if p["crank"]:
+        # m24 (§14 T3): a legible HAND CRANK on the free (z0) end — a radial arm + a grip knob you
+        # turn. The arm sits at the shaft's free face; overlaps the stub by 0.5 → one solid (D14).
+        al, aw, at_, kd, kh = p["arm_len"], p["arm_w"], p["arm_t"], p["knob_d"], p["knob_h"]
+        part += Location((al / 2 - 0.5, 0, z0)) * Box(al + 0.5, aw, at_,
+                                                      align=(Align.CENTER, Align.CENTER, Align.MIN))
+        # the grip knob at the arm end, standing off the arm face (down, −Z, the graspable handle)
+        part += Location((al, 0, z0 - kh + 0.5)) * Cylinder(kd / 2, kh + 0.5,
+                                                            align=(Align.CENTER, Align.CENTER, Align.MIN))
     anchors = {"shaft_out": AnchorGeom("shaft_out", "axis", (0.0, 0.0, z0), (0, 0, -1))}
     return TemplateResult(part=part, anchors=anchors, params=p)
 
@@ -330,13 +340,34 @@ def screw_base(**params) -> TemplateResult:
     """lead_screw host (m19 D-track fixture) — a base plate the screw stands VERTICALLY on (a
     screw-jack: rotation about +Z drives the nut up/down, gravity is the hold load). Mirrors
     slide_base/pinion_carrier. Anchors: `screw_axis` (+Z rotation axis at the plate top, where the
-    card grows the screw) + `travel_edge` (the +Z travel line the nut rides)."""
-    p = {"base_l": 60.0, "base_w": 60.0, "base_t": 4.0, **params}
+    card grows the screw) + `travel_edge` (the +Z travel line the nut rides).
+
+    **m24 (§14 T3, screw_lift only, gated `frame=True`):** the bare plate is a fixture, not a jack.
+    With `frame=True` it grows the DESIGN carriers the reviewer must see — the physical things the
+    two declared joints ride: a central **bearing boss** (⌀`boss_d`) that CARRIES the screw hinge,
+    and TWO **guide columns** (⌀`col_d` at ±`col_y`) that are the platform SLIDE joint's physical
+    carrier (anti-rotation posts — a screw jack whose platform cannot co-rotate needs them; without
+    them the slide DoF has no geometry). Columns rise to `col_top` so they span the full lift travel.
+    m19 passes no `frame`, so its plate is byte-identical."""
+    p = {"base_l": 60.0, "base_w": 60.0, "base_t": 4.0, "frame": False,
+         "boss_d": 16.0, "boss_h": 10.0, "col_d": 6.0, "col_y": 15.0, "col_top": 82.0, **params}
     L, W, T = p["base_l"], p["base_w"], p["base_t"]
     part = Box(L, W, T, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    if p["frame"]:
+        # bearing boss around the screw root (overlaps the plate by 0.5 → one solid, D14). The screw
+        # (card-carved) fuses through it; the boss is the visible hinge carrier.
+        part += Location((0, 0, T - 0.5)) * Cylinder(p["boss_d"] / 2, p["boss_h"] + 0.5,
+                                                     align=(Align.CENTER, Align.CENTER, Align.MIN))
+        # two guide columns (the platform-slide carrier) at ±col_y, from the plate top to col_top.
+        for sy in (-1, 1):
+            part += Location((0, sy * p["col_y"], T - 0.5)) * Cylinder(
+                p["col_d"] / 2, p["col_top"] - T + 0.5, align=(Align.CENTER, Align.CENTER, Align.MIN))
     anchors = {
         "screw_axis": AnchorGeom("screw_axis", "axis", (0.0, 0.0, T), (0, 0, 1)),
         "travel_edge": AnchorGeom("travel_edge", "axis", (0.0, 0.0, T), (0, 0, 1)),
+        # the two column axes (platform bores align to these — the fit-schedule carrier rows)
+        "guide_col_L": AnchorGeom("guide_col_L", "axis", (0.0, -p["col_y"], T), (0, 0, 1)),
+        "guide_col_R": AnchorGeom("guide_col_R", "axis", (0.0, p["col_y"], T), (0, 0, 1)),
     }
     return TemplateResult(part=part, anchors=anchors, params=p)
 
@@ -348,13 +379,27 @@ def nut_carriage(**params) -> TemplateResult:
     the template is the host, the card owns the functional geometry, D-ONT-11). One connected solid
     (block − bore). Anchors: `nut_mount` (the underside the card threads onto) + `travel_axis` (+Z)."""
     p = {"nut_l": 26.0, "nut_w": 26.0, "nut_t": 10.0, "nut_z": 30.0, "d_major": 8.0, "gap": 1.0,
-         **params}
+         "guide": False, "col_d": 6.0, "col_y": 15.0, "col_clear": 0.35, "boss_h": 0.0, **params}
     z = p["nut_z"]
     block = Location((0, 0, z)) * Box(p["nut_l"], p["nut_w"], p["nut_t"],
                                       align=(Align.CENTER, Align.CENTER, Align.MIN))
-    bore = Location((0, 0, z - 1)) * Cylinder(p["d_major"] / 2 + p["gap"], p["nut_t"] + 2,
-                                              align=(Align.CENTER, Align.CENTER, Align.MIN))
-    part = block - bore
+    part = block
+    # m24 (§14 T3): a nut BOSS — a raised collar under the block giving the thread real engagement
+    # length (the lead_screw card threads it). Overlaps the block by 0.5 → one solid.
+    if p["boss_h"] > 0:
+        part += Location((0, 0, z - p["boss_h"] + 0.5)) * Cylinder(
+            p["d_major"] / 2 + p["gap"] + 3.0, p["boss_h"], align=(Align.CENTER, Align.CENTER, Align.MIN))
+    bore = Location((0, 0, z - p["boss_h"] - 1)) * Cylinder(
+        p["d_major"] / 2 + p["gap"], p["nut_t"] + p["boss_h"] + 2, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    part = part - bore
+    # m24 (§14 T3): two column bores (the platform SLIDE joint's fit onto the base's guide columns).
+    # bore ⌀ = col_d + 2·col_clear (A-PETG-1 slide clearance) — the fit derives from the column mate.
+    if p["guide"]:
+        for sy in (-1, 1):
+            cbore = Location((0, sy * p["col_y"], z - p["boss_h"] - 1)) * Cylinder(
+                p["col_d"] / 2 + p["col_clear"], p["nut_t"] + p["boss_h"] + 2,
+                align=(Align.CENTER, Align.CENTER, Align.MIN))
+            part = part - cbore
     anchors = {
         "nut_mount": AnchorGeom("nut_mount", "face", (0.0, 0.0, z), (0, 0, -1)),
         "travel_axis": AnchorGeom("travel_axis", "axis", (0.0, 0.0, z), (0, 0, 1)),

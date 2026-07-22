@@ -1016,14 +1016,27 @@ def screw_lift() -> DesignPlan:
     lead = starts * pitch                       # 2.0 mm/rev
     length = round(stroke + 20.0, 1)            # 60 mm
     bore_d, body_d, coup_len, tau = 8.0, 20.0, 24.0, 25.0
+    # m24 (§14 T3) DESIGN CLOSURE: the base grows the two declared joints' physical carriers — a
+    # central bearing BOSS (screw hinge) + two GUIDE COLUMNS (the platform-slide anti-rotation posts,
+    # spanning the lift travel). col_y/col_d feed the platform's column-bore fit (fit schedule).
+    col_d, col_y, col_clear = 6.0, 15.0, 0.35
+    col_top = round(30.0 + stroke + 12.0, 1)         # spans platform travel (nut_z + stroke + margin)
     screw_base_t = HostTemplate(template_ref="screw_base",
-        params={"base_l": 60.0, "base_w": 60.0, "base_t": 4.0},
-        anchors=[Anchor(name="screw_axis", kind="axis"), Anchor(name="travel_edge", kind="axis")])
+        params={"base_l": 60.0, "base_w": 60.0, "base_t": 4.0, "frame": True,
+                "boss_d": 16.0, "boss_h": 10.0, "col_d": col_d, "col_y": col_y, "col_top": col_top},
+        anchors=[Anchor(name="screw_axis", kind="axis"), Anchor(name="travel_edge", kind="axis"),
+                 Anchor(name="guide_col_L", kind="axis"), Anchor(name="guide_col_R", kind="axis")])
+    # platform widened to 44 so both column bores sit fully inside; carries a nut BOSS (thread
+    # engagement length) + two COLUMN BORES (⌀ = col_d + 2·col_clear, the slide fit onto the columns).
     platform_t = HostTemplate(template_ref="nut_carriage",
-        params={"nut_l": 26.0, "nut_w": 26.0, "nut_t": 10.0, "nut_z": 30.0, "d_major": d_major, "gap": 1.0},
+        params={"nut_l": 44.0, "nut_w": 44.0, "nut_t": 10.0, "nut_z": 30.0, "d_major": d_major,
+                "gap": 1.0, "boss_h": 8.0, "guide": True, "col_d": col_d, "col_y": col_y,
+                "col_clear": col_clear},
         anchors=[Anchor(name="nut_mount", kind="face"), Anchor(name="travel_axis", kind="axis")])
+    # crank made a legible HAND CRANK (radial arm + grip knob) on its free end.
     crank_t = HostTemplate(template_ref="shaft_carrier_out",
-        params={"shaft_d": bore_d, "z0": -24.0, "shaft_len": 24.0, "clearance": 0.30},
+        params={"shaft_d": bore_d, "z0": -24.0, "shaft_len": 24.0, "clearance": 0.30, "crank": True,
+                "arm_len": 26.0, "arm_w": 8.0, "arm_t": 6.0, "knob_d": 10.0, "knob_h": 16.0},
         anchors=[Anchor(name="shaft_out", kind="axis")])
     pieces = [
         Piece(id="P1", role="base", template_ref="screw_base", is_base=True, params=dict(screw_base_t.params)),

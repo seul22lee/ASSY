@@ -144,7 +144,13 @@
       "params": {
         "base_l": 60.0,
         "base_w": 60.0,
-        "base_t": 4.0
+        "base_t": 4.0,
+        "frame": 1.0,
+        "boss_d": 16.0,
+        "boss_h": 10.0,
+        "col_d": 6.0,
+        "col_y": 15.0,
+        "col_top": 82.0
       },
       "is_base": true
     },
@@ -155,12 +161,17 @@
       "template_ref": "nut_carriage",
       "source_element": null,
       "params": {
-        "nut_l": 26.0,
-        "nut_w": 26.0,
+        "nut_l": 44.0,
+        "nut_w": 44.0,
         "nut_t": 10.0,
         "nut_z": 30.0,
         "d_major": 8.0,
-        "gap": 1.0
+        "gap": 1.0,
+        "boss_h": 8.0,
+        "guide": 1.0,
+        "col_d": 6.0,
+        "col_y": 15.0,
+        "col_clear": 0.35
       },
       "is_base": false
     },
@@ -174,7 +185,13 @@
         "shaft_d": 8.0,
         "z0": -24.0,
         "shaft_len": 24.0,
-        "clearance": 0.3
+        "clearance": 0.3,
+        "crank": 1.0,
+        "arm_len": 26.0,
+        "arm_w": 8.0,
+        "arm_t": 6.0,
+        "knob_d": 10.0,
+        "knob_h": 16.0
       },
       "is_base": false
     }
@@ -190,12 +207,26 @@
         {
           "name": "travel_edge",
           "kind": "axis"
+        },
+        {
+          "name": "guide_col_L",
+          "kind": "axis"
+        },
+        {
+          "name": "guide_col_R",
+          "kind": "axis"
         }
       ],
       "params": {
         "base_l": 60.0,
         "base_w": 60.0,
-        "base_t": 4.0
+        "base_t": 4.0,
+        "frame": 1.0,
+        "boss_d": 16.0,
+        "boss_h": 10.0,
+        "col_d": 6.0,
+        "col_y": 15.0,
+        "col_top": 82.0
       }
     },
     {
@@ -211,12 +242,17 @@
         }
       ],
       "params": {
-        "nut_l": 26.0,
-        "nut_w": 26.0,
+        "nut_l": 44.0,
+        "nut_w": 44.0,
         "nut_t": 10.0,
         "nut_z": 30.0,
         "d_major": 8.0,
-        "gap": 1.0
+        "gap": 1.0,
+        "boss_h": 8.0,
+        "guide": 1.0,
+        "col_d": 6.0,
+        "col_y": 15.0,
+        "col_clear": 0.35
       }
     },
     {
@@ -231,7 +267,13 @@
         "shaft_d": 8.0,
         "z0": -24.0,
         "shaft_len": 24.0,
-        "clearance": 0.3
+        "clearance": 0.3,
+        "crank": 1.0,
+        "arm_len": 26.0,
+        "arm_w": 8.0,
+        "arm_t": 6.0,
+        "knob_d": 10.0,
+        "knob_h": 16.0
       }
     }
   ],
