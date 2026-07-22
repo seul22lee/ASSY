@@ -1,0 +1,12 @@
+
+========== m23 latch — SOURCED breakaway + close/hold/release ==========
+[1] SOURCED W_out (Bayer, D3): solve_h→2.09mm ; P_deflect→17.67N ; W_sep(α_out=45.0°,µ=0.3)×1 = 32.81 N
+    self-lock atan(1/µ)=73.3° > α_out 45.0° ⇒ hand-releasable
+    pull_hold = 0.5·W_out = 16.4 N (< breakaway) ; pull_release = 1.5·W_out = 49.2 N (> breakaway)
+
+[2] P-LATCH measured (seed0): engage@0.40mm ; hold disp 0.45mm @16.4N ; release→60mm @49.21N
+    seeds passed 5/5 ; t0 gate CLEAN
+    discrimination: SOURCED threshold holds below / opens above ⇒ ok
+
+========== reproduction CLEAN ==========
+

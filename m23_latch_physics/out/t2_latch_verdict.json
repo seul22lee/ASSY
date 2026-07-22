@@ -1,0 +1,264 @@
+{
+  "decision_row": "D-M22-3 P-LATCH \u2014 sourced-threshold latch (close/hold/release)",
+  "compile_hash": "65a7f0c",
+  "task": "latched_drawer / m23_latch_physics",
+  "sourced_breakaway": {
+    "W_out_N": 32.807,
+    "h_mm": 2.093,
+    "P_N": 17.665,
+    "chain": "solve_h\u21922.09mm; P_deflect\u219217.67N; W_sep(\u03b1_out=45.0\u00b0,\u00b5=0.3)\u00d71=32.81N",
+    "self_lock_deg": 73.3,
+    "alpha_out_deg": 45.0,
+    "note": "W_out is SOURCED from the Bayer M3 formula (D3), applied as the rig breakaway \u2014 the m19 sourced-parameter pattern; NOT invented"
+  },
+  "t0_gate": {
+    "clean": true,
+    "judged_per": "D22",
+    "pairs": {
+      "P1\u00d7P2": {
+        "worst_pen_mm": 0.0,
+        "intended": true
+      }
+    }
+  },
+  "emergent_check": {
+    "status": "deferred",
+    "reason": "the elastic cantilever DEFLECTION over the catch is not rigid-body expressible (D3) \u2014 the snap FORCES are Bayer-verified and the breakaway is SOURCED here; the compliant-beam engagement remains Tier-3 deferred",
+    "risk": "beam fatigue / exact click dynamics not physics-verified; the HOLD/RELEASE threshold IS (sourced W_out)"
+  },
+  "g9_gconv": true,
+  "modes": {
+    "P-LATCH": {
+      "ran": true,
+      "n_seeds": 5,
+      "seeds_passed": 5,
+      "passed": true,
+      "criteria_seed0": {
+        "close_engages_at_closed": {
+          "value": 0.399,
+          "threshold": 0.5,
+          "pass": true
+        },
+        "holds_at_0.5\u00b7W_out (\u2264 tol)": {
+          "value": 0.449,
+          "threshold": 0.6,
+          "pass": true
+        },
+        "releases_at_1.5\u00b7W_out (opens to rail)": {
+          "value": 59.73,
+          "threshold": 60.0,
+          "pass": true
+        },
+        "converged (no blow-up)": {
+          "value": false,
+          "threshold": false,
+          "pass": true
+        },
+        "all_parts_retained": {
+          "value": true,
+          "threshold": true,
+          "pass": true
+        }
+      },
+      "per_seed": [
+        {
+          "ran": true,
+          "seed": 0,
+          "diverged": false,
+          "click_s_mm": 0.399,
+          "hold_disp_mm": 0.449,
+          "peak_open_mm": 59.73,
+          "pull_hold_N": 16.4,
+          "pull_release_N": 49.21,
+          "W_out_N": 32.807,
+          "criteria": {
+            "close_engages_at_closed": {
+              "value": 0.399,
+              "threshold": 0.5,
+              "pass": true
+            },
+            "holds_at_0.5\u00b7W_out (\u2264 tol)": {
+              "value": 0.449,
+              "threshold": 0.6,
+              "pass": true
+            },
+            "releases_at_1.5\u00b7W_out (opens to rail)": {
+              "value": 59.73,
+              "threshold": 60.0,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "seed": 1,
+          "diverged": false,
+          "click_s_mm": 0.397,
+          "hold_disp_mm": 0.446,
+          "peak_open_mm": 59.73,
+          "pull_hold_N": 16.4,
+          "pull_release_N": 49.21,
+          "W_out_N": 32.807,
+          "criteria": {
+            "close_engages_at_closed": {
+              "value": 0.397,
+              "threshold": 0.5,
+              "pass": true
+            },
+            "holds_at_0.5\u00b7W_out (\u2264 tol)": {
+              "value": 0.446,
+              "threshold": 0.6,
+              "pass": true
+            },
+            "releases_at_1.5\u00b7W_out (opens to rail)": {
+              "value": 59.73,
+              "threshold": 60.0,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "seed": 2,
+          "diverged": false,
+          "click_s_mm": 0.393,
+          "hold_disp_mm": 0.441,
+          "peak_open_mm": 59.73,
+          "pull_hold_N": 16.4,
+          "pull_release_N": 49.21,
+          "W_out_N": 32.807,
+          "criteria": {
+            "close_engages_at_closed": {
+              "value": 0.393,
+              "threshold": 0.5,
+              "pass": true
+            },
+            "holds_at_0.5\u00b7W_out (\u2264 tol)": {
+              "value": 0.441,
+              "threshold": 0.6,
+              "pass": true
+            },
+            "releases_at_1.5\u00b7W_out (opens to rail)": {
+              "value": 59.73,
+              "threshold": 60.0,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "seed": 3,
+          "diverged": false,
+          "click_s_mm": 0.393,
+          "hold_disp_mm": 0.441,
+          "peak_open_mm": 59.73,
+          "pull_hold_N": 16.4,
+          "pull_release_N": 49.21,
+          "W_out_N": 32.807,
+          "criteria": {
+            "close_engages_at_closed": {
+              "value": 0.393,
+              "threshold": 0.5,
+              "pass": true
+            },
+            "holds_at_0.5\u00b7W_out (\u2264 tol)": {
+              "value": 0.441,
+              "threshold": 0.6,
+              "pass": true
+            },
+            "releases_at_1.5\u00b7W_out (opens to rail)": {
+              "value": 59.73,
+              "threshold": 60.0,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "ran": true,
+          "seed": 4,
+          "diverged": false,
+          "click_s_mm": 0.397,
+          "hold_disp_mm": 0.446,
+          "peak_open_mm": 59.73,
+          "pull_hold_N": 16.4,
+          "pull_release_N": 49.21,
+          "W_out_N": 32.807,
+          "criteria": {
+            "close_engages_at_closed": {
+              "value": 0.397,
+              "threshold": 0.5,
+              "pass": true
+            },
+            "holds_at_0.5\u00b7W_out (\u2264 tol)": {
+              "value": 0.446,
+              "threshold": 0.6,
+              "pass": true
+            },
+            "releases_at_1.5\u00b7W_out (opens to rail)": {
+              "value": 59.73,
+              "threshold": 60.0,
+              "pass": true
+            },
+            "converged (no blow-up)": {
+              "value": false,
+              "threshold": false,
+              "pass": true
+            },
+            "all_parts_retained": {
+              "value": true,
+              "threshold": true,
+              "pass": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "video": "t2_latch.mp4"
+    }
+  },
+  "verdict": true
+}
