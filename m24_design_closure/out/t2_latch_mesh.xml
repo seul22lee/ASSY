@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<mujoco model="t2_latch_mesh">
+  <compiler angle="radian" autolimits="true" meshdir="/home/ftk3187/github/ASSY/m24_design_closure/out/latch_mesh_assets"/>
+  <option timestep="0.0001" integrator="implicitfast" cone="elliptic" impratio="10" gravity="0 0 0"/>
+  <visual>
+    <headlight ambient="0.5 0.5 0.5" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2"/>
+    <global offwidth="1280" offheight="960"/>
+  </visual>
+  <default>
+    <geom density="0" contype="0" conaffinity="0" group="2"/>
+  </default>
+  <asset>
+    <material name="cab" rgba="0.60 0.66 0.72 0.30"/>
+    <material name="recv" rgba="0.85 0.30 0.30 1"/>
+    <material name="drawer" rgba="0.95 0.72 0.35 1"/>
+    <material name="hook" rgba="0.20 0.55 0.95 1"/>
+    <material name="mk" rgba="0.10 0.85 0.35 1"/>
+    <mesh name="m_cabinet_body" file="cabinet_body.stl"/>
+    <mesh name="m_receiver" file="receiver.stl"/>
+    <mesh name="m_drawer_body" file="drawer_body.stl"/>
+    <mesh name="m_barb" file="barb.stl"/>
+  </asset>
+  <worldbody>
+    <light pos="0.02 -0.2 0.3" dir="-0.05 0.3 -1" directional="true" diffuse="0.5 0.5 0.5"/>
+    <camera name="cutaway" pos="0.03 -0.11 0.05" xyaxes="1 0 0 0 0.4 0.92"/>
+    <camera name="zoom" pos="0.040 -0.040 0.024" xyaxes="1 0 0 0 0.45 0.89"/>
+    <geom name="cab_mesh" type="mesh" mesh="m_cabinet_body" material="cab"/>
+    <geom name="receiver_mesh" type="mesh" mesh="m_receiver" material="recv"/>
+    <body name="drawer" pos="0 0 0">
+      <inertial mass="0.051500000" pos="0.000665049 0.001087379 0.004353398" quat="-0.019310523 0.688804150 -0.021071380 0.724383838" diaginertia="1.493315924e-05 1.131665391e-05 4.464400932e-06"/>
+      <joint name="drawer_slide" type="slide" axis="1 0 0" pos="0 0 0" limited="true" range="0 0.060000" damping="150" solreflimit="0.002 1" solimplimit="0.99 0.9999 1e-5 0.5 2"/>
+      <geom name="dr_mesh" type="mesh" mesh="m_drawer_body" material="drawer"/>
+      <geom name="barb_mesh" type="mesh" mesh="m_barb" material="hook"/>
+      <geom name="mk_drawer" type="box" pos="0 -0.012 0.006" size="0.004 0.0015 0.004" material="mk"/>
+    </body>
+  </worldbody>
+  <equality>
+    <joint name="latch" joint1="drawer_slide" polycoef="0 0 0 0 0" active="false" solref="-1e8 -1e4" solimp="0.9999 0.99999 1e-6 0.5 2"/>
+  </equality>
+  <actuator>
+    <velocity name="drive" joint="drawer_slide" kv="600"/>
+  </actuator>
+</mujoco>

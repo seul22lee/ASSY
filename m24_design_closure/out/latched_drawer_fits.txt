@@ -1,0 +1,15 @@
+=== FIT SCHEDULE — latched_drawer (spec §14 T3b) ===
+  interface                                clearance   source
+  rail ⌀/width in carriage groove               0.35   slide_rail rail_w=8; groove=rail_w+2·clearance, clearance=0.35 = A-PETG-1 (M10)
+  barb tip under receiver ledge (engagement)      0.30   snap_hook interlock: barb overlaps the ledge; approach clearance = A-PETG-1 (Bayer forces D3)
+  drawer body in cabinet opening                1.00   drawer_tray width = cabinet inner opening − 2·1.0 side gap (drawer-fits-opening)
+
+=== T4/T6 RE-MEASURE from the 4 compiled sub-solids (TRUE mm, swept, D22-grouped) ===
+  sub-pair                            worst pen (mm)   kind
+  cabinet_body×barb                              -0.400   unintended (must clear)  clear
+  cabinet_body×drawer_body                       -1.000   unintended (must clear)  clear
+  receiver×barb                               0.608   INTENDED interlock  engages
+  receiver×drawer_body                       -3.000   unintended (must clear)  clear
+
+  barb↔receiver engagement zone (near closed) = 5.0 mm
+  => fit schedule VERIFIED (drawer body clears; barb engages)

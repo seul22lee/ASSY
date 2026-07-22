@@ -144,6 +144,65 @@ def report(task):
     return ok
 
 
+def latched_drawer_report():
+    """latched_drawer T4/T6 — re-measure from the FOUR compiled sub-solids, D22-grouped: the barb ↔
+    receiver interlock is INTENDED (positive engagement near closed); the drawer BODY must CLEAR the
+    cabinet over the whole travel. Sweeps the drawer parts +X over the stroke."""
+    from knowledge.templates.host_templates import latch_design_parts
+    import trimesh
+    tmp = ROOT / "m24_design_closure" / "out" / "latched_drawer_fitassets"
+    tmp.mkdir(parents=True, exist_ok=True)
+    parts = latch_design_parts()
+    group = {"cabinet_body": "cabinet", "receiver": "cabinet", "drawer_body": "drawer", "barb": "drawer"}
+    moving = {"drawer_body", "barb"}
+    base = {k: _to_trimesh(v, tmp / f"{k}.stl") for k, v in parts.items()}
+    stroke_m = 60.0 / MM
+    worst, eng = {}, 0.0
+    for s in np.linspace(0, stroke_m, 25):
+        meshes = {}
+        for k, m in base.items():
+            mm = m.copy()
+            if k in moving:
+                mm.apply_translation(np.array([1.0, 0, 0]) * s)
+            meshes[k] = mm
+        keys = list(base)
+        for i in range(len(keys)):
+            for j in range(i + 1, len(keys)):
+                a, b = keys[i], keys[j]
+                if group[a] == group[b]:
+                    continue
+                v = _pen_mm(meshes[a], meshes[b])
+                pair = tuple(sorted([group[a], group[b], a, b]))
+                key = (group[a], group[b], a, b) if group[a] < group[b] else (group[b], group[a], b, a)
+                worst[key] = max(worst.get(key, -1e9), v)
+                if {a, b} == {"barb", "receiver"} and v > 0.05:
+                    eng = max(eng, s * MM)
+    lines = [f"=== FIT SCHEDULE — latched_drawer (spec §14 T3b) ===",
+             f"  {'interface':<40s}{'clearance':>10s}   source"]
+    for name, inner, outer, clr, src in FITS["latched_drawer"]:
+        lines.append(f"  {name:<40s}{clr:>10.2f}   {src}")
+    lines += ["", "=== T4/T6 RE-MEASURE from the 4 compiled sub-solids (TRUE mm, swept, D22-grouped) ===",
+              f"  {'sub-pair':<34s}{'worst pen (mm)':>16s}   kind"]
+    ok = True
+    for key in sorted(worst):
+        ga, gb, a, b = key
+        v = worst[key]
+        intended = {a, b} == {"barb", "receiver"}
+        kind = "INTENDED interlock" if intended else "unintended (must clear)"
+        verdict = "engages" if intended else ("PENETRATE!" if v > 0.05 else "clear")
+        if not intended:
+            ok = ok and (v <= 0.05)
+        lines.append(f"  {a}×{b:<24s}{v:>16.3f}   {kind}  {verdict}")
+    lines += ["", f"  barb↔receiver engagement zone (near closed) = {eng:.1f} mm",
+              f"  => fit schedule {'VERIFIED (drawer body clears; barb engages)' if ok else 'FAILED'}"]
+    out = "\n".join(lines)
+    (ROOT / "m24_design_closure" / "out" / "latched_drawer_fits.txt").write_text(out + "\n")
+    print(out)
+    return ok
+
+
 if __name__ == "__main__":
     task = sys.argv[1] if len(sys.argv) > 1 else "screw_lift"
+    if task == "latched_drawer":
+        sys.exit(0 if latched_drawer_report() else 1)
     sys.exit(0 if report(task) else 1)

@@ -928,16 +928,21 @@ def latched_drawer() -> DesignPlan:
     (where the catch is), not a new scalar field. It fits with no gap; an explicit 'snap_at_s' link on
     the travel axis would be cleaner for coordination but is NOT needed (DRAFT D-M22-2a, deferred)."""
     stroke = 60.0
-    slide_base_t = HostTemplate(template_ref="slide_base",
-        params={"base_l": 120.0, "base_w": 40.0, "base_t": 3.0, "front_wall": 0.0},
+    # m24 (§14 T3): the cabinet + drawer are DESIGNED compiled pieces (closes DRAFT D-M22-2c at the
+    # template level — the receiver WALL + growth-aligned catch the flat slide_base lacked). The cabinet
+    # carries the receiver LEDGE; the drawer carries the carved cantilever + ramped BARB. The snap FORCES
+    # stay Bayer-sourced (M3/D3); this is the host GEOMETRY the forces act on.
+    slide_base_t = HostTemplate(template_ref="latch_cabinet",
+        params={"stroke": stroke, "wall": 3.0, "depth": 34.0, "height": 20.0, "recv_x": 37.5, "recv_z": 16.0},
         anchors=[Anchor(name="rail_face", kind="face"), Anchor(name="travel_edge", kind="axis"),
                  Anchor(name="catch_window", kind="face"), Anchor(name="stop_face", kind="face")])
-    carriage_t = HostTemplate(template_ref="slide_carriage",
-        params={"car_l": 24.0, "car_w": 30.0, "car_t": 3.0, "car_z": 3.0},
+    # tray_w = cabinet inner opening (depth 34 − 2·wall 3 = 28) − 2·1.0 side gap = 26 (drawer-fits-opening).
+    carriage_t = HostTemplate(template_ref="latch_drawer",
+        params={"tray_l": 40.0, "tray_w": 26.0, "arm_x": 27.0, "arm_len": 18.0, "barb_x": 35.5},
         anchors=[Anchor(name="groove_face", kind="face"), Anchor(name="beam_root", kind="face")])
     pieces = [
-        Piece(id="P1", role="base", template_ref="slide_base", is_base=True, params=dict(slide_base_t.params)),
-        Piece(id="P2", role="drawer", template_ref="slide_carriage", params=dict(carriage_t.params)),
+        Piece(id="P1", role="cabinet", template_ref="latch_cabinet", is_base=True, params=dict(slide_base_t.params)),
+        Piece(id="P2", role="drawer", template_ref="latch_drawer", params=dict(carriage_t.params)),
     ]
     elements = [
         ElementInstance(id="E1", card_ref="slide_rail", host_pieces=["P1", "P2"],

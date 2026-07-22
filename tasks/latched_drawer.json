@@ -147,15 +147,17 @@
   "pieces": [
     {
       "id": "P1",
-      "role": "base",
+      "role": "cabinet",
       "provenance": "functional",
-      "template_ref": "slide_base",
+      "template_ref": "latch_cabinet",
       "source_element": null,
       "params": {
-        "base_l": 120.0,
-        "base_w": 40.0,
-        "base_t": 3.0,
-        "front_wall": 0.0
+        "stroke": 60.0,
+        "wall": 3.0,
+        "depth": 34.0,
+        "height": 20.0,
+        "recv_x": 37.5,
+        "recv_z": 16.0
       },
       "is_base": true
     },
@@ -163,20 +165,21 @@
       "id": "P2",
       "role": "drawer",
       "provenance": "functional",
-      "template_ref": "slide_carriage",
+      "template_ref": "latch_drawer",
       "source_element": null,
       "params": {
-        "car_l": 24.0,
-        "car_w": 30.0,
-        "car_t": 3.0,
-        "car_z": 3.0
+        "tray_l": 40.0,
+        "tray_w": 26.0,
+        "arm_x": 27.0,
+        "arm_len": 18.0,
+        "barb_x": 35.5
       },
       "is_base": false
     }
   ],
   "templates": [
     {
-      "template_ref": "slide_base",
+      "template_ref": "latch_cabinet",
       "anchors": [
         {
           "name": "rail_face",
@@ -196,14 +199,16 @@
         }
       ],
       "params": {
-        "base_l": 120.0,
-        "base_w": 40.0,
-        "base_t": 3.0,
-        "front_wall": 0.0
+        "stroke": 60.0,
+        "wall": 3.0,
+        "depth": 34.0,
+        "height": 20.0,
+        "recv_x": 37.5,
+        "recv_z": 16.0
       }
     },
     {
-      "template_ref": "slide_carriage",
+      "template_ref": "latch_drawer",
       "anchors": [
         {
           "name": "groove_face",
@@ -215,10 +220,11 @@
         }
       ],
       "params": {
-        "car_l": 24.0,
-        "car_w": 30.0,
-        "car_t": 3.0,
-        "car_z": 3.0
+        "tray_l": 40.0,
+        "tray_w": 26.0,
+        "arm_x": 27.0,
+        "arm_len": 18.0,
+        "barb_x": 35.5
       }
     }
   ],

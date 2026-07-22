@@ -407,6 +407,97 @@ def nut_carriage(**params) -> TemplateResult:
     return TemplateResult(part=part, anchors=anchors, params={**p, "box_h": z})
 
 
+def latch_design_parts(cab_params=None, dr_params=None) -> dict:
+    """m24 (§14 T4/T5) — the latched_drawer design split into its FOUR compiled sub-solids, so t0 can
+    group them per D22 (the barb↔receiver interlock is INTENDED; the drawer BODY must clear the cabinet)
+    and the T5 rig can attach them as per-body visual meshes. Returns {cabinet_body, receiver, drawer_body,
+    barb} — build123d Parts in the shared world frame (mm), the same geometry the union templates emit."""
+    cp = {"stroke": 60.0, "wall": 3.0, "depth": 34.0, "height": 20.0, "recv_x": 37.5, "recv_z": 16.0,
+          **(cab_params or {})}
+    dp = {"tray_l": 40.0, "tray_w": 26.0, "wall": 2.4, "floor_z": 1.5, "floor_t": 3.0,
+          "arm_x": 27.0, "arm_len": 18.0, "barb_x": 35.5, **(dr_params or {})}
+    stroke, w, D, H = cp["stroke"], cp["wall"], cp["depth"], cp["height"]
+    cx = stroke / 2.0; L = stroke + 52.0
+    cab = (Location((cx, 0, -cp.get("floor_t", 3.0) / 2)) * Box(L, D, cp.get("floor_t", 3.0), align=(Align.CENTER,) * 3)
+           + Location((-26.0, 0, H / 2)) * Box(w, D, H, align=(Align.CENTER,) * 3)
+           + Location((cx, D / 2 - w / 2, H / 2)) * Box(L, w, H, align=(Align.CENTER,) * 3)
+           + Location((cx, -D / 2 + w / 2, H / 2)) * Box(L, w, H, align=(Align.CENTER,) * 3)
+           + Location((cp["recv_x"] + 1.5, 0, H - w / 2)) * Box(w, D, w, align=(Align.CENTER,) * 3))
+    recv = Location((cp["recv_x"], 0, cp["recv_z"] + 1.3)) * Box(6.4, 12.0, 2.6, align=(Align.CENTER,) * 3)
+    L2, W, wt, fz, ft = dp["tray_l"], dp["tray_w"], dp["wall"], dp["floor_z"], dp["floor_t"]
+    tray = Location((0, 0, fz + ft / 2)) * Box(L2, W, ft, align=(Align.CENTER,) * 3)
+    for (cxx, cyy, sx, sy) in [(-L2 / 2 + wt / 2, 0, wt, W), (0, W / 2 - wt / 2, L2, wt),
+                               (0, -W / 2 + wt / 2, L2, wt), (L2 / 2 - wt / 2, 0, wt, W)]:
+        tray += Location((cxx, cyy, fz + ft + 3.5)) * Box(sx, sy, 10.0, align=(Align.CENTER,) * 3)
+    barb = (Location((dp["arm_x"], 0, 10.5)) * Box(dp["arm_len"], 3.6, 2.2, align=(Align.CENTER,) * 3)
+            + Location((dp["barb_x"], 0, 14.0)) * Box(3.2, 3.6, 5.2, align=(Align.CENTER,) * 3)
+            + Location((dp["barb_x"] + 0.6, 0, 14.0)) * Rotation(0, 35, 0) * Box(3.2, 3.6, 1.8, align=(Align.CENTER,) * 3))
+    return {"cabinet_body": cab, "receiver": recv, "drawer_body": tray, "barb": barb}
+
+
+def latch_cabinet(**params) -> TemplateResult:
+    """m24 (§14 T3) latched_drawer host — the CABINET as a DESIGNED compiled piece (is_base). Closes
+    DRAFT D-M22-2c at the TEMPLATE level: the receiver WALL + growth-aligned catch the flat slide_base
+    lacked. A box shell open at the front (+X, where the drawer pulls out) — floor + back(−X) + two side
+    walls(±Y) + a front-top lintel carrying a downward RECEIVER LEDGE the drawer's barb tucks UNDER when
+    closed. Coordinates match the m23 P-LATCH rig (mm) so the compiled mesh overlays the declared physics.
+
+    Anchors: `rail_face` (floor top, +Z — where slide_rail grows the rail) · `travel_edge` (+X travel) ·
+    `catch_window` (the receiver ledge underside, −Z — the snap catch site) · `stop_face` (back wall)."""
+    p = {"stroke": 60.0, "wall": 3.0, "depth": 34.0, "height": 20.0, "floor_t": 3.0,
+         "recv_x": 37.5, "recv_z": 16.0, **params}
+    stroke, w, D, H, ft = p["stroke"], p["wall"], p["depth"], p["height"], p["floor_t"]
+    cx = stroke / 2.0
+    L = stroke + 52.0                                     # floor length (back overhang + front reach)
+    floor = Location((cx, 0, -ft / 2)) * Box(L, D, ft, align=(Align.CENTER, Align.CENTER, Align.CENTER))
+    back = Location((-26.0, 0, H / 2)) * Box(w, D, H, align=(Align.CENTER, Align.CENTER, Align.CENTER))
+    sideP = Location((cx, D / 2 - w / 2, H / 2)) * Box(L, w, H, align=(Align.CENTER, Align.CENTER, Align.CENTER))
+    sideN = Location((cx, -D / 2 + w / 2, H / 2)) * Box(L, w, H, align=(Align.CENTER, Align.CENTER, Align.CENTER))
+    lintel = Location((p["recv_x"] + 1.5, 0, H - w / 2)) * Box(w, D, w, align=(Align.CENTER, Align.CENTER, Align.CENTER))
+    recv = Location((p["recv_x"], 0, p["recv_z"] + 1.3)) * Box(6.4, 12.0, 2.6,
+                                                               align=(Align.CENTER, Align.CENTER, Align.CENTER))
+    part = floor + back + sideP + sideN + lintel + recv
+    anchors = {
+        "rail_face": AnchorGeom("rail_face", "face", (cx, 0.0, 0.0), (0, 0, 1)),
+        "travel_edge": AnchorGeom("travel_edge", "axis", (cx, 0.0, 0.0), (1, 0, 0)),
+        "catch_window": AnchorGeom("catch_window", "face", (p["recv_x"], 0.0, p["recv_z"]), (0, 0, -1)),
+        "stop_face": AnchorGeom("stop_face", "face", (-24.5, 0.0, H / 2), (1, 0, 0)),
+    }
+    return TemplateResult(part=part, anchors=anchors, params={**p, "box_h": H})
+
+
+def latch_drawer(**params) -> TemplateResult:
+    """m24 (§14 T3) latched_drawer host — the DRAWER TRAY with a CARVED CANTILEVER + ramped BARB (the
+    snap geometry, host-template level per D-M22-2c; its FORCES stay Bayer-sourced, M3/D3). An open-top
+    tray (floor + back + two side walls) that rides the rail; a cantilever ARM along the front (+X) with
+    an up-hook BARB at its tip that tucks under the cabinet receiver when closed. m23-rig coordinates (mm).
+
+    Anchors: `groove_face` (tray underside, −Z — where slide_rail carves the groove) · `beam_root` (the
+    cantilever root on the front face, +X — the snap beam origin)."""
+    p = {"tray_l": 40.0, "tray_w": 30.0, "wall": 2.4, "floor_z": 1.5, "floor_t": 3.0,
+         "arm_x": 27.0, "arm_len": 18.0, "barb_x": 35.5, **params}
+    L, W, w, fz, ft = p["tray_l"], p["tray_w"], p["wall"], p["floor_z"], p["floor_t"]
+    floor = Location((0, 0, fz + ft / 2)) * Box(L, W, ft, align=(Align.CENTER, Align.CENTER, Align.CENTER))
+    walls = Part()
+    walls += Location((-L / 2 + w / 2, 0, fz + ft + 3.5)) * Box(w, W, 10.0, align=(Align.CENTER, Align.CENTER, Align.CENTER))
+    walls += Location((0, W / 2 - w / 2, fz + ft + 3.5)) * Box(L, w, 10.0, align=(Align.CENTER, Align.CENTER, Align.CENTER))
+    walls += Location((0, -W / 2 + w / 2, fz + ft + 3.5)) * Box(L, w, 10.0, align=(Align.CENTER, Align.CENTER, Align.CENTER))
+    # front panel (the pull face at +X) — the cantilever roots into it.
+    front = Location((L / 2 - w / 2, 0, fz + ft + 3.5)) * Box(w, W, 10.0, align=(Align.CENTER, Align.CENTER, Align.CENTER))
+    # the CANTILEVER snap: a slender arm reaching +X past the front panel, an up-hook BARB at its tip;
+    # rooted into the front panel (overlaps it → one solid with the tray, D14).
+    arm = Location((p["arm_x"], 0, 10.5)) * Box(p["arm_len"], 3.6, 2.2, align=(Align.CENTER, Align.CENTER, Align.CENTER))
+    barb = Location((p["barb_x"], 0, 14.0)) * Box(3.2, 3.6, 5.2, align=(Align.CENTER, Align.CENTER, Align.CENTER))
+    ramp = Location((p["barb_x"] + 0.6, 0, 14.0)) * Rotation(0, 35, 0) * Box(3.2, 3.6, 1.8,
+                                                                            align=(Align.CENTER, Align.CENTER, Align.CENTER))
+    part = floor + walls + front + arm + barb + ramp
+    anchors = {
+        "groove_face": AnchorGeom("groove_face", "face", (0.0, 0.0, fz), (0, 0, -1)),
+        "beam_root": AnchorGeom("beam_root", "face", (p["arm_x"] - p["arm_len"] / 2, 0.0, 10.5), (1, 0, 0)),
+    }
+    return TemplateResult(part=part, anchors=anchors, params={**p, "box_h": fz + ft + 10.0})
+
+
 # =====================================================================================
 # The HARD ANCHOR host templates (MECHSYNTH §8.2 / D-track 3, m12). A hand-cranked drawer:
 # a cabinet with TWO parallel rails, a drawer tray riding them, a knob-shaft carrying the
@@ -613,5 +704,6 @@ TEMPLATES = {"box_shell": box_shell, "lid_panel": lid_panel,
              "shaft_carrier_in": shaft_carrier_in, "shaft_carrier_out": shaft_carrier_out,
              "shaft_carrier_out_angled": shaft_carrier_out_angled,
              "cabinet_shell": cabinet_shell, "drawer_tray": drawer_tray,
+             "latch_cabinet": latch_cabinet, "latch_drawer": latch_drawer,
              "knob_shaft": knob_shaft, "rack_bar": rack_bar,
              "flat_panel_mount": flat_panel_mount, "retained_board": retained_board}
