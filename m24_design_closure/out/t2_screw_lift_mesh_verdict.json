@@ -1,0 +1,267 @@
+{
+  "decision_row": "D-M24-2 screw_lift T5 \u2014 visual bodies = compiled part meshes (physics-identical)",
+  "compile_hash": "520d8ef",
+  "task": "screw_lift",
+  "physics_identical_bare_vs_mesh": true,
+  "visual_bodies": {
+    "world": "screw_base(frame): base+boss+guide columns",
+    "screw": "lead_screw rod (coarse-cylinder proxy, D-M8-4)",
+    "nut": "nut_carriage: platform+nut boss+column bores",
+    "crank": "shaft_carrier_out(crank)+coupling hub (compiled P3)"
+  },
+  "g9_gconv": true,
+  "V-A": {
+    "n_seeds": 5,
+    "seeds_passed": 5,
+    "passed": true,
+    "criteria_seed0": {
+      "platform_reaches_height": {
+        "value": 40.0,
+        "threshold": 40.0,
+        "pass": true
+      },
+      "end_to_end_formula (|H/(N\u00b71\u00b7lead)\u22121| \u2264 0.1%)": {
+        "value": 0.0,
+        "threshold": 0.001,
+        "pass": true
+      },
+      "holds_released_load (back-drive \u2264 1 mm)": {
+        "value": 0.08,
+        "threshold": 1.0,
+        "pass": true
+      },
+      "converged (no blow-up)": {
+        "value": false,
+        "threshold": false,
+        "pass": true
+      },
+      "all_parts_retained": {
+        "value": true,
+        "threshold": true,
+        "pass": true
+      }
+    },
+    "per_seed": [
+      {
+        "ran": true,
+        "mode": "V-A",
+        "seed": 0,
+        "diverged": false,
+        "broke_coupling": false,
+        "revs_crank": 20.0,
+        "travel_mm": 40.001,
+        "formula_mm": 40.001,
+        "formula_residual": 0.0,
+        "backdrive_mm": 0.08,
+        "criteria": {
+          "platform_reaches_height": {
+            "value": 40.0,
+            "threshold": 40.0,
+            "pass": true
+          },
+          "end_to_end_formula (|H/(N\u00b71\u00b7lead)\u22121| \u2264 0.1%)": {
+            "value": 0.0,
+            "threshold": 0.001,
+            "pass": true
+          },
+          "holds_released_load (back-drive \u2264 1 mm)": {
+            "value": 0.08,
+            "threshold": 1.0,
+            "pass": true
+          },
+          "converged (no blow-up)": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": true,
+            "threshold": true,
+            "pass": true
+          }
+        },
+        "passed": true
+      },
+      {
+        "ran": true,
+        "mode": "V-A",
+        "seed": 1,
+        "diverged": false,
+        "broke_coupling": false,
+        "revs_crank": 20.0,
+        "travel_mm": 40.001,
+        "formula_mm": 40.001,
+        "formula_residual": 0.0,
+        "backdrive_mm": 0.08,
+        "criteria": {
+          "platform_reaches_height": {
+            "value": 40.0,
+            "threshold": 40.0,
+            "pass": true
+          },
+          "end_to_end_formula (|H/(N\u00b71\u00b7lead)\u22121| \u2264 0.1%)": {
+            "value": 0.0,
+            "threshold": 0.001,
+            "pass": true
+          },
+          "holds_released_load (back-drive \u2264 1 mm)": {
+            "value": 0.08,
+            "threshold": 1.0,
+            "pass": true
+          },
+          "converged (no blow-up)": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": true,
+            "threshold": true,
+            "pass": true
+          }
+        },
+        "passed": true
+      },
+      {
+        "ran": true,
+        "mode": "V-A",
+        "seed": 2,
+        "diverged": false,
+        "broke_coupling": false,
+        "revs_crank": 20.0,
+        "travel_mm": 40.001,
+        "formula_mm": 40.001,
+        "formula_residual": 0.0,
+        "backdrive_mm": 0.08,
+        "criteria": {
+          "platform_reaches_height": {
+            "value": 40.0,
+            "threshold": 40.0,
+            "pass": true
+          },
+          "end_to_end_formula (|H/(N\u00b71\u00b7lead)\u22121| \u2264 0.1%)": {
+            "value": 0.0,
+            "threshold": 0.001,
+            "pass": true
+          },
+          "holds_released_load (back-drive \u2264 1 mm)": {
+            "value": 0.08,
+            "threshold": 1.0,
+            "pass": true
+          },
+          "converged (no blow-up)": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": true,
+            "threshold": true,
+            "pass": true
+          }
+        },
+        "passed": true
+      },
+      {
+        "ran": true,
+        "mode": "V-A",
+        "seed": 3,
+        "diverged": false,
+        "broke_coupling": false,
+        "revs_crank": 20.0,
+        "travel_mm": 40.001,
+        "formula_mm": 40.001,
+        "formula_residual": 0.0,
+        "backdrive_mm": 0.08,
+        "criteria": {
+          "platform_reaches_height": {
+            "value": 40.0,
+            "threshold": 40.0,
+            "pass": true
+          },
+          "end_to_end_formula (|H/(N\u00b71\u00b7lead)\u22121| \u2264 0.1%)": {
+            "value": 0.0,
+            "threshold": 0.001,
+            "pass": true
+          },
+          "holds_released_load (back-drive \u2264 1 mm)": {
+            "value": 0.08,
+            "threshold": 1.0,
+            "pass": true
+          },
+          "converged (no blow-up)": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": true,
+            "threshold": true,
+            "pass": true
+          }
+        },
+        "passed": true
+      },
+      {
+        "ran": true,
+        "mode": "V-A",
+        "seed": 4,
+        "diverged": false,
+        "broke_coupling": false,
+        "revs_crank": 20.0,
+        "travel_mm": 40.001,
+        "formula_mm": 40.001,
+        "formula_residual": 0.0,
+        "backdrive_mm": 0.08,
+        "criteria": {
+          "platform_reaches_height": {
+            "value": 40.0,
+            "threshold": 40.0,
+            "pass": true
+          },
+          "end_to_end_formula (|H/(N\u00b71\u00b7lead)\u22121| \u2264 0.1%)": {
+            "value": 0.0,
+            "threshold": 0.001,
+            "pass": true
+          },
+          "holds_released_load (back-drive \u2264 1 mm)": {
+            "value": 0.08,
+            "threshold": 1.0,
+            "pass": true
+          },
+          "converged (no blow-up)": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": true,
+            "threshold": true,
+            "pass": true
+          }
+        },
+        "passed": true
+      }
+    ],
+    "discrimination_probes": {
+      "coupling_broken": {
+        "crank_rev": 20.0,
+        "platform_rise_mm": 0.0
+      },
+      "friction_weak": {
+        "weak_friction_Nm": 0.000781,
+        "backdrive_mm": 9.204,
+        "sourced_backdrive_mm": 0.08
+      },
+      "discriminates": true
+    }
+  },
+  "recorded_m22_verdict": {
+    "reaches_mm": 40.0,
+    "formula_pct": 0.0,
+    "backdrive_mm": 0.08,
+    "discrimination_sink_mm": 9.2
+  },
+  "video": "t2_screw_lift_mesh.mp4",
+  "plot": "t2_screw_lift_mesh.png"
+}

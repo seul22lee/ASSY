@@ -1,0 +1,4 @@
+# regenerable compiled-mesh STL scratch (rebuilt by p_lift_mesh.py / fit_schedule.py)
+*_fitassets/
+mesh_assets/
+_*.xml

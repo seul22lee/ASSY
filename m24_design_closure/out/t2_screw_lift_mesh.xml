@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<mujoco model="t2_screw_lift_mesh">
+  <compiler angle="radian" autolimits="true" meshdir="/home/ftk3187/github/ASSY/m24_design_closure/out/mesh_assets"/>
+  <option timestep="0.0001" integrator="implicitfast" cone="elliptic" impratio="10" gravity="0 0 0"/>
+  <visual>
+    <headlight ambient="0.5 0.5 0.5" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2"/>
+    <global offwidth="1280" offheight="960"/>
+  </visual>
+  <default>
+    <geom density="0" contype="0" conaffinity="0" group="2"/>
+  </default>
+  <asset>
+    <material name="base" rgba="0.62 0.66 0.72 1"/>
+    <material name="crank" rgba="0.85 0.35 0.35 1"/>
+    <material name="screw" rgba="0.95 0.62 0.25 1"/>
+    <material name="nut" rgba="0.45 0.78 0.5 1"/>
+    <material name="mk_crank" rgba="0.90 0.10 0.10 1"/>
+    <material name="mk_screw" rgba="0.98 0.85 0.10 1"/>
+    <material name="mk_nut" rgba="0.10 0.55 0.95 1"/>
+    <mesh name="m_base" file="base.stl"/>
+    <mesh name="m_screw" file="screw.stl"/>
+    <mesh name="m_nut" file="nut.stl"/>
+    <mesh name="m_crank" file="crank.stl"/>
+  </asset>
+  <worldbody>
+    <light pos="0.1 -0.2 0.4" dir="-0.2 0.3 -1" directional="true" diffuse="0.5 0.5 0.5"/>
+    <camera name="side" pos="0.19 -0.24 0.055" xyaxes="0.78 0.62 0 -0.14 0.18 0.98"/>
+    <camera name="iso" pos="0.16 -0.16 0.10" xyaxes="0.71 0.71 0 -0.35 0.35 0.87"/>
+    <geom name="frame_mesh" type="mesh" mesh="m_base" material="base"/>
+    <body name="crank" pos="0 0 0">
+      <inertial mass="0.014000000" pos="0.005000000 0.000000000 -0.024428571" quat="0.356576982 0.610616783 0.610616783 0.356576982" diaginertia="1.776113571e-06 1.422011674e-06 4.546852309e-07"/>
+      <joint name="crank_hinge" type="hinge" axis="0 0 1" pos="0 0 0" damping="1e-05" armature="1e-05"/>
+      <geom name="crank_mesh" type="mesh" mesh="m_crank" material="crank"/>
+      <geom name="mk_crank" type="box" pos="0.026000 0.000000 -0.030000" size="0.002500 0.002500 0.002000" material="mk_crank"/>
+    </body>
+    <body name="screw" pos="0 0 0">
+      <inertial mass="0.014000000" pos="0.000000000 0.000000000 0.019428571" quat="1.000000000 0.000000000 0.000000000 0.000000000" diaginertia="7.041011905e-06 7.041011905e-06 1.925000000e-07"/>
+      <joint name="screw_hinge" type="hinge" axis="0 0 1" pos="0 0 0" damping="1e-05" armature="1e-05" frictionloss="0.005150250"/>
+      <geom name="screw_mesh" type="mesh" mesh="m_screw" material="screw"/>
+      <geom name="mk_screw" type="box" pos="0.006000 0.000000 0.020000" size="0.003000 0.001200 0.004000" material="mk_screw"/>
+    </body>
+    <body name="nut" pos="0 0 0">
+      <inertial mass="0.020000000" pos="0.000000000 0.000000000 0.030000000" quat="1.000000000 0.000000000 0.000000000 0.000000000" diaginertia="1.233333333e-06 1.233333333e-06 2.253333333e-06"/>
+      <joint name="nut_slide" type="slide" axis="0 0 1" pos="0 0 0" damping="1e-05"/>
+      <geom name="nut_mesh" type="mesh" mesh="m_nut" material="nut"/>
+      <geom name="mk_nut" type="box" pos="0.023000 0.000000 0.030000" size="0.002000 0.002500 0.003000" material="mk_nut"/>
+    </body>
+  </worldbody>
+  <equality>
+    <joint name="couple_cs" joint1="screw_hinge" joint2="crank_hinge" polycoef="0 1.0 0 0 0" solref="-1e8 -1e4" solimp="0.9999 0.99999 1e-6 0.5 2"/>
+    <joint name="couple_sn" joint1="nut_slide" joint2="screw_hinge" polycoef="0 0.000318310 0 0 0" solref="-1e8 -1e4" solimp="0.9999 0.99999 1e-6 0.5 2"/>
+  </equality>
+  <actuator>
+    <velocity name="drive" joint="crank_hinge" kv="0.5"/>
+  </actuator>
+</mujoco>
