@@ -703,7 +703,11 @@ begins. This formalizes m10 (`slide_rail`, D-D-1), m11 (`rack_pinion`, D-D-2), m
   formula, or an emergent property); a **discrimination probe** (break the mechanism / null the
   parameter → the property must vanish); contact-free joint rigs use the D-M19-2 clock (dt=1e-4,
   R5 untouched); video per the standing rule (D-M20: an asymmetric marker per moving body, the HUD
-  primary-DoF counter, the FULL criterion window). V-B / emergent_check decided honestly per the
+  primary-DoF counter, the FULL criterion window). **If the element's function is an ENGAGEMENT** (an
+  overlap between mating features — snap, pawl/tooth, pin/notch, detent, thread), its video pack MUST
+  include the **engagement STATIC + ANIMATED SECTION** per §14 T5v's ENGAGEMENT-SECTION requirement
+  (D-M24-8): the overlap annotated + cited to its fit row, the cycle sectioned from the recorded
+  trajectory, exterior views context-only. V-B / emergent_check decided honestly per the
   element's contact class (argued, not copied). **Class-② interfaces (landings, stops, retention/ride)
   the fit schedule declares are verified by the CONTACT LAYER** (`verify/contact_layer.py`, D-M19-3):
   real contact on the frozen R5 preset, the declared joint range WIDENED so the PART carries the limit;
@@ -794,6 +798,22 @@ reviewer visualization**.
     the interior clip REPLACES the exterior zoom as the detail evidence. This applies automatically to
     any hidden-mechanism task (Phase B/C: the heart cam is fully hidden -> its cycle video REQUIRES this
     from day one). Recorded as **D-M24-7**.
+  - **ENGAGEMENT-SECTION REQUIREMENT (standing).** Any element or assembly whose FUNCTION IS AN
+    ENGAGEMENT — an overlap between mating features (snap barb/ledge, pawl/tooth, latch pin/notch, stop-
+    shoulder landings, heart-cam pin/groove, future threads/keys/detents) — MUST ship, as part of its
+    visualization pack: **(a)** a **STATIC SECTION** through the engagement plane at the ENGAGED pose,
+    with the designed OVERLAP dimension **annotated and cited to its fit-schedule row** (the drawing
+    answers "is it really hooked?" with geometry + number together); **(b)** an **ANIMATED SECTION** (or
+    cutaway) clip of the engagement CYCLE — approach → engage → loaded → release — driven by the
+    **recorded** physics trajectory (**no re-sim**), with the **formula-vs-physics division labelled at
+    the moments it applies** (D3 — e.g. "elastic deflection by formula" over the rigid-sweep overlap);
+    **(c)** exterior views remain **context only** — for engagement-class features they are NEVER the
+    primary evidence. **Rationale:** engagement function IS an overlap; overlaps are invisible from
+    outside and unjudgeable from tables alone — the reviewer caught this three times (the m23 latch
+    invisible, the drawer section rejection, the collar absent on film) — so the section is the only
+    visual form in which "engaged" is inspectable. Applies from **Phase B onward** automatically (the
+    heart-cam cycle section is push_latch's centerpiece deliverable). Recorded as **D-M24-8**;
+    §13 S4's video rule cross-references this for engagement-class ELEMENTS.
 - **T6 — NUMERIC REPRODUCTION.** The composed rule chain end-to-end + the fit schedule **RE-MEASURED**
   from ⑥ geometry (COMPILE_DRIFT discipline applied to fits).
 - **T7 — REVIEW + decision rows + STATUS + push.** AWAITING REVIEW; CLOSED only after reviewer
