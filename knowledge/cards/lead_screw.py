@@ -66,6 +66,29 @@ def lead_screw_mechanics(g: LeadScrewDims) -> dict:
             "self_locks": bool(self_locks), "efficiency": round(eta, 4)}
 
 
+# --- REQUIREMENT-DRIVEN SIZING (⑤ designs from the declared load, not a default lookup) --------------
+# Design shear stress for a SUSTAINED-load FDM PETG screw. Bulk shear yield ≈ 0.5·σ_y = 25 MPa (Tresca,
+# σ_y=50), but a printed screw HOLDING a load long-term is limited by INTERLAYER adhesion + CREEP, both
+# large knockdowns for FDM — a design shear ~ σ_y/12 ≈ 4 MPa is the sustained-load allowable. ASSUMPTION
+# (gate G-S4, parallels EPS_PERM/Es_secant): replace with a PETG shear-creep datasheet.
+TAU_DESIGN_MPA = 4.0
+SIZING_SF = 2.0
+
+
+def size_d_major_from_load(W_N: float, mu: float = 0.30, tau: float = TAU_DESIGN_MPA,
+                           sf: float = SIZING_SF) -> float:
+    """Size the screw major diameter from the axial load W by the DRIVE-TORQUE torsional shear on the
+    core (the honest failure path for a plastic jack screw):
+        raise torque   T = (W·d_mean/2)·(tan λ + µ)/(1 − µ·tan λ)              [Shigley §8-1]
+        at self-lock   (tan λ → µ)   the factor F = 2µ/(1 − µ²)               (worst self-locking case)
+        core torsion   τ = 16·T/(π·d³) ≤ τ_design/SF                           [Shigley §3-12]
+    Substituting d_mean ≈ d and solving:  d = sqrt( 16·(F/2)·W·SF / (π·τ) ).  Returns d_major in mm.
+    (Inverse of the m19 forward mechanics; the SAME requirement→dimension move as the m24 snap CLIP,
+    which inverted the Bayer chain to a target W_out — D-M24-5.)"""
+    F = 2.0 * mu / (1.0 - mu * mu)
+    return math.sqrt(16.0 * (F / 2.0) * W_N * sf / (math.pi * tau))
+
+
 def lead_screw_carve(pieces, inst, bindings) -> CarveResult:
     g = lead_screw_dims(getattr(inst, "params", {}) or {})
     p = _anchor_point(pieces, bindings, "screw_axis")
@@ -123,25 +146,52 @@ class LeadScrewCard(MechanicalElementCard):
                  Citation(doc="DECISIONS_LOG", section="D-M13-3 (holds-under-load, now axis-4); m17 (V-B deferred)")]
 
     def resolve_params(self, ir, inst):
-        from knowledge.cards.lead_screw import lead_screw_dims, lead_screw_mechanics
+        from knowledge.cards.lead_screw import (lead_screw_dims, lead_screw_mechanics,
+                                                size_d_major_from_load, TAU_DESIGN_MPA, SIZING_SF)
         out = dict(inst.params or {})
         b = next((x for x in ir.behaviors if x.realized_by == inst.id
                   and getattr(x.motion.kind, "value", x.motion.kind) == "rot_to_trans"), None)
         if b is not None and getattr(b.motion, "range_value", None):
             out["stroke"] = float(b.motion.range_value)
         out.setdefault("stroke", 40.0)
-        out.setdefault("d_major", 8.0)
         out.setdefault("starts", 1)               # FIX (m18 audit): starts now RESOLVES (bound 1..2)
+        # REQUIREMENT-DRIVEN SIZING (⑤ resolves UNSPECIFIED dimensions from requirements): an EXPLICIT
+        # d_major is a fixed design decision — honoured. If d_major is UNSET and the IR declares a LOAD,
+        # SIZE it from that load (drive-torque torsional shear, τ_design/SF); else the 8.0 no-load default.
+        lo, hi = self.param_bounds["d_major"][0], self.param_bounds["d_major"][1]
+        lb = next((x for x in ir.behaviors if x.realized_by == inst.id
+                   and isinstance(getattr(x, "load", None), dict) and x.load.get("mass_kg")), None)
+        if "d_major" in out:
+            pass                                  # explicit — respect the designed value
+        elif lb is not None:
+            W_N = float(lb.load["mass_kg"]) * 9.81
+            d_req = size_d_major_from_load(W_N, mu=out.get("mu", 0.30))
+            out["d_major"] = round(min(max(d_req, lo), hi), 2)
+            out["_sized"] = {"from": "declared load W (shear)", "W_N": round(W_N, 2),
+                             "d_shear_mm": round(d_req, 2), "tau_design_MPa": TAU_DESIGN_MPA, "SF": SIZING_SF,
+                             "governed": ("min_bound" if d_req < lo else "max_bound" if d_req > hi else "shear")}
+        else:
+            out["d_major"] = 8.0                   # no-load fallback (default)
         out.setdefault("pitch", 2.0)
         # RULE CHAIN — lead = starts × pitch (DERIVED, never a free param; the card owns the formula)
         out["lead"] = round(int(out["starts"]) * float(out["pitch"]), 3)
         out.setdefault("length", round(float(out["stroke"]) + 20.0, 1))
-        # self-lock enforcement (axis-4): if the behaviour demands hold-under-load, shrink the pitch
-        # (hence the lead) until tan(λ) ≤ µ — the card guarantees the self-lock it advertises.
+        # pitch UPPER bound = self-lock (tan λ ≤ µ): if the behaviour demands hold-under-load, shrink the
+        # pitch (hence the lead) until tan(λ) ≤ µ. LOWER bound = a declared drive-speed (min mm/rev): if
+        # present and self-lock would force the lead below it, that is a CONFLICT (recorded, not patched).
+        min_lead = None
+        if b is not None and getattr(b.motion, "transmission", None):
+            min_lead = b.motion.transmission.get("min_mm_per_rev")
         if b is not None and getattr(b, "self_locking", False):
             while not lead_screw_mechanics(lead_screw_dims(out))["self_locks"] and out["pitch"] > 0.5:
                 out["pitch"] = round(out["pitch"] - 0.5, 2)
                 out["lead"] = round(int(out["starts"]) * float(out["pitch"]), 3)
+            if min_lead is not None and out["lead"] < float(min_lead):
+                out["_pitch_conflict"] = {"self_lock_lead_mm": out["lead"], "required_min_lead_mm": float(min_lead),
+                                          "note": "self-lock caps the lead BELOW the declared drive-speed floor — DRAFT (multi-start or a brake is the fix)"}
+        # record the self-lock pitch ceiling (the upper bound the demo table cites)
+        d_mean = out["d_major"] - out["pitch"] / 2.0
+        out["_pitch_selflock_max_mm"] = round(out.get("mu", 0.30) * math.pi * d_mean / int(out["starts"]), 3)
         return out
 
     def carve(self, host_parts, inst, bindings):

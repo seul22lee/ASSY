@@ -1,0 +1,69 @@
+{
+  "tau_design_MPa": 4.0,
+  "SF": 2.0,
+  "rows": [
+    {
+      "W_kg": 1.0,
+      "W_N": 9.8,
+      "T_Nmm": 9.5,
+      "d_shear_mm": 2.87,
+      "d_major_mm": 5.0,
+      "governed": "min_bound",
+      "pitch_mm": 2.0,
+      "lead_mm": 2.0,
+      "lambda_deg": 9.043,
+      "self_locks": true,
+      "pitch_selflock_max_mm": 3.77,
+      "solids": {
+        "P1": 1,
+        "P2": 1
+      },
+      "t0_clean": true,
+      "backdrive_mm": 0.158,
+      "discrim_weak_mm": 36.29,
+      "hold_pass": true
+    },
+    {
+      "W_kg": 5.0,
+      "W_N": 49.1,
+      "T_Nmm": 57.5,
+      "d_shear_mm": 6.42,
+      "d_major_mm": 6.42,
+      "governed": "shear",
+      "pitch_mm": 2.0,
+      "lead_mm": 2.0,
+      "lambda_deg": 6.699,
+      "self_locks": true,
+      "pitch_selflock_max_mm": 5.108,
+      "solids": {
+        "P1": 1,
+        "P2": 1
+      },
+      "t0_clean": true,
+      "backdrive_mm": 0.786,
+      "discrim_weak_mm": 99.383,
+      "hold_pass": true
+    },
+    {
+      "W_kg": 20.0,
+      "W_N": 196.2,
+      "T_Nmm": 417.3,
+      "d_shear_mm": 12.83,
+      "d_major_mm": 12.83,
+      "governed": "shear",
+      "pitch_mm": 2.0,
+      "lead_mm": 2.0,
+      "lambda_deg": 3.08,
+      "self_locks": true,
+      "pitch_selflock_max_mm": 11.15,
+      "solids": {
+        "P1": 1,
+        "P2": 1
+      },
+      "t0_clean": true,
+      "backdrive_mm": 3.08,
+      "discrim_weak_mm": 17.481,
+      "hold_pass": true
+    }
+  ]
+}

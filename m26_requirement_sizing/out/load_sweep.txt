@@ -1,0 +1,10 @@
+=== REQUIREMENT-DRIVEN SIZING — lead_screw, same command @ W = 1/5/20 kg ===
+    d_major SIZED from the load by drive-torque torsional shear (τ_design=4.0 MPa FDM design shear, SF=2.0); pitch bounded above by self-lock (tan λ ≤ µ).
+
+   W(kg)   W(N)  T(N·mm) d_shear d_major  governed pitch λ(deg) self-lock     t0 hold(mm) weak(mm)  hold
+       1    9.8      9.5    2.87    5.00 min_bound   2.0   9.04      True  CLEAN    0.158    36.29  PASS
+       5   49.1     57.5    6.42    6.42     shear   2.0   6.70      True  CLEAN    0.786    99.38  PASS
+      20  196.2    417.3   12.83   12.83     shear   2.0   3.08      True  CLEAN    3.080    17.48  PASS
+
+  READING: d_major GROWS with the load (5.0 → 6.42 → 12.83 mm) — ⑤ SIZED each from W (torsional shear), not a default. At the lightest load the printability MIN bound governs (shear needs only 2.87 mm); above it, shear governs. T (drive torque) and d grow together.
+  All three SELF-LOCK (tan λ ≤ µ). The 'hold' column is the sourced back-drive; note it is the declared-coupling elastic COMPLIANCE (∝ W: ~0.08 mm@0.5kg → 3 mm@20kg — a rig stiffness, NOT slip). Self-lock is judged by DISCRIMINATION: the 'weak' column (a sub-back-drive friction) SLIPS far more than the sourced hold — proving the hold is the self-lock, not a solver artifact.
