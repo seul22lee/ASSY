@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<mujoco model="contact_latched_drawer">
+  <compiler angle="radian" autolimits="true" meshdir="/home/ftk3187/github/ASSY/m25_contact_layer/out/ld_assets"/>
+  <option timestep="0.0005" integrator="implicitfast" cone="elliptic" impratio="10" gravity="0.000000000 0.000000000 -9.810000000"/>
+  <visual>
+    <headlight ambient="0.5 0.5 0.5" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2"/>
+    <global offwidth="1280" offheight="960"/>
+  </visual>
+  <default>
+    <geom solref="0.001 1.0" solimp="0.99 0.9999 0.0001" friction="0.30 0.005 0.0001" condim="4" density="0" contype="0" conaffinity="0"/>
+  </default>
+  <asset>
+    <material name="cab" rgba="0.60 0.66 0.72 0.30"/>
+    <material name="bump" rgba="0.85 0.30 0.30 1"/>
+    <material name="drawer" rgba="0.95 0.72 0.35 1"/>
+    <material name="clip" rgba="0.20 0.55 0.95 1"/>
+    <material name="stop" rgba="0.20 0.75 0.30 1"/>
+    <material name="mk" rgba="0.90 0.15 0.15 1"/>
+    <mesh name="m_cabinet_body" file="cabinet_body.stl"/>
+    <mesh name="m_bump" file="bump.stl"/>
+    <mesh name="m_drawer_body" file="drawer_body.stl"/>
+    <mesh name="m_clip" file="clip.stl"/>
+  </asset>
+  <worldbody>
+    <light pos="0.1 -0.2 0.4" dir="-0.2 0.3 -1" directional="true" diffuse="0.5 0.5 0.5"/>
+    <camera name="cutaway" pos="0.03 -0.12 0.055" xyaxes="1 0 0 0 0.4 0.92"/>
+    <geom name="face_frame" type="box" pos="0.028000000 0.000000000 0.013000000" size="0.002000000 0.016000000 0.009000000" material="stop"/>
+    <geom name="cab_mesh" type="mesh" mesh="m_cabinet_body" material="cab"/>
+    <geom name="bump_mesh" type="mesh" mesh="m_bump" material="bump"/>
+    <body name="drawer" pos="0.000000000 0.000000000 0.000000000">
+      <inertial mass="0.050000000" pos="0.010594758 0.000166937 0.010338734" diaginertia="0.000024324 0.000020368 0.000041474"/>
+      <joint name="drawer_slide" type="slide" axis="1.000000000 0.000000000 0.000000000" pos="0.000000000 0.000000000 0.000000000" damping="30.0" limited="false"/>
+      <geom name="panel_pad" type="box" pos="0.032200000 0.000000000 0.013000000" size="0.002000000 0.016000000 0.009000000" material="drawer"/>
+      <geom name="dr_mesh" type="mesh" mesh="m_drawer_body" material="drawer"/>
+      <geom name="clip_mesh" type="mesh" mesh="m_clip" material="clip"/>
+      <geom name="mk_drawer" type="box" pos="0.010000000 -0.012000000 0.010000000" size="0.003000000 0.001500000 0.003000000" material="mk"/>
+    </body>
+  </worldbody>
+  <contact>
+    <pair geom1="panel_pad" geom2="face_frame" condim="4" solref="0.001 1.0" solimp="0.99 0.9999 0.0001" friction="0.30 0.005 0.0001"/>
+  </contact>
+  <actuator>
+    <velocity name="drive" joint="drawer_slide" kv="40.0"/>
+  </actuator>
+</mujoco>

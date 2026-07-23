@@ -1,0 +1,57 @@
+{
+  "decision_row": "D-M19-3 CONTACT LAYER \u2014 latched_drawer closed landing by real contact",
+  "compile_hash": "b110ade",
+  "task": "latched_drawer",
+  "R5_preset": {
+    "dt": 0.0005,
+    "solref": "0.001 1.0",
+    "solimp": "0.99 0.9999 0.0001",
+    "friction": "0.30 0.005 0.0001",
+    "condim": "4",
+    "frozen": true
+  },
+  "limit_carriers": [
+    {
+      "contact_pair": "panel\u00d7face_frame",
+      "was": "drawer_slide range lower bound 0",
+      "now": "face-frame CONTACT (drawer_slide limited=false)"
+    }
+  ],
+  "contact_map": [
+    "=== CONTACT MAP (\u2460/\u2461/\u2462 doctrine) \u2014 collision enabled ONLY for class-\u2461 limit carriers ===",
+    "  \u2461 panel\u00d7face_frame           COLLIDE  \u2014 CLOSED landing = the front-panel-on-face-frame hard stop (s=0) (verified by real contact)",
+    "  \u2461 tray\u00d7rail                  (dof)    \u2014 realized by the declared joint + fit clearance (no LIMIT to carry)",
+    "  \u2462 clip\u00d7bump                  EXCLUDED \u2014 elastic cantilever deflection = D3; retention is the SOURCED Bayer W_out=30.4 N (sourced-threshold latch, m23/D-M22-3) \u2014 not a rigid contact"
+  ],
+  "closed_landing": {
+    "final_mm": -0.2,
+    "min_mm": -0.21,
+    "target_mm": 0.0
+  },
+  "g9_gconv": true,
+  "criteria": {
+    "panel lands on the face frame (closed, s\u22480)": {
+      "value": -0.2,
+      "op": "~",
+      "threshold": 0.0,
+      "pass": true
+    },
+    "no drive-through of the closed stop (s \u2265 0)": {
+      "value": -0.21,
+      "op": ">=",
+      "threshold": -0.6,
+      "pass": true
+    },
+    "converged (no blow-up)": {
+      "value": false,
+      "threshold": false,
+      "pass": true
+    },
+    "all_parts_retained": {
+      "value": true,
+      "threshold": true,
+      "pass": true
+    }
+  },
+  "passed": true
+}
