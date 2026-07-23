@@ -704,7 +704,10 @@ begins. This formalizes m10 (`slide_rail`, D-D-1), m11 (`rack_pinion`, D-D-2), m
   parameter → the property must vanish); contact-free joint rigs use the D-M19-2 clock (dt=1e-4,
   R5 untouched); video per the standing rule (D-M20: an asymmetric marker per moving body, the HUD
   primary-DoF counter, the FULL criterion window). V-B / emergent_check decided honestly per the
-  element's contact class (argued, not copied).
+  element's contact class (argued, not copied). **Class-② interfaces (landings, stops, retention/ride)
+  the fit schedule declares are verified by the CONTACT LAYER** (`verify/contact_layer.py`, D-M19-3):
+  real contact on the frozen R5 preset, the declared joint range WIDENED so the PART carries the limit;
+  class ① (driving curved contact, R2b) and ③ (elastic, D3) stay excluded (printed).
 - **S5 — Numeric reproduction + FIXTURE t0 GATE.** **DoD (reproduction):** the rule chain, the
   measured-vs-formula numbers, and a t1 COMPILE_DRIFT re-measure (≤0.05 mm) reproduced free/local.
   **DoD (t0 gate, NEW — D-M21-4):** a **pairwise interference/clearance table on the compiled
@@ -768,7 +771,10 @@ reviewer visualization**.
 - **T5 — PHYSICS.** Declared-joint V-A (sourced parameters, discrimination, 5 seeds, D-M19-2 clock),
   with the **visual bodies = the COMPILED PART MESHES** (via `verify/t2_physics/mjcf.py`, collision off;
   a physics-identical assert vs the bare declared-joint rig, printed). The standing video rule (markers,
-  HUD incl. phase/state lines, full criterion window with quiet phases labelled).
+  HUD incl. phase/state lines, full criterion window with quiet phases labelled). **Class-② interfaces
+  (landings, stops, retention/ride) the fit schedule declares are verified by the CONTACT LAYER**
+  (`verify/contact_layer.py`, D-M19-3): real contact on the frozen R5 preset, the declared joint range
+  WIDENED so the PART carries the limit; the ①/②/③ contact map printed (① R2b + ③ D3 excluded, why).
 - **T5v — REVIEWER VISUALIZATION PACK** (the m2_ontology standard, extended; every item a deliverable):
   (1) `ir_<task>.svg` — the design as a graph (from T1); (2) an assembly **portrait** PNG (posed,
   captioned); (3) **SECTION VIEW** PNGs — ≥1 cut plane through each mating interface (nut boss on the
