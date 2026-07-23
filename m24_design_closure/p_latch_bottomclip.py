@@ -153,11 +153,20 @@ def main():
 
     if f0:
         P._save_video(f0, meta, out / "t2_ld_mesh.mp4", view="cutaway")
-        P._save_video(f0, meta, out / "t2_ld_mesh_zoom.mp4", view="zoom")
         eng = next((fr for fr in f0 if fr[6] == "hold"), f0[len(f0) // 2])
         imageio.imwrite(str(out / "engaged_closeup_ld.png"), eng[1])
     if s0:
         P._plot(s0, vm, meta, out / "t2_ld_mesh.png")
+        # persist the seed-0 trajectory for the hidden-mechanism ANIMATED SECTION (D-M24-7; NO re-sim —
+        # section_anim.py replays THESE positions). The latch is zero-protrusion, so an exterior zoom is
+        # not evidence; the animated section is the detail clip. Subsample to ~400 frames.
+        n = len(s0["t"]); step = max(1, n // 400)
+        (out / "t2_ld_series.json").write_text(json.dumps({
+            "t": s0["t"][::step], "x_mm": s0["x_mm"][::step], "pull_N": s0["pull_N"][::step],
+            "state": s0["state"][::step], "phase": s0["phase"][::step],
+            "click_t": s0["click_t"], "release_t": s0["release_t"], "W_out_N": meta["W_out_N"],
+            "pull_hold_N": meta["pull_hold_N"], "pull_release_N": meta["pull_release_N"],
+            "stroke_mm": meta["stroke_mm"]}))
 
     cr = per_seed[0]["criteria"]
     result = {

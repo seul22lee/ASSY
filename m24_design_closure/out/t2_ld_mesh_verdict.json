@@ -1,6 +1,6 @@
 {
   "decision_row": "D-M24-5 latched_drawer bottom-clip T5 \u2014 designed W_out, panel-on-face stop",
-  "compile_hash": "361cc6b",
+  "compile_hash": "456795e",
   "task": "latched_drawer (bottom-clip)",
   "physics_identical_bare_vs_mesh": true,
   "closed_stop": "front panel lands on the face frame (the slide lower limit at s=0) \u2014 a PART, not a drive-off",

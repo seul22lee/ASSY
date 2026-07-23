@@ -777,6 +777,17 @@ reviewer visualization**.
   on the image; (4) a **TRANSPARENCY/CUTAWAY** video (occluders α≈0.35 or cut away) + a **ZOOM** clip of
   each engagement event; (5) an **EXPLODED-VIEW** PNG (pieces separated along assembly axes, labelled).
   All embedded in the task REVIEW, m2-style.
+  - **HIDDEN-MECHANISM RULE (standing).** A mechanism INTENTIONALLY HIDDEN between mating faces
+    (zero-protrusion latches, internal cams, in-groove pins) **cannot be filmed from outside** — an
+    exterior zoom of a hidden mechanism is **not evidence** (it shows an opaque shell). For such a
+    mechanism the engagement DETAIL clip MUST reveal the interior, one of: **(a) CUTAWAY MESHES** — a
+    boolean half-space cut of the occluding bodies (VISUAL assets only; the physics bodies are unchanged;
+    carry the physics-identical assert), camera into the cut; or **(b) ANIMATED SECTION** — the viz-pack
+    section machinery driven per-frame by the **recorded** physics trajectory (positions from the verdict
+    series; **no re-sim**; annotations allowed). The exterior wide/transparency clip stays for context;
+    the interior clip REPLACES the exterior zoom as the detail evidence. This applies automatically to
+    any hidden-mechanism task (Phase B/C: the heart cam is fully hidden -> its cycle video REQUIRES this
+    from day one). Recorded as **D-M24-7**.
 - **T6 — NUMERIC REPRODUCTION.** The composed rule chain end-to-end + the fit schedule **RE-MEASURED**
   from ⑥ geometry (COMPILE_DRIFT discipline applied to fits).
 - **T7 — REVIEW + decision rows + STATUS + push.** AWAITING REVIEW; CLOSED only after reviewer

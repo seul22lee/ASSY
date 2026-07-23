@@ -142,8 +142,14 @@ stroke 60→50):**
   the T-rail (M2); y=15 the clip barb snapped behind the floor bump (M3, W_out 30.4 N) in the tray/floor
   gap (zero protrusion). · [`out/exploded_latched_drawer.png`](out/exploded_latched_drawer.png) ·
   [`out/portrait_latched_drawer.png`](out/portrait_latched_drawer.png) (closed drawer, latch hidden) ·
-  [`out/t2_ld_mesh.mp4`](out/t2_ld_mesh.mp4) cutaway + [`out/t2_ld_mesh_zoom.mp4`](out/t2_ld_mesh_zoom.mp4)
-  · [`ir_latched_drawer.svg`](../m22_composition/out/ir_latched_drawer.svg).
+  [`out/t2_ld_mesh.mp4`](out/t2_ld_mesh.mp4) exterior cutaway (**context**).
+- **DETAIL clip — the hidden-mechanism rule (§14 T5v, D-M24-7):** the bottom clip is zero-protrusion, so
+  an exterior zoom is an opaque shell, not evidence. The detail evidence is the **ANIMATED SECTION**
+  [`out/t2_ld_section.mp4`](out/t2_ld_section.mp4) (still: [`out/section_click_latched_drawer.png`](out/section_click_latched_drawer.png))
+  — the y=15 section machinery replaying the **recorded** seed-0 trajectory (no re-sim): ride over the
+  bump (the rigid-sweep interference honestly visible, labelled "deflection by formula, D3") → **click**
+  behind the bump → **hold** at 0.5·W_out → **release pop** at 1.5·W_out → rail-end stop; HUD position /
+  pull / latch state. · [`ir_latched_drawer.svg`](../m22_composition/out/ir_latched_drawer.svg).
 
 ### IR-TRUTH TABLE (§14 T3 / D-IR-EXPR-1) — where each design decision LIVES
 | design decision | home | type | debt |
