@@ -1,0 +1,24 @@
+=== angled_screw_lift — REPRODUCTION (§14 T6) ===
+
+[1] COMPOSED CHAIN (crank → u-joint β=30° → lead_screw → platform):
+    Cardan mean ratio          = 1.0  (H = N_rev × lead)
+    Cardan velocity band       = [cosβ, 1/cosβ] = [0.8660, 1.1547]  (reproduced from ujoint_ratio_at: min 1.1547 @θ=90°, max 0.8660 @θ=0°)
+    lead                       = 2.0 mm/rev
+    platform velocity band     = band × lead·ω/2π = [2.205, 2.940] mm/s
+    mean platform rise / rev   = 2.0 mm
+
+[2] CROSS-CHECK vs the P-ALIFT verdict:
+    ok  mean_residual ≤ 0.1%               3e-05
+    ok  fluct_residual ≤ 2%                0.0008
+    ok  phase_err ≤ 3°                     0.03
+    ok  measured band ≈ [cosβ,1/cosβ]      [0.866, 1.1547]
+    ok  platform band matches              [2.205, 2.94]
+
+[3] FIT DRIFT (new boss/yoke rows; inherited screw_lift rows: drift 0.000, see m24):
+    angled boss bore (M1)      ⌀8.70 = crank ⌀8 + 2·0.35 (design) — pin-hinge fit
+    yoke bore in/out (M2/M3)   ⌀3.90 = trunnion ⌀3.2 + 2·0.35 (design) — m21 pin-in-bore
+    cross-centre (derived)     (0,0,-2) = screw +Z ∩ crank axis @β=30° — exact by construction
+    yoke reach clearance       input×output clears @β30 (-0.50) AND @β0 (-2.83) — t0 CLEAN
+    max COMPILE_DRIFT (fit) = 0.000 mm (new rows are design-exact; t0 CLEAN)
+
+  => reproduction CLEAN
