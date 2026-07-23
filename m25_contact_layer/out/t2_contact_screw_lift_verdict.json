@@ -1,0 +1,71 @@
+{
+  "decision_row": "D-M19-3 CONTACT LAYER \u2014 screw_lift stops by real contact",
+  "compile_hash": "3ee9d22",
+  "task": "screw_lift",
+  "R5_preset": {
+    "dt": 0.0005,
+    "solref": "0.001 1.0",
+    "solimp": "0.99 0.9999 0.0001",
+    "friction": "0.30 0.005 0.0001",
+    "condim": "4",
+    "frozen": true
+  },
+  "limit_carriers": [
+    {
+      "contact_pair": "platform\u00d7top_collar",
+      "was": "nut_slide range [0,0.040]",
+      "now": "collar CONTACT (nut_slide limited=false)"
+    },
+    {
+      "contact_pair": "platform\u00d7bottom_stop",
+      "was": "nut_slide range lower bound 0",
+      "now": "base-stop CONTACT (nut_slide limited=false)"
+    }
+  ],
+  "contact_map": [
+    "=== CONTACT MAP (\u2460/\u2461/\u2462 doctrine) \u2014 collision enabled ONLY for class-\u2461 limit carriers ===",
+    "  \u2461 platform\u00d7top_collar        COLLIDE  \u2014 TOP stop = thread-runout shoulder (full stroke) (verified by real contact)",
+    "  \u2461 platform\u00d7bottom_stop       COLLIDE  \u2014 BOTTOM landing on the base frame (s=0) (verified by real contact)",
+    "  \u2461 platform\u00d7guide_columns     (dof)    \u2014 realized by the declared joint + fit clearance (no LIMIT to carry)",
+    "  \u2460 screw\u00d7nut_thread           EXCLUDED \u2014 driving helical thread flank = R2b curved contact; V-B deferred (m17/D-M1-7)",
+    "  \u2014 coupling_hub\u00d7crank         EXCLUDED \u2014 rigid grip, fused to the input shaft (m20) \u2014 no contact pair"
+  ],
+  "overcrank": {
+    "platform_peak_mm": 40.02,
+    "platform_bottom_mm": -0.52,
+    "target_mm": 40.0,
+    "note": "subsumes the m22 overcrank probe: driven past target, the collar stops it; then lowered to the base landing"
+  },
+  "g9_gconv": true,
+  "criteria": {
+    "TOP collar stops the platform (thread runout, ~stroke)": {
+      "value": 40.02,
+      "op": "~",
+      "threshold": 40.0,
+      "pass": true
+    },
+    "no overrun of the TOP stop under overcrank": {
+      "value": 40.02,
+      "op": "<=",
+      "threshold": 41.0,
+      "pass": true
+    },
+    "BOTTOM stop lands the platform (s=0, no fall-through)": {
+      "value": -0.52,
+      "op": ">=",
+      "threshold": -0.6,
+      "pass": true
+    },
+    "converged (no blow-up)": {
+      "value": false,
+      "threshold": false,
+      "pass": true
+    },
+    "all_parts_retained": {
+      "value": true,
+      "threshold": true,
+      "pass": true
+    }
+  },
+  "passed": true
+}

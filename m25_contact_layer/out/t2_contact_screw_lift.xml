@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<mujoco model="contact_screw_lift">
+  <compiler angle="radian" autolimits="true" meshdir="/home/ftk3187/github/ASSY/m25_contact_layer/out/sl_assets"/>
+  <option timestep="0.0005" integrator="implicitfast" cone="elliptic" impratio="10" gravity="0.000000000 0.000000000 -9.810000000"/>
+  <visual>
+    <headlight ambient="0.5 0.5 0.5" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2"/>
+    <global offwidth="1280" offheight="960"/>
+  </visual>
+  <default>
+    <geom solref="0.001 1.0" solimp="0.99 0.9999 0.0001" friction="0.30 0.005 0.0001" condim="4" density="0" contype="0" conaffinity="0"/>
+  </default>
+  <asset>
+    <material name="base" rgba="0.62 0.66 0.72 1"/>
+    <material name="screw" rgba="0.95 0.62 0.25 1"/>
+    <material name="nut" rgba="0.45 0.78 0.5 1"/>
+    <material name="crank" rgba="0.85 0.35 0.35 1"/>
+    <material name="stop" rgba="0.90 0.20 0.20 1"/>
+    <material name="mk" rgba="0.10 0.55 0.95 1"/>
+    <mesh name="m_base" file="base.stl"/>
+    <mesh name="m_screw" file="screw.stl"/>
+    <mesh name="m_nut" file="nut.stl"/>
+    <mesh name="m_crank" file="crank.stl"/>
+  </asset>
+  <worldbody>
+    <light pos="0.1 -0.2 0.4" dir="-0.2 0.3 -1" directional="true" diffuse="0.5 0.5 0.5"/>
+    <camera name="side" pos="0.19 -0.24 0.055" xyaxes="0.78 0.62 0 -0.14 0.18 0.98"/>
+    <geom name="top_collar" type="box" pos="0.000000000 0.000000000 0.082500000" size="0.012000000 0.008000000 0.002500000" material="stop"/>
+    <geom name="bottom_stop" type="box" pos="0.000000000 0.000000000 0.019000000" size="0.012000000 0.008000000 0.002500000" material="stop"/>
+    <geom name="frame_mesh" type="mesh" mesh="m_base" material="base"/>
+    <geom name="screw_mesh" type="mesh" mesh="m_screw" material="screw"/>
+    <geom name="crank_mesh" type="mesh" mesh="m_crank" material="crank"/>
+    <body name="nut" pos="0.000000000 0.000000000 0.000000000">
+      <inertial mass="0.020000000" pos="0.000000000 0.000000000 0.030000000" diaginertia="0.000001233 0.000001233 0.000002253"/>
+      <joint name="nut_slide" type="slide" axis="0.000000000 0.000000000 1.000000000" pos="0.000000000 0.000000000 0.000000000" damping="0.5" limited="false"/>
+      <geom name="nut_top" type="box" pos="0.000000000 0.000000000 0.037500000" size="0.010000000 0.008000000 0.002500000" material="nut"/>
+      <geom name="nut_bot" type="box" pos="0.000000000 0.000000000 0.024500000" size="0.010000000 0.008000000 0.002500000" material="nut"/>
+      <geom name="nut_mesh" type="mesh" mesh="m_nut" material="nut"/>
+      <geom name="mk_nut" type="box" pos="0.024000000 0.000000000 0.037000000" size="0.002000000 0.002500000 0.003000000" material="mk"/>
+    </body>
+  </worldbody>
+  <contact>
+    <pair geom1="nut_top" geom2="top_collar" condim="4" solref="0.001 1.0" solimp="0.99 0.9999 0.0001" friction="0.30 0.005 0.0001"/>
+    <pair geom1="nut_bot" geom2="bottom_stop" condim="4" solref="0.001 1.0" solimp="0.99 0.9999 0.0001" friction="0.30 0.005 0.0001"/>
+  </contact>
+  <actuator>
+    <velocity name="drive" joint="nut_slide" kv="100.0"/>
+  </actuator>
+</mujoco>
