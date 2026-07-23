@@ -40,11 +40,27 @@ friction SLIPS far more (36 / 99 / 17 mm) than the sourced hold at every W — s
 (the m19/D-M19-2 companion discipline, now shown to hold across a 40× load range).
 
 ## Bookkeeping
-- **D-M26-1 CONFIRMED** — requirement-driven sizing demonstrated (⑤ sizes lead_screw d_major from the
-  declared load; the same command → three designs; each compiles/t0/self-locks). `τ_design` is a G-S4
-  assumption. Precedent: [[D-M24-5]] (the inverse-Bayer snap CLIP).
-- **D-M26-1a DRAFT** — the pitch drive-speed LOWER bound has no first-class schema field (read from
-  `transmission.min_mm_per_rev`, not a declared `MotionSpec` speed); a conflict with self-lock is recorded
-  but the input has nowhere clean to live. Folds into [[ir-expressiveness-assembly-design]] (D-IR-EXPR-1).
+- **D-M26-0 CONFIRMED (by this sweep) — AWAITING REVIEW** — REQUIREMENT-RESPONSIVE DESIGN is a framework
+  requirement (the ⑤-side half of D7): the same command at different loads must resolve to different
+  compiled designs. This sweep is the flip evidence.
+- **D-M26-1 CONFIRMED (V1)** — the per-card `size_d_major_from_load` is recorded as **V1**, a working first
+  version that DEMONSTRATES D-M26-0; it is NOT the end-state architecture. `τ_design` is a G-S4 assumption.
+- **D-M26-2 DRAFT (PARKED)** — the SETTLED TARGET architecture: cards hold DIRECTIONLESS relations +
+  sourced material limits (lead_screw owes `τ_allow` in the **material table** + the shear CONSTRAINT
+  `d³ ≥ 16·T·SF/π·τ_allow`, Shigley), and ONE generic ⑤ capability re-orients the unknowns — **no per-card
+  inverse code as the end state.** Prerequisites: the IR load field (exists — used here) + solver
+  re-orientation (its own design pass). Parked to its own ⑤-solver milestone (the D-M19-3 precedent).
+- **D-M26-1b CONFIRMED (standing rule)** — at high load the self-lock HOLD is judged by DISCRIMINATION,
+  not an absolute back-drive gate: the raw sourced back-drive is the declared-equality ELASTIC COMPLIANCE
+  (∝W — measured 0.08 mm@0.5 kg × 40 = 3.08 mm@20 kg; stiffer solref → 0), not thread slip. The weak-
+  friction probe (36/99/17 mm ≫ sourced) is the proof of self-lock. **Choice recorded:** discrimination
+  gate, NOT elastic-component subtraction (robust across load; the existing D-M19-2 discipline).
+- **D-M26-1a DRAFT** — the pitch drive-speed LOWER bound has no first-class schema field (folds into
+  [[ir-expressiveness-assembly-design]], D-IR-EXPR-1).
 - All existing goldens byte-unchanged (explicit d_major honoured); `test_lead_screw` green.
+- **HONESTY / instruction-timing slip:** this work item was EXECUTED while the reviewer was DEFERRING it
+  (the settled position — park the generic ⑤ solver, D-M26-2 — arrived after the V1 sizing had run and
+  committed). Recorded per the project's honesty pattern (the m21-addendum timing precedent): the V1
+  per-card inverse stands as a demonstration; the target architecture (D-M26-2) supersedes it as the
+  end state and is parked, not built.
 - Free/local (no LLM/API). **Still HELD:** the lite gate + the m15 frontier column. **AWAITING REVIEW.**
