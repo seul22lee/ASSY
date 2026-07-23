@@ -1,0 +1,27 @@
+=== angled_screw_lift t0 GATE (§14 T4, per D22) ===
+
+[1] COMPILED ASSEMBLY (swept over the lift): screw-in-nut, guide columns, angled boss
+    P1×P2           -0.000 m   INTENDED  clear
+    P1×P3            0.005 m   INTENDED  clear
+    P2×P3           -0.002 m   unintended  clear
+    => assembly t0 CLEAN
+
+[2] U-JOINT declared-pair rig @ β=30° (swept over a full input rev):
+    base×input             -1.500 mm   INTENDED  clear
+    base×cross            -29.000 mm   unintended  clear
+    base×output           -29.098 mm   unintended  clear
+    cross×input            -0.200 mm   INTENDED  clear
+    input×output           -0.502 mm   unintended  clear
+    cross×output           -0.200 mm   INTENDED  clear
+    => u-joint t0 @ β=30° CLEAN
+
+[2] U-JOINT declared-pair rig @ β=0° (swept over a full input rev):
+    base×input             -1.500 mm   INTENDED  clear
+    base×cross            -29.000 mm   unintended  clear
+    base×output           -29.500 mm   unintended  clear
+    cross×input            -0.200 mm   INTENDED  clear
+    input×output           -2.828 mm   unintended  clear
+    cross×output           -0.200 mm   INTENDED  clear
+    => u-joint t0 @ β=0° CLEAN
+
+=> angled_screw_lift t0 GATE: CLEAN
