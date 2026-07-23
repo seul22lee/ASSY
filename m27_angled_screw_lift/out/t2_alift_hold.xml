@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<mujoco model="t2_lead_screw_VA">
+  <compiler angle="radian" meshdir="hold_assets" autolimits="true"/>
+  <option timestep="0.0001" integrator="implicitfast" cone="elliptic" impratio="10"/>
+  <visual>
+    <headlight ambient="0.5 0.5 0.5" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2"/>
+    <global offwidth="1280" offheight="960" azimuth="130" elevation="-18"/>
+  </visual>
+  <default>
+    <geom solref="0.001 1.0" solimp="0.99 0.9999 0.0001" density="0" contype="0" conaffinity="0" group="2"/>
+  </default>
+  <asset>
+    <material name="base" rgba="0.35 0.65 0.85 1"/>
+    <material name="screw" rgba="0.95 0.62 0.25 1"/>
+    <material name="nut" rgba="0.6 0.75 0.6 1"/>
+    <mesh name="base_vis" file="ls_base_vis.stl"/>
+    <mesh name="screw_vis" file="ls_screw_vis.stl"/>
+    <mesh name="nut_vis" file="ls_nut_vis.stl"/>
+  </asset>
+  <worldbody>
+    <light pos="0.1 -0.15 0.4" dir="-0.2 0.3 -1" directional="true" diffuse="0.5 0.5 0.5"/>
+    <camera name="iso" pos="0.12 -0.14 0.10" xyaxes="0.75 0.66 0 -0.24 0.28 0.93"/>
+    <body name="base" pos="0 0 0">
+      <inertial pos="0.000000000 0.000000000 0.002000000" mass="0.018288000" fullinertia="0.000005510784 0.000005510784 0.000010972800 -0.000000000000 -0.000000000000 -0.000000000000"/>
+      <geom name="base_vis" type="mesh" mesh="base_vis" material="base"/>
+    </body>
+    <body name="screw" pos="0 0 0">
+      <joint name="screw_hinge" type="hinge" axis="0.000000000 0.000000000 1.000000000" pos="0.000000000 0.000000000 0.004000000" damping="1e-05" armature="1e-05" frictionloss="0.005150250"/>
+      <inertial pos="0.000000000 0.000000000 0.034000000" mass="0.003823883" fullinertia="0.000001162435 0.000001162435 0.000000030540 -0.000000000000 -0.000000000000 -0.000000000000"/>
+      <geom name="screw_vis" type="mesh" mesh="screw_vis" material="screw"/>
+    </body>
+    <body name="nut" pos="0 0 0">
+      <joint name="nut_slide" type="slide" axis="0.000000000 0.000000000 1.000000000" pos="0.000000000 0.000000000 0.004000000" damping="1e-05"/>
+      <inertial pos="0.000000000 -0.000000000 0.035000000" mass="0.007589397" fullinertia="0.000000540664 0.000000540664 0.000000954839 -0.000000000000 0.000000000000 -0.000000000000"/>
+      <geom name="nut_vis" type="mesh" mesh="nut_vis" material="nut"/>
+    </body>
+  </worldbody>
+  <equality>
+    <joint name="couple" joint1="nut_slide" joint2="screw_hinge" polycoef="0 0.000318310 0 0 0" solref="-1e8 -1e4" solimp="0.9999 0.99999 0.000001 0.5 2"/>
+  </equality>
+  <actuator>
+    <velocity name="drive" joint="screw_hinge" kv="0.05"/>
+  </actuator>
+</mujoco>

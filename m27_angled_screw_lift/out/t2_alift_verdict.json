@@ -1,0 +1,321 @@
+{
+  "decision_row": "D-M27-1 angled_screw_lift \u2014 Cardan law at assembly level",
+  "compile_hash": "86bdc9b",
+  "task": "angled_screw_lift",
+  "beta_deg": 30.0,
+  "chain": "crank \u2192 universal_joint(\u03b2=30\u00b0) \u2192 lead_screw \u2192 nut platform",
+  "composed": {
+    "platform_travel_mm": "\u03b8_out \u00b7 lead/2\u03c0",
+    "platform_velocity": "\u03c9_out \u00b7 lead/2\u03c0",
+    "mean_rise_over_N_rev_mm": 6.0,
+    "lead_mm": 2.0,
+    "platform_velocity_band_mm_s": [
+      2.205,
+      2.94
+    ],
+    "cardan_band": [
+      0.866,
+      1.1547
+    ]
+  },
+  "g9_gconv": true,
+  "V-A": {
+    "n_seeds": 5,
+    "seeds_passed": 5,
+    "ujoint_passed": true,
+    "mean_residual": 3e-05,
+    "fluct_residual": 0.0008,
+    "phi0_predicted_deg": 90.0,
+    "phi0_measured_deg": 90.0,
+    "phase_err_deg": 0.03,
+    "measured_band": [
+      0.866,
+      1.1547
+    ],
+    "criteria": {
+      "end_to_end_mean (H=N\u00b7lead, |mean\u22121|\u22640.1%)": {
+        "value": 3e-05,
+        "pass": true
+      },
+      "fluctuation_at_platform (max|meas\u2212Cardan|\u22642%)": {
+        "value": 0.0008,
+        "pass": true
+      },
+      "phase_predicted (\u03c60 err \u2264 3\u00b0)": {
+        "value": 0.03,
+        "pass": true
+      },
+      "hold_self_locks (discrimination, D-M26-1b)": {
+        "value": 0.079,
+        "pass": true
+      },
+      "discrimination_beta0_flat": {
+        "value": 0.0007,
+        "pass": true
+      },
+      "discrimination_joint_broken (no rise)": {
+        "value": 0.222,
+        "pass": true
+      }
+    },
+    "per_seed_ujoint": [
+      {
+        "ran": true,
+        "mode": "V-A",
+        "seed": 0,
+        "diverged": false,
+        "beta_deg": 30.0,
+        "revs_in": 3.0,
+        "mean_ratio": 0.99997,
+        "mean_residual": 3e-05,
+        "fluct_residual": 0.0008,
+        "measured_band": [
+          0.866,
+          1.1547
+        ],
+        "phi0_predicted_deg": 90.0,
+        "phi0_measured_deg": 90.0,
+        "phase_err_deg": 0.03,
+        "loop_residual_t0": 5.478467424346271e-06,
+        "loop_residual_max": 5.478467424346271e-06,
+        "criteria": {
+          "reaches_drive (input \u2265 N_rev)": {
+            "value": 3.0,
+            "threshold": 3.0,
+            "pass": true
+          },
+          "transmits_mean_1to1 (|mean\u22121| \u2264 0.1%)": {
+            "value": 3e-05,
+            "threshold": 0.001,
+            "pass": true
+          },
+          "cardan_fluctuation_matches (max|meas\u2212formula| \u2264 2%)": {
+            "value": 0.0008,
+            "threshold": 0.02,
+            "pass": true
+          },
+          "converged (no blow-up)": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": true,
+            "threshold": true,
+            "pass": true
+          }
+        },
+        "passed": true
+      },
+      {
+        "ran": true,
+        "mode": "V-A",
+        "seed": 1,
+        "diverged": false,
+        "beta_deg": 30.0,
+        "revs_in": 3.0,
+        "mean_ratio": 0.99997,
+        "mean_residual": 3e-05,
+        "fluct_residual": 0.0007,
+        "measured_band": [
+          0.866,
+          1.1547
+        ],
+        "phi0_predicted_deg": 90.0,
+        "phi0_measured_deg": 90.0,
+        "phase_err_deg": 0.03,
+        "loop_residual_t0": 4.728649879662152e-07,
+        "loop_residual_max": 4.728649879662152e-07,
+        "criteria": {
+          "reaches_drive (input \u2265 N_rev)": {
+            "value": 3.0,
+            "threshold": 3.0,
+            "pass": true
+          },
+          "transmits_mean_1to1 (|mean\u22121| \u2264 0.1%)": {
+            "value": 3e-05,
+            "threshold": 0.001,
+            "pass": true
+          },
+          "cardan_fluctuation_matches (max|meas\u2212formula| \u2264 2%)": {
+            "value": 0.0007,
+            "threshold": 0.02,
+            "pass": true
+          },
+          "converged (no blow-up)": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": true,
+            "threshold": true,
+            "pass": true
+          }
+        },
+        "passed": true
+      },
+      {
+        "ran": true,
+        "mode": "V-A",
+        "seed": 2,
+        "diverged": false,
+        "beta_deg": 30.0,
+        "revs_in": 3.0,
+        "mean_ratio": 0.99997,
+        "mean_residual": 3e-05,
+        "fluct_residual": 0.0005,
+        "measured_band": [
+          0.866,
+          1.1547
+        ],
+        "phi0_predicted_deg": 90.0,
+        "phi0_measured_deg": 90.1,
+        "phase_err_deg": 0.07,
+        "loop_residual_t0": 9.535514268766275e-06,
+        "loop_residual_max": 9.535514268766275e-06,
+        "criteria": {
+          "reaches_drive (input \u2265 N_rev)": {
+            "value": 3.0,
+            "threshold": 3.0,
+            "pass": true
+          },
+          "transmits_mean_1to1 (|mean\u22121| \u2264 0.1%)": {
+            "value": 3e-05,
+            "threshold": 0.001,
+            "pass": true
+          },
+          "cardan_fluctuation_matches (max|meas\u2212formula| \u2264 2%)": {
+            "value": 0.0005,
+            "threshold": 0.02,
+            "pass": true
+          },
+          "converged (no blow-up)": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": true,
+            "threshold": true,
+            "pass": true
+          }
+        },
+        "passed": true
+      },
+      {
+        "ran": true,
+        "mode": "V-A",
+        "seed": 3,
+        "diverged": false,
+        "beta_deg": 30.0,
+        "revs_in": 3.0,
+        "mean_ratio": 0.99997,
+        "mean_residual": 3e-05,
+        "fluct_residual": 0.0006,
+        "measured_band": [
+          0.866,
+          1.1547
+        ],
+        "phi0_predicted_deg": 90.0,
+        "phi0_measured_deg": 90.1,
+        "phase_err_deg": 0.08,
+        "loop_residual_t0": 1.6574031417228666e-05,
+        "loop_residual_max": 1.6574031417228666e-05,
+        "criteria": {
+          "reaches_drive (input \u2265 N_rev)": {
+            "value": 3.0,
+            "threshold": 3.0,
+            "pass": true
+          },
+          "transmits_mean_1to1 (|mean\u22121| \u2264 0.1%)": {
+            "value": 3e-05,
+            "threshold": 0.001,
+            "pass": true
+          },
+          "cardan_fluctuation_matches (max|meas\u2212formula| \u2264 2%)": {
+            "value": 0.0006,
+            "threshold": 0.02,
+            "pass": true
+          },
+          "converged (no blow-up)": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": true,
+            "threshold": true,
+            "pass": true
+          }
+        },
+        "passed": true
+      },
+      {
+        "ran": true,
+        "mode": "V-A",
+        "seed": 4,
+        "diverged": false,
+        "beta_deg": 30.0,
+        "revs_in": 3.0,
+        "mean_ratio": 0.99997,
+        "mean_residual": 3e-05,
+        "fluct_residual": 0.0009,
+        "measured_band": [
+          0.866,
+          1.1547
+        ],
+        "phi0_predicted_deg": 90.0,
+        "phi0_measured_deg": 90.0,
+        "phase_err_deg": 0.01,
+        "loop_residual_t0": 1.772224190365898e-05,
+        "loop_residual_max": 1.772224190365898e-05,
+        "criteria": {
+          "reaches_drive (input \u2265 N_rev)": {
+            "value": 3.0,
+            "threshold": 3.0,
+            "pass": true
+          },
+          "transmits_mean_1to1 (|mean\u22121| \u2264 0.1%)": {
+            "value": 3e-05,
+            "threshold": 0.001,
+            "pass": true
+          },
+          "cardan_fluctuation_matches (max|meas\u2212formula| \u2264 2%)": {
+            "value": 0.0009,
+            "threshold": 0.02,
+            "pass": true
+          },
+          "converged (no blow-up)": {
+            "value": false,
+            "threshold": false,
+            "pass": true
+          },
+          "all_parts_retained": {
+            "value": true,
+            "threshold": true,
+            "pass": true
+          }
+        },
+        "passed": true
+      }
+    ]
+  },
+  "hold": {
+    "backdrive_mm": 0.079,
+    "weak_friction_backdrive_mm": 18.43,
+    "self_locks": true,
+    "note": "the screw carries the hold (m19 self-lock); the u-joint is upstream; discrimination per D-M26-1b"
+  },
+  "discrimination": {
+    "beta0_band_width": 0.0007,
+    "joint_broken": {
+      "crank_rev": 3.0,
+      "screw_rev": 0.222
+    }
+  },
+  "end_stops": "INHERITED from the m25 contact layer (class-\u2461 top-collar overcrank + bottom landing; the screw_lift collars/base carry them \u2014 see m25_contact_layer)",
+  "passed": true,
+  "video": "t2_alift_ujoint.mp4",
+  "platform_overlay": "t2_alift_platform_overlay.png"
+}
