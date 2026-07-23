@@ -1,0 +1,524 @@
+{
+  "task_id": "angled_screw_lift",
+  "command": "A hand-crank jack, but the side space is blocked — the crank must come out at a 30° angle. Raises a small platform and holds it when released. Plastic, 3D printing.",
+  "functions": [
+    {
+      "verb": "raise",
+      "object": "platform",
+      "qualifier": "by angled hand crank"
+    },
+    {
+      "verb": "hold",
+      "object": "platform",
+      "qualifier": "at height when released, self-locking"
+    }
+  ],
+  "behaviors": [
+    {
+      "id": "B0",
+      "phase": "use",
+      "motion": {
+        "kind": "rotation",
+        "nature": "regular",
+        "axis_hint": "vertical",
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": {
+          "ratio": 1.0,
+          "kind": "universal_joint",
+          "bend_deg": 30.0
+        },
+        "event_force_window_N": null
+      },
+      "axis_relationship": "intersecting",
+      "self_locking": false,
+      "load": null,
+      "realized_by": "E1",
+      "imposed_by": null,
+      "verified_by": "P-UJOINT-VA-E1",
+      "imposed_by_card": null
+    },
+    {
+      "id": "B1",
+      "phase": "use",
+      "motion": {
+        "kind": "rot_to_trans",
+        "nature": "regular",
+        "axis_hint": "vertical",
+        "range_value": 40.0,
+        "range_unit": "mm",
+        "bound": "min",
+        "transmission": {
+          "mm_per_rev": 2.0,
+          "lead_mm": 2.0,
+          "bend_deg": 30.0,
+          "kind": "angled_screw_lift"
+        },
+        "event_force_window_N": null
+      },
+      "axis_relationship": "parallel",
+      "self_locking": true,
+      "load": {
+        "mass_kg": 0.5,
+        "direction": "-z"
+      },
+      "realized_by": "E2",
+      "imposed_by": null,
+      "verified_by": "P-ALIFT-VA",
+      "imposed_by_card": null
+    },
+    {
+      "id": "B2",
+      "phase": "static",
+      "motion": {
+        "kind": "fixed",
+        "nature": "regular",
+        "axis_hint": "vertical",
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "axis_relationship": "parallel",
+      "self_locking": true,
+      "load": {
+        "mass_kg": 0.5,
+        "direction": "-z"
+      },
+      "realized_by": "E2",
+      "imposed_by": null,
+      "verified_by": null,
+      "imposed_by_card": null
+    },
+    {
+      "id": "B4",
+      "phase": "assembly",
+      "motion": {
+        "kind": "translation",
+        "nature": "regular",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "axis_relationship": "parallel",
+      "self_locking": false,
+      "load": null,
+      "realized_by": null,
+      "imposed_by": "E1",
+      "verified_by": null,
+      "imposed_by_card": "universal_joint"
+    },
+    {
+      "id": "B5",
+      "phase": "assembly",
+      "motion": {
+        "kind": "translation",
+        "nature": "regular",
+        "axis_hint": null,
+        "range_value": null,
+        "range_unit": null,
+        "bound": null,
+        "transmission": null,
+        "event_force_window_N": null
+      },
+      "axis_relationship": "parallel",
+      "self_locking": false,
+      "load": null,
+      "realized_by": null,
+      "imposed_by": "E2",
+      "verified_by": null,
+      "imposed_by_card": "lead_screw"
+    }
+  ],
+  "pieces": [
+    {
+      "id": "P1",
+      "role": "base",
+      "provenance": "functional",
+      "template_ref": "screw_base",
+      "source_element": null,
+      "params": {
+        "base_l": 60.0,
+        "base_w": 60.0,
+        "base_t": 4.0,
+        "frame": 1.0,
+        "boss_d": 16.0,
+        "boss_h": 10.0,
+        "col_d": 6.0,
+        "col_y": 15.0,
+        "col_top": 82.0,
+        "end_stops": 1.0,
+        "stop_bot_z": 22.0,
+        "stop_top_z": 80.0,
+        "stop_d": 10.0,
+        "angled_boss": 1.0,
+        "in_beta": 30.0,
+        "cross_z": -2.0,
+        "in_boss_d": 14.0,
+        "in_boss_len": 16.0,
+        "boss_reach": 20.0
+      },
+      "is_base": true
+    },
+    {
+      "id": "P2",
+      "role": "platform",
+      "provenance": "functional",
+      "template_ref": "nut_carriage",
+      "source_element": null,
+      "params": {
+        "nut_l": 44.0,
+        "nut_w": 44.0,
+        "nut_t": 10.0,
+        "nut_z": 30.0,
+        "d_major": 8.0,
+        "gap": 1.0,
+        "boss_h": 8.0,
+        "guide": 1.0,
+        "col_d": 6.0,
+        "col_y": 15.0,
+        "col_clear": 0.35
+      },
+      "is_base": false
+    },
+    {
+      "id": "P3",
+      "role": "crank",
+      "provenance": "functional",
+      "template_ref": "shaft_carrier_out_angled",
+      "source_element": null,
+      "params": {
+        "shaft_d": 8.0,
+        "beta_deg": 30.0,
+        "joint_z": -2.0,
+        "shaft_len": 24.0,
+        "clearance": 0.3
+      },
+      "is_base": false
+    }
+  ],
+  "templates": [
+    {
+      "template_ref": "screw_base",
+      "anchors": [
+        {
+          "name": "screw_axis",
+          "kind": "axis"
+        },
+        {
+          "name": "travel_edge",
+          "kind": "axis"
+        },
+        {
+          "name": "guide_col_L",
+          "kind": "axis"
+        },
+        {
+          "name": "guide_col_R",
+          "kind": "axis"
+        },
+        {
+          "name": "bottom_stop",
+          "kind": "face"
+        },
+        {
+          "name": "top_stop",
+          "kind": "face"
+        },
+        {
+          "name": "cross_pivot",
+          "kind": "axis"
+        },
+        {
+          "name": "in_axis",
+          "kind": "axis"
+        }
+      ],
+      "params": {
+        "base_l": 60.0,
+        "base_w": 60.0,
+        "base_t": 4.0,
+        "frame": 1.0,
+        "boss_d": 16.0,
+        "boss_h": 10.0,
+        "col_d": 6.0,
+        "col_y": 15.0,
+        "col_top": 82.0,
+        "end_stops": 1.0,
+        "stop_bot_z": 22.0,
+        "stop_top_z": 80.0,
+        "stop_d": 10.0,
+        "angled_boss": 1.0,
+        "in_beta": 30.0,
+        "cross_z": -2.0,
+        "in_boss_d": 14.0,
+        "in_boss_len": 16.0,
+        "boss_reach": 20.0
+      }
+    },
+    {
+      "template_ref": "nut_carriage",
+      "anchors": [
+        {
+          "name": "nut_mount",
+          "kind": "face"
+        },
+        {
+          "name": "travel_axis",
+          "kind": "axis"
+        }
+      ],
+      "params": {
+        "nut_l": 44.0,
+        "nut_w": 44.0,
+        "nut_t": 10.0,
+        "nut_z": 30.0,
+        "d_major": 8.0,
+        "gap": 1.0,
+        "boss_h": 8.0,
+        "guide": 1.0,
+        "col_d": 6.0,
+        "col_y": 15.0,
+        "col_clear": 0.35
+      }
+    },
+    {
+      "template_ref": "shaft_carrier_out_angled",
+      "anchors": [
+        {
+          "name": "shaft_out",
+          "kind": "axis"
+        }
+      ],
+      "params": {
+        "shaft_d": 8.0,
+        "beta_deg": 30.0,
+        "joint_z": -2.0,
+        "shaft_len": 24.0,
+        "clearance": 0.3
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "E1",
+      "card_ref": "universal_joint",
+      "params": {
+        "yoke_d": 16.0,
+        "bore_d": 8.0,
+        "length": 20.0,
+        "angle_deg": 30.0
+      },
+      "host_pieces": [
+        "P3",
+        "P1"
+      ]
+    },
+    {
+      "id": "E2",
+      "card_ref": "lead_screw",
+      "params": {
+        "d_major": 8.0,
+        "pitch": 2.0,
+        "starts": 1.0,
+        "lead": 2.0,
+        "length": 60.0,
+        "stroke": 40.0
+      },
+      "host_pieces": [
+        "P1",
+        "P2"
+      ]
+    }
+  ],
+  "features": [],
+  "bindings": [
+    {
+      "element_id": "E1",
+      "port": "shaft_in",
+      "piece_id": "P3",
+      "anchor": "shaft_out",
+      "mate": "coincident_axis",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E1",
+      "port": "shaft_out",
+      "piece_id": "P1",
+      "anchor": "screw_axis",
+      "mate": "coincident_axis",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E1",
+      "port": "cross_pivot",
+      "piece_id": "P1",
+      "anchor": "cross_pivot",
+      "mate": "coincident_axis",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E2",
+      "port": "screw_axis",
+      "piece_id": "P1",
+      "anchor": "screw_axis",
+      "mate": "coincident_axis",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E2",
+      "port": "nut_mount",
+      "piece_id": "P2",
+      "anchor": "nut_mount",
+      "mate": "flush_face",
+      "offset_params": {}
+    },
+    {
+      "element_id": "E2",
+      "port": "travel_axis",
+      "piece_id": "P2",
+      "anchor": "travel_axis",
+      "mate": "coincident_axis",
+      "offset_params": {}
+    }
+  ],
+  "assembly_rules": [],
+  "parameters": [
+    {
+      "name": "lead",
+      "value": 2.0,
+      "unit": "mm",
+      "lo": 0.5,
+      "hi": 8.0,
+      "resolved_by": "rule",
+      "citation": null
+    },
+    {
+      "name": "stroke",
+      "value": 40.0,
+      "unit": "mm",
+      "lo": 10.0,
+      "hi": 180.0,
+      "resolved_by": "user",
+      "citation": null
+    },
+    {
+      "name": "angle_deg",
+      "value": 30.0,
+      "unit": "deg",
+      "lo": 0.0,
+      "hi": 35.0,
+      "resolved_by": "user",
+      "citation": null
+    }
+  ],
+  "protocols": [
+    {
+      "id": "P-UJOINT-VA-E1",
+      "verifies": "B0",
+      "actuation": {
+        "kind": "shaft_velocity",
+        "n_rev": 3.0,
+        "note": "single Cardan is NOT constant-velocity — the fluctuation is verified as physics (measured ω_out/ω_in overlays the formula), not treated as error"
+      },
+      "criteria": [
+        {
+          "name": "transmits_mean_1to1",
+          "observable": "mean_ratio_residual",
+          "op": "<=",
+          "threshold": 0.001,
+          "unit": ""
+        },
+        {
+          "name": "cardan_fluctuation_matches_formula",
+          "observable": "cardan_fluctuation_residual",
+          "op": "<=",
+          "threshold": 0.02,
+          "unit": ""
+        }
+      ],
+      "observables": [
+        {
+          "name": "cv_fluctuation",
+          "measured": "cardan_fluctuation_residual",
+          "unit": "",
+          "flag_op": null,
+          "flag_threshold": null,
+          "note": "the emergent Cardan pulsation cos β..1/cos β, verified vs formula"
+        }
+      ],
+      "mode": "V-A",
+      "seeds": 5,
+      "seed_pass": 4
+    },
+    {
+      "id": "P-SCREW-VA-E2",
+      "verifies": "B1",
+      "actuation": {
+        "kind": "shaft_velocity",
+        "n_rev": 3.0,
+        "v_b_gap": "helical thread flank is CURVED contact — bidirectional V-B deferred to preset_v2 (m17/D-M1-7), like rack_pinion"
+      },
+      "criteria": [
+        {
+          "name": "reaches_stroke",
+          "observable": "stroke_mm",
+          "op": ">=",
+          "threshold": 40.0,
+          "unit": "mm"
+        },
+        {
+          "name": "self_locks_holds",
+          "observable": "backdrive_mm",
+          "op": "<=",
+          "threshold": 1.0,
+          "unit": "mm"
+        }
+      ],
+      "observables": [],
+      "mode": "V-A",
+      "seeds": 5,
+      "seed_pass": 4
+    },
+    {
+      "id": "P-ALIFT-VA",
+      "verifies": "B1",
+      "actuation": {
+        "kind": "crank_velocity",
+        "n_rev": 20.0,
+        "composed_chain": "H = N_rev × ujoint_mean(1:1) × lead; velocity pulsates [cosβ,1/cosβ]",
+        "load_kg": 0.5,
+        "bend_deg": 30.0,
+        "note": "assembly-level Cardan mean + the fluctuation promoted to the platform output"
+      },
+      "criteria": [
+        {
+          "name": "platform_reaches_height",
+          "observable": "stroke_mm",
+          "op": ">=",
+          "threshold": 40.0,
+          "unit": "mm"
+        },
+        {
+          "name": "holds_released_load",
+          "observable": "backdrive_mm",
+          "op": "<=",
+          "threshold": 1.0,
+          "unit": "mm"
+        }
+      ],
+      "observables": [],
+      "mode": "V-A",
+      "seeds": 5,
+      "seed_pass": 4
+    }
+  ],
+  "material": "PETG",
+  "variant": null,
+  "stage_log": []
+}

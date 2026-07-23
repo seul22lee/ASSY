@@ -1322,6 +1322,133 @@ def anchor_lift() -> DesignPlan:
     return anchor_hard(variant="lift")
 
 
+def angled_screw_lift() -> DesignPlan:
+    """m27 — ANGLED-DRIVE screw jack: the screw_lift jack, but the input crank axis TILTS β=30° from the
+    vertical screw axis (the side space is blocked), joined by a UNIVERSAL JOINT at the axis intersection.
+    Command: "A hand-crank jack, but the side space is blocked — the crank must come out at a 30° angle.
+    Raises a small platform and holds it when released. Plastic, 3D printing." Two VERIFIED elements:
+    E1 universal_joint (crank→screw, Cardan at β=30°, m21) + E2 lead_screw (screw→platform, self-lock, m19).
+
+    The screw_lift architecture is REUSED (base frame + guide columns + top-stop collars + platform/nut
+    boss + its fit-chain rows); the coupling hub is REPLACED by the u-joint. The command CONSTRAINT ("come
+    out at an angle") reads onto m18 axis-2 (intersecting) — the discriminator that selects universal_joint
+    over coupling (the Phase-2 seed where the constraint, not the function, picks the element).
+
+    β is carried three ways (D-M21-3, still a categorical axis_relationship with no scalar β): the element
+    param `angle_deg`, the anchor geometry (P1.in_axis at β vs P1.screw_axis +Z), and B0.transmission
+    `bend_deg`. This SECOND real use (now at ASSEMBLY level) strains D-M21-3 the same way — recorded, not
+    patched (the DRAFT gains the assembly-level requirement)."""
+    d_major, pitch, starts, stroke, load_kg = 8.0, 2.0, 1, 40.0, 0.5
+    lead = starts * pitch
+    length = round(stroke + 20.0, 1)
+    beta, bore_d, yoke_d, uj_len, cross_z = 30.0, 8.0, 16.0, 20.0, -2.0
+    col_d, col_y, col_clear = 6.0, 15.0, 0.35
+    col_top = round(30.0 + stroke + 12.0, 1)
+    # P1: the screw_lift base frame REUSED + the ANGLED BEARING BOSS carrying the input crank at β (T3c).
+    screw_base_t = HostTemplate(template_ref="screw_base",
+        params={"base_l": 60.0, "base_w": 60.0, "base_t": 4.0, "frame": True,
+                "boss_d": 16.0, "boss_h": 10.0, "col_d": col_d, "col_y": col_y, "col_top": col_top,
+                "end_stops": True, "stop_bot_z": 22.0, "stop_top_z": 80.0, "stop_d": 10.0,
+                "angled_boss": True, "in_beta": beta, "cross_z": cross_z, "in_boss_d": 14.0,
+                "in_boss_len": 16.0, "boss_reach": 20.0},
+        anchors=[Anchor(name="screw_axis", kind="axis"), Anchor(name="travel_edge", kind="axis"),
+                 Anchor(name="guide_col_L", kind="axis"), Anchor(name="guide_col_R", kind="axis"),
+                 Anchor(name="bottom_stop", kind="face"), Anchor(name="top_stop", kind="face"),
+                 Anchor(name="cross_pivot", kind="axis"), Anchor(name="in_axis", kind="axis")])
+    platform_t = HostTemplate(template_ref="nut_carriage",
+        params={"nut_l": 44.0, "nut_w": 44.0, "nut_t": 10.0, "nut_z": 30.0, "d_major": d_major,
+                "gap": 1.0, "boss_h": 8.0, "guide": True, "col_d": col_d, "col_y": col_y,
+                "col_clear": col_clear},
+        anchors=[Anchor(name="nut_mount", kind="face"), Anchor(name="travel_axis", kind="axis")])
+    # P3: the input crank on the β=30° axis (its shaft_out anchor at the cross centre; the u-joint carve
+    # grows the INPUT yoke onto it). shaft_carrier_out_angled = the tilted input shaft (m21 template).
+    crank_t = HostTemplate(template_ref="shaft_carrier_out_angled",
+        params={"shaft_d": bore_d, "beta_deg": beta, "joint_z": cross_z, "shaft_len": 24.0, "clearance": 0.30},
+        anchors=[Anchor(name="shaft_out", kind="axis")])
+    pieces = [
+        Piece(id="P1", role="base", template_ref="screw_base", is_base=True, params=dict(screw_base_t.params)),
+        Piece(id="P2", role="platform", template_ref="nut_carriage", params=dict(platform_t.params)),
+        Piece(id="P3", role="crank", template_ref="shaft_carrier_out_angled", params=dict(crank_t.params)),
+    ]
+    elements = [
+        ElementInstance(id="E1", card_ref="universal_joint", host_pieces=["P3", "P1"],
+                        params={"yoke_d": yoke_d, "bore_d": bore_d, "length": uj_len, "angle_deg": beta}),
+        ElementInstance(id="E2", card_ref="lead_screw", host_pieces=["P1", "P2"],
+                        params={"d_major": d_major, "pitch": pitch, "starts": starts,
+                                "lead": lead, "length": length, "stroke": stroke}),
+    ]
+    bindings = [
+        # E1 universal_joint: crank (P3) → screw (P1). shaft_out binds the SHARED screw axis (the chaining,
+        # like screw_lift q1); cross_pivot binds the axis intersection on P1.
+        Binding(element_id="E1", port="shaft_in", piece_id="P3", anchor="shaft_out", mate="coincident_axis"),
+        Binding(element_id="E1", port="shaft_out", piece_id="P1", anchor="screw_axis", mate="coincident_axis"),
+        Binding(element_id="E1", port="cross_pivot", piece_id="P1", anchor="cross_pivot", mate="coincident_axis"),
+        # E2 lead_screw: screw_axis binds the SAME P1.screw_axis (shared piece/anchor → coaxial).
+        Binding(element_id="E2", port="screw_axis", piece_id="P1", anchor="screw_axis", mate="coincident_axis"),
+        Binding(element_id="E2", port="nut_mount", piece_id="P2", anchor="nut_mount", mate="flush_face"),
+        Binding(element_id="E2", port="travel_axis", piece_id="P2", anchor="travel_axis", mate="coincident_axis"),
+    ]
+    behaviors = [
+        # B0 — the u-joint transmits crank→screw across INTERSECTING axes at β (mean 1:1, pulsating).
+        Behavior(id="B0", phase="use",
+                 motion=MotionSpec(kind="rotation", axis_hint="vertical", nature="regular",
+                                   transmission={"ratio": 1.0, "kind": "universal_joint", "bend_deg": beta}),
+                 axis_relationship="intersecting", realized_by="E1"),
+        # B1 — the lift: crank/u-joint/screw → platform rises `stroke`, self-locking, under the load W.
+        Behavior(id="B1", phase="use",
+                 motion=MotionSpec(kind="rot_to_trans", axis_hint="vertical", nature="regular",
+                                   range_value=stroke, range_unit="mm", bound="min",
+                                   transmission={"mm_per_rev": round(lead, 3), "lead_mm": round(lead, 3),
+                                                 "bend_deg": beta, "kind": "angled_screw_lift"}),
+                 self_locking=True, load={"mass_kg": load_kg, "direction": "-z"}, realized_by="E2"),
+        # B2 — the HOLD: released platform+load must not back-drive (self-lock; the u-joint is upstream).
+        Behavior(id="B2", phase="static", motion=MotionSpec(kind="fixed", axis_hint="vertical"),
+                 load={"mass_kg": load_kg, "direction": "-z"}, self_locking=True, realized_by="E2"),
+    ]
+    from knowledge.cards.base import CARD_REGISTRY as _C
+    n = len(behaviors)
+    for eid, cref in [("E1", "universal_joint"), ("E2", "lead_screw")]:
+        for tmpl in _C[cref].imposes:
+            n += 1
+            behaviors.append(Behavior(id=f"B{n}", phase=getattr(tmpl.phase, "value", tmpl.phase),
+                                      motion=MotionSpec(kind=getattr(tmpl.motion.kind, "value", tmpl.motion.kind)),
+                                      imposed_by=eid, imposed_by_card=cref))
+    parameters = [
+        Parameter(name="lead", value=lead, unit="mm", lo=0.5, hi=8.0, resolved_by="rule"),
+        Parameter(name="stroke", value=stroke, unit="mm", lo=10.0, hi=180.0, resolved_by="user"),
+        Parameter(name="angle_deg", value=beta, unit="deg", lo=0.0, hi=35.0, resolved_by="user"),
+    ]
+    plan = DesignPlan(task_id="angled_screw_lift",
+        command="A hand-crank jack, but the side space is blocked — the crank must come out at a 30° "
+                "angle. Raises a small platform and holds it when released. Plastic, 3D printing.",
+        functions=[Function(verb="raise", object="platform", qualifier="by angled hand crank"),
+                   Function(verb="hold", object="platform", qualifier="at height when released, self-locking")],
+        behaviors=behaviors, pieces=pieces, templates=[screw_base_t, platform_t, crank_t],
+        elements=elements, bindings=bindings, parameters=parameters)
+    for e in elements:
+        for pr in _C[e.card_ref].verification(plan, e):
+            plan.protocols.append(pr)
+            bb = next((x for x in plan.behaviors if x.id == pr.verifies), None)
+            if bb is not None and not bb.verified_by:
+                bb.verified_by = pr.id
+    # END-TO-END P-ALIFT: crank N rev → platform H = N·lead (Cardan mean 1:1); the fluctuation at the
+    # OUTPUT overlays the band; hold self-locks.
+    plan.protocols.append(VerificationProtocol(
+        id="P-ALIFT-VA", verifies="B1", mode="V-A", seeds=5, seed_pass=4,
+        actuation={"kind": "crank_velocity", "n_rev": round(stroke / lead, 2),
+                   "composed_chain": "H = N_rev × ujoint_mean(1:1) × lead; velocity pulsates [cosβ,1/cosβ]",
+                   "load_kg": load_kg, "bend_deg": beta,
+                   "note": "assembly-level Cardan mean + the fluctuation promoted to the platform output"},
+        criteria=[Criterion(name="platform_reaches_height", observable="stroke_mm", op=">=",
+                            threshold=stroke, unit="mm"),
+                  Criterion(name="holds_released_load", observable="backdrive_mm", op="<=",
+                            threshold=1.0, unit="mm")], observables=[]))
+    b1 = next((x for x in plan.behaviors if x.id == "B1"), None)
+    if b1 is not None:
+        b1.verified_by = "P-ALIFT-VA"
+    return plan
+
+
 def main() -> None:
     from ontology.validators import validate_all
 
@@ -1343,6 +1470,7 @@ def main() -> None:
         "coupling_fixture.json": coupling_fixture(),        # m20 D-track fixture
         "ujoint_fixture.json": ujoint_fixture(),            # m21 D-track fixture
         "screw_lift.json": screw_lift(),                    # m22 Task A: first composition (coupling+lead_screw)
+        "angled_screw_lift.json": angled_screw_lift(),      # m27: angled-drive jack (universal_joint+lead_screw)
         "latched_drawer.json": latched_drawer(),            # m22 Task B: fasten composition (slide_rail+snap_hook)
         "anchor_lift.json": anchor_lift(),          # D-M13-2 PRIMARY: crank lift platform
         "anchor_hard.json": anchor_hard(),          # labeled ALTERNATE: horizontal drawer

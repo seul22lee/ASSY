@@ -351,9 +351,24 @@ def screw_base(**params) -> TemplateResult:
     m19 passes no `frame`, so its plate is byte-identical."""
     p = {"base_l": 60.0, "base_w": 60.0, "base_t": 4.0, "frame": False,
          "boss_d": 16.0, "boss_h": 10.0, "col_d": 6.0, "col_y": 15.0, "col_top": 82.0,
-         "end_stops": False, "stop_bot_z": 22.0, "stop_top_z": 80.0, "stop_d": 10.0, **params}
+         "end_stops": False, "stop_bot_z": 22.0, "stop_top_z": 80.0, "stop_d": 10.0,
+         # m27 angled_screw_lift: an ANGLED BEARING BOSS carrying the input crank at β below the base,
+         # on a strut (the m21 world-connect idealization gets a designed carrier). cross_z = the axis
+         # intersection (u-joint cross centre, on the +Z screw axis, below the base).
+         "angled_boss": False, "in_beta": 30.0, "cross_z": -2.0, "in_boss_d": 14.0, "in_boss_len": 16.0,
+         "boss_reach": 20.0, **params}
     L, W, T = p["base_l"], p["base_w"], p["base_t"]
     part = Box(L, W, T, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    if p.get("angled_boss"):
+        beta = math.radians(p["in_beta"]); cz = p["cross_z"]; reach = p["boss_reach"]
+        # the crank axis is the LINE at β from the +Z screw axis, direction A=(sinβ,0,cosβ); the crank
+        # shaft exits the cross toward −A (down-and-−X) to the boss.
+        sdir = (-math.sin(beta), 0.0, -math.cos(beta))
+        bc = (reach * sdir[0], 0.0, cz + reach * sdir[2])         # angled boss centre
+        boss = Location(bc) * Rotation(0, p["in_beta"], 0) * Cylinder(  # cyl axis along A=(sinβ,0,cosβ)
+            p["in_boss_d"] / 2, p["in_boss_len"], align=(Align.CENTER, Align.CENTER, Align.CENTER))
+        strut = Location((bc[0], 0.0, bc[2] / 2)) * Box(9.0, 14.0, abs(bc[2]) + 4.0, align=(Align.CENTER, Align.CENTER, Align.CENTER))
+        part += strut + boss
     if p["frame"]:
         # bearing boss around the screw root (overlaps the plate by 0.5 → one solid, D14). The screw
         # (card-carved) fuses through it; the boss is the visible hinge carrier.
@@ -381,6 +396,13 @@ def screw_base(**params) -> TemplateResult:
         "guide_col_R": AnchorGeom("guide_col_R", "axis", (0.0, p["col_y"], T), (0, 0, 1)),
         "bottom_stop": AnchorGeom("bottom_stop", "face", (0.0, 0.0, p["stop_bot_z"]), (0, 0, 1)),
         "top_stop": AnchorGeom("top_stop", "face", (0.0, 0.0, p["stop_top_z"]), (0, 0, -1)),
+        # m27: the u-joint cross centre (axis intersection) + the input crank axis at β (the boss bore).
+        "cross_pivot": AnchorGeom("cross_pivot", "axis", (0.0, 0.0, p["cross_z"]), (0, 0, 1)),
+        "in_axis": AnchorGeom("in_axis", "axis",
+                              (-p["boss_reach"] * math.sin(math.radians(p["in_beta"])), 0.0,
+                               p["cross_z"] - p["boss_reach"] * math.cos(math.radians(p["in_beta"]))),
+                              (round(math.sin(math.radians(p["in_beta"])), 6), 0.0,
+                               round(math.cos(math.radians(p["in_beta"])), 6))),
     }
     return TemplateResult(part=part, anchors=anchors, params=p)
 
