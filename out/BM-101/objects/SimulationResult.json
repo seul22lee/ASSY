@@ -1,0 +1,13 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SIMRES-001",
+    "design_id": "design-001",
+    "producer": "s09_simulation_runner",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "results": [],
+  "source_plan_id": "SIMPLAN-001"
+}

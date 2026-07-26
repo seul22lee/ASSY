@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "EVAL-001",
+    "design_id": "design-001",
+    "producer": "s11_requirement_evaluation",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "overall": "pass",
+  "outcomes": [
+    {
+      "requirement_id": "REQ-001",
+      "status": "pass",
+      "observed": 87.258,
+      "target": 80.0,
+      "unit": "mm",
+      "margin": 7.258,
+      "evidence": [
+        "M-004"
+      ],
+      "note": ""
+    },
+    {
+      "requirement_id": "REQ-002",
+      "status": "pass",
+      "observed": 87.258,
+      "target": null,
+      "unit": "mm",
+      "margin": null,
+      "evidence": [
+        "M-004"
+      ],
+      "note": "payload was present as simulated mass during the travel test"
+    },
+    {
+      "requirement_id": "REQ-003",
+      "status": "pass",
+      "observed": null,
+      "target": null,
+      "unit": null,
+      "margin": null,
+      "evidence": [
+        "CRED-001"
+      ],
+      "note": "satisfied by CAD-readiness closure"
+    },
+    {
+      "requirement_id": "REQ-004",
+      "status": "pass",
+      "observed": null,
+      "target": null,
+      "unit": null,
+      "margin": null,
+      "evidence": [
+        "CRED-001"
+      ],
+      "note": "satisfied by CAD-readiness closure"
+    },
+    {
+      "requirement_id": "REQ-005",
+      "status": "pass",
+      "observed": null,
+      "target": null,
+      "unit": null,
+      "margin": null,
+      "evidence": [
+        "CRED-001"
+      ],
+      "note": "satisfied by CAD-readiness closure"
+    },
+    {
+      "requirement_id": "REQ-006",
+      "status": "pass",
+      "observed": null,
+      "target": null,
+      "unit": null,
+      "margin": null,
+      "evidence": [
+        "CRED-001"
+      ],
+      "note": "satisfied by CAD-readiness closure"
+    },
+    {
+      "requirement_id": "REQ-007",
+      "status": "pass",
+      "observed": null,
+      "target": null,
+      "unit": null,
+      "margin": null,
+      "evidence": [
+        "CRED-001"
+      ],
+      "note": "satisfied by CAD-readiness closure"
+    },
+    {
+      "requirement_id": "REQ-008",
+      "status": "pass",
+      "observed": null,
+      "target": null,
+      "unit": null,
+      "margin": null,
+      "evidence": [
+        "CRED-001"
+      ],
+      "note": "satisfied by CAD-readiness closure"
+    },
+    {
+      "requirement_id": "REQ-009",
+      "status": "pass",
+      "observed": null,
+      "target": null,
+      "unit": null,
+      "margin": null,
+      "evidence": [
+        "CRED-001"
+      ],
+      "note": "satisfied by CAD-readiness closure"
+    }
+  ],
+  "source_metric_id": "METRICS-001"
+}

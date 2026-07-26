@@ -1,0 +1,26 @@
+stage                             status  produced
+--------------------------------------------------------------------------
+01 requirement interpreter        ok      RequirementSpec
+                                    9 requirements, 2 quantitative
+02 mechanical architecture        ok      MechanicalArchitecture
+                                    3 candidates, selected 'lead_screw'
+03 product architecture           ok      ProductArchitecture
+                                    5 product regions
+04 concept visualization          ok      ConceptVisualization
+                                    authoritative=False
+05 engineering integration        ok      CADReadyEngineeringDefinition
+                                    84 iterations, 226 commitments, 85 problems, ready=True
+06 parametric solver              ok      SolvedDesign
+                                    solved, 34 parameters
+07 cad builder                    ok      CADArtifactManifest
+                                    ok, 6 parts
+08 simulation plan                ok      SimulationPlan
+                                    2 tests
+09 simulation runner              ok      SimulationResult
+                                    T-001:completed, T-002:completed
+10 metric extraction              ok      MetricReport
+                                    6 metrics
+11 requirement evaluation         ok      EvaluationReport
+                                    overall=pass, 0 failed
+12 revision routing               ok      RevisionDirective
+                                    restart=none

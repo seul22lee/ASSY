@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SESSION-001",
+    "design_id": "design-001",
+    "producer": "session_manager",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "status": "failed",
+  "current_iteration": 0,
+  "objects": {
+    "RequirementSpec": "SPEC-001",
+    "MechanicalArchitecture": "MECH-001",
+    "ProductArchitecture": "PROD-001",
+    "ConceptVisualization": "CONCEPT-001",
+    "CADReadyEngineeringDefinition": "CRED-001",
+    "SolvedDesign": "SOLVED-001",
+    "CADArtifactManifest": "CAD-001",
+    "SimulationPlan": "SIMPLAN-001",
+    "SimulationResult": "SIMRES-001",
+    "MetricReport": "METRICS-001",
+    "EvaluationReport": "EVAL-001",
+    "RevisionDirective": "REV-001"
+  },
+  "iterations": [
+    {
+      "index": 0,
+      "parent": null,
+      "applied_revision": null,
+      "changed_objects": [],
+      "metric_summary": {},
+      "evaluation_summary": {
+        "REQ-001": "insufficient_evidence",
+        "REQ-002": "insufficient_evidence",
+        "REQ-003": "insufficient_evidence",
+        "REQ-004": "insufficient_evidence",
+        "REQ-005": "insufficient_evidence"
+      },
+      "outcome": "insufficient_evidence",
+      "is_best": true,
+      "artifacts": [
+        "out/BM-001/cad/snap_beam.step",
+        "out/BM-001/cad/catch.step",
+        "out/BM-001/cad/housing.step"
+      ]
+    }
+  ],
+  "best_iteration": 0,
+  "blocked_directions": [],
+  "open_questions": [],
+  "artifact_dir": "out/BM-001"
+}

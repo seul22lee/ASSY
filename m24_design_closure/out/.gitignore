@@ -1,6 +1,0 @@
-# regenerable compiled-mesh STL scratch (rebuilt by the T5 rigs / fit_schedule.py / viz_pack.py)
-*_fitassets/
-mesh_assets/
-latch_mesh_assets/
-_*.xml
-ld_mesh_assets/

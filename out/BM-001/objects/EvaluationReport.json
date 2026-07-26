@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "EVAL-001",
+    "design_id": "design-001",
+    "producer": "s11_requirement_evaluation",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "overall": "insufficient_evidence",
+  "outcomes": [
+    {
+      "requirement_id": "REQ-001",
+      "status": "insufficient_evidence",
+      "observed": null,
+      "target": null,
+      "unit": null,
+      "margin": null,
+      "evidence": [
+        "CRED-001"
+      ],
+      "note": "no deterministic evidence for this qualitative requirement"
+    },
+    {
+      "requirement_id": "REQ-002",
+      "status": "insufficient_evidence",
+      "observed": null,
+      "target": null,
+      "unit": null,
+      "margin": null,
+      "evidence": [
+        "CRED-001"
+      ],
+      "note": "no deterministic evidence for this qualitative requirement"
+    },
+    {
+      "requirement_id": "REQ-003",
+      "status": "insufficient_evidence",
+      "observed": null,
+      "target": null,
+      "unit": null,
+      "margin": null,
+      "evidence": [
+        "CRED-001"
+      ],
+      "note": "no deterministic evidence for this qualitative requirement"
+    },
+    {
+      "requirement_id": "REQ-004",
+      "status": "insufficient_evidence",
+      "observed": null,
+      "target": null,
+      "unit": null,
+      "margin": null,
+      "evidence": [
+        "CRED-001"
+      ],
+      "note": "no deterministic evidence for this qualitative requirement"
+    },
+    {
+      "requirement_id": "REQ-005",
+      "status": "insufficient_evidence",
+      "observed": null,
+      "target": null,
+      "unit": null,
+      "margin": null,
+      "evidence": [
+        "CRED-001"
+      ],
+      "note": "no deterministic evidence for this qualitative requirement"
+    }
+  ],
+  "source_metric_id": "METRICS-001"
+}

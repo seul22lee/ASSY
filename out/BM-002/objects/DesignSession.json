@@ -1,0 +1,72 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SESSION-001",
+    "design_id": "design-001",
+    "producer": "session_manager",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "status": "passed",
+  "current_iteration": 0,
+  "objects": {
+    "RequirementSpec": "SPEC-001",
+    "MechanicalArchitecture": "MECH-001",
+    "ProductArchitecture": "PROD-001",
+    "ConceptVisualization": "CONCEPT-001",
+    "CADReadyEngineeringDefinition": "CRED-001",
+    "SolvedDesign": "SOLVED-001",
+    "CADArtifactManifest": "CAD-001",
+    "SimulationPlan": "SIMPLAN-001",
+    "SimulationResult": "SIMRES-001",
+    "MetricReport": "METRICS-001",
+    "EvaluationReport": "EVAL-001",
+    "RevisionDirective": "REV-001"
+  },
+  "iterations": [
+    {
+      "index": 0,
+      "parent": null,
+      "applied_revision": null,
+      "changed_objects": [],
+      "metric_summary": {
+        "full_travel.platform_height_mm": 88.333,
+        "full_travel.platform_overshoot_mm": 36.626,
+        "full_travel.peak_actuator_force_n": 317.8,
+        "full_travel.platform_travel_mm": 87.258,
+        "hold_under_load.platform_drift_mm": 1.663,
+        "hold_under_load.platform_height_mm": 43.333
+      },
+      "evaluation_summary": {
+        "REQ-001": "pass",
+        "REQ-002": "pass",
+        "REQ-003": "pass",
+        "REQ-004": "pass",
+        "REQ-005": "pass",
+        "REQ-006": "pass",
+        "REQ-007": "pass",
+        "REQ-008": "pass",
+        "REQ-009": "pass"
+      },
+      "outcome": "pass",
+      "is_best": true,
+      "artifacts": [
+        "out/BM-002/cad/crank.step",
+        "out/BM-002/cad/drive_shaft.step",
+        "out/BM-002/cad/lift_screw.step",
+        "out/BM-002/cad/platform.step",
+        "out/BM-002/cad/guide_rail.step",
+        "out/BM-002/cad/housing.step"
+      ]
+    }
+  ],
+  "best_iteration": 0,
+  "blocked_directions": [],
+  "open_questions": [
+    "lead selection versus required crank effort",
+    "how position is held without continuous crank effort",
+    "spooling control across the drum width"
+  ],
+  "artifact_dir": "out/BM-002"
+}

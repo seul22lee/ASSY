@@ -1,0 +1,25 @@
+stage                             status  produced
+--------------------------------------------------------------------------
+01 requirement interpreter        ok      RequirementSpec
+                                    5 requirements, 0 quantitative
+02 mechanical architecture        ok      MechanicalArchitecture
+                                    1 candidates, selected 'geneva'
+03 product architecture           ok      ProductArchitecture
+                                    4 product regions
+04 concept visualization          ok      ConceptVisualization
+                                    authoritative=False
+05 engineering integration        ok      CADReadyEngineeringDefinition
+                                    64 iterations, 154 commitments, 63 problems, ready=False
+06 parametric solver              ok      SolvedDesign
+                                    solved, 23 parameters
+07 cad builder                    ok      CADArtifactManifest
+                                    ok, 4 parts
+08 simulation plan                ok      SimulationPlan
+                                    0 tests
+09 simulation runner              ok      SimulationResult
+10 metric extraction              ok      MetricReport
+                                    0 metrics
+11 requirement evaluation         ok      EvaluationReport
+                                    overall=insufficient_evidence, 0 failed
+12 revision routing               ok      RevisionDirective
+                                    restart=engineering_integration
