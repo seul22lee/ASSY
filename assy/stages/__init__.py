@@ -1,7 +1,8 @@
 """Pipeline stages. One engineering question each (Rule A-1)."""
 
 from assy.stages.base import DeterministicReasoner, PipelineStage, Reasoner, StageError
-from assy.stages.s01_requirement import RequirementInterpreter
+from assy.stages.s01_llm import LLMRequirementInterpreter
+from assy.stages.s01_requirement import IncompleteRequirementProducer
 from assy.stages.s02_mechanical import MechanicalArchitectureGenerator
 from assy.stages.s03_product import ProductArchitecturePlanner
 from assy.stages.s04_concept import ConceptVisualizer
@@ -27,7 +28,8 @@ __all__ = [
     "ProductArchitecturePlanner",
     "Reasoner",
     "RequirementEvaluation",
-    "RequirementInterpreter",
+    "IncompleteRequirementProducer",
+    "LLMRequirementInterpreter",
     "RevisionRouting",
     "SimulationPlanBuilder",
     "SimulationRunner",

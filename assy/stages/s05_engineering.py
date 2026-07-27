@@ -109,10 +109,10 @@ class EngineeringIntegration(PipelineStage):
         product: ProductArchitecture,
     ) -> None:
         family = cat.by_id(mechanical.selected_id or "")
-        role_map = {p.name: p.roles for p in family.parts}
+        role_map = {p.name: p.roles for p in family.roles}
         served = [r.id for r in spec.requirements]
 
-        for part in family.parts:
+        for part in family.roles:
             c = Commitment(
                 kind=CommitmentKind.ENTITY,
                 subject=part.name,

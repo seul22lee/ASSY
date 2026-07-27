@@ -23,17 +23,18 @@ from assy.domain.downstream import ReqStatus, RestartStage
 from assy.domain.upstream import Stage01ContractDeficiency
 from assy.domain.session import DesignSession, IterationRecord, SessionStatus
 from assy.runartifacts import RunArtifactWriter, RunLayout
+from assy.domain.upstream import RequirementSpec
 from assy.stages import (
     Budget,
     CADBuilder,
     ConceptVisualizer,
     EngineeringIntegration,
+    LLMRequirementInterpreter,
     MechanicalArchitectureGenerator,
     MetricExtraction,
     ParametricSolver,
     ProductArchitecturePlanner,
     RequirementEvaluation,
-    RequirementInterpreter,
     RevisionRouting,
     SimulationPlanBuilder,
     SimulationRunner,
@@ -88,6 +89,7 @@ class Pipeline:
         benchmark_id: str = "custom",
         tier: str = "core",
         run_id: str | None = None,
+        interpreter: Any | None = None,
     ):
         self.out = Path(out_dir)
         self.reasoner = reasoner
@@ -95,6 +97,9 @@ class Pipeline:
         self.benchmark_id = benchmark_id
         self.tier = tier
         self.run_id = run_id
+        # Stage 01 is a reasoning stage. The default is the real interpreter;
+        # an incomplete producer may be injected to exercise deficiency handling.
+        self.interpreter = interpreter or LLMRequirementInterpreter()
 
     def run(
         self,
@@ -103,7 +108,16 @@ class Pipeline:
         clarifications: list[str] | None = None,
         design_id: str = "design-001",
         persist: bool = True,
+        spec: RequirementSpec | None = None,
     ) -> PipelineResult:
+        """Execute the pipeline.
+
+        `spec` supplies an already-accepted Stage 01 handoff and bypasses the
+        Stage 01 reasoner. It exists so deterministic tests can drive stages
+        02-12 from a committed fixture without a model call. It is *not* a
+        fallback: the spec must satisfy the Stage 01 contract on its own, and
+        Stage 02 judges it by exactly the same rules either way.
+        """
         reset_ids()
         self.out.mkdir(parents=True, exist_ok=True)
 
@@ -138,11 +152,19 @@ class Pipeline:
             return obj
 
         # -- Stage 01-04: intent and concept --------------------------------
+        supplied = spec
         spec = step(
             "01 requirement interpreter",
-            lambda: RequirementInterpreter().run(request=request, clarifications=clarifications),
+            (
+                (lambda: supplied)
+                if supplied is not None
+                else lambda: self.interpreter.run(request=request, clarifications=clarifications)
+            ),
             "RequirementSpec",
-            lambda o: f"{len(o.requirements)} requirements, {len(o.quantitative)} quantitative",
+            lambda o: (
+                f"{len(o.requirements)} requirements, {len(o.quantitative)} quantitative"
+                + (" [supplied handoff, Stage 01 bypassed]" if supplied is not None else "")
+            ),
         )
         if spec is None:
             session.status = SessionStatus.BLOCKED

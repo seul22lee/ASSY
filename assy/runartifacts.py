@@ -60,7 +60,7 @@ SLOTS: tuple[StageSlot, ...] = (
     StageSlot(1, "requirement_interpreter", "RequirementSpec", (), Authority.PLACEHOLDER,
               "What must the product accomplish?"),
     StageSlot(2, "mechanical_architecture", "MechanicalArchitecture", ("RequirementSpec",),
-              Authority.PLACEHOLDER, "What mechanical principles can realise the functions?"),
+              Authority.PROVISIONAL, "What mechanical principles can realise the functions?"),
     StageSlot(3, "product_architecture", "ProductArchitecture",
               ("RequirementSpec", "MechanicalArchitecture"), Authority.PLACEHOLDER,
               "How do the mechanisms become a coherent product?"),
@@ -437,8 +437,10 @@ class RunArtifactWriter:
         lines += [
             "## Implementation maturity",
             "",
-            "Stages 01-04 are deterministic placeholders standing in for LLM reasoning.",
-            "Their outputs are structurally valid but shallow, and are marked `placeholder`",
+            "Stage 02 is a strict consumer of the Stage 01 structured contract: it selects",
+            "candidate principles from declared transformation signatures and never reads",
+            "request prose. It is `provisional` because a candidate set is a proposal,",
+            "not a verified commitment. Stages 03-04 remain deterministic placeholders",
             "in `run_manifest.json`. They must not be read as engineering judgement.",
             "",
         ]

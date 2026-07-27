@@ -1,11 +1,22 @@
-"""Stage 01 - Requirement Interpreter.
+"""An **incomplete** Stage 01 producer. Not a requirement interpreter.
 
-Question: what must the product accomplish?
+This module pattern-matches quantities and functional vocabulary out of the
+request text. It does not interpret requirements, and in particular it emits no
+`BehaviourSpec`: it cannot say what transformation any requirement demands.
 
-PLACEHOLDER IMPLEMENTATION. Structured extraction over the request text stands
-in for an LLM. It is generic pattern matching over quantities and functional
-keywords, not benchmark branching (Rule BM-1) - but it is shallow, and richer
-interpretation is exactly what the LLM-backed reasoner should replace.
+It is therefore **not contract-compliant** and is not the production Stage 01 —
+`assy.stages.s01_llm.LLMRequirementInterpreter` is. It is retained only as a
+deliberately invalid producer, useful for exercising:
+
+  * Stage 02 contract-deficiency handling
+  * pipeline stop behaviour on a blocking deficiency
+  * serialization and run-artifact generation
+
+A pipeline run driven by this producer is *expected* to stop at Stage 02 with a
+typed `Stage01ContractDeficiency`. That is correct behaviour, not a regression.
+Do not add `BehaviourSpec` values here to make downstream tests pass: that would
+make an incomplete producer merely look compliant. Downstream deterministic
+tests inject a committed `RequirementSpec` fixture instead (`Pipeline.run(spec=)`).
 """
 
 from __future__ import annotations
@@ -74,7 +85,7 @@ UNIT_ROLE = {
 }
 
 
-class RequirementInterpreter(PipelineStage):
+class IncompleteRequirementProducer(PipelineStage):
     stage_id: ClassVar[Stage] = Stage.REQUIREMENT
     question: ClassVar[str] = "What must the product accomplish?"
     produces: ClassVar[str] = "RequirementSpec"

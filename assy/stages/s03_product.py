@@ -30,6 +30,9 @@ REGION_INTENT: dict[MechanismRole, tuple[str, str, bool]] = {
     MechanismRole.GUIDANCE: ("guidance_region", "constrains the moving element", False),
     MechanismRole.RETENTION: ("retention_region", "holds the mechanism in state", False),
     MechanismRole.STRUCTURE: ("structural_shell", "carries load and encloses the mechanism", False),
+    MechanismRole.SUPPORT: ("support_region", "locates a moving element and reacts its loads", False),
+    MechanismRole.LIMIT: ("travel_limit_region", "bounds the motion of a moving element", False),
+    MechanismRole.RELEASE: ("user_release_region", "accessible surface that ends a held state", True),
 }
 
 

@@ -60,6 +60,20 @@ class EvidenceCoverage:
         return "; ".join(self.gaps)
 
 
+# Roles whose behaviour is only knowable by simulating motion or contact. Keyed on
+# the generic role vocabulary, so a new mechanism family inherits the obligation
+# without anyone remembering to extend a list of mechanisms.
+MOTION_ROLES = (
+    "hinged",
+    "translating",
+    "rotating",
+    "moving_boundary",
+    "intermittent_pair",
+    "retention_interface",
+    "user_release",
+)
+
+
 def assess_evidence(
     definition: CADReadyEngineeringDefinition,
     plan: SimulationPlan,
@@ -68,7 +82,7 @@ def assess_evidence(
     entities = definition.working_state.active_by_kind(CommitmentKind.ENTITY)
     needs_compliant = any("compliant" in e.roles for e in entities)
     needs_motion = any(
-        r in e.roles for e in entities for r in ("hinged", "translating")
+        r in e.roles for e in entities for r in MOTION_ROLES
     )
 
     def valid_for(backend: ValidationBackend) -> bool:

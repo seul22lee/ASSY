@@ -1,0 +1,97 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "PROD-001",
+    "design_id": "design-001",
+    "producer": "s03_product_architecture",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "regions": [
+    {
+      "id": "RG-001",
+      "name": "user_input_region",
+      "purpose": "accessible external actuation",
+      "houses": [
+        "input_member"
+      ],
+      "external": true
+    },
+    {
+      "id": "RG-002",
+      "name": "support_region",
+      "purpose": "locates a moving element and reacts its loads",
+      "houses": [
+        "input_support",
+        "thrust_support"
+      ],
+      "external": false
+    },
+    {
+      "id": "RG-003",
+      "name": "drive_compartment",
+      "purpose": "enclosed power transmission",
+      "houses": [
+        "transmission_shaft",
+        "threaded_member"
+      ],
+      "external": false
+    },
+    {
+      "id": "RG-004",
+      "name": "working_volume",
+      "purpose": "the region the output element occupies and travels through",
+      "houses": [
+        "travelling_member"
+      ],
+      "external": false
+    },
+    {
+      "id": "RG-005",
+      "name": "guidance_region",
+      "purpose": "constrains the moving element",
+      "houses": [
+        "guide_member"
+      ],
+      "external": false
+    },
+    {
+      "id": "RG-006",
+      "name": "travel_limit_region",
+      "purpose": "bounds the motion of a moving element",
+      "houses": [
+        "travel_stop"
+      ],
+      "external": false
+    },
+    {
+      "id": "RG-007",
+      "name": "structural_shell",
+      "purpose": "carries load and encloses the mechanism",
+      "houses": [
+        "housing"
+      ],
+      "external": false
+    }
+  ],
+  "housing_strategy": "Two-piece shell with a removable access panel",
+  "user_interaction": [
+    "input_member is the external user interface"
+  ],
+  "assembly_strategy": "Insert the mechanism through one open face, then close with a removable panel that carries part of the bearing support",
+  "service_strategy": "No dedicated service access",
+  "protection_strategy": "Moving elements are enclosed; only the user input crosses the boundary",
+  "manufacturing_intent": "Additive-friendly organisation: flat split, no captive geometry",
+  "load_paths": [
+    "payload -> output element -> guidance -> structural shell -> base",
+    "user input -> transmission -> conversion -> output element"
+  ],
+  "proportions": "Wide stable base, output travel along the tall axis, drive to one side",
+  "risks": [
+    "thread wear over repeated cycles",
+    "travelling member tilts if guidance is weak",
+    "binding if the guide and screw axes are not parallel",
+    "screw buckling under compressive load"
+  ]
+}

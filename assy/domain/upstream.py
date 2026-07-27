@@ -446,6 +446,88 @@ class MechanismRole(str, Enum):
     GUIDANCE = "guidance"
     RETENTION = "retention"
     STRUCTURE = "structure"
+    SUPPORT = "support"
+    """Locates a moving element without being part of the transformation."""
+    LIMIT = "limit"
+    """Bounds travel or motion range."""
+    RELEASE = "release"
+    """The surface a user acts on to end a held state."""
+
+
+class ObligationKind(str, Enum):
+    """What an element structurally requires in order to work.
+
+    Typed so Stage 03 can *act* on the obligation. A prose sentence such as
+    "the travelling member must be guided against rotation" is unusable to a
+    downstream stage without re-reading it as language.
+    """
+
+    RADIAL_SUPPORT = "radial_support"
+    AXIAL_THRUST = "axial_thrust"
+    ANTI_ROTATION = "anti_rotation"
+    GUIDANCE = "guidance"
+    STRUCTURAL_ROOT = "structural_root"
+    ALIGNMENT = "alignment"
+    TRAVEL_LIMIT = "travel_limit"
+    USER_ACCESS = "user_access"
+    CLEARANCE = "clearance"
+
+
+class InterfaceKind(str, Enum):
+    """How two conceptual elements meet."""
+
+    ROTATIONAL_JOINT = "rotational_joint"
+    SLIDING_JOINT = "sliding_joint"
+    THREADED_PAIR = "threaded_pair"
+    TOOTHED_MESH = "toothed_mesh"
+    FLEXIBLE_LINK = "flexible_link"
+    CONTACT_PAIR = "contact_pair"
+    FIXED_ATTACHMENT = "fixed_attachment"
+    USER_CONTACT = "user_contact"
+
+
+class SupportObligation(BaseModel):
+    """One structural obligation an architecture places on the product.
+
+    Stage 03 must be able to satisfy this without inferring it from prose.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    element: str
+    """The conceptual element that carries the obligation."""
+    kind: ObligationKind
+    reacted_by: str | None = None
+    """Which element is expected to react it, when the architecture implies one."""
+    why: str = ""
+    """Engineering reason. Explanation only - never the machine-readable content."""
+
+
+class ArchitecturalInterface(BaseModel):
+    """Where two conceptual elements meet, and what crosses."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    between: tuple[str, str]
+    kind: InterfaceKind
+    transmits: str = ""
+    crosses_boundary: bool = False
+    """True when this interface passes through the enclosure boundary."""
+
+
+class ArchitecturalFunction(BaseModel):
+    """One function the architecture must perform.
+
+    This is the golden "functional chain": a sequence of *functions*, each bound
+    to the element(s) that perform it. An element sequence alone cannot tell
+    Stage 03 that a function exists but has no element yet assigned to it.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    function: str
+    performed_by: list[str] = Field(default_factory=list)
+    serves_requirements: list[str] = Field(default_factory=list)
 
 
 class FunctionalPart(BaseModel):
@@ -484,15 +566,19 @@ class MechanicalArchitectureCandidate(BaseModel):
     serves_requirements: list[str] = Field(default_factory=list)
 
     # -- conceptual content consumed by product architecture and geometry --
-    functional_chain: list[str] = Field(default_factory=list)
-    """Ordered path from input to output, in element roles."""
+    functions: list[ArchitecturalFunction] = Field(default_factory=list)
+    """The functions this architecture must perform, each bound to its elements."""
+    element_chain: list[str] = Field(default_factory=list)
+    """Ordered path from input to output, in element names."""
     state_relations: list[str] = Field(default_factory=list)
     holding_principle: str | None = None
     """How a maintained state is held, and how it is released. Conceptual only."""
-    support_obligations: list[str] = Field(default_factory=list)
+    support_obligations: list[SupportObligation] = Field(default_factory=list)
     """What must be located or retained, without saying where or by what part."""
+    constrained_by: list[str] = Field(default_factory=list)
+    """Requirements whose quantitative bounds constrain this architecture."""
     load_path: list[str] = Field(default_factory=list)
-    interfaces: list[str] = Field(default_factory=list)
+    interfaces: list[ArchitecturalInterface] = Field(default_factory=list)
     spatial_implications: list[str] = Field(default_factory=list)
     """Arrangement consequences: what must be inside, outside, adjacent, or aligned."""
     motion_envelopes: list[str] = Field(default_factory=list)

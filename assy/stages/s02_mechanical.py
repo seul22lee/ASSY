@@ -157,8 +157,8 @@ class MechanicalArchitectureGenerator(PipelineStage):
         motions = [
             MotionRelation(
                 id=new_id("MO"),
-                driver=fam.functional_chain[0],
-                driven=fam.functional_chain[-1],
+                driver=fam.element_chain[0],
+                driven=fam.element_chain[-1],
                 relation=f"{fam.input_kind.value}->{fam.output_kind.value}",
                 ratio_symbol=fam.continuity.value,
                 dof=1,
@@ -186,12 +186,19 @@ class MechanicalArchitectureGenerator(PipelineStage):
             risks=list(fam.risks),
             open_questions=list(fam.downstream_decisions),
             serves_requirements=served,
-            functional_chain=list(fam.functional_chain),
+            functions=[
+                f.model_copy(deep=True, update={"serves_requirements": served})
+                for f in fam.functions
+            ],
+            element_chain=list(fam.element_chain),
             state_relations=list(fam.state_relations),
             holding_principle=fam.holding_principle,
-            support_obligations=list(fam.support_obligations),
+            support_obligations=[o.model_copy(deep=True) for o in fam.support_obligations],
+            constrained_by=[
+                r.id for r in spec.requirements if r.bound is not None
+            ],
             load_path=list(fam.load_path),
-            interfaces=list(fam.interfaces),
+            interfaces=[i.model_copy(deep=True) for i in fam.interfaces],
             spatial_implications=list(fam.spatial_implications),
             motion_envelopes=list(fam.motion_envelopes),
             tradeoffs=list(fam.tradeoffs),
@@ -204,7 +211,11 @@ class MechanicalArchitectureGenerator(PipelineStage):
 
         Priority and holding need come from requirement records, never from words.
         """
-        score = -0.12 * fam.part_count
+        # An architecture that declares a function it cannot itself perform is
+        # incomplete, and the gap propagates: every later stage must carry an
+        # unassigned function forward. Element count is only a tiebreaker, so a
+        # candidate is never preferred merely for having fewer pieces.
+        score = -0.6 * len(fam.unassigned_functions) - 0.02 * fam.part_count
         needs_hold = any(
             r.behaviour is not None and r.behaviour.continuity is Continuity.HELD
             for r in spec.requirements
@@ -271,11 +282,17 @@ class MechanicalArchitectureGenerator(PipelineStage):
             selection_rationale=(
                 "selected from structured behaviour signatures "
                 + ", ".join(sorted({f"{ik.value}->{ok.value}/{c.value}" for _, (ik, ok, c) in targets}))
-                + f"; ranked on holding need, reversibility, priority and element count: {scores}"
+                + "; ranked on unperformed functions, holding need, reversibility, "
+                + f"priority and element count: {scores}"
             ),
             rejected={
                 c.id: f"score {scores[c.id]:.2f} below {best.id} ({scores[best.id]:.2f})"
-                + (f"; {c.weaknesses[0]}" if c.weaknesses else "")
+                + (
+                    "; does not itself perform: "
+                    + ", ".join(cat.by_id(c.id).unassigned_functions)
+                    if cat.by_id(c.id).unassigned_functions
+                    else (f"; {c.weaknesses[0]}" if c.weaknesses else "")
+                )
                 for c in candidates
                 if c.id != best.id
             },

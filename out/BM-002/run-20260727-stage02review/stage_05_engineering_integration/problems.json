@@ -1,0 +1,2449 @@
+[
+  {
+    "id": "P-001",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "input_member"
+    ],
+    "phenomenon": "radial_support",
+    "evaluation_domain": "static",
+    "statement": "input_member: radial support undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-001",
+    "resolved_by": "R-001",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-002",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "input_member"
+    ],
+    "phenomenon": "axial_retention",
+    "evaluation_domain": "static",
+    "statement": "input_member: axial retention undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-001",
+    "resolved_by": "R-003",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-003",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "input_member"
+    ],
+    "phenomenon": "bearing_interface",
+    "evaluation_domain": "static",
+    "statement": "input_member: bearing interface undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-001",
+    "resolved_by": "R-004",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-004",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "input_member"
+    ],
+    "phenomenon": "friction_wear",
+    "evaluation_domain": "static",
+    "statement": "input_member: friction wear undetermined",
+    "severity": "medium",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-001",
+    "resolved_by": "R-114",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-005",
+    "type": "undetermined",
+    "origin": "requirement-derived",
+    "entities": [
+      "input_member"
+    ],
+    "phenomenon": "pinch_access",
+    "evaluation_domain": "static",
+    "statement": "input_member: pinch access undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-001",
+    "resolved_by": "R-006",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-006",
+    "type": "undetermined",
+    "origin": "requirement-derived",
+    "entities": [
+      "input_member"
+    ],
+    "phenomenon": "ergonomic_reach",
+    "evaluation_domain": "static",
+    "statement": "input_member: ergonomic reach undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-001",
+    "resolved_by": "R-007",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-007",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "input_member"
+    ],
+    "phenomenon": "process_binding",
+    "evaluation_domain": "static",
+    "statement": "input_member: process binding undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-001",
+    "resolved_by": "R-008",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-008",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "input_member"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "static",
+    "statement": "input_member: build orientation undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-001",
+    "resolved_by": "R-009",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-009",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "input_support"
+    ],
+    "phenomenon": "load_path",
+    "evaluation_domain": "static",
+    "statement": "input_support: load path undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-002",
+    "resolved_by": "R-010",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-010",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "input_support"
+    ],
+    "phenomenon": "structural_margin",
+    "evaluation_domain": "static",
+    "statement": "input_support: structural margin undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-002",
+    "resolved_by": "R-011",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-011",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "input_support"
+    ],
+    "phenomenon": "process_binding",
+    "evaluation_domain": "static",
+    "statement": "input_support: process binding undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-002",
+    "resolved_by": "R-012",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-012",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "input_support"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "static",
+    "statement": "input_support: build orientation undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-002",
+    "resolved_by": "R-013",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-013",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "transmission_shaft"
+    ],
+    "phenomenon": "radial_support",
+    "evaluation_domain": "static",
+    "statement": "transmission_shaft: radial support undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-003",
+    "resolved_by": "R-014",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-014",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "transmission_shaft"
+    ],
+    "phenomenon": "axial_retention",
+    "evaluation_domain": "static",
+    "statement": "transmission_shaft: axial retention undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-003",
+    "resolved_by": "R-016",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-015",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "transmission_shaft"
+    ],
+    "phenomenon": "bearing_interface",
+    "evaluation_domain": "static",
+    "statement": "transmission_shaft: bearing interface undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-003",
+    "resolved_by": "R-017",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-016",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "transmission_shaft"
+    ],
+    "phenomenon": "friction_wear",
+    "evaluation_domain": "static",
+    "statement": "transmission_shaft: friction wear undetermined",
+    "severity": "medium",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-003",
+    "resolved_by": "R-115",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-017",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "transmission_shaft"
+    ],
+    "phenomenon": "load_path",
+    "evaluation_domain": "static",
+    "statement": "transmission_shaft: load path undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-003",
+    "resolved_by": "R-019",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-018",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "transmission_shaft"
+    ],
+    "phenomenon": "structural_margin",
+    "evaluation_domain": "static",
+    "statement": "transmission_shaft: structural margin undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-003",
+    "resolved_by": "R-020",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-019",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "transmission_shaft"
+    ],
+    "phenomenon": "process_binding",
+    "evaluation_domain": "static",
+    "statement": "transmission_shaft: process binding undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-003",
+    "resolved_by": "R-021",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-020",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "transmission_shaft"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "static",
+    "statement": "transmission_shaft: build orientation undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-003",
+    "resolved_by": "R-022",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-021",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "threaded_member"
+    ],
+    "phenomenon": "radial_support",
+    "evaluation_domain": "static",
+    "statement": "threaded_member: radial support undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-004",
+    "resolved_by": "R-023",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-022",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "threaded_member"
+    ],
+    "phenomenon": "axial_retention",
+    "evaluation_domain": "static",
+    "statement": "threaded_member: axial retention undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-004",
+    "resolved_by": "R-025",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-023",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "threaded_member"
+    ],
+    "phenomenon": "bearing_interface",
+    "evaluation_domain": "static",
+    "statement": "threaded_member: bearing interface undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-004",
+    "resolved_by": "R-026",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-024",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "threaded_member"
+    ],
+    "phenomenon": "friction_wear",
+    "evaluation_domain": "static",
+    "statement": "threaded_member: friction wear undetermined",
+    "severity": "medium",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-004",
+    "resolved_by": "R-116",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-025",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "threaded_member"
+    ],
+    "phenomenon": "lead_relation",
+    "evaluation_domain": "static",
+    "statement": "threaded_member: lead relation undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-004",
+    "resolved_by": "R-028",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-026",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "threaded_member"
+    ],
+    "phenomenon": "backdrive_behaviour",
+    "evaluation_domain": "static",
+    "statement": "threaded_member: backdrive behaviour undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-004",
+    "resolved_by": "R-029",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-027",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "threaded_member"
+    ],
+    "phenomenon": "thread_engagement",
+    "evaluation_domain": "static",
+    "statement": "threaded_member: thread engagement undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-004",
+    "resolved_by": "R-030",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-028",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "threaded_member"
+    ],
+    "phenomenon": "load_path",
+    "evaluation_domain": "static",
+    "statement": "threaded_member: load path undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-004",
+    "resolved_by": "R-031",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-029",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "threaded_member"
+    ],
+    "phenomenon": "structural_margin",
+    "evaluation_domain": "static",
+    "statement": "threaded_member: structural margin undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-004",
+    "resolved_by": "R-032",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-030",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "threaded_member"
+    ],
+    "phenomenon": "process_binding",
+    "evaluation_domain": "static",
+    "statement": "threaded_member: process binding undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-004",
+    "resolved_by": "R-033",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-031",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "threaded_member"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "static",
+    "statement": "threaded_member: build orientation undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-004",
+    "resolved_by": "R-034",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-032",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "thrust_support"
+    ],
+    "phenomenon": "load_path",
+    "evaluation_domain": "static",
+    "statement": "thrust_support: load path undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-005",
+    "resolved_by": "R-035",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-033",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "thrust_support"
+    ],
+    "phenomenon": "structural_margin",
+    "evaluation_domain": "static",
+    "statement": "thrust_support: structural margin undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-005",
+    "resolved_by": "R-036",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-034",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "thrust_support"
+    ],
+    "phenomenon": "process_binding",
+    "evaluation_domain": "static",
+    "statement": "thrust_support: process binding undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-005",
+    "resolved_by": "R-037",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-035",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "thrust_support"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "static",
+    "statement": "thrust_support: build orientation undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-005",
+    "resolved_by": "R-038",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-036",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "travelling_member"
+    ],
+    "phenomenon": "guidance",
+    "evaluation_domain": "full_stroke",
+    "statement": "travelling_member: guidance undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-006",
+    "resolved_by": "R-039",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-037",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "travelling_member"
+    ],
+    "phenomenon": "travel_envelope",
+    "evaluation_domain": "full_stroke",
+    "statement": "travelling_member: travel envelope undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-006",
+    "resolved_by": "R-040",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-038",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "travelling_member"
+    ],
+    "phenomenon": "jamming",
+    "evaluation_domain": "full_stroke",
+    "statement": "travelling_member: jamming undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-006",
+    "resolved_by": "R-041",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-039",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "travelling_member"
+    ],
+    "phenomenon": "end_stops",
+    "evaluation_domain": "full_stroke",
+    "statement": "travelling_member: end stops undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-006",
+    "resolved_by": "R-042",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-040",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "travelling_member"
+    ],
+    "phenomenon": "load_path",
+    "evaluation_domain": "static",
+    "statement": "travelling_member: load path undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-006",
+    "resolved_by": "R-043",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-041",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "travelling_member"
+    ],
+    "phenomenon": "structural_margin",
+    "evaluation_domain": "static",
+    "statement": "travelling_member: structural margin undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-006",
+    "resolved_by": "R-044",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-042",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "travelling_member"
+    ],
+    "phenomenon": "process_binding",
+    "evaluation_domain": "static",
+    "statement": "travelling_member: process binding undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-006",
+    "resolved_by": "R-045",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-043",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "travelling_member"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "static",
+    "statement": "travelling_member: build orientation undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-006",
+    "resolved_by": "R-046",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-044",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "guide_member"
+    ],
+    "phenomenon": "load_path",
+    "evaluation_domain": "static",
+    "statement": "guide_member: load path undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-007",
+    "resolved_by": "R-047",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-045",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "guide_member"
+    ],
+    "phenomenon": "structural_margin",
+    "evaluation_domain": "static",
+    "statement": "guide_member: structural margin undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-007",
+    "resolved_by": "R-048",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-046",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "guide_member"
+    ],
+    "phenomenon": "process_binding",
+    "evaluation_domain": "static",
+    "statement": "guide_member: process binding undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-007",
+    "resolved_by": "R-049",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-047",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "guide_member"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "static",
+    "statement": "guide_member: build orientation undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-007",
+    "resolved_by": "R-050",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-048",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "travel_stop"
+    ],
+    "phenomenon": "load_path",
+    "evaluation_domain": "static",
+    "statement": "travel_stop: load path undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-008",
+    "resolved_by": "R-051",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-049",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "travel_stop"
+    ],
+    "phenomenon": "structural_margin",
+    "evaluation_domain": "static",
+    "statement": "travel_stop: structural margin undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-008",
+    "resolved_by": "R-052",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-050",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "travel_stop"
+    ],
+    "phenomenon": "process_binding",
+    "evaluation_domain": "static",
+    "statement": "travel_stop: process binding undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-008",
+    "resolved_by": "R-053",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-051",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "travel_stop"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "static",
+    "statement": "travel_stop: build orientation undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-008",
+    "resolved_by": "R-054",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-052",
+    "type": "undetermined",
+    "origin": "assembly-derived",
+    "entities": [
+      "housing"
+    ],
+    "phenomenon": "internal_envelope",
+    "evaluation_domain": "all_assembly_states",
+    "statement": "housing: internal envelope undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-009",
+    "resolved_by": "R-055",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-053",
+    "type": "undetermined",
+    "origin": "assembly-derived",
+    "entities": [
+      "housing"
+    ],
+    "phenomenon": "assembly_access",
+    "evaluation_domain": "all_assembly_states",
+    "statement": "housing: assembly access undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-009",
+    "resolved_by": "R-056",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-054",
+    "type": "undetermined",
+    "origin": "assembly-derived",
+    "entities": [
+      "housing"
+    ],
+    "phenomenon": "part_insertion",
+    "evaluation_domain": "all_assembly_states",
+    "statement": "housing: part insertion undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-009",
+    "resolved_by": "R-057",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-055",
+    "type": "undetermined",
+    "origin": "assembly-derived",
+    "entities": [
+      "housing"
+    ],
+    "phenomenon": "service_access",
+    "evaluation_domain": "all_assembly_states",
+    "statement": "housing: service access undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-009",
+    "resolved_by": "R-058",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-056",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "housing"
+    ],
+    "phenomenon": "load_path",
+    "evaluation_domain": "static",
+    "statement": "housing: load path undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-009",
+    "resolved_by": "R-059",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-057",
+    "type": "undetermined",
+    "origin": "spawned-by-commitment",
+    "entities": [
+      "housing"
+    ],
+    "phenomenon": "structural_margin",
+    "evaluation_domain": "static",
+    "statement": "housing: structural margin undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-009",
+    "resolved_by": "R-060",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-058",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "housing"
+    ],
+    "phenomenon": "process_binding",
+    "evaluation_domain": "static",
+    "statement": "housing: process binding undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-009",
+    "resolved_by": "R-061",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-059",
+    "type": "undetermined",
+    "origin": "manufacturing-derived",
+    "entities": [
+      "housing"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "static",
+    "statement": "housing: build orientation undetermined",
+    "severity": "blocking",
+    "serves_requirements": [
+      "REQ-001",
+      "REQ-002",
+      "REQ-003",
+      "REQ-004",
+      "REQ-005",
+      "REQ-006",
+      "REQ-007",
+      "REQ-008",
+      "REQ-009"
+    ],
+    "discovered_by": "C-009",
+    "resolved_by": "R-062",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-060",
+    "type": "undetermined",
+    "origin": "requirement-derived",
+    "entities": [
+      "product"
+    ],
+    "phenomenon": "requirement_REQ-002",
+    "evaluation_domain": "requirement",
+    "statement": "The platform must move approximately 80-100 mm during operation",
+    "severity": "low",
+    "serves_requirements": [
+      "REQ-002"
+    ],
+    "discovered_by": null,
+    "resolved_by": null,
+    "open": true,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-061",
+    "type": "undetermined",
+    "origin": "requirement-derived",
+    "entities": [
+      "product"
+    ],
+    "phenomenon": "requirement_REQ-003",
+    "evaluation_domain": "requirement",
+    "statement": "The platform must support a payload of approximately 1 kg",
+    "severity": "low",
+    "serves_requirements": [
+      "REQ-003"
+    ],
+    "discovered_by": null,
+    "resolved_by": null,
+    "open": true,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-062",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "input_member"
+    ],
+    "phenomenon": "radial_support",
+    "evaluation_domain": "definition",
+    "statement": "input_member: radial_support is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-063",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-063",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "input_member"
+    ],
+    "phenomenon": "axial_retention",
+    "evaluation_domain": "definition",
+    "statement": "input_member: axial_retention is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-065",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-064",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "input_member"
+    ],
+    "phenomenon": "material",
+    "evaluation_domain": "definition",
+    "statement": "input_member: material is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-066",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-065",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "input_member"
+    ],
+    "phenomenon": "process",
+    "evaluation_domain": "definition",
+    "statement": "input_member: process is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-067",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-066",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "input_member"
+    ],
+    "phenomenon": "pinch_access",
+    "evaluation_domain": "definition",
+    "statement": "input_member: pinch_access is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-068",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-069",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "input_member"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "definition",
+    "statement": "input_member: build_orientation is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-069",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-070",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "input_support"
+    ],
+    "phenomenon": "load_path",
+    "evaluation_domain": "definition",
+    "statement": "input_support: load_path is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-070",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-071",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "input_support"
+    ],
+    "phenomenon": "material",
+    "evaluation_domain": "definition",
+    "statement": "input_support: material is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-071",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-072",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "input_support"
+    ],
+    "phenomenon": "process",
+    "evaluation_domain": "definition",
+    "statement": "input_support: process is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-072",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-075",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "input_support"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "definition",
+    "statement": "input_support: build_orientation is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-073",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-076",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "transmission_shaft"
+    ],
+    "phenomenon": "radial_support",
+    "evaluation_domain": "definition",
+    "statement": "transmission_shaft: radial_support is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-074",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-077",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "transmission_shaft"
+    ],
+    "phenomenon": "axial_retention",
+    "evaluation_domain": "definition",
+    "statement": "transmission_shaft: axial_retention is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-076",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-078",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "transmission_shaft"
+    ],
+    "phenomenon": "material",
+    "evaluation_domain": "definition",
+    "statement": "transmission_shaft: material is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-077",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-079",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "transmission_shaft"
+    ],
+    "phenomenon": "process",
+    "evaluation_domain": "definition",
+    "statement": "transmission_shaft: process is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-078",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-080",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "transmission_shaft"
+    ],
+    "phenomenon": "load_path",
+    "evaluation_domain": "definition",
+    "statement": "transmission_shaft: load_path is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-079",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-085",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "transmission_shaft"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "definition",
+    "statement": "transmission_shaft: build_orientation is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-080",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-086",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "threaded_member"
+    ],
+    "phenomenon": "radial_support",
+    "evaluation_domain": "definition",
+    "statement": "threaded_member: radial_support is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-081",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-087",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "threaded_member"
+    ],
+    "phenomenon": "axial_retention",
+    "evaluation_domain": "definition",
+    "statement": "threaded_member: axial_retention is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-083",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-088",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "threaded_member"
+    ],
+    "phenomenon": "material",
+    "evaluation_domain": "definition",
+    "statement": "threaded_member: material is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-084",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-089",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "threaded_member"
+    ],
+    "phenomenon": "process",
+    "evaluation_domain": "definition",
+    "statement": "threaded_member: process is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-085",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-090",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "threaded_member"
+    ],
+    "phenomenon": "load_path",
+    "evaluation_domain": "definition",
+    "statement": "threaded_member: load_path is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-086",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-095",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "threaded_member"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "definition",
+    "statement": "threaded_member: build_orientation is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-087",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-096",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "thrust_support"
+    ],
+    "phenomenon": "load_path",
+    "evaluation_domain": "definition",
+    "statement": "thrust_support: load_path is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-088",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-097",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "thrust_support"
+    ],
+    "phenomenon": "material",
+    "evaluation_domain": "definition",
+    "statement": "thrust_support: material is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-089",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-098",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "thrust_support"
+    ],
+    "phenomenon": "process",
+    "evaluation_domain": "definition",
+    "statement": "thrust_support: process is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-090",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-101",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "thrust_support"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "definition",
+    "statement": "thrust_support: build_orientation is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-091",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-102",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "travelling_member"
+    ],
+    "phenomenon": "guidance",
+    "evaluation_domain": "definition",
+    "statement": "travelling_member: guidance is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-092",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-103",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "travelling_member"
+    ],
+    "phenomenon": "travel_envelope",
+    "evaluation_domain": "definition",
+    "statement": "travelling_member: travel_envelope is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-093",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-104",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "travelling_member"
+    ],
+    "phenomenon": "end_stops",
+    "evaluation_domain": "definition",
+    "statement": "travelling_member: end_stops is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-094",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-105",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "travelling_member"
+    ],
+    "phenomenon": "material",
+    "evaluation_domain": "definition",
+    "statement": "travelling_member: material is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-095",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-106",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "travelling_member"
+    ],
+    "phenomenon": "process",
+    "evaluation_domain": "definition",
+    "statement": "travelling_member: process is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-096",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-107",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "travelling_member"
+    ],
+    "phenomenon": "load_path",
+    "evaluation_domain": "definition",
+    "statement": "travelling_member: load_path is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-097",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-112",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "travelling_member"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "definition",
+    "statement": "travelling_member: build_orientation is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-098",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-113",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "guide_member"
+    ],
+    "phenomenon": "load_path",
+    "evaluation_domain": "definition",
+    "statement": "guide_member: load_path is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-099",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-114",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "guide_member"
+    ],
+    "phenomenon": "material",
+    "evaluation_domain": "definition",
+    "statement": "guide_member: material is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-100",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-115",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "guide_member"
+    ],
+    "phenomenon": "process",
+    "evaluation_domain": "definition",
+    "statement": "guide_member: process is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-101",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-118",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "guide_member"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "definition",
+    "statement": "guide_member: build_orientation is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-102",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-119",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "travel_stop"
+    ],
+    "phenomenon": "load_path",
+    "evaluation_domain": "definition",
+    "statement": "travel_stop: load_path is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-103",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-120",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "travel_stop"
+    ],
+    "phenomenon": "material",
+    "evaluation_domain": "definition",
+    "statement": "travel_stop: material is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-104",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-121",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "travel_stop"
+    ],
+    "phenomenon": "process",
+    "evaluation_domain": "definition",
+    "statement": "travel_stop: process is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-105",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-124",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "travel_stop"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "definition",
+    "statement": "travel_stop: build_orientation is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-106",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-125",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "housing"
+    ],
+    "phenomenon": "assembly_access",
+    "evaluation_domain": "definition",
+    "statement": "housing: assembly_access is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-107",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-126",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "housing"
+    ],
+    "phenomenon": "material",
+    "evaluation_domain": "definition",
+    "statement": "housing: material is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-108",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-127",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "housing"
+    ],
+    "phenomenon": "process",
+    "evaluation_domain": "definition",
+    "statement": "housing: process is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-109",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-128",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "housing"
+    ],
+    "phenomenon": "wall_thickness",
+    "evaluation_domain": "definition",
+    "statement": "housing: wall_thickness is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-110",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-129",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "housing"
+    ],
+    "phenomenon": "load_path",
+    "evaluation_domain": "definition",
+    "statement": "housing: load_path is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-111",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-134",
+    "type": "incomplete",
+    "origin": "detected-by-check",
+    "entities": [
+      "housing"
+    ],
+    "phenomenon": "build_orientation",
+    "evaluation_domain": "definition",
+    "statement": "housing: build_orientation is undefined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-001",
+    "resolved_by": "R-112",
+    "open": false,
+    "reopened_count": 0
+  },
+  {
+    "id": "P-138",
+    "type": "violated",
+    "origin": "detected-by-check",
+    "entities": [
+      "assembly"
+    ],
+    "phenomenon": "assembly_sequence",
+    "evaluation_domain": "all_assembly_states",
+    "statement": "no assembly sequence defined",
+    "severity": "blocking",
+    "serves_requirements": [],
+    "discovered_by": "K-009",
+    "resolved_by": "R-113",
+    "open": false,
+    "reopened_count": 0
+  }
+]

@@ -34,7 +34,7 @@ from assy.stages import (
     EngineeringIntegration,
     MechanicalArchitectureGenerator,
     ProductArchitecturePlanner,
-    RequirementInterpreter,
+    IncompleteRequirementProducer,
 )
 from experiments.geneva_stage05 import GENEVA_CLARIFICATIONS, GENEVA_REQUEST
 
@@ -198,7 +198,7 @@ def finding_6_canonical_identity() -> None:
 def finding_7_convergence_policy() -> None:
     """The agenda has no guaranteed fixed point, so a budget must bound it."""
     reset_ids()
-    spec = RequirementInterpreter().run(
+    spec = IncompleteRequirementProducer().run(
         request=GENEVA_REQUEST, clarifications=list(GENEVA_CLARIFICATIONS)
     )
     mech = MechanicalArchitectureGenerator().run(spec=spec)
