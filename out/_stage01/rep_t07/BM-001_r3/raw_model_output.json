@@ -1,0 +1,228 @@
+{
+  "product_intent": "A small desktop-sized storage box with a hinged lid that remains closed until manually opened by a user's thumb pressure",
+  "clauses": [
+    {
+      "id": "C-001",
+      "text": "Design a small storage box with a hinged lid",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-002",
+      "text": "The lid should stay closed until the user releases it with a thumb",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-003",
+      "text": "The box should be safe to use",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-004",
+      "text": "Easy to assemble",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-005",
+      "text": "Practical to manufacture",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-006",
+      "text": "Desktop-sized product",
+      "source": "clarification",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-007",
+      "text": "Manual operation only",
+      "source": "clarification",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-008",
+      "text": "Additive manufacturing is expected",
+      "source": "clarification",
+      "disposition": "constraint"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The storage box must have a hinged lid that remains closed until manually released by thumb pressure",
+      "target": null,
+      "upper": null,
+      "comparator": null,
+      "priority": 1,
+      "derived_from": [
+        "C-001",
+        "C-002"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Lid remains closed when not pressed by thumb, opens when thumb pressure is released",
+        "condition": "Thumb pressure applied to lid and then released",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-002",
+      "kind": "safety",
+      "origin": "user_stated",
+      "statement": "The storage box must be safe for users to operate during normal use",
+      "target": null,
+      "upper": null,
+      "comparator": null,
+      "priority": 1,
+      "derived_from": [
+        "C-003"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "No sharp edges, hazardous materials or design features that could cause injury during normal operation",
+        "condition": "During standard operational use",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-003",
+      "kind": "assembly",
+      "origin": "user_stated",
+      "statement": "The storage box must be easy to assemble for users",
+      "target": null,
+      "upper": null,
+      "comparator": null,
+      "priority": 1,
+      "derived_from": [
+        "C-004"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Assembly process can be completed without special tools or extensive training",
+        "condition": "Standard user attempting assembly",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-004",
+      "kind": "manufacturing",
+      "origin": "user_stated",
+      "statement": "The storage box must be practical to manufacture using additive manufacturing methods",
+      "target": null,
+      "upper": null,
+      "comparator": null,
+      "priority": 1,
+      "derived_from": [
+        "C-005",
+        "C-008"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "Design features compatible with additive manufacturing processes and materials",
+        "condition": "Manufacturing process validation",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-005",
+      "kind": "performance",
+      "origin": "inferred",
+      "statement": "The storage box must maintain its structural integrity during normal operation and handling",
+      "target": null,
+      "upper": null,
+      "comparator": null,
+      "priority": 2,
+      "derived_from": [
+        "C-001",
+        "C-003"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "No structural failure during normal operation or handling",
+        "condition": "During standard use conditions",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-006",
+      "kind": "performance",
+      "origin": "inferred",
+      "statement": "The storage box must accommodate the specified desktop-sized dimensions",
+      "target": null,
+      "upper": null,
+      "comparator": null,
+      "priority": 2,
+      "derived_from": [
+        "C-006"
+      ],
+      "verification": {
+        "kind": "measurement",
+        "observable": "Physical dimensions of box match required desktop size specifications",
+        "condition": "Dimensional inspection",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-007",
+      "kind": "performance",
+      "origin": "inferred",
+      "statement": "The storage box must function without external power or mechanical assistance",
+      "target": null,
+      "upper": null,
+      "comparator": null,
+      "priority": 1,
+      "derived_from": [
+        "C-007"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Operation occurs without electrical power or external mechanical assistance",
+        "condition": "Normal operation under manual force",
+        "reason": null
+      }
+    }
+  ],
+  "freedoms": [],
+  "relations": [],
+  "operating_scenarios": [
+    {
+      "id": "SCN-001",
+      "name": "Normal Use",
+      "description": "A user places items in the storage box and closes the lid manually, then opens it by releasing the thumb pressure",
+      "applies_to": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-003",
+        "REQ-005"
+      ],
+      "derived_from": [
+        "C-001",
+        "C-002",
+        "C-003",
+        "C-004"
+      ]
+    },
+    {
+      "id": "SCN-002",
+      "name": "Manufacturing",
+      "description": "The storage box is produced using additive manufacturing techniques",
+      "applies_to": [
+        "REQ-004",
+        "REQ-006"
+      ],
+      "derived_from": [
+        "C-005",
+        "C-006",
+        "C-008"
+      ]
+    }
+  ],
+  "assumptions": [],
+  "unknowns": []
+}

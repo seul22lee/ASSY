@@ -1,0 +1,1102 @@
+[
+  {
+    "benchmark": "BM-001",
+    "rep": 1,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 30,
+    "acceptance_total": 34,
+    "failures": [
+      "A-1",
+      "A-8",
+      "A-20",
+      "A-29"
+    ],
+    "flags": [
+      "D-3"
+    ],
+    "clauses": 8,
+    "function_clauses": 2,
+    "function_clauses_covered": 2,
+    "requirements": 7,
+    "functional": 2,
+    "quantitative": 0,
+    "freedoms": 3,
+    "relations": 1,
+    "scenarios": 2,
+    "assumptions": 2,
+    "unknowns": 3,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 7,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 2650,
+    "output_tokens": 2496,
+    "seconds": 43.1,
+    "attempts": 1,
+    "statements": [
+      "The storage box must be designed for additive manufacturing",
+      "The storage box must be desktop-sized",
+      "The storage box must be easy to assemble",
+      "The storage box must be practical to manufacture",
+      "The storage box must be safe to use",
+      "The storage box must have a hinged lid that remains closed until manually released by the user's thumb",
+      "The storage box must operate manually only"
+    ],
+    "intent": "A small storage box with a hinged lid that remains closed until manually released by a user's thumb, designed for additive manufacturing with safety, easy assembly, and practical manufacturing considerations.",
+    "user_summary": "Design a small, desktop-sized storage box with a hinged lid that stays closed until released by the user's thumb, using additive manufacturing, and ensuring safety, ease of assembly, and practical manufacture.",
+    "outcomes": {
+      "clauses": "found",
+      "intent": "found",
+      "requirements": "found",
+      "freedoms": "found",
+      "relations": "found",
+      "operating_scenarios": "found",
+      "assumptions": "found",
+      "unknowns": "found"
+    },
+    "outcome_count": 8,
+    "approximate_bounds": 0,
+    "bound_precisions": [],
+    "unknown_subjects": [
+      "Specific dimensions of the desktop-sized storage box",
+      "Specific materials to be used for manufacturing",
+      "Exact mechanism for lid release by thumb pressure"
+    ],
+    "relation_kinds": [
+      "depends_on"
+    ]
+  },
+  {
+    "benchmark": "BM-002",
+    "rep": 1,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 27,
+    "acceptance_total": 34,
+    "failures": [
+      "A-1",
+      "A-3a",
+      "A-3b",
+      "A-3d",
+      "A-8",
+      "A-10",
+      "A-31"
+    ],
+    "flags": [
+      "D-1",
+      "D-4",
+      "D-3"
+    ],
+    "clauses": 12,
+    "function_clauses": 3,
+    "function_clauses_covered": 2,
+    "requirements": 10,
+    "functional": 3,
+    "quantitative": 2,
+    "freedoms": 3,
+    "relations": 2,
+    "scenarios": 3,
+    "assumptions": 0,
+    "unknowns": 3,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 10,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 2715,
+    "output_tokens": 2966,
+    "seconds": 41.6,
+    "attempts": 1,
+    "statements": [
+      "The internal platform must lift approximately 80-100 mm",
+      "The internal platform must support a payload of approximately 1 kg",
+      "The lifting mechanism must be enclosed within the housing",
+      "The product must avoid obvious jamming or unstable operation",
+      "The product must be easy to assemble",
+      "The product must be mechanically plausible",
+      "The product must be practical to manufacture",
+      "The product must be safe to use",
+      "The product must enable manual lifting and lowering of an internal platform through rotation of an external hand crank",
+      "The product must operate manually only"
+    ],
+    "intent": "A compact desktop device that enables manual lifting and lowering of an internal platform through external hand crank rotation, with specified lift range and payload capacity.",
+    "user_summary": "Design a compact desktop lifting box that uses an external hand crank to raise and lower an internal platform, with the platform lifting approximately 80-100 mm and supporting a payload of approximately 1 kg.",
+    "outcomes": {
+      "clauses": "found",
+      "intent": "found",
+      "requirements": "found",
+      "freedoms": "found",
+      "relations": "found",
+      "operating_scenarios": "found",
+      "assumptions": "explicitly_absent",
+      "unknowns": "found"
+    },
+    "outcome_count": 8,
+    "approximate_bounds": 2,
+    "bound_precisions": [
+      "approximate",
+      "bounded"
+    ],
+    "unknown_subjects": [
+      "Specific mechanism design details",
+      "Required torque for operation",
+      "Housing dimensions"
+    ],
+    "relation_kinds": [
+      "depends_on",
+      "depends_on"
+    ]
+  },
+  {
+    "benchmark": "BM-101",
+    "rep": 1,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 30,
+    "acceptance_total": 34,
+    "failures": [
+      "A-1",
+      "A-3a",
+      "A-3b",
+      "A-31"
+    ],
+    "flags": [
+      "D-4",
+      "D-3"
+    ],
+    "clauses": 10,
+    "function_clauses": 4,
+    "function_clauses_covered": 3,
+    "requirements": 9,
+    "functional": 5,
+    "quantitative": 0,
+    "freedoms": 3,
+    "relations": 1,
+    "scenarios": 3,
+    "assumptions": 0,
+    "unknowns": 0,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 9,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 2692,
+    "output_tokens": 2334,
+    "seconds": 31.1,
+    "attempts": 1,
+    "statements": [
+      "The product must advance an internal indexing platform by one discrete step when rotated via an external hand crank",
+      "The product must be desktop-sized",
+      "The product must be easy to assemble",
+      "The product must be mechanically plausible",
+      "The product must be practical to manufacture",
+      "The product must be suitable for repeated manual operation",
+      "The product must enclose the internal mechanism inside a protective housing",
+      "The product must maintain stationary output between indexing events",
+      "The product must operate manually only"
+    ],
+    "intent": "A compact desktop device that advances an internal platform through discrete steps upon manual rotation of an external crank while maintaining positional stability between indexing events, contained within a protective housing.",
+    "user_summary": "Design a compact desktop indexing box that advances an internal platform by one discrete step when rotated via an external hand crank, with the output remaining stationary between steps, enclosed in a protective housing.",
+    "outcomes": {
+      "clauses": "found",
+      "intent": "found",
+      "requirements": "found",
+      "freedoms": "found",
+      "relations": "found",
+      "operating_scenarios": "found",
+      "assumptions": "explicitly_absent",
+      "unknowns": "explicitly_absent"
+    },
+    "outcome_count": 8,
+    "approximate_bounds": 0,
+    "bound_precisions": [],
+    "unknown_subjects": [],
+    "relation_kinds": [
+      "depends_on"
+    ]
+  },
+  {
+    "benchmark": "BM-001",
+    "rep": 2,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 31,
+    "acceptance_total": 34,
+    "failures": [
+      "A-1",
+      "A-8",
+      "A-20"
+    ],
+    "flags": [
+      "D-3"
+    ],
+    "clauses": 8,
+    "function_clauses": 2,
+    "function_clauses_covered": 2,
+    "requirements": 7,
+    "functional": 3,
+    "quantitative": 0,
+    "freedoms": 1,
+    "relations": 1,
+    "scenarios": 2,
+    "assumptions": 1,
+    "unknowns": 1,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 7,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 2650,
+    "output_tokens": 2066,
+    "seconds": 28.7,
+    "attempts": 1,
+    "statements": [
+      "The storage box must be constructed using additive manufacturing techniques",
+      "The storage box must be desktop-sized",
+      "The storage box must be easy to assemble",
+      "The storage box must be practical to manufacture",
+      "The storage box must be safe to use",
+      "The storage box must have a hinged lid that remains closed until intentionally released by thumb pressure",
+      "The storage box must operate manually without electrical or mechanical assistance"
+    ],
+    "intent": "A small storage box with a hinged lid that remains closed until intentionally opened by user thumb pressure, constructed through additive manufacturing techniques while meeting safety, assembly, and manufacturing requirements",
+    "user_summary": "Design a small storage box with a hinged lid that stays closed until released by a thumb, using additive manufacturing, and ensuring safety, ease of assembly, and practical manufacturing.",
+    "outcomes": {
+      "clauses": "found",
+      "intent": "found",
+      "requirements": "found",
+      "freedoms": "found",
+      "relations": "found",
+      "operating_scenarios": "found",
+      "assumptions": "found",
+      "unknowns": "found"
+    },
+    "outcome_count": 8,
+    "approximate_bounds": 0,
+    "bound_precisions": [],
+    "unknown_subjects": [
+      "Specific dimensions for desktop-sized product"
+    ],
+    "relation_kinds": [
+      "depends_on"
+    ]
+  },
+  {
+    "benchmark": "BM-002",
+    "rep": 2,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 27,
+    "acceptance_total": 34,
+    "failures": [
+      "A-1",
+      "A-3a",
+      "A-3b",
+      "A-5",
+      "A-8",
+      "A-29",
+      "A-31"
+    ],
+    "flags": [
+      "D-1",
+      "D-4",
+      "D-3"
+    ],
+    "clauses": 12,
+    "function_clauses": 3,
+    "function_clauses_covered": 2,
+    "requirements": 7,
+    "functional": 4,
+    "quantitative": 1,
+    "freedoms": 3,
+    "relations": 2,
+    "scenarios": 3,
+    "assumptions": 0,
+    "unknowns": 4,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 7,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 2715,
+    "output_tokens": 2798,
+    "seconds": 39.3,
+    "attempts": 1,
+    "statements": [
+      "The internal platform must lift a payload of approximately 1 kg through a vertical distance of approximately 80-100 mm",
+      "The mechanism must be enclosed inside the housing",
+      "The product must allow a user to rotate an external hand crank to raise and lower an internal platform",
+      "The product must avoid obvious jamming or unstable operation",
+      "The product must be mechanically plausible, easy to assemble, and practical to manufacture",
+      "The product must be safe to use",
+      "The product must operate manually only"
+    ],
+    "intent": "A compact desktop device with an external hand crank that operates an internal platform mechanism capable of lifting a payload of approximately 1 kg through a vertical distance of approximately 80-100 mm within an enclosed housing.",
+    "user_summary": "Design a compact desktop lifting box that uses an external hand crank to raise and lower an internal platform, with the platform lifting approximately 80-100 mm and supporting about 1 kg, while being enclosed, safe, mechanically plausible, easy to assemble, and practical to manufacture.",
+    "outcomes": {
+      "clauses": "found",
+      "intent": "found",
+      "requirements": "found",
+      "freedoms": "found",
+      "relations": "found",
+      "operating_scenarios": "found",
+      "assumptions": "explicitly_absent",
+      "unknowns": "found"
+    },
+    "outcome_count": 8,
+    "approximate_bounds": 1,
+    "bound_precisions": [
+      "bounded"
+    ],
+    "unknown_subjects": [
+      "Specific dimensions of the housing",
+      "Detailed specifications for mechanical components",
+      "Required torque for hand crank operation",
+      "Specific design justification for self-locking feature"
+    ],
+    "relation_kinds": [
+      "depends_on",
+      "depends_on"
+    ]
+  },
+  {
+    "benchmark": "BM-101",
+    "rep": 2,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 27,
+    "acceptance_total": 34,
+    "failures": [
+      "A-1",
+      "A-3a",
+      "A-3b",
+      "A-8",
+      "A-22",
+      "A-29",
+      "A-31"
+    ],
+    "flags": [
+      "D-4",
+      "D-3"
+    ],
+    "clauses": 10,
+    "function_clauses": 4,
+    "function_clauses_covered": 3,
+    "requirements": 6,
+    "functional": 5,
+    "quantitative": 0,
+    "freedoms": 3,
+    "relations": 1,
+    "scenarios": 3,
+    "assumptions": 2,
+    "unknowns": 3,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 6,
+    "not_yet_verifiable": 1,
+    "prompt_tokens": 2692,
+    "output_tokens": 2380,
+    "seconds": 32.9,
+    "attempts": 1,
+    "statements": [
+      "The product must advance an internal indexing platform by one discrete step when rotated via an external hand crank",
+      "The product must be desktop-sized",
+      "The product must be mechanically plausible, easy to assemble, practical to manufacture, and suitable for repeated manual operation",
+      "The product must enclose the mechanism inside a protective housing",
+      "The product must maintain stationary output between indexing events",
+      "The product must operate manually only"
+    ],
+    "intent": "A compact mechanical device that advances an internal platform in discrete steps through manual rotation of an external crank while maintaining stationary output between indexing events within a protective enclosure.",
+    "user_summary": "Design a compact desktop indexing box that advances an internal platform by one discrete step when rotated via an external hand crank, with the output remaining stationary between steps, enclosed in a protective housing.",
+    "outcomes": {
+      "clauses": "found",
+      "intent": "found",
+      "requirements": "found",
+      "freedoms": "found",
+      "relations": "explicitly_absent",
+      "operating_scenarios": "found",
+      "assumptions": "found",
+      "unknowns": "found"
+    },
+    "outcome_count": 8,
+    "approximate_bounds": 0,
+    "bound_precisions": [],
+    "unknown_subjects": [
+      "specific dimensions of the desktop-sized product",
+      "number of discrete indexed positions required",
+      "specific mechanical design parameters for the indexing mechanism"
+    ],
+    "relation_kinds": [
+      "depends_on"
+    ]
+  },
+  {
+    "benchmark": "BM-001",
+    "rep": 3,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 30,
+    "acceptance_total": 34,
+    "failures": [
+      "A-1",
+      "A-8",
+      "A-20",
+      "A-29"
+    ],
+    "flags": [
+      "D-3"
+    ],
+    "clauses": 8,
+    "function_clauses": 2,
+    "function_clauses_covered": 2,
+    "requirements": 7,
+    "functional": 2,
+    "quantitative": 0,
+    "freedoms": 4,
+    "relations": 2,
+    "scenarios": 3,
+    "assumptions": 2,
+    "unknowns": 3,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 7,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 2650,
+    "output_tokens": 2644,
+    "seconds": 36.5,
+    "attempts": 1,
+    "statements": [
+      "The storage box must be designed for additive manufacturing",
+      "The storage box must be desktop-sized",
+      "The storage box must be easy to assemble",
+      "The storage box must be practical to manufacture",
+      "The storage box must be safe to use",
+      "The storage box must have a hinged lid that remains closed until intentionally released by thumb pressure",
+      "The storage box must operate manually only"
+    ],
+    "intent": "A small, desktop-sized storage box with a hinged lid that remains closed until intentionally opened by thumb pressure, designed for safe use, easy assembly, and practical manufacture through additive manufacturing.",
+    "user_summary": "Design a small, desktop-sized storage box with a hinged lid that stays closed until released by thumb pressure, using additive manufacturing, and ensuring safety, ease of assembly, and practical manufacture.",
+    "outcomes": {
+      "clauses": "found",
+      "intent": "found",
+      "requirements": "found",
+      "freedoms": "found",
+      "relations": "found",
+      "operating_scenarios": "found",
+      "assumptions": "found",
+      "unknowns": "found"
+    },
+    "outcome_count": 8,
+    "approximate_bounds": 0,
+    "bound_precisions": [],
+    "unknown_subjects": [
+      "The specific dimensions for desktop-sized product",
+      "The specific materials to be used for manufacturing",
+      "The exact mechanism for lid release"
+    ],
+    "relation_kinds": [
+      "depends_on",
+      "depends_on"
+    ]
+  },
+  {
+    "benchmark": "BM-002",
+    "rep": 3,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 28,
+    "acceptance_total": 34,
+    "failures": [
+      "A-1",
+      "A-3a",
+      "A-3b",
+      "A-3d",
+      "A-8",
+      "A-10"
+    ],
+    "flags": [
+      "D-1",
+      "D-4",
+      "D-3"
+    ],
+    "clauses": 12,
+    "function_clauses": 3,
+    "function_clauses_covered": 2,
+    "requirements": 8,
+    "functional": 3,
+    "quantitative": 2,
+    "freedoms": 3,
+    "relations": 2,
+    "scenarios": 3,
+    "assumptions": 2,
+    "unknowns": 3,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 8,
+    "not_yet_verifiable": 1,
+    "prompt_tokens": 2715,
+    "output_tokens": 2953,
+    "seconds": 41.0,
+    "attempts": 1,
+    "statements": [
+      "The mechanism must be enclosed inside the housing",
+      "The platform must lift approximately 80-100 mm",
+      "The platform must support a payload of approximately 1 kg",
+      "The product must be mechanically plausible, easy to assemble, and practical to manufacture",
+      "The product must be safe to use",
+      "The product must enable user to raise and lower an internal platform via rotation of external hand crank",
+      "The product must not jam or operate unstably",
+      "The product must operate manually only"
+    ],
+    "intent": "A compact desktop device with enclosed mechanical lifting mechanism operated manually via external hand crank to achieve vertical platform movement within specified range while supporting designated payload.",
+    "user_summary": "Design a compact desktop lifting box that uses an external hand crank to raise and lower an internal platform, with the platform lifting approximately 80-100 mm and supporting about 1 kg of payload.",
+    "outcomes": {
+      "clauses": "found",
+      "intent": "found",
+      "requirements": "found",
+      "freedoms": "found",
+      "relations": "found",
+      "operating_scenarios": "found",
+      "assumptions": "found",
+      "unknowns": "found"
+    },
+    "outcome_count": 8,
+    "approximate_bounds": 2,
+    "bound_precisions": [
+      "approximate",
+      "bounded"
+    ],
+    "unknown_subjects": [
+      "specific hand crank rotation ratio required for desired lift height",
+      "specific material properties for mechanical components",
+      "specific dimensions of the internal platform"
+    ],
+    "relation_kinds": [
+      "depends_on",
+      "depends_on"
+    ]
+  },
+  {
+    "benchmark": "BM-101",
+    "rep": 3,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 30,
+    "acceptance_total": 34,
+    "failures": [
+      "A-1",
+      "A-3a",
+      "A-3b",
+      "A-31"
+    ],
+    "flags": [
+      "D-4",
+      "D-3"
+    ],
+    "clauses": 10,
+    "function_clauses": 4,
+    "function_clauses_covered": 3,
+    "requirements": 9,
+    "functional": 5,
+    "quantitative": 0,
+    "freedoms": 3,
+    "relations": 2,
+    "scenarios": 3,
+    "assumptions": 0,
+    "unknowns": 0,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 9,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 2692,
+    "output_tokens": 2367,
+    "seconds": 31.7,
+    "attempts": 1,
+    "statements": [
+      "The output shall remain stationary between indexing events",
+      "The product shall advance an internal indexing platform by one discrete step when an external hand crank is rotated",
+      "The product shall be desktop-sized",
+      "The product shall be easy to assemble",
+      "The product shall be enclosed in a protective housing",
+      "The product shall be mechanically plausible",
+      "The product shall be practical to manufacture",
+      "The product shall be suitable for repeated manual operation",
+      "The product shall operate manually only"
+    ],
+    "intent": "A mechanical device that advances an internal platform by discrete steps through manual rotation of an external crank while maintaining stationary output between steps, enclosed in a protective housing.",
+    "user_summary": "Design a compact desktop indexing box that advances an internal platform by one discrete step when rotated via an external hand crank, with the output remaining stationary between indexing events, enclosed in a protective housing.",
+    "outcomes": {
+      "clauses": "found",
+      "intent": "found",
+      "requirements": "found",
+      "freedoms": "found",
+      "relations": "found",
+      "operating_scenarios": "found",
+      "assumptions": "explicitly_absent",
+      "unknowns": "explicitly_absent"
+    },
+    "outcome_count": 8,
+    "approximate_bounds": 0,
+    "bound_precisions": [],
+    "unknown_subjects": [],
+    "relation_kinds": [
+      "depends_on",
+      "depends_on"
+    ]
+  },
+  {
+    "benchmark": "BM-001",
+    "rep": 4,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 32,
+    "acceptance_total": 34,
+    "failures": [
+      "A-1",
+      "A-31"
+    ],
+    "flags": [
+      "D-3"
+    ],
+    "clauses": 8,
+    "function_clauses": 2,
+    "function_clauses_covered": 2,
+    "requirements": 7,
+    "functional": 2,
+    "quantitative": 0,
+    "freedoms": 0,
+    "relations": 1,
+    "scenarios": 4,
+    "assumptions": 0,
+    "unknowns": 0,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 7,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 2650,
+    "output_tokens": 1851,
+    "seconds": 25.1,
+    "attempts": 1,
+    "statements": [
+      "The storage box must be designed for additive manufacturing production",
+      "The storage box must be desktop-sized",
+      "The storage box must be easy to assemble",
+      "The storage box must be practical to manufacture",
+      "The storage box must be safe to use",
+      "The storage box must have a hinged lid that remains closed until intentionally released by the user's thumb",
+      "The storage box must operate manually only"
+    ],
+    "intent": "A small storage box with a hinged lid that remains closed until intentionally opened by user action, designed for easy assembly and practical manufacture using additive manufacturing techniques.",
+    "user_summary": "Design a small, desktop-sized storage box with a hinged lid that stays closed until manually released by the user's thumb, using additive manufacturing for production.",
+    "outcomes": {
+      "clauses": "found",
+      "intent": "found",
+      "requirements": "found",
+      "freedoms": "explicitly_absent",
+      "relations": "found",
+      "operating_scenarios": "found",
+      "assumptions": "explicitly_absent",
+      "unknowns": "explicitly_absent"
+    },
+    "outcome_count": 8,
+    "approximate_bounds": 0,
+    "bound_precisions": [],
+    "unknown_subjects": [],
+    "relation_kinds": [
+      "depends_on"
+    ]
+  },
+  {
+    "benchmark": "BM-002",
+    "rep": 4,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 28,
+    "acceptance_total": 34,
+    "failures": [
+      "A-1",
+      "A-3a",
+      "A-3b",
+      "A-3d",
+      "A-8",
+      "A-31"
+    ],
+    "flags": [
+      "D-1",
+      "D-4",
+      "D-3"
+    ],
+    "clauses": 12,
+    "function_clauses": 3,
+    "function_clauses_covered": 2,
+    "requirements": 10,
+    "functional": 3,
+    "quantitative": 2,
+    "freedoms": 3,
+    "relations": 2,
+    "scenarios": 3,
+    "assumptions": 0,
+    "unknowns": 4,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 10,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 2715,
+    "output_tokens": 3029,
+    "seconds": 42.3,
+    "attempts": 1,
+    "statements": [
+      "The mechanism must be enclosed inside the housing",
+      "The platform must lift approximately 80-100 mm",
+      "The platform must support a payload of approximately 1 kg",
+      "The product must avoid obvious jamming or unstable operation",
+      "The product must be easy to assemble",
+      "The product must be mechanically plausible",
+      "The product must be practical to manufacture",
+      "The product must be safe to use",
+      "The product must enable vertical movement of an internal platform through external hand crank rotation",
+      "The product must operate manually only"
+    ],
+    "intent": "A compact desktop device that enables manual vertical platform movement through external hand crank rotation, with specified lift range and payload capability while maintaining mechanical integrity and safety.",
+    "user_summary": "Design a compact desktop lifting box that uses an external hand crank to raise and lower an internal platform, with a lift range of 80-100 mm and payload capacity of approximately 1 kg.",
+    "outcomes": {
+      "clauses": "found",
+      "intent": "found",
+      "requirements": "found",
+      "freedoms": "found",
+      "relations": "found",
+      "operating_scenarios": "found",
+      "assumptions": "explicitly_absent",
+      "unknowns": "found"
+    },
+    "outcome_count": 8,
+    "approximate_bounds": 2,
+    "bound_precisions": [
+      "approximate",
+      "bounded"
+    ],
+    "unknown_subjects": [
+      "Specific mechanical design details for hand crank mechanism",
+      "Exact housing dimensions and configuration",
+      "Required torque and force specifications for hand crank operation",
+      "Specific safety feature requirements"
+    ],
+    "relation_kinds": [
+      "depends_on",
+      "depends_on"
+    ]
+  },
+  {
+    "benchmark": "BM-101",
+    "rep": 4,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 28,
+    "acceptance_total": 34,
+    "failures": [
+      "A-1",
+      "A-3a",
+      "A-3b",
+      "A-8",
+      "A-22",
+      "A-29"
+    ],
+    "flags": [
+      "D-4",
+      "D-3"
+    ],
+    "clauses": 10,
+    "function_clauses": 4,
+    "function_clauses_covered": 3,
+    "requirements": 6,
+    "functional": 5,
+    "quantitative": 0,
+    "freedoms": 3,
+    "relations": 1,
+    "scenarios": 3,
+    "assumptions": 1,
+    "unknowns": 1,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 6,
+    "not_yet_verifiable": 1,
+    "prompt_tokens": 2692,
+    "output_tokens": 2230,
+    "seconds": 31.1,
+    "attempts": 1,
+    "statements": [
+      "The product shall advance an internal indexing platform by one discrete step when rotated via an external hand crank",
+      "The product shall be desktop-sized",
+      "The product shall be mechanically plausible, easy to assemble, practical to manufacture, and suitable for repeated manual operation",
+      "The product shall enclose the internal mechanism within a protective housing",
+      "The product shall maintain positional stability between indexing events",
+      "The product shall operate manually only"
+    ],
+    "intent": "A mechanical device that advances an internal platform in discrete steps through manual rotation of an external crank while maintaining positional stability between operations, housed within a desktop-sized protective enclosure.",
+    "user_summary": "Design a compact desktop indexing box that advances an internal platform by one discrete step when rotated via an external hand crank, with the output remaining stationary between steps, enclosed in a protective housing.",
+    "outcomes": {
+      "clauses": "found",
+      "intent": "found",
+      "requirements": "found",
+      "freedoms": "found",
+      "relations": "explicitly_absent",
+      "operating_scenarios": "found",
+      "assumptions": "found",
+      "unknowns": "found"
+    },
+    "outcome_count": 8,
+    "approximate_bounds": 0,
+    "bound_precisions": [],
+    "unknown_subjects": [
+      "specific number of indexed positions"
+    ],
+    "relation_kinds": [
+      "depends_on"
+    ]
+  },
+  {
+    "benchmark": "BM-001",
+    "rep": 5,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 30,
+    "acceptance_total": 34,
+    "failures": [
+      "A-1",
+      "A-8",
+      "A-20",
+      "A-29"
+    ],
+    "flags": [
+      "D-3"
+    ],
+    "clauses": 8,
+    "function_clauses": 2,
+    "function_clauses_covered": 2,
+    "requirements": 7,
+    "functional": 2,
+    "quantitative": 0,
+    "freedoms": 2,
+    "relations": 1,
+    "scenarios": 2,
+    "assumptions": 2,
+    "unknowns": 2,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 7,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 2650,
+    "output_tokens": 2312,
+    "seconds": 30.9,
+    "attempts": 1,
+    "statements": [
+      "The storage box must be designed for additive manufacturing",
+      "The storage box must be desktop-sized",
+      "The storage box must be easy to assemble",
+      "The storage box must be practical to manufacture",
+      "The storage box must be safe to use",
+      "The storage box must have a hinged lid that remains closed until intentionally released by user thumb pressure",
+      "The storage box must operate manually only"
+    ],
+    "intent": "A small storage box with a hinged lid that remains closed until intentionally opened by user action, designed for safe use, easy assembly, and practical manufacture through additive manufacturing.",
+    "user_summary": "Design a small, desktop-sized storage box with a hinged lid that stays closed until manually released by the user's thumb, using additive manufacturing for production.",
+    "outcomes": {
+      "clauses": "found",
+      "intent": "found",
+      "requirements": "found",
+      "freedoms": "found",
+      "relations": "found",
+      "operating_scenarios": "found",
+      "assumptions": "found",
+      "unknowns": "found"
+    },
+    "outcome_count": 8,
+    "approximate_bounds": 0,
+    "bound_precisions": [],
+    "unknown_subjects": [
+      "Specific dimensions for desktop-sized product",
+      "Specific materials to be used"
+    ],
+    "relation_kinds": [
+      "depends_on"
+    ]
+  },
+  {
+    "benchmark": "BM-002",
+    "rep": 5,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 29,
+    "acceptance_total": 34,
+    "failures": [
+      "A-1",
+      "A-3b",
+      "A-3d",
+      "A-8",
+      "A-31"
+    ],
+    "flags": [
+      "D-4",
+      "D-3"
+    ],
+    "clauses": 12,
+    "function_clauses": 3,
+    "function_clauses_covered": 2,
+    "requirements": 9,
+    "functional": 5,
+    "quantitative": 2,
+    "freedoms": 3,
+    "relations": 2,
+    "scenarios": 2,
+    "assumptions": 0,
+    "unknowns": 3,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 9,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 2715,
+    "output_tokens": 2836,
+    "seconds": 39.0,
+    "attempts": 1,
+    "statements": [
+      "The internal platform must lift approximately 80-100 mm",
+      "The internal platform must support a payload of approximately 1 kg",
+      "The lifting mechanism must be enclosed within the housing",
+      "The product must avoid obvious jamming or unstable operation",
+      "The product must be desktop-sized",
+      "The product must be mechanically plausible, easy to assemble, and practical to manufacture",
+      "The product must be safe to use",
+      "The product must enable vertical movement of an internal platform through manual rotation of an external hand crank",
+      "The product must operate manually only"
+    ],
+    "intent": "A mechanical device that enables vertical movement of an internal platform through manual rotation of an external hand crank, while maintaining safe operation and practical manufacturability.",
+    "user_summary": "Design a compact desktop lifting box that uses an external hand crank to raise and lower an internal platform, with a lift height of approximately 80-100 mm and payload capacity of approximately 1 kg.",
+    "outcomes": {
+      "clauses": "found",
+      "intent": "found",
+      "requirements": "found",
+      "freedoms": "found",
+      "relations": "found",
+      "operating_scenarios": "found",
+      "assumptions": "explicitly_absent",
+      "unknowns": "found"
+    },
+    "outcome_count": 8,
+    "approximate_bounds": 2,
+    "bound_precisions": [
+      "approximate",
+      "bounded"
+    ],
+    "unknown_subjects": [
+      "Specific dimensions of housing",
+      "Specific materials and manufacturing methods",
+      "Exact mechanical efficiency requirements"
+    ],
+    "relation_kinds": [
+      "depends_on",
+      "depends_on"
+    ]
+  },
+  {
+    "benchmark": "BM-101",
+    "rep": 5,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 30,
+    "acceptance_total": 34,
+    "failures": [
+      "A-3a",
+      "A-3b",
+      "A-8",
+      "A-29"
+    ],
+    "flags": [
+      "D-4",
+      "D-3"
+    ],
+    "clauses": 10,
+    "function_clauses": 4,
+    "function_clauses_covered": 3,
+    "requirements": 11,
+    "functional": 8,
+    "quantitative": 0,
+    "freedoms": 3,
+    "relations": 2,
+    "scenarios": 3,
+    "assumptions": 1,
+    "unknowns": 4,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 11,
+    "not_yet_verifiable": 6,
+    "prompt_tokens": 2692,
+    "output_tokens": 3120,
+    "seconds": 43.5,
+    "attempts": 1,
+    "statements": [
+      "The product shall accommodate any number of indexed positions",
+      "The product shall be desktop-sized",
+      "The product shall be easy to assemble",
+      "The product shall be mechanically plausible for repeated manual operation",
+      "The product shall be practical to manufacture",
+      "The product shall enable advancement of an internal indexing platform by one discrete step through external hand crank rotation",
+      "The product shall enclose the internal mechanism within a protective housing",
+      "The product shall maintain stationary output between indexing events",
+      "The product shall support different housing layouts",
+      "The product shall support manual operation only",
+      "The product shall support multiple support strategies"
+    ],
+    "intent": "A compact desktop device that enables discrete mechanical advancement of an internal platform through external manual rotation while maintaining stable positioning between operations within a protective enclosure.",
+    "user_summary": "Design a compact desktop indexing box that advances an internal platform by one discrete step when rotated via an external hand crank, with the output remaining stationary between steps, enclosed in protective housing, suitable for repeated manual operation.",
+    "outcomes": {
+      "clauses": "found",
+      "intent": "found",
+      "requirements": "found",
+      "freedoms": "found",
+      "relations": "found",
+      "operating_scenarios": "found",
+      "assumptions": "found",
+      "unknowns": "found"
+    },
+    "outcome_count": 8,
+    "approximate_bounds": 0,
+    "bound_precisions": [],
+    "unknown_subjects": [
+      "Specific dimensions of desktop-sized product",
+      "Exact number of indexed positions",
+      "Specific housing layout design",
+      "Specific support strategy implementation"
+    ],
+    "relation_kinds": [
+      "depends_on",
+      "depends_on"
+    ]
+  }
+]

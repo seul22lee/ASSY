@@ -202,6 +202,37 @@ class RunArtifactWriter:
         if record and record.detail:
             lines += ["## Summary", "", record.detail, ""]
 
+        if slot.number == 1 and obj is not None:
+            from assy.stages import s01_validation
+
+            report = s01_validation.validate(obj)
+            lines += [
+                "## Specification compliance",
+                "",
+                f"Rules defined in `STAGE_01_REQUIREMENT_INTERPRETER.md` §9. {report.summary()}.",
+                "",
+                "| rule | severity | result | detail |",
+                "|---|---|---|---|",
+            ]
+            for r in report.results:
+                mark = (
+                    "pass" if r.passed
+                    else ("**FAIL**" if r.severity.value == "acceptance" else "flag")
+                )
+                lines.append(f"| {r.rule} | {r.severity.value} | {mark} | {r.detail} |")
+            lines += [
+                "",
+                "Diagnostics and warnings oblige investigation; they never fail the stage.",
+                "",
+                "## Clause ledger",
+                "",
+                "| clause | source | disposition | text |",
+                "|---|---|---|---|",
+            ]
+            for c in obj.clauses:
+                lines.append(f"| `{c.id}` | {c.source.value} | {c.disposition.value} | {c.text} |")
+            lines.append("")
+
         if slot.number == 5 and obj is not None:
             r = obj.readiness
             lines += [
@@ -373,9 +404,17 @@ class RunArtifactWriter:
         ]
         if spec is not None:
             lines += ["## Requirement interpretation", ""]
-            lines += [f"- {a}" for a in spec.assumptions] or ["- (none recorded)"]
+            lines += [
+                f"- `{a.id}` {a.statement}"
+                + (f" — stands in for `{a.stands_in_for}`" if a.stands_in_for else "")
+                for a in spec.assumptions
+            ] or ["- (none recorded)"]
             lines += ["", "### Unknowns not resolved", ""]
-            lines += [f"- {u}" for u in spec.unknowns] or ["- (none recorded)"]
+            lines += [
+                f"- `{u.id}` {u.subject} — {u.reason}"
+                + (f" (resolved by: {u.resolvable_by})" if u.resolvable_by else "")
+                for u in spec.unknowns
+            ] or ["- (none recorded)"]
             lines += ["", "### Inferred rather than stated", ""]
             inferred = [r for r in spec.requirements if r.origin.value != "user_stated"]
             lines += [f"- `{r.id}` {r.statement} ({r.origin.value})" for r in inferred] or [

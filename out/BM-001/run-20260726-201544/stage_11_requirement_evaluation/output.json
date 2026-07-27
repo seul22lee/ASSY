@@ -1,0 +1,95 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "EVAL-001",
+    "design_id": "design-001",
+    "producer": "s11_requirement_evaluation",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "overall": "pass",
+  "outcomes": [
+    {
+      "requirement_id": "REQ-001",
+      "status": "pass",
+      "observed": null,
+      "target": null,
+      "unit": null,
+      "margin": null,
+      "evidence": [
+        "CRED-001",
+        "M-001",
+        "M-002",
+        "M-003",
+        "M-004"
+      ],
+      "note": "CAD-readiness closure plus evidence from motion/contact and compliant-element"
+    },
+    {
+      "requirement_id": "REQ-002",
+      "status": "pass",
+      "observed": null,
+      "target": null,
+      "unit": null,
+      "margin": null,
+      "evidence": [
+        "CRED-001",
+        "M-001",
+        "M-002",
+        "M-003",
+        "M-004"
+      ],
+      "note": "CAD-readiness closure plus evidence from motion/contact and compliant-element"
+    },
+    {
+      "requirement_id": "REQ-003",
+      "status": "pass",
+      "observed": null,
+      "target": null,
+      "unit": null,
+      "margin": null,
+      "evidence": [
+        "CRED-001",
+        "M-001",
+        "M-002",
+        "M-003",
+        "M-004"
+      ],
+      "note": "CAD-readiness closure plus evidence from motion/contact and compliant-element"
+    },
+    {
+      "requirement_id": "REQ-004",
+      "status": "pass",
+      "observed": null,
+      "target": null,
+      "unit": null,
+      "margin": null,
+      "evidence": [
+        "CRED-001",
+        "M-001",
+        "M-002",
+        "M-003",
+        "M-004"
+      ],
+      "note": "CAD-readiness closure plus evidence from motion/contact and compliant-element"
+    },
+    {
+      "requirement_id": "REQ-005",
+      "status": "pass",
+      "observed": null,
+      "target": null,
+      "unit": null,
+      "margin": null,
+      "evidence": [
+        "CRED-001",
+        "M-001",
+        "M-002",
+        "M-003",
+        "M-004"
+      ],
+      "note": "CAD-readiness closure plus evidence from motion/contact and compliant-element"
+    }
+  ],
+  "source_metric_id": "METRICS-001"
+}

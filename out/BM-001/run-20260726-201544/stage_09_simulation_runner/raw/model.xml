@@ -1,0 +1,64 @@
+<mujoco model="assy_latch">
+  <compiler angle="degree"/>
+  <option timestep="0.0002" gravity="0 0 -9.81" integrator="implicitfast" cone="elliptic"/>
+  <visual><global offwidth="960" offheight="720"/></visual>
+  <default>
+    <geom rgba="0.72 0.74 0.78 1" friction="0.35 0.005 0.0001" solref="0.002 1"/>
+  </default>
+  <worldbody>
+    <light pos="0.25 -0.35 0.35" dir="-0.3 0.5 -1" diffuse="0.95 0.95 0.95"/>
+    <camera name="iso" pos="0.26 -0.26 0.20" xyaxes="0.7 0.7 0 -0.35 0.35 0.87"/>
+    <camera name="latch_closeup" pos="0.035 -0.02 0.08160"
+            xyaxes="0 1 0 -0.5 0 0.87"/>
+    <camera name="section" pos="0.30 0 0.08400" xyaxes="0 1 0 0 0 1"/>
+    <geom name="ground" type="plane" size="1 1 0.01" rgba="0.22 0.22 0.25 1"/>
+
+    <body name="box_body" pos="0 0 0">
+      <geom name="floor" type="box" size="0.05500 0.04500 0.00240" pos="0 0 0.00240"
+            contype="1" conaffinity="1"/>
+      <geom name="wall_left" type="box" size="0.00240 0.04500 0.06000"
+            pos="-0.05500 0 0.06240" contype="1" conaffinity="1"/>
+      <geom name="wall_right" type="box" size="0.00240 0.04500 0.06000"
+            pos="0.05500 0 0.06240" contype="1" conaffinity="1"/>
+      <geom name="wall_rear" type="box" size="0.05500 0.00240 0.06000"
+            pos="0 -0.04500 0.06240" contype="1" conaffinity="1"/>
+      <geom name="wall_front" type="box" size="0.05500 0.00240 0.06000"
+            pos="0 0.04500 0.06240" contype="1" conaffinity="1"/>
+
+      <body name="snap_beam" pos="0 0.04200 0.05880">
+        <joint name="beam_flex" type="hinge" axis="1 0 0" range="-35 2"
+               stiffness="0.75600" damping="0.003935" armature="2.000e-06"
+               springref="0"/>
+        <geom name="beam" type="box"
+              size="0.00300 0.00060 0.00600"
+              pos="0 0 0.00600" mass="0.0004" rgba="0.30 0.62 0.85 1"
+              contype="4" conaffinity="4"/>
+        <geom name="hook" type="box"
+              size="0.00300 0.00040 0.0008"
+              pos="0 -0.00100 0.01080" mass="0.0001"
+              rgba="0.95 0.55 0.15 1" contype="4" conaffinity="4"/>
+      </body>
+    </body>
+
+    <body name="lid" pos="0 -0.04500 0.12580">
+      <joint name="lid_hinge" type="hinge" axis="1 0 0" range="-1 105.0" damping="0.0015"/>
+      <geom name="lid_plate" type="box" size="0.05500 0.04500 0.00300"
+            pos="0 0.04500 0" mass="0.05" contype="2" conaffinity="2"/>
+      <geom name="lid_rib" type="box"
+            size="0.00300 0.00060 0.03040"
+            pos="0 0.08490 -0.02870" mass="0.003"
+            rgba="0.55 0.78 0.55 1" contype="4" conaffinity="4"/>
+      <geom name="lid_lip" type="box"
+            size="0.00300 0.00040 0.00090"
+            pos="0 0.08590 -0.05810" mass="0.001"
+            rgba="0.35 0.68 0.35 1" contype="4" conaffinity="4"/>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position name="lid_drive" joint="lid_hinge" kp="0.5" ctrlrange="-1 105.0"
+              forcerange="-2.5 2.5"/>
+    <position name="beam_release" joint="beam_flex" kp="3.024" ctrlrange="-35 0"
+              forcerange="-1.583 1.583"/>
+  </actuator>
+</mujoco>

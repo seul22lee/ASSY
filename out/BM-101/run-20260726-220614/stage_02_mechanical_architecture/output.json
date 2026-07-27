@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "MECH-001",
+    "design_id": "design-001",
+    "producer": "s02_mechanical_architecture",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "candidates": [
+    {
+      "id": "geneva",
+      "principle": "External Geneva mechanism producing intermittent indexing",
+      "parts": [
+        {
+          "id": "FP-001",
+          "name": "crank",
+          "role": "input",
+          "rationale": "crank in the geneva architecture"
+        },
+        {
+          "id": "FP-002",
+          "name": "driver_disc",
+          "role": "conversion",
+          "rationale": "driver_disc in the geneva architecture"
+        },
+        {
+          "id": "FP-003",
+          "name": "geneva_wheel",
+          "role": "output",
+          "rationale": "geneva_wheel in the geneva architecture"
+        },
+        {
+          "id": "FP-004",
+          "name": "housing",
+          "role": "structure",
+          "rationale": "housing in the geneva architecture"
+        }
+      ],
+      "motions": [
+        {
+          "id": "MO-001",
+          "driver": "crank",
+          "driven": "output",
+          "relation": "rotation->intermittent_rotation",
+          "ratio_symbol": "index_angle = 360 / slots",
+          "dof": 1
+        }
+      ],
+      "strengths": [
+        "positive indexing",
+        "inherent dwell locking"
+      ],
+      "weaknesses": [
+        "phase-dependent clearance",
+        "impact at entry if mistimed"
+      ],
+      "risks": [
+        "locking disc interference with slot tips"
+      ],
+      "open_questions": [
+        "slot count versus dwell fraction"
+      ],
+      "serves_requirements": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-003",
+        "REQ-004",
+        "REQ-005"
+      ]
+    }
+  ],
+  "selected_id": "geneva",
+  "selection_rationale": "geneva selected on weighted trade-off (efficiency, compactness, part count, holding behaviour): {'geneva': 2.37}",
+  "rejected": {}
+}

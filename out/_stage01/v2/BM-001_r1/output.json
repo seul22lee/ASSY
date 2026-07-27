@@ -1,0 +1,289 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SPEC-001",
+    "design_id": "design-001",
+    "producer": "s01_requirement_interpreter",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "source_text": "Design a small storage box with a hinged lid. The lid should stay closed until the user releases it with a thumb. The box should be safe to use, easy to assemble, and practical to manufacture.",
+  "product_intent": "A small desktop-sized storage box with a hinged lid that remains closed until manually opened by a user's thumb pressure",
+  "clauses": [
+    {
+      "id": "C-001",
+      "text": "Design a small storage box with a hinged lid.",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-002",
+      "text": "The lid should stay closed until the user releases it with a thumb.",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-003",
+      "text": "The box should be safe to use, easy to assemble, and practical to manufacture.",
+      "source": "request",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-004",
+      "text": "Desktop-sized product.",
+      "source": "clarification",
+      "disposition": "context"
+    },
+    {
+      "id": "C-005",
+      "text": "Manual operation only.",
+      "source": "clarification",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-006",
+      "text": "Additive manufacturing is expected.",
+      "source": "clarification",
+      "disposition": "context"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The storage box must have a hinged lid that remains closed until manually opened by thumb pressure",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-001",
+        "C-002"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Lid remains closed until thumb pressure is applied",
+        "condition": "User applies thumb pressure to lid",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-002",
+      "kind": "safety",
+      "origin": "user_stated",
+      "statement": "The storage box must be safe to use",
+      "bound": null,
+      "priority": 2,
+      "derived_from": [
+        "C-003"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "No sharp edges, hazardous materials, or dangerous configurations",
+        "condition": "Finished product inspection",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-003",
+      "kind": "manufacturing",
+      "origin": "user_stated",
+      "statement": "The storage box must be easy to assemble",
+      "bound": null,
+      "priority": 2,
+      "derived_from": [
+        "C-003"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "Assembly process requires minimal steps and tools",
+        "condition": "Assembly process evaluation",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-004",
+      "kind": "manufacturing",
+      "origin": "user_stated",
+      "statement": "The storage box must be practical to manufacture",
+      "bound": null,
+      "priority": 2,
+      "derived_from": [
+        "C-003"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "Manufacturing process can be completed with standard techniques",
+        "condition": "Manufacturing process evaluation",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-005",
+      "kind": "performance",
+      "origin": "user_stated",
+      "statement": "The storage box must be desktop-sized",
+      "bound": null,
+      "priority": 3,
+      "derived_from": [
+        "C-004"
+      ],
+      "verification": {
+        "kind": "measurement",
+        "observable": "Product dimensions",
+        "condition": "Physical measurement of product",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-006",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The storage box must operate manually only",
+      "bound": null,
+      "priority": 2,
+      "derived_from": [
+        "C-005"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Operation requires no external power source or mechanism",
+        "condition": "Product operation test",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-007",
+      "kind": "manufacturing",
+      "origin": "user_stated",
+      "statement": "The storage box must be designed for additive manufacturing",
+      "bound": null,
+      "priority": 2,
+      "derived_from": [
+        "C-006"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "Design features compatible with additive manufacturing processes",
+        "condition": "Design review for additive manufacturing compatibility",
+        "reason": null
+      }
+    }
+  ],
+  "operating_scenarios": [
+    {
+      "id": "SCN-001",
+      "name": "Normal operation",
+      "description": "User applies thumb pressure to open the lid from a closed position",
+      "applies_to": [
+        "REQ-001"
+      ],
+      "derived_from": [
+        "C-002"
+      ]
+    },
+    {
+      "id": "SCN-002",
+      "name": "Manufacturing process",
+      "description": "Product is manufactured using additive manufacturing techniques",
+      "applies_to": [
+        "REQ-007"
+      ],
+      "derived_from": [
+        "C-006"
+      ]
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "AS-001",
+      "statement": "The term 'desktop-sized' implies a product that fits on a typical desk surface",
+      "stands_in_for": null,
+      "origin": "inferred",
+      "derived_from": [
+        "C-004"
+      ]
+    },
+    {
+      "id": "AS-002",
+      "statement": "Manual operation implies no electronic or motorized components are required",
+      "stands_in_for": null,
+      "origin": "inferred",
+      "derived_from": [
+        "C-005"
+      ]
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "U-001",
+      "subject": "Specific dimensions of the storage box",
+      "reason": "The request does not specify exact dimensions for a desktop-sized product",
+      "affects": [
+        "REQ-005"
+      ],
+      "resolvable_by": "Explicit dimension specifications",
+      "derived_from": [
+        "C-004"
+      ]
+    },
+    {
+      "id": "U-002",
+      "subject": "Mechanism details for lid retention",
+      "reason": "The request does not specify how the lid stays closed until release",
+      "affects": [
+        "REQ-001"
+      ],
+      "resolvable_by": "Specification of retention mechanism",
+      "derived_from": [
+        "C-002"
+      ]
+    },
+    {
+      "id": "U-003",
+      "subject": "Specific hinge design parameters",
+      "reason": "The request does not specify hinge configuration details",
+      "affects": [
+        "REQ-001"
+      ],
+      "resolvable_by": "Hinge design specifications",
+      "derived_from": [
+        "C-001"
+      ]
+    }
+  ],
+  "freedoms": [
+    {
+      "id": "F-001",
+      "kind": "unconstrained",
+      "subject": "Lid opening mechanism details",
+      "statement": "The specific mechanism by which the lid stays closed until released is not specified",
+      "origin": "user_stated",
+      "derived_from": [
+        "C-002"
+      ]
+    },
+    {
+      "id": "F-002",
+      "kind": "unconstrained",
+      "subject": "Storage box dimensions",
+      "statement": "The exact size of the desktop-sized storage box is not specified",
+      "origin": "user_stated",
+      "derived_from": [
+        "C-004"
+      ]
+    },
+    {
+      "id": "F-003",
+      "kind": "unconstrained",
+      "subject": "Lid hinge design details",
+      "statement": "The specific hinge design and configuration are not specified",
+      "origin": "user_stated",
+      "derived_from": [
+        "C-001"
+      ]
+    }
+  ],
+  "relations": [],
+  "declared_absent": []
+}

@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SPEC-001",
+    "design_id": "design-001",
+    "producer": "s01_requirement_interpreter",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "source_text": "Design a closure that keeps a lid shut until a person opens it.",
+  "product_intent": "A mechanism that maintains a lid in a closed position until an intentional action by a person causes it to open.",
+  "user_intent_summary": "Design a closure that keeps a lid shut until a person opens it.",
+  "clauses": [
+    {
+      "id": "C-001",
+      "text": "Design a closure that keeps a lid shut until a person opens it.",
+      "source": "request",
+      "disposition": "function"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The closure must maintain the lid in a closed position until an intentional action by a person causes it to open.",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-001"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Lid remains closed without intentional action by a person",
+        "condition": "No external force applied to open the lid",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-002",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The closure must allow a person to open the lid through intentional action.",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-001"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Lid opens when a person applies intentional force or action",
+        "condition": "Person intentionally acts on the closure mechanism",
+        "reason": null
+      }
+    }
+  ],
+  "operating_scenarios": [
+    {
+      "id": "SCN-001",
+      "name": "Normal operation with intentional opening",
+      "description": "A person applies intentional force or action to open the closure mechanism, allowing the lid to be opened.",
+      "applies_to": [
+        "REQ-002"
+      ],
+      "derived_from": [
+        "C-001"
+      ]
+    },
+    {
+      "id": "SCN-002",
+      "name": "Default closed state",
+      "description": "The closure maintains the lid in a closed position without any external force or intentional action applied.",
+      "applies_to": [
+        "REQ-001"
+      ],
+      "derived_from": [
+        "C-001"
+      ]
+    }
+  ],
+  "assumptions": [],
+  "unknowns": [],
+  "freedoms": [],
+  "relations": [
+    {
+      "kind": "depends_on",
+      "source": "REQ-002",
+      "target": "REQ-001",
+      "rationale": "The closure must maintain the lid in a closed position until a person opens it, which implies that opening is possible and intentional."
+    }
+  ],
+  "discovery_outcomes": [
+    {
+      "discovery": "clauses",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "intent",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "requirements",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "freedoms",
+      "state": "explicitly_absent",
+      "reason": "No freedom clauses were present in the request."
+    },
+    {
+      "discovery": "relations",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "operating_scenarios",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "assumptions",
+      "state": "explicitly_absent",
+      "reason": "No assumptions were needed to be made beyond what was explicitly stated."
+    },
+    {
+      "discovery": "unknowns",
+      "state": "explicitly_absent",
+      "reason": "The request provided sufficient information to define the required behaviors without any unknowns."
+    }
+  ]
+}

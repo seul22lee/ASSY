@@ -1,0 +1,35 @@
+[FAIL] A-1   intent=ok, names solution(s): crank
+[PASS] A-2   3 functional requirement(s)
+[FAIL] A-3   3/4 function clauses discharged; uncovered: C-001
+[PASS] A-4   malformed bounds: none
+[PASS] A-5   source quantities not captured: none
+[PASS] A-6   solution terms not traceable to a cited clause: none
+[PASS] A-7   2 assumption(s), 0 supplied-origin requirement(s)
+[FAIL] A-8   origins present: ['user_stated']
+[PASS] A-9   context objects with no anchor: none
+[PASS] A-10  9 requirements across priorities [1, 2, 3]
+[PASS] A-11  duplicate statements: 0
+[PASS] A-12  requirements without verification intent: none
+[PASS] A-13  source_text present
+[PASS] A-14  unknowns contradicting resolved targets: none
+[PASS] A-16  10 clause(s); request covered=True
+[PASS] A-17  dangling clause refs: none
+[PASS] A-18  untraceable requirements: none
+[PASS] A-19  incoherent verification intent: none
+[PASS] A-20  freedoms without a stated basis: none
+[PASS] A-21  freedoms duplicating requirements: none
+[PASS] A-22  invalid relations: none
+[PASS] A-23  conflicts without rationale: none
+[PASS] A-24  scenario refs not resolving: none
+[PASS] A-25  3 scenario(s), any bound=True
+[PASS] A-26  assumptions with unresolved stands_in_for: none
+[PASS] A-27  unknown.affects not resolving: none
+[PASS] A-28  unknowns missing subject/reason: none
+[FAIL] A-29  clauses yielding both a freedom and an unknown: ['U-001~F-001@C-008']
+[PASS] A-30  unknowns with no affected requirement: none
+[FAIL] A-31  empty without a declared absence: ['relations']
+[PASS] D-1   7 behavioural requirement(s) vs 5 distinct source verb(s): ['advance', 'enclosed', 'indexing', 'remain', 'rotate']
+[PASS] D-2   requirements/clauses = 0.90
+[FLAG] D-3   100% of requirements are USER_STATED
+
+25/30 acceptance rules pass; 1 diagnostics/warnings raised

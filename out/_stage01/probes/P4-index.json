@@ -1,0 +1,118 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SPEC-001",
+    "design_id": "design-001",
+    "producer": "s01_requirement_interpreter",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "source_text": "Design a device that advances an output by one position each time it is operated.",
+  "product_intent": "A device that moves an output one position forward with each operation performed on it.",
+  "user_intent_summary": "Design a device that advances an output by one position each time it is operated.",
+  "clauses": [
+    {
+      "id": "C-001",
+      "text": "Design a device that advances an output by one position each time it is operated.",
+      "source": "request",
+      "disposition": "function"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The device must advance an output by one position each time it is operated.",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-001"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Output movement of one position per operation",
+        "condition": "Device is operated once",
+        "reason": null
+      }
+    }
+  ],
+  "operating_scenarios": [
+    {
+      "id": "SCN-001",
+      "name": "Device Operation",
+      "description": "A device is operated once and the output advances by one position.",
+      "applies_to": [
+        "REQ-001"
+      ],
+      "derived_from": [
+        "C-001"
+      ]
+    }
+  ],
+  "assumptions": [],
+  "unknowns": [],
+  "freedoms": [
+    {
+      "id": "F-001",
+      "kind": "unconstrained",
+      "subject": "The specific mechanism or method used to advance the output",
+      "statement": "The device may use any mechanism to advance an output by one position each time it is operated.",
+      "origin": "user_stated",
+      "derived_from": [
+        "C-001"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "kind": "depends_on",
+      "source": "None",
+      "target": "None",
+      "rationale": "The request does not express any dependency, refinement, conflict, conditional relationship or prerequisite between requirements."
+    }
+  ],
+  "discovery_outcomes": [
+    {
+      "discovery": "clauses",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "intent",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "requirements",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "freedoms",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "relations",
+      "state": "explicitly_absent",
+      "reason": "The request does not express any dependency, refinement, conflict, conditional relationship or prerequisite between requirements."
+    },
+    {
+      "discovery": "operating_scenarios",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "assumptions",
+      "state": "explicitly_absent",
+      "reason": "No assumptions were inferred from the request or clarifications."
+    },
+    {
+      "discovery": "unknowns",
+      "state": "explicitly_absent",
+      "reason": "No unspecified elements that would prevent determination of requirements were found in the request."
+    }
+  ]
+}

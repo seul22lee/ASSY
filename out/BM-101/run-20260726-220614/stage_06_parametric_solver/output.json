@@ -1,0 +1,202 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SOLVED-001",
+    "design_id": "design-001",
+    "producer": "s06_parametric_solver",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "status": "solved",
+  "parameters": [
+    {
+      "name": "crank.radial_support",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-016",
+      "derived": false
+    },
+    {
+      "name": "crank.support_span",
+      "value": 60.0,
+      "unit": "mm",
+      "commitment_id": "C-017",
+      "derived": false
+    },
+    {
+      "name": "crank.diameter",
+      "value": 8.0,
+      "unit": "mm",
+      "commitment_id": "C-018",
+      "derived": false
+    },
+    {
+      "name": "crank.radial_load",
+      "value": 15.0,
+      "unit": "N",
+      "commitment_id": "C-019",
+      "derived": false
+    },
+    {
+      "name": "crank.deflection_allowable",
+      "value": 0.15,
+      "unit": "mm",
+      "commitment_id": "C-020",
+      "derived": false
+    },
+    {
+      "name": "crank.pinch_access",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-031",
+      "derived": false
+    },
+    {
+      "name": "crank.crank_radius",
+      "value": 40.0,
+      "unit": "mm",
+      "commitment_id": "C-033",
+      "derived": false
+    },
+    {
+      "name": "crank.grip_force",
+      "value": 0.0,
+      "unit": "N",
+      "commitment_id": "C-035",
+      "derived": false
+    },
+    {
+      "name": "driver_disc.radial_support",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-042",
+      "derived": false
+    },
+    {
+      "name": "driver_disc.support_span",
+      "value": 60.0,
+      "unit": "mm",
+      "commitment_id": "C-043",
+      "derived": false
+    },
+    {
+      "name": "driver_disc.diameter",
+      "value": 8.0,
+      "unit": "mm",
+      "commitment_id": "C-044",
+      "derived": false
+    },
+    {
+      "name": "driver_disc.radial_load",
+      "value": 15.0,
+      "unit": "N",
+      "commitment_id": "C-045",
+      "derived": false
+    },
+    {
+      "name": "driver_disc.deflection_allowable",
+      "value": 0.15,
+      "unit": "mm",
+      "commitment_id": "C-046",
+      "derived": false
+    },
+    {
+      "name": "geneva_wheel.radial_support",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-065",
+      "derived": false
+    },
+    {
+      "name": "geneva_wheel.support_span",
+      "value": 60.0,
+      "unit": "mm",
+      "commitment_id": "C-066",
+      "derived": false
+    },
+    {
+      "name": "geneva_wheel.diameter",
+      "value": 8.0,
+      "unit": "mm",
+      "commitment_id": "C-067",
+      "derived": false
+    },
+    {
+      "name": "geneva_wheel.radial_load",
+      "value": 15.0,
+      "unit": "N",
+      "commitment_id": "C-068",
+      "derived": false
+    },
+    {
+      "name": "geneva_wheel.deflection_allowable",
+      "value": 0.15,
+      "unit": "mm",
+      "commitment_id": "C-069",
+      "derived": false
+    },
+    {
+      "name": "housing.internal_height",
+      "value": 120.0,
+      "unit": "mm",
+      "commitment_id": "C-088",
+      "derived": false
+    },
+    {
+      "name": "housing.internal_width",
+      "value": 110.0,
+      "unit": "mm",
+      "commitment_id": "C-089",
+      "derived": false
+    },
+    {
+      "name": "housing.internal_depth",
+      "value": 90.0,
+      "unit": "mm",
+      "commitment_id": "C-090",
+      "derived": false
+    },
+    {
+      "name": "panel_alignment.tolerance_chain",
+      "value": 0.3,
+      "unit": "mm",
+      "commitment_id": "C-095",
+      "derived": true
+    },
+    {
+      "name": "housing.wall_thickness",
+      "value": 2.4,
+      "unit": "mm",
+      "commitment_id": "C-164",
+      "derived": false
+    }
+  ],
+  "satisfied": [
+    {
+      "commitment_id": "C-020",
+      "expression": "crank deflection allowable",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-046",
+      "expression": "driver_disc deflection allowable",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-069",
+      "expression": "geneva_wheel deflection allowable",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    }
+  ],
+  "violated": [],
+  "objective_values": {},
+  "diagnostics": [],
+  "source_definition_id": "CRED-001"
+}

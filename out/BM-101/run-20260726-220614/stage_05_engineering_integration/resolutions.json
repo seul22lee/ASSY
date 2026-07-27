@@ -1,0 +1,4666 @@
+[
+  {
+    "id": "R-001",
+    "problem_id": "P-001",
+    "approach": "straddle-mount crank on two bushings",
+    "method": "exact_constraint/two_bearing_location",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-016",
+        "kind": "support",
+        "subject": "crank.radial_support",
+        "statement": "crank runs in two bushings",
+        "value": 2.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-001",
+          "resolution_id": "R-001",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-017",
+        "kind": "parameter",
+        "subject": "crank.support_span",
+        "statement": "crank bearing span",
+        "value": 60.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-001",
+          "resolution_id": "R-001",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-018",
+        "kind": "parameter",
+        "subject": "crank.diameter",
+        "statement": "crank shaft diameter",
+        "value": 8.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-001",
+          "resolution_id": "R-001",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-019",
+        "kind": "parameter",
+        "subject": "crank.radial_load",
+        "statement": "crank radial load",
+        "value": 15.0,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-001",
+          "resolution_id": "R-001",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-020",
+        "kind": "constraint",
+        "subject": "crank.deflection_allowable",
+        "statement": "crank deflection allowable",
+        "value": 0.15,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-001",
+          "resolution_id": "R-001",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-021",
+        "kind": "value",
+        "subject": "crank.bearing_material",
+        "statement": "crank bushing material",
+        "value": "POM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-001",
+          "resolution_id": "R-001",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "locates the axis in 5 DOF",
+      "halves peak deflection versus a cantilever"
+    ],
+    "risks": [
+      "requires bearing seats in two walls, which crosses a parting line"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-002",
+    "problem_id": "P-001",
+    "approach": "cantilever crank from one wall",
+    "method": "single_wall_cantilever",
+    "status": "rejected",
+    "commitments": [
+      {
+        "id": "C-022",
+        "kind": "support",
+        "subject": "crank.radial_support",
+        "statement": "crank cantilevered",
+        "value": 1.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "simplest assembly",
+      "no parting-line coaxiality"
+    ],
+    "risks": [
+      "deflection scales with L^3",
+      "axis tilts under load"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": "not selected over R-001",
+    "score": 0.3
+  },
+  {
+    "id": "R-003",
+    "problem_id": "P-002",
+    "approach": "shoulder one end of crank, retaining clip the other",
+    "method": "shoulder_and_clip_retention",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-023",
+        "kind": "support",
+        "subject": "crank.axial_retention",
+        "statement": "crank retained by shoulder and clip",
+        "value": "shoulder+clip",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-002",
+          "resolution_id": "R-003",
+          "method": "shoulder_and_clip_retention",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "deterministic axial position",
+      "serviceable"
+    ],
+    "risks": [
+      "clip groove is a stress riser"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-004",
+    "problem_id": "P-003",
+    "approach": "straddle-mount crank on two bushings",
+    "method": "exact_constraint/two_bearing_location",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-024",
+        "kind": "support",
+        "subject": "crank.radial_support",
+        "statement": "crank runs in two bushings",
+        "value": 2.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-025",
+        "kind": "parameter",
+        "subject": "crank.support_span",
+        "statement": "crank bearing span",
+        "value": 60.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-026",
+        "kind": "parameter",
+        "subject": "crank.diameter",
+        "statement": "crank shaft diameter",
+        "value": 8.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-027",
+        "kind": "parameter",
+        "subject": "crank.radial_load",
+        "statement": "crank radial load",
+        "value": 15.0,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-028",
+        "kind": "constraint",
+        "subject": "crank.deflection_allowable",
+        "statement": "crank deflection allowable",
+        "value": 0.15,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-029",
+        "kind": "value",
+        "subject": "crank.bearing_material",
+        "statement": "crank bushing material",
+        "value": "POM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "locates the axis in 5 DOF",
+      "halves peak deflection versus a cantilever"
+    ],
+    "risks": [
+      "requires bearing seats in two walls, which crosses a parting line"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-005",
+    "problem_id": "P-003",
+    "approach": "cantilever crank from one wall",
+    "method": "single_wall_cantilever",
+    "status": "rejected",
+    "commitments": [
+      {
+        "id": "C-030",
+        "kind": "support",
+        "subject": "crank.radial_support",
+        "statement": "crank cantilevered",
+        "value": 1.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "simplest assembly",
+      "no parting-line coaxiality"
+    ],
+    "risks": [
+      "deflection scales with L^3",
+      "axis tilts under load"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": "not selected over R-004",
+    "score": 0.3
+  },
+  {
+    "id": "R-006",
+    "problem_id": "P-005",
+    "approach": "shroud the crank boundary and keep the running gap beneath it",
+    "method": "guard_decouples_safety_gap",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-031",
+        "kind": "parameter",
+        "subject": "crank.pinch_access",
+        "statement": "crank exposed gap",
+        "value": 2.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-005",
+          "resolution_id": "R-006",
+          "method": "guard_decouples_safety_gap",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-032",
+        "kind": "interface",
+        "subject": "crank.guard",
+        "statement": "crank shroud lip",
+        "value": "shroud_lip",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-005",
+          "resolution_id": "R-006",
+          "method": "guard_decouples_safety_gap",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "decouples the safety gap from the running clearance"
+    ],
+    "risks": [
+      "adds a lip to the moulding/print"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-007",
+    "problem_id": "P-006",
+    "approach": "40 mm crank radius",
+    "method": "hand_crank_effort",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-033",
+        "kind": "parameter",
+        "subject": "crank.crank_radius",
+        "statement": "crank radius",
+        "value": 40.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-006",
+          "resolution_id": "R-007",
+          "method": "hand_crank_effort",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-034",
+        "kind": "interface",
+        "subject": "crank.ergonomic_reach",
+        "statement": "crank grip reachable externally",
+        "value": "side_face",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-006",
+          "resolution_id": "R-007",
+          "method": "hand_crank_effort",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-035",
+        "kind": "critical_characteristic",
+        "subject": "crank.grip_force",
+        "statement": "tangential effort at the crank grip",
+        "value": 0.0,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-006",
+          "resolution_id": "R-007",
+          "method": "hand_crank_effort",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "0.00 N tangential effort at the grip"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-008",
+    "problem_id": "P-007",
+    "approach": "crank: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-036",
+        "kind": "manufacturing",
+        "subject": "crank.material",
+        "statement": "crank material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-007",
+          "resolution_id": "R-008",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-037",
+        "kind": "manufacturing",
+        "subject": "crank.process",
+        "statement": "crank process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-007",
+          "resolution_id": "R-008",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-038",
+        "kind": "manufacturing",
+        "subject": "crank.build_orientation",
+        "statement": "crank printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-007",
+          "resolution_id": "R-008",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-009",
+    "problem_id": "P-008",
+    "approach": "crank: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-039",
+        "kind": "manufacturing",
+        "subject": "crank.material",
+        "statement": "crank material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-040",
+        "kind": "manufacturing",
+        "subject": "crank.process",
+        "statement": "crank process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-041",
+        "kind": "manufacturing",
+        "subject": "crank.build_orientation",
+        "statement": "crank printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-010",
+    "problem_id": "P-009",
+    "approach": "straddle-mount driver_disc on two bushings",
+    "method": "exact_constraint/two_bearing_location",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-042",
+        "kind": "support",
+        "subject": "driver_disc.radial_support",
+        "statement": "driver_disc runs in two bushings",
+        "value": 2.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-009",
+          "resolution_id": "R-010",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-043",
+        "kind": "parameter",
+        "subject": "driver_disc.support_span",
+        "statement": "driver_disc bearing span",
+        "value": 60.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-009",
+          "resolution_id": "R-010",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-044",
+        "kind": "parameter",
+        "subject": "driver_disc.diameter",
+        "statement": "driver_disc shaft diameter",
+        "value": 8.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-009",
+          "resolution_id": "R-010",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-045",
+        "kind": "parameter",
+        "subject": "driver_disc.radial_load",
+        "statement": "driver_disc radial load",
+        "value": 15.0,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-009",
+          "resolution_id": "R-010",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-046",
+        "kind": "constraint",
+        "subject": "driver_disc.deflection_allowable",
+        "statement": "driver_disc deflection allowable",
+        "value": 0.15,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-009",
+          "resolution_id": "R-010",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-047",
+        "kind": "value",
+        "subject": "driver_disc.bearing_material",
+        "statement": "driver_disc bushing material",
+        "value": "POM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-009",
+          "resolution_id": "R-010",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "locates the axis in 5 DOF",
+      "halves peak deflection versus a cantilever"
+    ],
+    "risks": [
+      "requires bearing seats in two walls, which crosses a parting line"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-011",
+    "problem_id": "P-009",
+    "approach": "cantilever driver_disc from one wall",
+    "method": "single_wall_cantilever",
+    "status": "rejected",
+    "commitments": [
+      {
+        "id": "C-048",
+        "kind": "support",
+        "subject": "driver_disc.radial_support",
+        "statement": "driver_disc cantilevered",
+        "value": 1.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "simplest assembly",
+      "no parting-line coaxiality"
+    ],
+    "risks": [
+      "deflection scales with L^3",
+      "axis tilts under load"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": "not selected over R-010",
+    "score": 0.3
+  },
+  {
+    "id": "R-012",
+    "problem_id": "P-010",
+    "approach": "shoulder one end of driver_disc, retaining clip the other",
+    "method": "shoulder_and_clip_retention",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-049",
+        "kind": "support",
+        "subject": "driver_disc.axial_retention",
+        "statement": "driver_disc retained by shoulder and clip",
+        "value": "shoulder+clip",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-010",
+          "resolution_id": "R-012",
+          "method": "shoulder_and_clip_retention",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "deterministic axial position",
+      "serviceable"
+    ],
+    "risks": [
+      "clip groove is a stress riser"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-013",
+    "problem_id": "P-011",
+    "approach": "straddle-mount driver_disc on two bushings",
+    "method": "exact_constraint/two_bearing_location",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-050",
+        "kind": "support",
+        "subject": "driver_disc.radial_support",
+        "statement": "driver_disc runs in two bushings",
+        "value": 2.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-051",
+        "kind": "parameter",
+        "subject": "driver_disc.support_span",
+        "statement": "driver_disc bearing span",
+        "value": 60.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-052",
+        "kind": "parameter",
+        "subject": "driver_disc.diameter",
+        "statement": "driver_disc shaft diameter",
+        "value": 8.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-053",
+        "kind": "parameter",
+        "subject": "driver_disc.radial_load",
+        "statement": "driver_disc radial load",
+        "value": 15.0,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-054",
+        "kind": "constraint",
+        "subject": "driver_disc.deflection_allowable",
+        "statement": "driver_disc deflection allowable",
+        "value": 0.15,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-055",
+        "kind": "value",
+        "subject": "driver_disc.bearing_material",
+        "statement": "driver_disc bushing material",
+        "value": "POM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "locates the axis in 5 DOF",
+      "halves peak deflection versus a cantilever"
+    ],
+    "risks": [
+      "requires bearing seats in two walls, which crosses a parting line"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-014",
+    "problem_id": "P-011",
+    "approach": "cantilever driver_disc from one wall",
+    "method": "single_wall_cantilever",
+    "status": "rejected",
+    "commitments": [
+      {
+        "id": "C-056",
+        "kind": "support",
+        "subject": "driver_disc.radial_support",
+        "statement": "driver_disc cantilevered",
+        "value": 1.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "simplest assembly",
+      "no parting-line coaxiality"
+    ],
+    "risks": [
+      "deflection scales with L^3",
+      "axis tilts under load"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": "not selected over R-013",
+    "score": 0.3
+  },
+  {
+    "id": "R-015",
+    "problem_id": "P-016",
+    "approach": "route driver_disc load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-057",
+        "kind": "relation",
+        "subject": "driver_disc.load_path",
+        "statement": "driver_disc -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-016",
+          "resolution_id": "R-015",
+          "method": "direct_load_path_to_ground",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-016",
+    "problem_id": "P-017",
+    "approach": "route driver_disc load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-058",
+        "kind": "relation",
+        "subject": "driver_disc.load_path",
+        "statement": "driver_disc -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-017",
+    "problem_id": "P-018",
+    "approach": "driver_disc: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-059",
+        "kind": "manufacturing",
+        "subject": "driver_disc.material",
+        "statement": "driver_disc material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-018",
+          "resolution_id": "R-017",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-060",
+        "kind": "manufacturing",
+        "subject": "driver_disc.process",
+        "statement": "driver_disc process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-018",
+          "resolution_id": "R-017",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-061",
+        "kind": "manufacturing",
+        "subject": "driver_disc.build_orientation",
+        "statement": "driver_disc printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-018",
+          "resolution_id": "R-017",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-018",
+    "problem_id": "P-019",
+    "approach": "driver_disc: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-062",
+        "kind": "manufacturing",
+        "subject": "driver_disc.material",
+        "statement": "driver_disc material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-063",
+        "kind": "manufacturing",
+        "subject": "driver_disc.process",
+        "statement": "driver_disc process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-064",
+        "kind": "manufacturing",
+        "subject": "driver_disc.build_orientation",
+        "statement": "driver_disc printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-019",
+    "problem_id": "P-020",
+    "approach": "straddle-mount geneva_wheel on two bushings",
+    "method": "exact_constraint/two_bearing_location",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-065",
+        "kind": "support",
+        "subject": "geneva_wheel.radial_support",
+        "statement": "geneva_wheel runs in two bushings",
+        "value": 2.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-020",
+          "resolution_id": "R-019",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-066",
+        "kind": "parameter",
+        "subject": "geneva_wheel.support_span",
+        "statement": "geneva_wheel bearing span",
+        "value": 60.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-020",
+          "resolution_id": "R-019",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-067",
+        "kind": "parameter",
+        "subject": "geneva_wheel.diameter",
+        "statement": "geneva_wheel shaft diameter",
+        "value": 8.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-020",
+          "resolution_id": "R-019",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-068",
+        "kind": "parameter",
+        "subject": "geneva_wheel.radial_load",
+        "statement": "geneva_wheel radial load",
+        "value": 15.0,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-020",
+          "resolution_id": "R-019",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-069",
+        "kind": "constraint",
+        "subject": "geneva_wheel.deflection_allowable",
+        "statement": "geneva_wheel deflection allowable",
+        "value": 0.15,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-020",
+          "resolution_id": "R-019",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-070",
+        "kind": "value",
+        "subject": "geneva_wheel.bearing_material",
+        "statement": "geneva_wheel bushing material",
+        "value": "POM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-020",
+          "resolution_id": "R-019",
+          "method": "exact_constraint/two_bearing_location",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "locates the axis in 5 DOF",
+      "halves peak deflection versus a cantilever"
+    ],
+    "risks": [
+      "requires bearing seats in two walls, which crosses a parting line"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-020",
+    "problem_id": "P-020",
+    "approach": "cantilever geneva_wheel from one wall",
+    "method": "single_wall_cantilever",
+    "status": "rejected",
+    "commitments": [
+      {
+        "id": "C-071",
+        "kind": "support",
+        "subject": "geneva_wheel.radial_support",
+        "statement": "geneva_wheel cantilevered",
+        "value": 1.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "simplest assembly",
+      "no parting-line coaxiality"
+    ],
+    "risks": [
+      "deflection scales with L^3",
+      "axis tilts under load"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": "not selected over R-019",
+    "score": 0.3
+  },
+  {
+    "id": "R-021",
+    "problem_id": "P-021",
+    "approach": "shoulder one end of geneva_wheel, retaining clip the other",
+    "method": "shoulder_and_clip_retention",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-072",
+        "kind": "support",
+        "subject": "geneva_wheel.axial_retention",
+        "statement": "geneva_wheel retained by shoulder and clip",
+        "value": "shoulder+clip",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-021",
+          "resolution_id": "R-021",
+          "method": "shoulder_and_clip_retention",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "deterministic axial position",
+      "serviceable"
+    ],
+    "risks": [
+      "clip groove is a stress riser"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-022",
+    "problem_id": "P-022",
+    "approach": "straddle-mount geneva_wheel on two bushings",
+    "method": "exact_constraint/two_bearing_location",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-073",
+        "kind": "support",
+        "subject": "geneva_wheel.radial_support",
+        "statement": "geneva_wheel runs in two bushings",
+        "value": 2.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-074",
+        "kind": "parameter",
+        "subject": "geneva_wheel.support_span",
+        "statement": "geneva_wheel bearing span",
+        "value": 60.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-075",
+        "kind": "parameter",
+        "subject": "geneva_wheel.diameter",
+        "statement": "geneva_wheel shaft diameter",
+        "value": 8.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-076",
+        "kind": "parameter",
+        "subject": "geneva_wheel.radial_load",
+        "statement": "geneva_wheel radial load",
+        "value": 15.0,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-077",
+        "kind": "constraint",
+        "subject": "geneva_wheel.deflection_allowable",
+        "statement": "geneva_wheel deflection allowable",
+        "value": 0.15,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-078",
+        "kind": "value",
+        "subject": "geneva_wheel.bearing_material",
+        "statement": "geneva_wheel bushing material",
+        "value": "POM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "locates the axis in 5 DOF",
+      "halves peak deflection versus a cantilever"
+    ],
+    "risks": [
+      "requires bearing seats in two walls, which crosses a parting line"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-023",
+    "problem_id": "P-022",
+    "approach": "cantilever geneva_wheel from one wall",
+    "method": "single_wall_cantilever",
+    "status": "rejected",
+    "commitments": [
+      {
+        "id": "C-079",
+        "kind": "support",
+        "subject": "geneva_wheel.radial_support",
+        "statement": "geneva_wheel cantilevered",
+        "value": 1.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "simplest assembly",
+      "no parting-line coaxiality"
+    ],
+    "risks": [
+      "deflection scales with L^3",
+      "axis tilts under load"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": "not selected over R-022",
+    "score": 0.3
+  },
+  {
+    "id": "R-024",
+    "problem_id": "P-027",
+    "approach": "route geneva_wheel load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-080",
+        "kind": "relation",
+        "subject": "geneva_wheel.load_path",
+        "statement": "geneva_wheel -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-027",
+          "resolution_id": "R-024",
+          "method": "direct_load_path_to_ground",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-025",
+    "problem_id": "P-028",
+    "approach": "route geneva_wheel load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-081",
+        "kind": "relation",
+        "subject": "geneva_wheel.load_path",
+        "statement": "geneva_wheel -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-026",
+    "problem_id": "P-029",
+    "approach": "geneva_wheel: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-082",
+        "kind": "manufacturing",
+        "subject": "geneva_wheel.material",
+        "statement": "geneva_wheel material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-029",
+          "resolution_id": "R-026",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-083",
+        "kind": "manufacturing",
+        "subject": "geneva_wheel.process",
+        "statement": "geneva_wheel process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-029",
+          "resolution_id": "R-026",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-084",
+        "kind": "manufacturing",
+        "subject": "geneva_wheel.build_orientation",
+        "statement": "geneva_wheel printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-029",
+          "resolution_id": "R-026",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-027",
+    "problem_id": "P-030",
+    "approach": "geneva_wheel: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-085",
+        "kind": "manufacturing",
+        "subject": "geneva_wheel.material",
+        "statement": "geneva_wheel material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-086",
+        "kind": "manufacturing",
+        "subject": "geneva_wheel.process",
+        "statement": "geneva_wheel process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-087",
+        "kind": "manufacturing",
+        "subject": "geneva_wheel.build_orientation",
+        "statement": "geneva_wheel printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-028",
+    "problem_id": "P-031",
+    "approach": "internal envelope sized for 90 mm stroke",
+    "method": "stroke_plus_reserve",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-088",
+        "kind": "parameter",
+        "subject": "housing.internal_height",
+        "statement": "housing internal height",
+        "value": 120.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-031",
+          "resolution_id": "R-028",
+          "method": "stroke_plus_reserve",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-089",
+        "kind": "parameter",
+        "subject": "housing.internal_width",
+        "statement": "housing internal width",
+        "value": 110.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-031",
+          "resolution_id": "R-028",
+          "method": "stroke_plus_reserve",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-090",
+        "kind": "parameter",
+        "subject": "housing.internal_depth",
+        "statement": "housing internal depth",
+        "value": 90.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-031",
+          "resolution_id": "R-028",
+          "method": "stroke_plus_reserve",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "contains the full stroke with end reserve"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-029",
+    "problem_id": "P-032",
+    "approach": "removable side panel carrying one bushing of each pair",
+    "method": "split_at_bearing_plane",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-091",
+        "kind": "assembly",
+        "subject": "housing.assembly_access",
+        "statement": "removable side panel",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-032",
+          "resolution_id": "R-029",
+          "method": "split_at_bearing_plane",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-092",
+        "kind": "assembly",
+        "subject": "housing.service_access",
+        "statement": "panel exposes the drive",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-032",
+          "resolution_id": "R-029",
+          "method": "split_at_bearing_plane",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-093",
+        "kind": "assembly",
+        "subject": "housing.part_insertion",
+        "statement": "insert through the open side face",
+        "value": "side_face",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-032",
+          "resolution_id": "R-029",
+          "method": "split_at_bearing_plane",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-094",
+        "kind": "assembly",
+        "subject": "assembly.sequence",
+        "statement": "guides -> platform -> screw -> shaft -> panel -> crank",
+        "value": "guides,platform,screw,shaft,panel,crank",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-032",
+          "resolution_id": "R-029",
+          "method": "split_at_bearing_plane",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-095",
+        "kind": "tolerance",
+        "subject": "panel_alignment.tolerance_chain",
+        "statement": "dowel-controlled bearing coaxiality across the split",
+        "value": 0.3,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": "0.10,0.10,0.20",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-032",
+          "resolution_id": "R-029",
+          "method": "split_at_bearing_plane",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "mechanism inserts before closure",
+      "service without disturbing the platform"
+    ],
+    "risks": [
+      "bearing coaxiality now spans a parting line and needs dowels"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-030",
+    "problem_id": "P-033",
+    "approach": "removable side panel carrying one bushing of each pair",
+    "method": "split_at_bearing_plane",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-096",
+        "kind": "assembly",
+        "subject": "housing.assembly_access",
+        "statement": "removable side panel",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-097",
+        "kind": "assembly",
+        "subject": "housing.service_access",
+        "statement": "panel exposes the drive",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-098",
+        "kind": "assembly",
+        "subject": "housing.part_insertion",
+        "statement": "insert through the open side face",
+        "value": "side_face",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-099",
+        "kind": "assembly",
+        "subject": "assembly.sequence",
+        "statement": "guides -> platform -> screw -> shaft -> panel -> crank",
+        "value": "guides,platform,screw,shaft,panel,crank",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-100",
+        "kind": "tolerance",
+        "subject": "panel_alignment.tolerance_chain",
+        "statement": "dowel-controlled bearing coaxiality across the split",
+        "value": 0.3,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": "0.10,0.10,0.20",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "mechanism inserts before closure",
+      "service without disturbing the platform"
+    ],
+    "risks": [
+      "bearing coaxiality now spans a parting line and needs dowels"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-031",
+    "problem_id": "P-034",
+    "approach": "removable side panel carrying one bushing of each pair",
+    "method": "split_at_bearing_plane",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-101",
+        "kind": "assembly",
+        "subject": "housing.assembly_access",
+        "statement": "removable side panel",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-102",
+        "kind": "assembly",
+        "subject": "housing.service_access",
+        "statement": "panel exposes the drive",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-103",
+        "kind": "assembly",
+        "subject": "housing.part_insertion",
+        "statement": "insert through the open side face",
+        "value": "side_face",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-104",
+        "kind": "assembly",
+        "subject": "assembly.sequence",
+        "statement": "guides -> platform -> screw -> shaft -> panel -> crank",
+        "value": "guides,platform,screw,shaft,panel,crank",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-105",
+        "kind": "tolerance",
+        "subject": "panel_alignment.tolerance_chain",
+        "statement": "dowel-controlled bearing coaxiality across the split",
+        "value": 0.3,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": "0.10,0.10,0.20",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "mechanism inserts before closure",
+      "service without disturbing the platform"
+    ],
+    "risks": [
+      "bearing coaxiality now spans a parting line and needs dowels"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-032",
+    "problem_id": "P-035",
+    "approach": "route housing load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-106",
+        "kind": "relation",
+        "subject": "housing.load_path",
+        "statement": "housing -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-035",
+          "resolution_id": "R-032",
+          "method": "direct_load_path_to_ground",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-033",
+    "problem_id": "P-036",
+    "approach": "route housing load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-107",
+        "kind": "relation",
+        "subject": "housing.load_path",
+        "statement": "housing -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-034",
+    "problem_id": "P-037",
+    "approach": "housing: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-108",
+        "kind": "manufacturing",
+        "subject": "housing.material",
+        "statement": "housing material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-037",
+          "resolution_id": "R-034",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-109",
+        "kind": "manufacturing",
+        "subject": "housing.process",
+        "statement": "housing process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-037",
+          "resolution_id": "R-034",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-110",
+        "kind": "manufacturing",
+        "subject": "housing.build_orientation",
+        "statement": "housing printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-037",
+          "resolution_id": "R-034",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-035",
+    "problem_id": "P-038",
+    "approach": "housing: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-111",
+        "kind": "manufacturing",
+        "subject": "housing.material",
+        "statement": "housing material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-112",
+        "kind": "manufacturing",
+        "subject": "housing.process",
+        "statement": "housing process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-113",
+        "kind": "manufacturing",
+        "subject": "housing.build_orientation",
+        "statement": "housing printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-036",
+    "problem_id": "P-039",
+    "approach": "straddle-mount crank on two bushings",
+    "method": "exact_constraint/two_bearing_location",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-114",
+        "kind": "support",
+        "subject": "crank.radial_support",
+        "statement": "crank runs in two bushings",
+        "value": 2.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-115",
+        "kind": "parameter",
+        "subject": "crank.support_span",
+        "statement": "crank bearing span",
+        "value": 60.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-116",
+        "kind": "parameter",
+        "subject": "crank.diameter",
+        "statement": "crank shaft diameter",
+        "value": 8.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-117",
+        "kind": "parameter",
+        "subject": "crank.radial_load",
+        "statement": "crank radial load",
+        "value": 15.0,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-118",
+        "kind": "constraint",
+        "subject": "crank.deflection_allowable",
+        "statement": "crank deflection allowable",
+        "value": 0.15,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-119",
+        "kind": "value",
+        "subject": "crank.bearing_material",
+        "statement": "crank bushing material",
+        "value": "POM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "locates the axis in 5 DOF",
+      "halves peak deflection versus a cantilever"
+    ],
+    "risks": [
+      "requires bearing seats in two walls, which crosses a parting line"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-037",
+    "problem_id": "P-039",
+    "approach": "cantilever crank from one wall",
+    "method": "single_wall_cantilever",
+    "status": "rejected",
+    "commitments": [
+      {
+        "id": "C-120",
+        "kind": "support",
+        "subject": "crank.radial_support",
+        "statement": "crank cantilevered",
+        "value": 1.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "simplest assembly",
+      "no parting-line coaxiality"
+    ],
+    "risks": [
+      "deflection scales with L^3",
+      "axis tilts under load"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": "not selected over R-036",
+    "score": 0.3
+  },
+  {
+    "id": "R-038",
+    "problem_id": "P-040",
+    "approach": "shoulder one end of crank, retaining clip the other",
+    "method": "shoulder_and_clip_retention",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-121",
+        "kind": "support",
+        "subject": "crank.axial_retention",
+        "statement": "crank retained by shoulder and clip",
+        "value": "shoulder+clip",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "deterministic axial position",
+      "serviceable"
+    ],
+    "risks": [
+      "clip groove is a stress riser"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-039",
+    "problem_id": "P-041",
+    "approach": "crank in PLA",
+    "method": "material_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-122",
+        "kind": "manufacturing",
+        "subject": "crank.material",
+        "statement": "crank material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-040",
+    "problem_id": "P-042",
+    "approach": "crank made by FDM",
+    "method": "process_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-123",
+        "kind": "manufacturing",
+        "subject": "crank.process",
+        "statement": "crank process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-041",
+    "problem_id": "P-043",
+    "approach": "shroud the crank boundary and keep the running gap beneath it",
+    "method": "guard_decouples_safety_gap",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-124",
+        "kind": "parameter",
+        "subject": "crank.pinch_access",
+        "statement": "crank exposed gap",
+        "value": 2.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-125",
+        "kind": "interface",
+        "subject": "crank.guard",
+        "statement": "crank shroud lip",
+        "value": "shroud_lip",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "decouples the safety gap from the running clearance"
+    ],
+    "risks": [
+      "adds a lip to the moulding/print"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-042",
+    "problem_id": "P-046",
+    "approach": "crank: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-126",
+        "kind": "manufacturing",
+        "subject": "crank.material",
+        "statement": "crank material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-127",
+        "kind": "manufacturing",
+        "subject": "crank.process",
+        "statement": "crank process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-128",
+        "kind": "manufacturing",
+        "subject": "crank.build_orientation",
+        "statement": "crank printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-043",
+    "problem_id": "P-047",
+    "approach": "straddle-mount driver_disc on two bushings",
+    "method": "exact_constraint/two_bearing_location",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-129",
+        "kind": "support",
+        "subject": "driver_disc.radial_support",
+        "statement": "driver_disc runs in two bushings",
+        "value": 2.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-130",
+        "kind": "parameter",
+        "subject": "driver_disc.support_span",
+        "statement": "driver_disc bearing span",
+        "value": 60.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-131",
+        "kind": "parameter",
+        "subject": "driver_disc.diameter",
+        "statement": "driver_disc shaft diameter",
+        "value": 8.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-132",
+        "kind": "parameter",
+        "subject": "driver_disc.radial_load",
+        "statement": "driver_disc radial load",
+        "value": 15.0,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-133",
+        "kind": "constraint",
+        "subject": "driver_disc.deflection_allowable",
+        "statement": "driver_disc deflection allowable",
+        "value": 0.15,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-134",
+        "kind": "value",
+        "subject": "driver_disc.bearing_material",
+        "statement": "driver_disc bushing material",
+        "value": "POM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "locates the axis in 5 DOF",
+      "halves peak deflection versus a cantilever"
+    ],
+    "risks": [
+      "requires bearing seats in two walls, which crosses a parting line"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-044",
+    "problem_id": "P-047",
+    "approach": "cantilever driver_disc from one wall",
+    "method": "single_wall_cantilever",
+    "status": "rejected",
+    "commitments": [
+      {
+        "id": "C-135",
+        "kind": "support",
+        "subject": "driver_disc.radial_support",
+        "statement": "driver_disc cantilevered",
+        "value": 1.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "simplest assembly",
+      "no parting-line coaxiality"
+    ],
+    "risks": [
+      "deflection scales with L^3",
+      "axis tilts under load"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": "not selected over R-043",
+    "score": 0.3
+  },
+  {
+    "id": "R-045",
+    "problem_id": "P-048",
+    "approach": "shoulder one end of driver_disc, retaining clip the other",
+    "method": "shoulder_and_clip_retention",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-136",
+        "kind": "support",
+        "subject": "driver_disc.axial_retention",
+        "statement": "driver_disc retained by shoulder and clip",
+        "value": "shoulder+clip",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "deterministic axial position",
+      "serviceable"
+    ],
+    "risks": [
+      "clip groove is a stress riser"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-046",
+    "problem_id": "P-049",
+    "approach": "driver_disc in PLA",
+    "method": "material_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-137",
+        "kind": "manufacturing",
+        "subject": "driver_disc.material",
+        "statement": "driver_disc material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-047",
+    "problem_id": "P-050",
+    "approach": "driver_disc made by FDM",
+    "method": "process_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-138",
+        "kind": "manufacturing",
+        "subject": "driver_disc.process",
+        "statement": "driver_disc process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-048",
+    "problem_id": "P-051",
+    "approach": "route driver_disc load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-139",
+        "kind": "relation",
+        "subject": "driver_disc.load_path",
+        "statement": "driver_disc -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-049",
+    "problem_id": "P-056",
+    "approach": "driver_disc: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-140",
+        "kind": "manufacturing",
+        "subject": "driver_disc.material",
+        "statement": "driver_disc material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-141",
+        "kind": "manufacturing",
+        "subject": "driver_disc.process",
+        "statement": "driver_disc process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-142",
+        "kind": "manufacturing",
+        "subject": "driver_disc.build_orientation",
+        "statement": "driver_disc printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-050",
+    "problem_id": "P-057",
+    "approach": "straddle-mount geneva_wheel on two bushings",
+    "method": "exact_constraint/two_bearing_location",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-143",
+        "kind": "support",
+        "subject": "geneva_wheel.radial_support",
+        "statement": "geneva_wheel runs in two bushings",
+        "value": 2.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-144",
+        "kind": "parameter",
+        "subject": "geneva_wheel.support_span",
+        "statement": "geneva_wheel bearing span",
+        "value": 60.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-145",
+        "kind": "parameter",
+        "subject": "geneva_wheel.diameter",
+        "statement": "geneva_wheel shaft diameter",
+        "value": 8.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-146",
+        "kind": "parameter",
+        "subject": "geneva_wheel.radial_load",
+        "statement": "geneva_wheel radial load",
+        "value": 15.0,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-147",
+        "kind": "constraint",
+        "subject": "geneva_wheel.deflection_allowable",
+        "statement": "geneva_wheel deflection allowable",
+        "value": 0.15,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-148",
+        "kind": "value",
+        "subject": "geneva_wheel.bearing_material",
+        "statement": "geneva_wheel bushing material",
+        "value": "POM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "locates the axis in 5 DOF",
+      "halves peak deflection versus a cantilever"
+    ],
+    "risks": [
+      "requires bearing seats in two walls, which crosses a parting line"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-051",
+    "problem_id": "P-057",
+    "approach": "cantilever geneva_wheel from one wall",
+    "method": "single_wall_cantilever",
+    "status": "rejected",
+    "commitments": [
+      {
+        "id": "C-149",
+        "kind": "support",
+        "subject": "geneva_wheel.radial_support",
+        "statement": "geneva_wheel cantilevered",
+        "value": 1.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "simplest assembly",
+      "no parting-line coaxiality"
+    ],
+    "risks": [
+      "deflection scales with L^3",
+      "axis tilts under load"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": "not selected over R-050",
+    "score": 0.3
+  },
+  {
+    "id": "R-052",
+    "problem_id": "P-058",
+    "approach": "shoulder one end of geneva_wheel, retaining clip the other",
+    "method": "shoulder_and_clip_retention",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-150",
+        "kind": "support",
+        "subject": "geneva_wheel.axial_retention",
+        "statement": "geneva_wheel retained by shoulder and clip",
+        "value": "shoulder+clip",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "deterministic axial position",
+      "serviceable"
+    ],
+    "risks": [
+      "clip groove is a stress riser"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-053",
+    "problem_id": "P-059",
+    "approach": "geneva_wheel in PLA",
+    "method": "material_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-151",
+        "kind": "manufacturing",
+        "subject": "geneva_wheel.material",
+        "statement": "geneva_wheel material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-054",
+    "problem_id": "P-060",
+    "approach": "geneva_wheel made by FDM",
+    "method": "process_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-152",
+        "kind": "manufacturing",
+        "subject": "geneva_wheel.process",
+        "statement": "geneva_wheel process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-055",
+    "problem_id": "P-061",
+    "approach": "route geneva_wheel load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-153",
+        "kind": "relation",
+        "subject": "geneva_wheel.load_path",
+        "statement": "geneva_wheel -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-056",
+    "problem_id": "P-066",
+    "approach": "geneva_wheel: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-154",
+        "kind": "manufacturing",
+        "subject": "geneva_wheel.material",
+        "statement": "geneva_wheel material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-155",
+        "kind": "manufacturing",
+        "subject": "geneva_wheel.process",
+        "statement": "geneva_wheel process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-156",
+        "kind": "manufacturing",
+        "subject": "geneva_wheel.build_orientation",
+        "statement": "geneva_wheel printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-057",
+    "problem_id": "P-067",
+    "approach": "removable side panel carrying one bushing of each pair",
+    "method": "split_at_bearing_plane",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-157",
+        "kind": "assembly",
+        "subject": "housing.assembly_access",
+        "statement": "removable side panel",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-158",
+        "kind": "assembly",
+        "subject": "housing.service_access",
+        "statement": "panel exposes the drive",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-159",
+        "kind": "assembly",
+        "subject": "housing.part_insertion",
+        "statement": "insert through the open side face",
+        "value": "side_face",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-160",
+        "kind": "assembly",
+        "subject": "assembly.sequence",
+        "statement": "guides -> platform -> screw -> shaft -> panel -> crank",
+        "value": "guides,platform,screw,shaft,panel,crank",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-161",
+        "kind": "tolerance",
+        "subject": "panel_alignment.tolerance_chain",
+        "statement": "dowel-controlled bearing coaxiality across the split",
+        "value": 0.3,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": "0.10,0.10,0.20",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "mechanism inserts before closure",
+      "service without disturbing the platform"
+    ],
+    "risks": [
+      "bearing coaxiality now spans a parting line and needs dowels"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-058",
+    "problem_id": "P-068",
+    "approach": "housing in PLA",
+    "method": "material_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-162",
+        "kind": "manufacturing",
+        "subject": "housing.material",
+        "statement": "housing material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-059",
+    "problem_id": "P-069",
+    "approach": "housing made by FDM",
+    "method": "process_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-163",
+        "kind": "manufacturing",
+        "subject": "housing.process",
+        "statement": "housing process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-060",
+    "problem_id": "P-070",
+    "approach": "2.4 mm wall (FDM minimum 1.2 mm)",
+    "method": "process_minimum_wall",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-164",
+        "kind": "parameter",
+        "subject": "housing.wall_thickness",
+        "statement": "housing wall",
+        "value": 2.4,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-070",
+          "resolution_id": "R-060",
+          "method": "process_minimum_wall",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "2x the process minimum gives margin for load and print variation"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-061",
+    "problem_id": "P-071",
+    "approach": "route housing load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-165",
+        "kind": "relation",
+        "subject": "housing.load_path",
+        "statement": "housing -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-062",
+    "problem_id": "P-076",
+    "approach": "housing: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-166",
+        "kind": "manufacturing",
+        "subject": "housing.material",
+        "statement": "housing material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-167",
+        "kind": "manufacturing",
+        "subject": "housing.process",
+        "statement": "housing process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-168",
+        "kind": "manufacturing",
+        "subject": "housing.build_orientation",
+        "statement": "housing printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-063",
+    "problem_id": "P-080",
+    "approach": "removable side panel carrying one bushing of each pair",
+    "method": "split_at_bearing_plane",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-169",
+        "kind": "assembly",
+        "subject": "assembly.assembly_access",
+        "statement": "removable side panel",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-080",
+          "resolution_id": "R-063",
+          "method": "split_at_bearing_plane",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-170",
+        "kind": "assembly",
+        "subject": "assembly.service_access",
+        "statement": "panel exposes the drive",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-080",
+          "resolution_id": "R-063",
+          "method": "split_at_bearing_plane",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-171",
+        "kind": "assembly",
+        "subject": "assembly.part_insertion",
+        "statement": "insert through the open side face",
+        "value": "side_face",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-080",
+          "resolution_id": "R-063",
+          "method": "split_at_bearing_plane",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-172",
+        "kind": "assembly",
+        "subject": "assembly.sequence",
+        "statement": "guides -> platform -> screw -> shaft -> panel -> crank",
+        "value": "guides,platform,screw,shaft,panel,crank",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-173",
+        "kind": "tolerance",
+        "subject": "panel_alignment.tolerance_chain",
+        "statement": "dowel-controlled bearing coaxiality across the split",
+        "value": 0.3,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": "0.10,0.10,0.20",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "mechanism inserts before closure",
+      "service without disturbing the platform"
+    ],
+    "risks": [
+      "bearing coaxiality now spans a parting line and needs dowels"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  }
+]

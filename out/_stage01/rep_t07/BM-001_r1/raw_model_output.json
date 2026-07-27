@@ -1,0 +1,240 @@
+{
+  "product_intent": "A small desktop-sized storage box with a hinged lid that remains closed until manually released by a user's thumb",
+  "clauses": [
+    {
+      "id": "C-001",
+      "text": "Design a small storage box with a hinged lid",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-002",
+      "text": "The lid should stay closed until the user releases it with a thumb",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-003",
+      "text": "The box should be safe to use",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-004",
+      "text": "Easy to assemble",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-005",
+      "text": "Practical to manufacture",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-006",
+      "text": "Desktop-sized product",
+      "source": "clarification",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-007",
+      "text": "Manual operation only",
+      "source": "clarification",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-008",
+      "text": "Additive manufacturing is expected",
+      "source": "clarification",
+      "disposition": "constraint"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The storage box must have a hinged lid that remains closed until manually released by a user's thumb",
+      "target": null,
+      "upper": null,
+      "comparator": null,
+      "priority": 1,
+      "derived_from": [
+        "C-001",
+        "C-002"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Lid remains closed until thumb pressure is applied to release it",
+        "condition": "User applies thumb pressure to lid",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-002",
+      "kind": "safety",
+      "origin": "user_stated",
+      "statement": "The storage box must be safe to use",
+      "target": null,
+      "upper": null,
+      "comparator": null,
+      "priority": 2,
+      "derived_from": [
+        "C-003"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "No sharp edges, hazardous materials or design features that could cause injury",
+        "condition": "Product inspection",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-003",
+      "kind": "assembly",
+      "origin": "user_stated",
+      "statement": "The storage box must be easy to assemble",
+      "target": null,
+      "upper": null,
+      "comparator": null,
+      "priority": 2,
+      "derived_from": [
+        "C-004"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Assembly can be completed without special tools or extensive instruction",
+        "condition": "Assembly process demonstration",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-004",
+      "kind": "manufacturing",
+      "origin": "user_stated",
+      "statement": "The storage box must be practical to manufacture",
+      "target": null,
+      "upper": null,
+      "comparator": null,
+      "priority": 2,
+      "derived_from": [
+        "C-005"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "Design features allow for efficient and cost-effective manufacturing process",
+        "condition": "Manufacturing process evaluation",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-005",
+      "kind": "performance",
+      "origin": "clarification",
+      "statement": "The storage box must be desktop-sized",
+      "target": null,
+      "upper": null,
+      "comparator": null,
+      "priority": 3,
+      "derived_from": [
+        "C-006"
+      ],
+      "verification": {
+        "kind": "measurement",
+        "observable": "Product dimensions meet desktop-sized requirements",
+        "condition": "Physical measurement of product",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-006",
+      "kind": "performance",
+      "origin": "clarification",
+      "statement": "The storage box must operate manually only",
+      "target": null,
+      "upper": null,
+      "comparator": null,
+      "priority": 3,
+      "derived_from": [
+        "C-007"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Operation requires only manual user input without external power source",
+        "condition": "Functional testing of operation",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-007",
+      "kind": "manufacturing",
+      "origin": "clarification",
+      "statement": "The storage box must be designed for additive manufacturing",
+      "target": null,
+      "upper": null,
+      "comparator": null,
+      "priority": 3,
+      "derived_from": [
+        "C-008"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "Design features compatible with additive manufacturing processes",
+        "condition": "Design review for additive manufacturing suitability",
+        "reason": null
+      }
+    }
+  ],
+  "freedoms": [],
+  "relations": [],
+  "operating_scenarios": [
+    {
+      "id": "SCN-001",
+      "name": "Normal Operation",
+      "description": "User attempts to access contents of storage box",
+      "applies_to": [
+        "REQ-001"
+      ],
+      "derived_from": [
+        "C-001",
+        "C-002"
+      ]
+    },
+    {
+      "id": "SCN-002",
+      "name": "Safety Evaluation",
+      "description": "Product is evaluated for safe use conditions",
+      "applies_to": [
+        "REQ-002"
+      ],
+      "derived_from": [
+        "C-003"
+      ]
+    },
+    {
+      "id": "SCN-003",
+      "name": "Assembly Test",
+      "description": "Product is assembled by end user following instructions",
+      "applies_to": [
+        "REQ-003"
+      ],
+      "derived_from": [
+        "C-004"
+      ]
+    },
+    {
+      "id": "SCN-004",
+      "name": "Manufacturing Process",
+      "description": "Product is evaluated for manufacturing feasibility",
+      "applies_to": [
+        "REQ-004"
+      ],
+      "derived_from": [
+        "C-005"
+      ]
+    }
+  ],
+  "assumptions": [],
+  "unknowns": []
+}

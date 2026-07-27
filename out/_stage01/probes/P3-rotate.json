@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SPEC-001",
+    "design_id": "design-001",
+    "producer": "s01_requirement_interpreter",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "source_text": "Design a device that turns an output continuously while a person drives it.",
+  "product_intent": "A device that continuously rotates or moves an output when operated by a person during driving.",
+  "user_intent_summary": "Design a device that turns an output continuously while a person drives it.",
+  "clauses": [
+    {
+      "id": "C-001",
+      "text": "Design a device that turns an output continuously while a person drives it.",
+      "source": "request",
+      "disposition": "function"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The device must continuously rotate or move an output when operated by a person during driving.",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-001"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "continuous rotation or movement of the output",
+        "condition": "while a person drives it",
+        "reason": null
+      }
+    }
+  ],
+  "operating_scenarios": [
+    {
+      "id": "SCN-001",
+      "name": "Continuous operation during driving",
+      "description": "The device operates continuously while a person is driving, with the output turning or moving as long as the person is operating it.",
+      "applies_to": [
+        "REQ-001"
+      ],
+      "derived_from": [
+        "C-001"
+      ]
+    }
+  ],
+  "assumptions": [],
+  "unknowns": [],
+  "freedoms": [],
+  "relations": [
+    {
+      "kind": "depends_on",
+      "source": "None",
+      "target": "None",
+      "rationale": "The request does not express any dependencies, refinements, conflicts, conditionals, or prerequisites between requirements."
+    }
+  ],
+  "discovery_outcomes": [
+    {
+      "discovery": "clauses",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "intent",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "requirements",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "freedoms",
+      "state": "explicitly_absent",
+      "reason": "No freedoms were expressed in the request or clarifications."
+    },
+    {
+      "discovery": "relations",
+      "state": "explicitly_absent",
+      "reason": "The request does not express any dependencies, refinements, conflicts, conditionals, or prerequisites between requirements."
+    },
+    {
+      "discovery": "operating_scenarios",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "assumptions",
+      "state": "explicitly_absent",
+      "reason": "No assumptions were inferred from the request or clarifications."
+    },
+    {
+      "discovery": "unknowns",
+      "state": "explicitly_absent",
+      "reason": "No unknowns were identified in the request or clarifications that would prevent determining requirements."
+    }
+  ]
+}

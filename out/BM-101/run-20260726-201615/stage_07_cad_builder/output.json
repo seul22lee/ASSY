@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "CAD-001",
+    "design_id": "design-001",
+    "producer": "s07_cad_builder",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "status": "ok",
+  "parts": [
+    {
+      "part_id": "crank",
+      "name": "crank",
+      "step_path": "out/BM-101/run-20260726-201615/stage_07_cad_builder/cad/crank.step",
+      "mesh_path": "out/BM-101/run-20260726-201615/stage_07_cad_builder/cad/crank.stl",
+      "volume_mm3": 4958.19,
+      "mass_g": 6.15,
+      "bbox_mm": [
+        46.0,
+        12.0,
+        27.0
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "part_id": "driver_disc",
+      "name": "driver_disc",
+      "step_path": "out/BM-101/run-20260726-201615/stage_07_cad_builder/cad/driver_disc.step",
+      "mesh_path": "out/BM-101/run-20260726-201615/stage_07_cad_builder/cad/driver_disc.stl",
+      "volume_mm3": 18321.77,
+      "mass_g": 22.72,
+      "bbox_mm": [
+        54.0,
+        54.0,
+        8.0
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "part_id": "geneva_wheel",
+      "name": "geneva_wheel",
+      "step_path": "out/BM-101/run-20260726-201615/stage_07_cad_builder/cad/geneva_wheel.step",
+      "mesh_path": "out/BM-101/run-20260726-201615/stage_07_cad_builder/cad/geneva_wheel.stl",
+      "volume_mm3": 18321.77,
+      "mass_g": 22.72,
+      "bbox_mm": [
+        54.0,
+        54.0,
+        8.0
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "part_id": "housing",
+      "name": "housing",
+      "step_path": "out/BM-101/run-20260726-201615/stage_07_cad_builder/cad/housing.step",
+      "mesh_path": "out/BM-101/run-20260726-201615/stage_07_cad_builder/cad/housing.stl",
+      "volume_mm3": 138523.39,
+      "mass_g": 171.77,
+      "bbox_mm": [
+        114.8,
+        94.8,
+        124.8
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "assembly_path": "out/BM-101/run-20260726-201615/stage_07_cad_builder/cad/assembly.step",
+  "semantic_map": {
+    "crank": "out/BM-101/run-20260726-201615/stage_07_cad_builder/cad/crank.step",
+    "driver_disc": "out/BM-101/run-20260726-201615/stage_07_cad_builder/cad/driver_disc.step",
+    "geneva_wheel": "out/BM-101/run-20260726-201615/stage_07_cad_builder/cad/geneva_wheel.step",
+    "housing": "out/BM-101/run-20260726-201615/stage_07_cad_builder/cad/housing.step"
+  },
+  "warnings": [],
+  "failures": [],
+  "source_solved_id": "SOLVED-001"
+}

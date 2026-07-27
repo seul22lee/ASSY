@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "MECH-001",
+    "design_id": "design-001",
+    "producer": "s02_mechanical_architecture",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "candidates": [
+    {
+      "id": "cantilever_snap",
+      "principle": "Hinged lid retained by a cantilever snap-fit with thumb release",
+      "parts": [
+        {
+          "id": "FP-001",
+          "name": "lid",
+          "role": "output",
+          "rationale": "lid in the cantilever_snap architecture"
+        },
+        {
+          "id": "FP-002",
+          "name": "hinge_pin",
+          "role": "guidance",
+          "rationale": "hinge_pin in the cantilever_snap architecture"
+        },
+        {
+          "id": "FP-003",
+          "name": "snap_beam",
+          "role": "retention",
+          "rationale": "snap_beam in the cantilever_snap architecture"
+        },
+        {
+          "id": "FP-004",
+          "name": "catch",
+          "role": "retention",
+          "rationale": "catch in the cantilever_snap architecture"
+        },
+        {
+          "id": "FP-005",
+          "name": "housing",
+          "role": "structure",
+          "rationale": "housing in the cantilever_snap architecture"
+        }
+      ],
+      "motions": [
+        {
+          "id": "MO-001",
+          "driver": "crank",
+          "driven": "output",
+          "relation": "displacement->retention",
+          "ratio_symbol": "retention_force = f(beam_stiffness, undercut, engagement_angle)",
+          "dof": 1
+        }
+      ],
+      "strengths": [
+        "no separate fasteners",
+        "tool-free release",
+        "integral to the moulding"
+      ],
+      "weaknesses": [
+        "creep under sustained load",
+        "strain-limited",
+        "wears with cycling"
+      ],
+      "risks": [
+        "beam yields if over-deflected during assembly",
+        "retention and release force are in direct tension"
+      ],
+      "open_questions": [
+        "beam thickness versus release effort"
+      ],
+      "serves_requirements": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-003",
+        "REQ-004",
+        "REQ-005"
+      ]
+    }
+  ],
+  "selected_id": "cantilever_snap",
+  "selection_rationale": "cantilever_snap selected on weighted trade-off (efficiency, compactness, part count, holding behaviour): {'cantilever_snap': 1.35}",
+  "rejected": {}
+}

@@ -1,0 +1,261 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "MECH-001",
+    "design_id": "design-001",
+    "producer": "s02_mechanical_architecture",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "candidates": [
+    {
+      "id": "lead_screw",
+      "principle": "Lead screw converting crank rotation to platform translation",
+      "parts": [
+        {
+          "id": "FP-001",
+          "name": "crank",
+          "role": "input",
+          "rationale": "crank in the lead_screw architecture"
+        },
+        {
+          "id": "FP-002",
+          "name": "drive_shaft",
+          "role": "transmission",
+          "rationale": "drive_shaft in the lead_screw architecture"
+        },
+        {
+          "id": "FP-003",
+          "name": "lift_screw",
+          "role": "conversion",
+          "rationale": "lift_screw in the lead_screw architecture"
+        },
+        {
+          "id": "FP-004",
+          "name": "platform",
+          "role": "output",
+          "rationale": "platform in the lead_screw architecture"
+        },
+        {
+          "id": "FP-005",
+          "name": "guide_rail",
+          "role": "guidance",
+          "rationale": "guide_rail in the lead_screw architecture"
+        },
+        {
+          "id": "FP-006",
+          "name": "housing",
+          "role": "structure",
+          "rationale": "housing in the lead_screw architecture"
+        }
+      ],
+      "motions": [
+        {
+          "id": "MO-001",
+          "driver": "crank",
+          "driven": "platform",
+          "relation": "rotation->translation",
+          "ratio_symbol": "travel = turns * lead",
+          "dof": 1
+        }
+      ],
+      "strengths": [
+        "inherently self-locking",
+        "high mechanical advantage",
+        "compact vertical envelope"
+      ],
+      "weaknesses": [
+        "low efficiency",
+        "slow travel per turn"
+      ],
+      "risks": [
+        "thread wear in polymer",
+        "platform tilt if guidance is weak"
+      ],
+      "open_questions": [
+        "lead selection versus required crank effort"
+      ],
+      "serves_requirements": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-003",
+        "REQ-004",
+        "REQ-005",
+        "REQ-006",
+        "REQ-007",
+        "REQ-008",
+        "REQ-009"
+      ]
+    },
+    {
+      "id": "rack_pinion",
+      "principle": "Rack and pinion converting crank rotation to platform translation",
+      "parts": [
+        {
+          "id": "FP-007",
+          "name": "crank",
+          "role": "input",
+          "rationale": "crank in the rack_pinion architecture"
+        },
+        {
+          "id": "FP-008",
+          "name": "drive_shaft",
+          "role": "transmission",
+          "rationale": "drive_shaft in the rack_pinion architecture"
+        },
+        {
+          "id": "FP-009",
+          "name": "pinion",
+          "role": "conversion",
+          "rationale": "pinion in the rack_pinion architecture"
+        },
+        {
+          "id": "FP-010",
+          "name": "rack",
+          "role": "conversion",
+          "rationale": "rack in the rack_pinion architecture"
+        },
+        {
+          "id": "FP-011",
+          "name": "platform",
+          "role": "output",
+          "rationale": "platform in the rack_pinion architecture"
+        },
+        {
+          "id": "FP-012",
+          "name": "guide_rail",
+          "role": "guidance",
+          "rationale": "guide_rail in the rack_pinion architecture"
+        },
+        {
+          "id": "FP-013",
+          "name": "housing",
+          "role": "structure",
+          "rationale": "housing in the rack_pinion architecture"
+        }
+      ],
+      "motions": [
+        {
+          "id": "MO-002",
+          "driver": "crank",
+          "driven": "platform",
+          "relation": "rotation->translation",
+          "ratio_symbol": "travel = turns * pi * module * teeth",
+          "dof": 1
+        }
+      ],
+      "strengths": [
+        "high efficiency",
+        "fast travel per turn",
+        "simple tooth geometry"
+      ],
+      "weaknesses": [
+        "back-drives under load",
+        "needs a brake or detent to hold position"
+      ],
+      "risks": [
+        "payload falls when the crank is released"
+      ],
+      "open_questions": [
+        "how position is held without continuous crank effort"
+      ],
+      "serves_requirements": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-003",
+        "REQ-004",
+        "REQ-005",
+        "REQ-006",
+        "REQ-007",
+        "REQ-008",
+        "REQ-009"
+      ]
+    },
+    {
+      "id": "cable_drum",
+      "principle": "Cable drum winding to raise a platform",
+      "parts": [
+        {
+          "id": "FP-014",
+          "name": "crank",
+          "role": "input",
+          "rationale": "crank in the cable_drum architecture"
+        },
+        {
+          "id": "FP-015",
+          "name": "drum",
+          "role": "conversion",
+          "rationale": "drum in the cable_drum architecture"
+        },
+        {
+          "id": "FP-016",
+          "name": "cable",
+          "role": "transmission",
+          "rationale": "cable in the cable_drum architecture"
+        },
+        {
+          "id": "FP-017",
+          "name": "platform",
+          "role": "output",
+          "rationale": "platform in the cable_drum architecture"
+        },
+        {
+          "id": "FP-018",
+          "name": "guide_rail",
+          "role": "guidance",
+          "rationale": "guide_rail in the cable_drum architecture"
+        },
+        {
+          "id": "FP-019",
+          "name": "housing",
+          "role": "structure",
+          "rationale": "housing in the cable_drum architecture"
+        }
+      ],
+      "motions": [
+        {
+          "id": "MO-003",
+          "driver": "crank",
+          "driven": "platform",
+          "relation": "rotation->translation",
+          "ratio_symbol": "travel = turns * pi * drum_diameter",
+          "dof": 1
+        }
+      ],
+      "strengths": [
+        "very low friction",
+        "tolerant of misalignment"
+      ],
+      "weaknesses": [
+        "tension only",
+        "requires a ratchet to hold",
+        "cable spooling discipline"
+      ],
+      "risks": [
+        "uncontrolled descent if the ratchet fails",
+        "cable fatigue"
+      ],
+      "open_questions": [
+        "spooling control across the drum width"
+      ],
+      "serves_requirements": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-003",
+        "REQ-004",
+        "REQ-005",
+        "REQ-006",
+        "REQ-007",
+        "REQ-008",
+        "REQ-009"
+      ]
+    }
+  ],
+  "selected_id": "lead_screw",
+  "selection_rationale": "lead_screw selected on weighted trade-off (efficiency, compactness, part count, holding behaviour): {'lead_screw': 2.535, 'rack_pinion': 0.93, 'cable_drum': 1.085}",
+  "rejected": {
+    "rack_pinion": "score 0.93 below lead_screw (2.54); back-drives under load",
+    "cable_drum": "score 1.08 below lead_screw (2.54); tension only"
+  }
+}

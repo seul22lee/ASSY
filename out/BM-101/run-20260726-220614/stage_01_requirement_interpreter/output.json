@@ -1,0 +1,217 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SPEC-001",
+    "design_id": "design-001",
+    "producer": "s01_requirement_interpreter",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "source_text": "Design a compact desktop indexing box. The user should rotate an external hand crank to advance an internal indexing platform by one discrete step. The output should remain stationary between indexing events. The mechanism should be enclosed inside a protective housing. The product should be mechanically plausible, easy to assemble, practical to manufacture, and suitable for repeated manual operation.",
+  "product_intent": "Design a compact desktop indexing box",
+  "clauses": [
+    {
+      "id": "C-001",
+      "text": "Design a compact desktop indexing box.",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-002",
+      "text": "The user should rotate an external hand crank to advance an internal indexing platform by one discrete step.",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-003",
+      "text": "The output should remain stationary between indexing events.",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-004",
+      "text": "The mechanism should be enclosed inside a protective housing.",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-005",
+      "text": "The product should be mechanically plausible, easy to assemble, practical to manufacture, and suitable for repeated manual operation.",
+      "source": "request",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-006",
+      "text": "Desktop-sized product.",
+      "source": "clarification",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-007",
+      "text": "Manual operation only.",
+      "source": "clarification",
+      "disposition": "freedom"
+    },
+    {
+      "id": "C-008",
+      "text": "The number of indexed positions is not prescribed.",
+      "source": "clarification",
+      "disposition": "freedom"
+    },
+    {
+      "id": "C-009",
+      "text": "Different housing layouts are acceptable.",
+      "source": "clarification",
+      "disposition": "freedom"
+    },
+    {
+      "id": "C-010",
+      "text": "Multiple support strategies are acceptable.",
+      "source": "clarification",
+      "disposition": "freedom"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "Mechanism is enclosed within the housing",
+      "target": null,
+      "tolerance": null,
+      "comparator": null,
+      "upper": null,
+      "priority": 2,
+      "derived_from": [
+        "C-004"
+      ],
+      "verification": {
+        "kind": "not_yet_verifiable",
+        "observable": null,
+        "condition": null,
+        "reason": "placeholder extractor identified no observable"
+      }
+    },
+    {
+      "id": "REQ-002",
+      "kind": "assembly",
+      "origin": "user_stated",
+      "statement": "Product is practical to assemble",
+      "target": null,
+      "tolerance": null,
+      "comparator": null,
+      "upper": null,
+      "priority": 2,
+      "derived_from": [
+        "C-005"
+      ],
+      "verification": {
+        "kind": "not_yet_verifiable",
+        "observable": null,
+        "condition": null,
+        "reason": "placeholder extractor identified no observable"
+      }
+    },
+    {
+      "id": "REQ-003",
+      "kind": "manufacturing",
+      "origin": "user_stated",
+      "statement": "Product is practical to manufacture",
+      "target": null,
+      "tolerance": null,
+      "comparator": null,
+      "upper": null,
+      "priority": 2,
+      "derived_from": [
+        "C-005"
+      ],
+      "verification": {
+        "kind": "not_yet_verifiable",
+        "observable": null,
+        "condition": null,
+        "reason": "placeholder extractor identified no observable"
+      }
+    },
+    {
+      "id": "REQ-004",
+      "kind": "usability",
+      "origin": "user_stated",
+      "statement": "Manual user input drives the mechanism",
+      "target": null,
+      "tolerance": null,
+      "comparator": null,
+      "upper": null,
+      "priority": 2,
+      "derived_from": [
+        "C-002"
+      ],
+      "verification": {
+        "kind": "not_yet_verifiable",
+        "observable": null,
+        "condition": null,
+        "reason": "placeholder extractor identified no observable"
+      }
+    },
+    {
+      "id": "REQ-005",
+      "kind": "usability",
+      "origin": "user_stated",
+      "statement": "Product is desktop-sized",
+      "target": null,
+      "tolerance": null,
+      "comparator": null,
+      "upper": null,
+      "priority": 2,
+      "derived_from": [
+        "C-001"
+      ],
+      "verification": {
+        "kind": "not_yet_verifiable",
+        "observable": null,
+        "condition": null,
+        "reason": "placeholder extractor identified no observable"
+      }
+    }
+  ],
+  "operating_scenarios": [
+    {
+      "id": "SCN-001",
+      "name": "nominal operation",
+      "description": "the product operated as described in the request",
+      "applies_to": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-003",
+        "REQ-004",
+        "REQ-005"
+      ],
+      "derived_from": [
+        "C-001"
+      ]
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "AS-001",
+      "statement": "single user, manual actuation",
+      "stands_in_for": "U-001",
+      "origin": "inferred",
+      "derived_from": []
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "U-001",
+      "subject": "acceptable input effort",
+      "reason": "no effort or force target appears in the request",
+      "affects": [
+        "REQ-004",
+        "REQ-005"
+      ],
+      "resolvable_by": "a stated maximum operating force or torque"
+    }
+  ],
+  "freedoms": [],
+  "relations": []
+}

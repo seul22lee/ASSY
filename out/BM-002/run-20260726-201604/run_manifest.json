@@ -1,0 +1,161 @@
+{
+  "benchmark_id": "BM-002",
+  "tier": "core",
+  "run_id": "20260726-201604",
+  "timestamp": "2026-07-26T20:16:04",
+  "commit": "340b508",
+  "code_version": "0.2.0",
+  "session_status": "passed",
+  "stages": [
+    {
+      "number": 1,
+      "name": "requirement_interpreter",
+      "status": "ok",
+      "main_output": "RequirementSpec",
+      "object_id": "SPEC-001",
+      "authority": "placeholder",
+      "evidence": "-",
+      "unresolved": "-",
+      "directory": "stage_01_requirement_interpreter"
+    },
+    {
+      "number": 2,
+      "name": "mechanical_architecture",
+      "status": "ok",
+      "main_output": "MechanicalArchitecture",
+      "object_id": "MECH-001",
+      "authority": "placeholder",
+      "evidence": "-",
+      "unresolved": "-",
+      "directory": "stage_02_mechanical_architecture"
+    },
+    {
+      "number": 3,
+      "name": "product_architecture",
+      "status": "ok",
+      "main_output": "ProductArchitecture",
+      "object_id": "PROD-001",
+      "authority": "placeholder",
+      "evidence": "-",
+      "unresolved": "-",
+      "directory": "stage_03_product_architecture"
+    },
+    {
+      "number": 4,
+      "name": "concept_visualization",
+      "status": "ok",
+      "main_output": "ConceptVisualization",
+      "object_id": "CONCEPT-001",
+      "authority": "placeholder",
+      "evidence": "-",
+      "unresolved": "-",
+      "directory": "stage_04_concept_visualization"
+    },
+    {
+      "number": 5,
+      "name": "engineering_integration",
+      "status": "ok",
+      "main_output": "CADReadyEngineeringDefinition",
+      "object_id": "CRED-001",
+      "authority": "authoritative",
+      "evidence": "22/26 checks satisfied",
+      "unresolved": "0 blocking",
+      "directory": "stage_05_engineering_integration"
+    },
+    {
+      "number": 6,
+      "name": "parametric_solver",
+      "status": "ok",
+      "main_output": "SolvedDesign",
+      "object_id": "SOLVED-001",
+      "authority": "authoritative",
+      "evidence": "34 parameters",
+      "unresolved": "0 violated constraints",
+      "directory": "stage_06_parametric_solver"
+    },
+    {
+      "number": 7,
+      "name": "cad_builder",
+      "status": "ok",
+      "main_output": "CADArtifactManifest",
+      "object_id": "CAD-001",
+      "authority": "authoritative",
+      "evidence": "6 parts built",
+      "unresolved": "0 build failures",
+      "directory": "stage_07_cad_builder"
+    },
+    {
+      "number": 8,
+      "name": "simulation_plan",
+      "status": "ok",
+      "main_output": "SimulationPlan",
+      "object_id": "SIMPLAN-001",
+      "authority": "authoritative",
+      "evidence": "-",
+      "unresolved": "-",
+      "directory": "stage_08_simulation_plan"
+    },
+    {
+      "number": 9,
+      "name": "simulation_runner",
+      "status": "ok",
+      "main_output": "SimulationResult",
+      "object_id": "SIMRES-001",
+      "authority": "evidence-backed",
+      "evidence": "2 runs via mujoco",
+      "unresolved": "0 not completed",
+      "directory": "stage_09_simulation_runner"
+    },
+    {
+      "number": 10,
+      "name": "metric_extraction",
+      "status": "ok",
+      "main_output": "MetricReport",
+      "object_id": "METRICS-001",
+      "authority": "evidence-backed",
+      "evidence": "7 metrics",
+      "unresolved": "0 invalid",
+      "directory": "stage_10_metric_extraction"
+    },
+    {
+      "number": 11,
+      "name": "requirement_evaluation",
+      "status": "ok",
+      "main_output": "EvaluationReport",
+      "object_id": "EVAL-001",
+      "authority": "evidence-backed",
+      "evidence": "overall=pass",
+      "unresolved": "0 failed, 0 under-evidenced",
+      "directory": "stage_11_requirement_evaluation"
+    },
+    {
+      "number": 12,
+      "name": "revision_routing",
+      "status": "ok",
+      "main_output": "RevisionDirective",
+      "object_id": "REV-001",
+      "authority": "authoritative",
+      "evidence": "-",
+      "unresolved": "-",
+      "directory": "stage_12_revision_routing"
+    }
+  ],
+  "artifacts": {
+    "run_summary": "run_summary.md",
+    "assumptions": "assumptions.md",
+    "stage_directories": [
+      "stage_01_requirement_interpreter",
+      "stage_02_mechanical_architecture",
+      "stage_03_product_architecture",
+      "stage_04_concept_visualization",
+      "stage_05_engineering_integration",
+      "stage_06_parametric_solver",
+      "stage_07_cad_builder",
+      "stage_08_simulation_plan",
+      "stage_09_simulation_runner",
+      "stage_10_metric_extraction",
+      "stage_11_requirement_evaluation",
+      "stage_12_revision_routing"
+    ]
+  }
+}

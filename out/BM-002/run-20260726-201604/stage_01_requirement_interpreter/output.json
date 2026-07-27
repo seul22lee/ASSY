@@ -1,0 +1,145 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SPEC-001",
+    "design_id": "design-001",
+    "producer": "s01_requirement_interpreter",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "source_text": "Design a compact desktop lifting box. The user should rotate an external hand crank to raise and lower an internal platform. The platform should lift approximately 80-100 mm and support a payload of approximately 1 kg. The mechanism should be enclosed inside the housing. The product should be safe to use, mechanically plausible, easy to assemble, and practical to manufacture. Avoid obvious jamming or unstable operation.",
+  "product_intent": "Design a compact desktop lifting box",
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "kind": "performance",
+      "origin": "user_stated",
+      "statement": "travel between 80 and 100 mm",
+      "target": {
+        "value": 80.0,
+        "unit": "mm"
+      },
+      "tolerance": null,
+      "comparator": "between",
+      "upper": {
+        "value": 100.0,
+        "unit": "mm"
+      },
+      "priority": 1,
+      "verifiable": true
+    },
+    {
+      "id": "REQ-002",
+      "kind": "performance",
+      "origin": "user_stated",
+      "statement": "payload >= 1 kg",
+      "target": {
+        "value": 1.0,
+        "unit": "kg"
+      },
+      "tolerance": null,
+      "comparator": ">=",
+      "upper": null,
+      "priority": 1,
+      "verifiable": true
+    },
+    {
+      "id": "REQ-003",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "Mechanism is enclosed within the housing",
+      "target": null,
+      "tolerance": null,
+      "comparator": null,
+      "upper": null,
+      "priority": 2,
+      "verifiable": true
+    },
+    {
+      "id": "REQ-004",
+      "kind": "safety",
+      "origin": "user_stated",
+      "statement": "Product is safe to operate",
+      "target": null,
+      "tolerance": null,
+      "comparator": null,
+      "upper": null,
+      "priority": 2,
+      "verifiable": false
+    },
+    {
+      "id": "REQ-005",
+      "kind": "assembly",
+      "origin": "user_stated",
+      "statement": "Product is practical to assemble",
+      "target": null,
+      "tolerance": null,
+      "comparator": null,
+      "upper": null,
+      "priority": 2,
+      "verifiable": false
+    },
+    {
+      "id": "REQ-006",
+      "kind": "manufacturing",
+      "origin": "user_stated",
+      "statement": "Product is practical to manufacture",
+      "target": null,
+      "tolerance": null,
+      "comparator": null,
+      "upper": null,
+      "priority": 2,
+      "verifiable": false
+    },
+    {
+      "id": "REQ-007",
+      "kind": "usability",
+      "origin": "user_stated",
+      "statement": "Manual user input drives the mechanism",
+      "target": null,
+      "tolerance": null,
+      "comparator": null,
+      "upper": null,
+      "priority": 2,
+      "verifiable": false
+    },
+    {
+      "id": "REQ-008",
+      "kind": "performance",
+      "origin": "user_stated",
+      "statement": "Operation avoids jamming and instability",
+      "target": null,
+      "tolerance": null,
+      "comparator": null,
+      "upper": null,
+      "priority": 2,
+      "verifiable": true
+    },
+    {
+      "id": "REQ-009",
+      "kind": "usability",
+      "origin": "user_stated",
+      "statement": "Product is desktop-sized",
+      "target": null,
+      "tolerance": null,
+      "comparator": null,
+      "upper": null,
+      "priority": 2,
+      "verifiable": false
+    }
+  ],
+  "operating_scenarios": [
+    "nominal operation",
+    "maximum payload",
+    "end of travel"
+  ],
+  "assumptions": [
+    "room-temperature indoor use",
+    "single user, manual actuation"
+  ],
+  "unknowns": [
+    "required service life not stated",
+    "acceptable input effort not quantified"
+  ]
+}

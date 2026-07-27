@@ -1,0 +1,352 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SPEC-001",
+    "design_id": "design-001",
+    "producer": "s01_requirement_interpreter",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "source_text": "Design a compact desktop lifting box. The user should rotate an external hand crank to raise and lower an internal platform. The platform should lift approximately 80-100 mm and support a payload of approximately 1 kg. The mechanism should be enclosed inside the housing. The product should be safe to use, mechanically plausible, easy to assemble, and practical to manufacture. Avoid obvious jamming or unstable operation.",
+  "product_intent": "A desktop-sized manual lifting device that raises and lowers an internal platform through external hand crank rotation while enclosing its mechanism and supporting a specified payload within given height range",
+  "user_intent_summary": "",
+  "clauses": [
+    {
+      "id": "C-001",
+      "text": "Design a compact desktop lifting box.",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-002",
+      "text": "The user should rotate an external hand crank to raise and lower an internal platform.",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-003",
+      "text": "The platform should lift approximately 80-100 mm and support a payload of approximately 1 kg.",
+      "source": "request",
+      "disposition": "context"
+    },
+    {
+      "id": "C-004",
+      "text": "The mechanism should be enclosed inside the housing.",
+      "source": "request",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-005",
+      "text": "The product should be safe to use, mechanically plausible, easy to assemble, and practical to manufacture.",
+      "source": "request",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-006",
+      "text": "Avoid obvious jamming or unstable operation.",
+      "source": "request",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-007",
+      "text": "Desktop-sized product.",
+      "source": "clarification",
+      "disposition": "context"
+    },
+    {
+      "id": "C-008",
+      "text": "Manual operation only.",
+      "source": "clarification",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-009",
+      "text": "Continuous or intermittent lifting is acceptable.",
+      "source": "clarification",
+      "disposition": "freedom"
+    },
+    {
+      "id": "C-010",
+      "text": "Self-locking is optional if justified.",
+      "source": "clarification",
+      "disposition": "freedom"
+    },
+    {
+      "id": "C-011",
+      "text": "Multiple shafts, bearings, guides, and supports are allowed.",
+      "source": "clarification",
+      "disposition": "freedom"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The product must enable a user to raise and lower an internal platform through external hand crank rotation",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-002"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Platform movement in response to hand crank rotation",
+        "condition": "User rotates external hand crank",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-002",
+      "kind": "performance",
+      "origin": "user_stated",
+      "statement": "The internal platform must lift approximately 80 to 100 millimeters",
+      "bound": {
+        "comparator": "between",
+        "lower": 80.0,
+        "upper": 100.0,
+        "unit": "mm",
+        "tolerance": null,
+        "approximate": false
+      },
+      "priority": 2,
+      "derived_from": [
+        "C-003"
+      ],
+      "verification": {
+        "kind": "measurement",
+        "observable": "Vertical displacement of internal platform",
+        "condition": "Platform is raised to maximum extent",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-003",
+      "kind": "performance",
+      "origin": "user_stated",
+      "statement": "The internal platform must support a payload of approximately 1 kilogram",
+      "bound": {
+        "comparator": "==",
+        "lower": 1.0,
+        "upper": 1.0,
+        "unit": "kg",
+        "tolerance": null,
+        "approximate": false
+      },
+      "priority": 2,
+      "derived_from": [
+        "C-003"
+      ],
+      "verification": {
+        "kind": "measurement",
+        "observable": "Maximum load capacity of internal platform",
+        "condition": "Platform is loaded to specified weight",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-004",
+      "kind": "safety",
+      "origin": "user_stated",
+      "statement": "The product must be safe to use",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-005"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "Absence of hazardous features or conditions",
+        "condition": "Product is examined for safety compliance",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-005",
+      "kind": "manufacturing",
+      "origin": "user_stated",
+      "statement": "The product must be mechanically plausible, easy to assemble, and practical to manufacture",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-005"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "Mechanical design feasibility and assembly ease",
+        "condition": "Product is evaluated for manufacturability",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-006",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The product must not jam or operate unstably",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-006"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Absence of jamming or unstable operation during use",
+        "condition": "Product is operated under normal conditions",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-007",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The mechanism must be enclosed inside the housing",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-004"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "Mechanism location within housing boundaries",
+        "condition": "Product is examined for internal mechanism containment",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-008",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The product must be desktop-sized",
+      "bound": null,
+      "priority": 2,
+      "derived_from": [
+        "C-007"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "Product dimensions relative to desktop workspace",
+        "condition": "Product is measured for desktop compatibility",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-009",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The product must operate manually only",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-008"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "Absence of power sources or automatic operation features",
+        "condition": "Product is examined for manual-only operation capability",
+        "reason": null
+      }
+    }
+  ],
+  "operating_scenarios": [
+    {
+      "id": "SCN-001",
+      "name": "Normal operation",
+      "description": "User rotates external hand crank to raise and lower internal platform within specified range while supporting specified payload",
+      "applies_to": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-003",
+        "REQ-006"
+      ],
+      "derived_from": [
+        "C-002",
+        "C-003",
+        "C-006"
+      ]
+    },
+    {
+      "id": "SCN-002",
+      "name": "Safety compliance",
+      "description": "Product must be safe to use under normal operating conditions",
+      "applies_to": [
+        "REQ-004"
+      ],
+      "derived_from": [
+        "C-005"
+      ]
+    },
+    {
+      "id": "SCN-003",
+      "name": "Manufacturing feasibility",
+      "description": "Product must be mechanically plausible, easy to assemble, and practical to manufacture",
+      "applies_to": [
+        "REQ-005"
+      ],
+      "derived_from": [
+        "C-005"
+      ]
+    }
+  ],
+  "assumptions": [],
+  "unknowns": [
+    {
+      "id": "U-001",
+      "subject": "Exact payload capacity",
+      "reason": "The requirement states 'approximately 1 kg' but does not specify the tolerance or exact value",
+      "affects": [
+        "REQ-003"
+      ],
+      "resolvable_by": "Specification of exact payload capacity with tolerance limits",
+      "derived_from": [
+        "C-003"
+      ]
+    },
+    {
+      "id": "U-002",
+      "subject": "Exact lifting range",
+      "reason": "The requirement states 'approximately 80-100 mm' but does not specify the tolerance or exact values",
+      "affects": [
+        "REQ-002"
+      ],
+      "resolvable_by": "Specification of exact lifting range with tolerance limits",
+      "derived_from": [
+        "C-003"
+      ]
+    }
+  ],
+  "freedoms": [
+    {
+      "id": "F-001",
+      "kind": "optional",
+      "subject": "Lifting pattern",
+      "statement": "Continuous or intermittent lifting is acceptable",
+      "origin": "clarification",
+      "derived_from": [
+        "C-009"
+      ]
+    },
+    {
+      "id": "F-002",
+      "kind": "optional",
+      "subject": "Self-locking mechanism",
+      "statement": "Self-locking is optional if justified",
+      "origin": "clarification",
+      "derived_from": [
+        "C-010"
+      ]
+    },
+    {
+      "id": "F-003",
+      "kind": "permitted",
+      "subject": "Mechanical components",
+      "statement": "Multiple shafts, bearings, guides, and supports are allowed",
+      "origin": "clarification",
+      "derived_from": [
+        "C-011"
+      ]
+    }
+  ],
+  "relations": [],
+  "discovery_outcomes": []
+}

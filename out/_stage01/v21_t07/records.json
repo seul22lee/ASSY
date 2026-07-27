@@ -1,0 +1,371 @@
+[
+  {
+    "benchmark": "BM-001",
+    "rep": 1,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 28,
+    "acceptance_total": 30,
+    "failures": [
+      "A-1",
+      "A-31"
+    ],
+    "flags": [
+      "D-3"
+    ],
+    "clauses": 6,
+    "function_clauses": 2,
+    "function_clauses_covered": 2,
+    "requirements": 7,
+    "functional": 1,
+    "quantitative": 0,
+    "freedoms": 0,
+    "relations": 0,
+    "scenarios": 4,
+    "assumptions": 0,
+    "unknowns": 0,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 7,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 2408,
+    "output_tokens": 1580,
+    "seconds": 20.5,
+    "attempts": 1,
+    "statements": [
+      "The storage box must be designed for additive manufacturing",
+      "The storage box must be desktop-sized",
+      "The storage box must be easy to assemble",
+      "The storage box must be practical to manufacture",
+      "The storage box must be safe to use",
+      "The storage box must have a hinged lid that remains closed until manually released by a user's thumb",
+      "The storage box must operate manually only"
+    ],
+    "intent": "A small desktop-sized storage box with a hinged lid that remains closed until manually released by a user's thumb"
+  },
+  {
+    "benchmark": "BM-002",
+    "rep": 1,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 27,
+    "acceptance_total": 30,
+    "failures": [
+      "A-1",
+      "A-3",
+      "A-31"
+    ],
+    "flags": [
+      "D-1",
+      "D-3"
+    ],
+    "clauses": 11,
+    "function_clauses": 3,
+    "function_clauses_covered": 2,
+    "requirements": 9,
+    "functional": 2,
+    "quantitative": 2,
+    "freedoms": 3,
+    "relations": 0,
+    "scenarios": 4,
+    "assumptions": 0,
+    "unknowns": 0,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 9,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 5578,
+    "output_tokens": 4655,
+    "seconds": 62.7,
+    "attempts": 2,
+    "statements": [
+      "The mechanism shall be enclosed inside the housing",
+      "The platform shall lift approximately 80 to 100 millimeters",
+      "The platform shall support a payload of approximately 1 kilogram",
+      "The product shall avoid obvious jamming or unstable operation",
+      "The product shall be desktop-sized",
+      "The product shall be mechanically plausible, easy to assemble, and practical to manufacture",
+      "The product shall be safe to use",
+      "The product shall operate manually only",
+      "The product shall raise and lower an internal platform through external hand crank rotation"
+    ],
+    "intent": "A desktop-sized manual lifting mechanism that raises and lowers an internal platform through external hand crank rotation within specified height and payload constraints"
+  },
+  {
+    "benchmark": "BM-101",
+    "rep": 1,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 25,
+    "acceptance_total": 30,
+    "failures": [
+      "A-1",
+      "A-3",
+      "A-8",
+      "A-29",
+      "A-31"
+    ],
+    "flags": [
+      "D-3"
+    ],
+    "clauses": 10,
+    "function_clauses": 4,
+    "function_clauses_covered": 3,
+    "requirements": 9,
+    "functional": 3,
+    "quantitative": 0,
+    "freedoms": 3,
+    "relations": 0,
+    "scenarios": 3,
+    "assumptions": 0,
+    "unknowns": 1,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 9,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 2450,
+    "output_tokens": 2297,
+    "seconds": 29.9,
+    "attempts": 1,
+    "statements": [
+      "The product shall be desktop-sized",
+      "The product shall be easy to assemble",
+      "The product shall be mechanically plausible",
+      "The product shall be practical to manufacture",
+      "The product shall be suitable for repeated manual operation",
+      "The product shall contain the internal mechanism within a protective housing",
+      "The product shall enable a user to rotate an external hand crank to advance an internal indexing platform by one discrete step",
+      "The product shall maintain the internal indexing platform in a stationary position between indexing events",
+      "The product shall operate manually only"
+    ],
+    "intent": "A compact desktop device that enables manual rotation of an external hand crank to advance an internal platform in discrete steps while maintaining positional stability between operations, enclosed within a protective housing"
+  },
+  {
+    "benchmark": "BM-001",
+    "rep": 2,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 28,
+    "acceptance_total": 30,
+    "failures": [
+      "A-1",
+      "A-31"
+    ],
+    "flags": [
+      "D-3"
+    ],
+    "clauses": 6,
+    "function_clauses": 2,
+    "function_clauses_covered": 2,
+    "requirements": 7,
+    "functional": 1,
+    "quantitative": 0,
+    "freedoms": 0,
+    "relations": 0,
+    "scenarios": 2,
+    "assumptions": 0,
+    "unknowns": 0,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 7,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 2408,
+    "output_tokens": 1429,
+    "seconds": 18.1,
+    "attempts": 1,
+    "statements": [
+      "The storage box must be designed for additive manufacturing",
+      "The storage box must be desktop-sized",
+      "The storage box must be easy to assemble",
+      "The storage box must be practical to manufacture",
+      "The storage box must be safe to use",
+      "The storage box must have a hinged lid that remains closed until manually opened by a user's thumb release",
+      "The storage box must operate manually only"
+    ],
+    "intent": "A small desktop-sized storage box with a hinged lid that remains closed until manually opened by a user's thumb release"
+  },
+  {
+    "benchmark": "BM-002",
+    "rep": 2,
+    "error": "[s01_requirement_interpreter] model output failed the schema after 3 attempts: 1 validation error for RequirementBound\n  Value error, 'between' requires distinct endpoints; use '==' [type=value_error, input_value={'comparator': 'between',...'kg', 'tolerance': None}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error",
+    "trace": {
+      "attempts": 3,
+      "prompt_tokens": 9324,
+      "output_tokens": 7727,
+      "seconds": 105.52659296989441,
+      "errors": [
+        "attempt 1: ValidationError: 1 validation error for RequirementBound\n  Value error, 'between' requires distinct endpoints; use '==' [type=value_error, input_value={'comparator': 'between',...'kg', 'tolerance': None}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error",
+        "attempt 2: ValidationError: 1 validation error for RequirementBound\n  Value error, 'between' requires distinct endpoints; use '==' [type=value_error, input_value={'comparator': 'between',...'kg', 'tolerance': None}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error",
+        "attempt 3: ValidationError: 1 validation error for RequirementBound\n  Value error, 'between' requires distinct endpoints; use '==' [type=value_error, input_value={'comparator': 'between',...'kg', 'tolerance': None}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error"
+      ],
+      "raw": "{\n  \"product_intent\": \"A desktop-sized manual lifting device that raises and lowers an internal platform through external hand crank rotation within specified height and load limits\",\n  \"clauses\": [\n    {\n      \"id\": \"C-001\",\n      \"text\": \"Design a compact desktop lifting box.\",\n      \"source\": \"request\",\n      \"disposition\": \"function\"\n    },\n    {\n      \"id\": \"C-002\",\n      \"text\": \"The user should rotate an external hand crank to raise and lower an internal platform.\",\n      \"source\": \"request\",\n      \"disposition\": \"function\"\n    },\n    {\n      \"id\": \"C-003\",\n      \"text\": \"The platform should lift approximately 80-100 mm and support a payload of approximately 1 kg.\",\n      \"source\": \"request\",\n      \"disposition\": \"function\"\n    },\n    {\n      \"id\": \"C-004\",\n      \"text\": \"The mechanism should be enclosed inside the housing.\",\n      \"source\": \"request\",\n      \"disposition\": \"constraint\"\n    },\n    {\n      \"id\": \"C-005\",\n      \"text\": \"The product should be safe to use, mechanically plausible, easy to assemble, and practical to manufacture.\",\n      \"source\": \"request\",\n      \"disposition\": \"constraint\"\n    },\n    {\n      \"id\": \"C-006\",\n      \"text\": \"Avoid obvious jamming or unstable operation.\",\n      \"source\": \"request\",\n      \"disposition\": \"constraint\"\n    },\n    {\n      \"id\": \"C-007\",\n      \"text\": \"Desktop-sized product.\",\n      \"source\": \"clarification\",\n      \"disposition\": \"context\"\n    },\n    {\n      \"id\": \"C-008\",\n      \"text\": \"Manual operation only.\",\n      \"source\": \"clarification\",\n      \"disposition\": \"constraint\"\n    },\n    {\n      \"id\": \"C-009\",\n      \"text\": \"Continuous or intermittent lifting is acceptable.\",\n      \"source\": \"clarification\",\n      \"disposition\": \"freedom\"\n    },\n    {\n      \"id\": \"C-010\",\n      \"text\": \"Self-locking is optional if justified.\",\n      \"source\": \"clarification\",\n      \"disposition\": \"freedom\"\n    },\n    {\n      \"id\": \"C-011\",\n      \"text\": \"Multiple shafts, bearings, guides, and supports are allowed.\",\n      \"source\": \"clarification\",\n      \"disposition\": \"freedom\"\n    }\n  ],\n  \"requirements\": [\n    {\n      \"id\": \"REQ-001\",\n      \"kind\": \"functional\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The product must enable raising and lowering of an internal platform through external hand crank rotation\",\n      \"bound\": null,\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-002\"\n      ],\n      \"verification\": {\n        \"kind\": \"demonstration\",\n        \"observable\": \"Platform movement in response to hand crank rotation\",\n        \"condition\": \"External hand crank is rotated\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-002\",\n      \"kind\": \"performance\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The platform must lift approximately 80 to 100 millimeters\",\n      \"bound\": {\n        \"comparator\": \"between\",\n        \"lower\": 80,\n        \"upper\": 100,\n        \"unit\": \"mm\"\n      },\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-003\"\n      ],\n      \"verification\": {\n        \"kind\": \"measurement\",\n        \"observable\": \"Vertical displacement of platform\",\n        \"condition\": \"Platform is raised to maximum extent\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-003\",\n      \"kind\": \"performance\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The platform must support a payload of approximately 1 kilogram\",\n      \"bound\": {\n        \"comparator\": \"between\",\n        \"lower\": 1,\n        \"upper\": 1,\n        \"unit\": \"kg\"\n      },\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-003\"\n      ],\n      \"verification\": {\n        \"kind\": \"measurement\",\n        \"observable\": \"Maximum load capacity of platform\",\n        \"condition\": \"Platform is loaded to maximum extent\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-004\",\n      \"kind\": \"safety\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The product must be safe to use\",\n      \"bound\": null,\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-005\"\n      ],\n      \"verification\": {\n        \"kind\": \"inspection\",\n        \"observable\": \"Safety features and compliance with safety standards\",\n        \"condition\": \"Product is examined for safety compliance\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-005\",\n      \"kind\": \"manufacturing\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The product must be mechanically plausible\",\n      \"bound\": null,\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-005\"\n      ],\n      \"verification\": {\n        \"kind\": \"analysis\",\n        \"observable\": \"Mechanical feasibility of proposed design\",\n        \"condition\": \"Design is analyzed for mechanical plausibility\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-006\",\n      \"kind\": \"manufacturing\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The product must be easy to assemble\",\n      \"bound\": null,\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-005\"\n      ],\n      \"verification\": {\n        \"kind\": \"inspection\",\n        \"observable\": \"Assembly complexity and time requirements\",\n        \"condition\": \"Product is assembled by typical user\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-007\",\n      \"kind\": \"manufacturing\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The product must be practical to manufacture\",\n      \"bound\": null,\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-005\"\n      ],\n      \"verification\": {\n        \"kind\": \"inspection\",\n        \"observable\": \"Manufacturability of design components\",\n        \"condition\": \"Design is examined for manufacturing practicality\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-008\",\n      \"kind\": \"usability\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The product must avoid obvious jamming or unstable operation\",\n      \"bound\": null,\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-006\"\n      ],\n      \"verification\": {\n        \"kind\": \"demonstration\",\n        \"observable\": \"Operation without jamming or instability\",\n        \"condition\": \"Product is operated under normal conditions\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-009\",\n      \"kind\": \"manufacturing\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The mechanism must be enclosed inside the housing\",\n      \"bound\": null,\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-004\"\n      ],\n      \"verification\": {\n        \"kind\": \"inspection\",\n        \"observable\": \"Mechanism containment within housing\",\n        \"condition\": \"Product is examined for mechanism enclosure\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-010\",\n      \"kind\": \"functional\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The product must be desktop-sized\",\n      \"bound\": null,\n      \"priority\": 2,\n      \"derived_from\": [\n        \"C-007\"\n      ],\n      \"verification\": {\n        \"kind\": \"inspection\",\n        \"observable\": \"Physical dimensions of product\",\n        \"condition\": \"Product is measured for desktop size\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-011\",\n      \"kind\": \"functional\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The product must operate manually only\",\n      \"bound\": null,\n      \"priority\": 2,\n      \"derived_from\": [\n        \"C-008\"\n      ],\n      \"verification\": {\n        \"kind\": \"inspection\",\n        \"observable\": \"Power source and operation method\",\n        \"condition\": \"Product is examined for manual operation capability\",\n        \"reason\": null\n      }\n    }\n  ],\n  \"freedoms\": [\n    {\n      \"id\": \"F-001\",\n      \"kind\": \"optional\",\n      \"subject\": \"Lifting pattern\",\n      \"statement\": \"Continuous or intermittent lifting is acceptable\",\n      \"origin\": \"clarification\",\n      \"derived_from\": [\n        \"C-009\"\n      ]\n    },\n    {\n      \"id\": \"F-002\",\n      \"kind\": \"optional\",\n      \"subject\": \"Self-locking mechanism\",\n      \"statement\": \"Self-locking is optional if justified\",\n      \"origin\": \"clarification\",\n      \"derived_from\": [\n        \"C-010\"\n      ]\n    },\n    {\n      \"id\": \"F-003\",\n      \"kind\": \"permitted\",\n      \"subject\": \"Mechanical components\",\n      \"statement\": \"Multiple shafts, bearings, guides, and supports are allowed\",\n      \"origin\": \"clarification\",\n      \"derived_from\": [\n        \"C-011\"\n      ]\n    }\n  ],\n  \"relations\": [],\n  \"operating_scenarios\": [\n    {\n      \"id\": \"SCN-001\",\n      \"name\": \"Normal operation\",\n      \"description\": \"User rotates external hand crank to raise and lower internal platform within specified height and load limits\",\n      \"applies_to\": [\n        \"REQ-001\",\n        \"REQ-002\",\n        \"REQ-003\"\n      ],\n      \"derived_from\": [\n        \"C-002\",\n        \"C-003\"\n      ]\n    },\n    {\n      \"id\": \"SCN-002\",\n      \"name\": \"Safety evaluation\",\n      \"description\": \"Product is examined for safety compliance and mechanical plausibility\",\n      \"applies_to\": [\n        \"REQ-004\",\n        \"REQ-005\"\n      ],\n      \"derived_from\": [\n        \"C-005\"\n      ]\n    },\n    {\n      \"id\": \"SCN-003\",\n      \"name\": \"Manufacturing assessment\",\n      \"description\": \"Product is evaluated for ease of assembly and practicality of manufacture\",\n      \"applies_to\": [\n        \"REQ-006\",\n        \"REQ-007\"\n      ],\n      \"derived_from\": [\n        \"C-005\"\n      ]\n    },\n    {\n      \"id\": \"SCN-004\",\n      \"name\": \"Operation stability\",\n      \"description\": \"Product operates without jamming or unstable behavior during normal use\",\n      \"applies_to\": [\n        \"REQ-008\"\n      ],\n      \"derived_from\": [\n        \"C-006\"\n      ]\n    },\n    {\n      \"id\": \"SCN-005\",\n      \"name\": \"Physical constraints\",\n      \"description\": \"Product meets desktop-sized dimensions and contains mechanism within housing\",\n      \"applies_to\": [\n        \"REQ-010\",\n        \"REQ-009\"\n      ],\n      \"derived_from\": [\n        \"C-007\",\n        \"C-004\"\n      ]\n    }\n  ],\n  \"assumptions\": [],\n  \"unknowns\": [],\n  \"declared_absent\": {\n    \"freedoms\": \"None exist for this request\",\n    \"relations\": \"None exist for this request\",\n    \"unknowns\": \"None exist for this request\"\n  }\n}"
+    }
+  },
+  {
+    "benchmark": "BM-101",
+    "rep": 2,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 26,
+    "acceptance_total": 30,
+    "failures": [
+      "A-1",
+      "A-8",
+      "A-29",
+      "A-31"
+    ],
+    "flags": [
+      "D-1",
+      "D-3"
+    ],
+    "clauses": 8,
+    "function_clauses": 3,
+    "function_clauses_covered": 3,
+    "requirements": 6,
+    "functional": 2,
+    "quantitative": 0,
+    "freedoms": 3,
+    "relations": 0,
+    "scenarios": 2,
+    "assumptions": 0,
+    "unknowns": 1,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 6,
+    "not_yet_verifiable": 1,
+    "prompt_tokens": 2450,
+    "output_tokens": 1649,
+    "seconds": 21.4,
+    "attempts": 1,
+    "statements": [
+      "The product must advance an internal indexing platform by one discrete step when an external hand crank is rotated",
+      "The product must be desktop-sized",
+      "The product must be enclosed in a protective housing",
+      "The product must be mechanically plausible, easy to assemble, and practical to manufacture",
+      "The product must be suitable for repeated manual operation",
+      "The product must maintain stationary position between indexing events"
+    ],
+    "intent": "A compact desktop device that advances an internal platform in discrete steps through manual rotation of an external crank while maintaining positional stability between steps"
+  },
+  {
+    "benchmark": "BM-001",
+    "rep": 3,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 28,
+    "acceptance_total": 30,
+    "failures": [
+      "A-1",
+      "A-31"
+    ],
+    "flags": [
+      "D-3"
+    ],
+    "clauses": 6,
+    "function_clauses": 2,
+    "function_clauses_covered": 2,
+    "requirements": 7,
+    "functional": 1,
+    "quantitative": 0,
+    "freedoms": 0,
+    "relations": 0,
+    "scenarios": 3,
+    "assumptions": 0,
+    "unknowns": 0,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 7,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 2408,
+    "output_tokens": 1504,
+    "seconds": 19.2,
+    "attempts": 1,
+    "statements": [
+      "The storage box must be designed for additive manufacturing",
+      "The storage box must be desktop-sized",
+      "The storage box must be easy to assemble",
+      "The storage box must be practical to manufacture",
+      "The storage box must be safe to use",
+      "The storage box must have a hinged lid that remains closed until manually released by a user's thumb",
+      "The storage box must operate manually only"
+    ],
+    "intent": "A small desktop-sized storage box with a hinged lid that remains closed until manually released by a user's thumb"
+  },
+  {
+    "benchmark": "BM-002",
+    "rep": 3,
+    "error": "[s01_requirement_interpreter] model output failed the schema after 3 attempts: 1 validation error for RequirementBound\n  Value error, 'between' requires distinct endpoints; use '==' [type=value_error, input_value={'comparator': 'between',...'kg', 'tolerance': None}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error",
+    "trace": {
+      "attempts": 3,
+      "prompt_tokens": 9315,
+      "output_tokens": 7576,
+      "seconds": 104.62631893157959,
+      "errors": [
+        "attempt 1: ValidationError: 1 validation error for RequirementBound\n  Value error, 'between' requires distinct endpoints; use '==' [type=value_error, input_value={'comparator': 'between',...'kg', 'tolerance': None}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error",
+        "attempt 2: ValidationError: 1 validation error for RequirementBound\n  Value error, 'between' requires distinct endpoints; use '==' [type=value_error, input_value={'comparator': 'between',...'kg', 'tolerance': None}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error",
+        "attempt 3: ValidationError: 1 validation error for RequirementBound\n  Value error, 'between' requires distinct endpoints; use '==' [type=value_error, input_value={'comparator': 'between',...'kg', 'tolerance': None}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error"
+      ],
+      "raw": "{\n  \"product_intent\": \"A compact desktop device that enables manual lifting and lowering of an internal platform through external hand crank rotation while enclosing the mechanical mechanism within its housing\",\n  \"clauses\": [\n    {\n      \"id\": \"C-001\",\n      \"text\": \"Design a compact desktop lifting box.\",\n      \"source\": \"request\",\n      \"disposition\": \"function\"\n    },\n    {\n      \"id\": \"C-002\",\n      \"text\": \"The user should rotate an external hand crank to raise and lower an internal platform.\",\n      \"source\": \"request\",\n      \"disposition\": \"function\"\n    },\n    {\n      \"id\": \"C-003\",\n      \"text\": \"The platform should lift approximately 80-100 mm and support a payload of approximately 1 kg.\",\n      \"source\": \"request\",\n      \"disposition\": \"function\"\n    },\n    {\n      \"id\": \"C-004\",\n      \"text\": \"The mechanism should be enclosed inside the housing.\",\n      \"source\": \"request\",\n      \"disposition\": \"constraint\"\n    },\n    {\n      \"id\": \"C-005\",\n      \"text\": \"The product should be safe to use, mechanically plausible, easy to assemble, and practical to manufacture.\",\n      \"source\": \"request\",\n      \"disposition\": \"constraint\"\n    },\n    {\n      \"id\": \"C-006\",\n      \"text\": \"Avoid obvious jamming or unstable operation.\",\n      \"source\": \"request\",\n      \"disposition\": \"constraint\"\n    },\n    {\n      \"id\": \"C-007\",\n      \"text\": \"Desktop-sized product.\",\n      \"source\": \"clarification\",\n      \"disposition\": \"context\"\n    },\n    {\n      \"id\": \"C-008\",\n      \"text\": \"Manual operation only.\",\n      \"source\": \"clarification\",\n      \"disposition\": \"constraint\"\n    },\n    {\n      \"id\": \"C-009\",\n      \"text\": \"Continuous or intermittent lifting is acceptable.\",\n      \"source\": \"clarification\",\n      \"disposition\": \"freedom\"\n    },\n    {\n      \"id\": \"C-010\",\n      \"text\": \"Self-locking is optional if justified.\",\n      \"source\": \"clarification\",\n      \"disposition\": \"freedom\"\n    },\n    {\n      \"id\": \"C-011\",\n      \"text\": \"Multiple shafts, bearings, guides, and supports are allowed.\",\n      \"source\": \"clarification\",\n      \"disposition\": \"freedom\"\n    }\n  ],\n  \"requirements\": [\n    {\n      \"id\": \"REQ-001\",\n      \"kind\": \"functional\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The product shall enable manual lifting and lowering of an internal platform through external hand crank rotation\",\n      \"bound\": null,\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-002\"\n      ],\n      \"verification\": {\n        \"kind\": \"demonstration\",\n        \"observable\": \"Platform motion in response to hand crank rotation\",\n        \"condition\": \"External hand crank rotation\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-002\",\n      \"kind\": \"performance\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The platform shall lift approximately 80 to 100 millimeters\",\n      \"bound\": {\n        \"comparator\": \"between\",\n        \"lower\": 80,\n        \"upper\": 100,\n        \"unit\": \"mm\"\n      },\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-003\"\n      ],\n      \"verification\": {\n        \"kind\": \"measurement\",\n        \"observable\": \"Vertical displacement of internal platform\",\n        \"condition\": \"Platform lifting operation\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-003\",\n      \"kind\": \"performance\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The platform shall support approximately 1 kilogram payload\",\n      \"bound\": {\n        \"comparator\": \"between\",\n        \"lower\": 1,\n        \"upper\": 1,\n        \"unit\": \"kg\"\n      },\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-003\"\n      ],\n      \"verification\": {\n        \"kind\": \"measurement\",\n        \"observable\": \"Maximum load capacity of platform\",\n        \"condition\": \"Platform supporting payload\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-004\",\n      \"kind\": \"safety\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The product shall be safe to use\",\n      \"bound\": null,\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-005\"\n      ],\n      \"verification\": {\n        \"kind\": \"inspection\",\n        \"observable\": \"Safety features compliance with standards\",\n        \"condition\": \"Product operational state\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-005\",\n      \"kind\": \"manufacturing\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The product shall be mechanically plausible\",\n      \"bound\": null,\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-005\"\n      ],\n      \"verification\": {\n        \"kind\": \"analysis\",\n        \"observable\": \"Mechanical system feasibility analysis\",\n        \"condition\": \"Product design review\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-006\",\n      \"kind\": \"assembly\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The product shall be easy to assemble\",\n      \"bound\": null,\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-005\"\n      ],\n      \"verification\": {\n        \"kind\": \"inspection\",\n        \"observable\": \"Assembly process complexity and time\",\n        \"condition\": \"Product assembly procedure\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-007\",\n      \"kind\": \"manufacturing\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The product shall be practical to manufacture\",\n      \"bound\": null,\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-005\"\n      ],\n      \"verification\": {\n        \"kind\": \"inspection\",\n        \"observable\": \"Manufacturing process feasibility and cost\",\n        \"condition\": \"Product manufacturing evaluation\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-008\",\n      \"kind\": \"performance\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The mechanism shall be enclosed inside the housing\",\n      \"bound\": null,\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-004\"\n      ],\n      \"verification\": {\n        \"kind\": \"inspection\",\n        \"observable\": \"Mechanism location within product housing\",\n        \"condition\": \"Product physical inspection\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-009\",\n      \"kind\": \"performance\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The product shall avoid obvious jamming or unstable operation\",\n      \"bound\": null,\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-006\"\n      ],\n      \"verification\": {\n        \"kind\": \"demonstration\",\n        \"observable\": \"Mechanical operation without jamming or instability\",\n        \"condition\": \"Product operational testing\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-010\",\n      \"kind\": \"constraint\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The product shall be desktop-sized\",\n      \"bound\": null,\n      \"priority\": 2,\n      \"derived_from\": [\n        \"C-007\"\n      ],\n      \"verification\": {\n        \"kind\": \"inspection\",\n        \"observable\": \"Product dimensions relative to desktop space\",\n        \"condition\": \"Product physical inspection\",\n        \"reason\": null\n      }\n    },\n    {\n      \"id\": \"REQ-011\",\n      \"kind\": \"constraint\",\n      \"origin\": \"user_stated\",\n      \"statement\": \"The product shall operate manually only\",\n      \"bound\": null,\n      \"priority\": 1,\n      \"derived_from\": [\n        \"C-008\"\n      ],\n      \"verification\": {\n        \"kind\": \"inspection\",\n        \"observable\": \"Product operation method\",\n        \"condition\": \"Product operational state\",\n        \"reason\": null\n      }\n    }\n  ],\n  \"freedoms\": [\n    {\n      \"id\": \"F-001\",\n      \"kind\": \"optional\",\n      \"subject\": \"lifting pattern\",\n      \"statement\": \"Continuous or intermittent lifting is acceptable\",\n      \"origin\": \"clarification\",\n      \"derived_from\": [\n        \"C-009\"\n      ]\n    },\n    {\n      \"id\": \"F-002\",\n      \"kind\": \"optional\",\n      \"subject\": \"self-locking mechanism\",\n      \"statement\": \"Self-locking is optional if justified\",\n      \"origin\": \"clarification\",\n      \"derived_from\": [\n        \"C-010\"\n      ]\n    },\n    {\n      \"id\": \"F-003\",\n      \"kind\": \"permitted\",\n      \"subject\": \"mechanical components\",\n      \"statement\": \"Multiple shafts, bearings, guides, and supports are allowed\",\n      \"origin\": \"clarification\",\n      \"derived_from\": [\n        \"C-011\"\n      ]\n    }\n  ],\n  \"relations\": [],\n  \"operating_scenarios\": [\n    {\n      \"id\": \"SCN-001\",\n      \"name\": \"Normal Operation\",\n      \"description\": \"User rotates hand crank to lift or lower platform within specified range\",\n      \"applies_to\": [\n        \"REQ-001\",\n        \"REQ-002\",\n        \"REQ-003\"\n      ],\n      \"derived_from\": [\n        \"C-002\",\n        \"C-003\"\n      ]\n    },\n    {\n      \"id\": \"SCN-002\",\n      \"name\": \"Safety Testing\",\n      \"description\": \"Product operates under conditions that test safety requirements\",\n      \"applies_to\": [\n        \"REQ-004\"\n      ],\n      \"derived_from\": [\n        \"C-005\"\n      ]\n    },\n    {\n      \"id\": \"SCN-003\",\n      \"name\": \"Manufacturing Evaluation\",\n      \"description\": \"Product undergoes evaluation for manufacturability and assembly requirements\",\n      \"applies_to\": [\n        \"REQ-005\",\n        \"REQ-006\",\n        \"REQ-007\"\n      ],\n      \"derived_from\": [\n        \"C-005\"\n      ]\n    },\n    {\n      \"id\": \"SCN-004\",\n      \"name\": \"Mechanical Operation\",\n      \"description\": \"Product operates under conditions that test mechanical operation requirements\",\n      \"applies_to\": [\n        \"REQ-008\",\n        \"REQ-009\"\n      ],\n      \"derived_from\": [\n        \"C-004\",\n        \"C-006\"\n      ]\n    }\n  ],\n  \"assumptions\": [],\n  \"unknowns\": [],\n  \"declared_absent\": {\n    \"freedoms\": \"None exist for this request - all freedoms are explicitly stated in the clarifications\",\n    \"relations\": \"None exist for this request - no conflicts or dependencies between requirements identified\",\n    \"unknowns\": \"None exist for this request - all required information is provided in the request and clarifications\"\n  }\n}"
+    }
+  },
+  {
+    "benchmark": "BM-101",
+    "rep": 3,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.7,
+    "accepted": false,
+    "acceptance_pass": 26,
+    "acceptance_total": 30,
+    "failures": [
+      "A-1",
+      "A-8",
+      "A-29",
+      "A-31"
+    ],
+    "flags": [
+      "D-1",
+      "D-3"
+    ],
+    "clauses": 8,
+    "function_clauses": 3,
+    "function_clauses_covered": 3,
+    "requirements": 6,
+    "functional": 2,
+    "quantitative": 0,
+    "freedoms": 3,
+    "relations": 0,
+    "scenarios": 2,
+    "assumptions": 0,
+    "unknowns": 1,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 6,
+    "not_yet_verifiable": 2,
+    "prompt_tokens": 2450,
+    "output_tokens": 1713,
+    "seconds": 22.7,
+    "attempts": 1,
+    "statements": [
+      "The product must be mechanically plausible, easy to assemble, and practical to manufacture",
+      "The product must enable a user to rotate an external hand crank to advance an internal indexing platform by one discrete step",
+      "The product must enclose the internal mechanism inside a protective housing",
+      "The product must maintain the internal indexing platform in a stationary position between indexing events",
+      "The product must support manual operation only",
+      "The product must support repeated manual operation"
+    ],
+    "intent": "A compact desktop device that advances an internal platform in discrete steps through manual rotation of an external crank while maintaining positional stability between steps"
+  }
+]

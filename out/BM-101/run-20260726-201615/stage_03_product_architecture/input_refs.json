@@ -1,0 +1,16 @@
+{
+  "stage": "stage_03_product_architecture",
+  "question": "How do the mechanisms become a coherent product?",
+  "consumes": [
+    {
+      "object": "RequirementSpec",
+      "object_id": "SPEC-001",
+      "location": "../stage_01_requirement_interpreter/output.json"
+    },
+    {
+      "object": "MechanicalArchitecture",
+      "object_id": "MECH-001",
+      "location": "../stage_02_mechanical_architecture/output.json"
+    }
+  ]
+}

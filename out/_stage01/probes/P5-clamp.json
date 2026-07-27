@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SPEC-001",
+    "design_id": "design-001",
+    "producer": "s01_requirement_interpreter",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "source_text": "Design a device that clamps two flat plates together and releases them.",
+  "product_intent": "A device that can secure two flat plates in a clamped state and subsequently release them.",
+  "user_intent_summary": "Design a device that clamps two flat plates together and releases them.",
+  "clauses": [
+    {
+      "id": "C-001",
+      "text": "Design a device that clamps two flat plates together and releases them.",
+      "source": "request",
+      "disposition": "function"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The device must be capable of clamping two flat plates together.",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-001"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Ability to hold two flat plates in a secured position",
+        "condition": "When the device is actuated, it must secure the plates together",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-002",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The device must be capable of releasing the two flat plates.",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-001"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Ability to separate two flat plates from a secured position",
+        "condition": "When the device is actuated, it must allow the plates to be separated",
+        "reason": null
+      }
+    }
+  ],
+  "operating_scenarios": [
+    {
+      "id": "SCN-001",
+      "name": "Clamping Operation",
+      "description": "The device is actuated to secure two flat plates together in a clamped state.",
+      "applies_to": [
+        "REQ-001"
+      ],
+      "derived_from": [
+        "C-001"
+      ]
+    },
+    {
+      "id": "SCN-002",
+      "name": "Release Operation",
+      "description": "The device is actuated to allow the two flat plates to be separated from a clamped state.",
+      "applies_to": [
+        "REQ-002"
+      ],
+      "derived_from": [
+        "C-001"
+      ]
+    }
+  ],
+  "assumptions": [],
+  "unknowns": [],
+  "freedoms": [],
+  "relations": [
+    {
+      "kind": "depends_on",
+      "source": "None",
+      "target": "None",
+      "rationale": "The request does not express any dependencies, refinements, conflicts, conditionals or prerequisites between requirements."
+    }
+  ],
+  "discovery_outcomes": [
+    {
+      "discovery": "clauses",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "intent",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "requirements",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "freedoms",
+      "state": "explicitly_absent",
+      "reason": "No clause in the request expresses a user preference, permission, prohibition or allowance for any aspect of the device design."
+    },
+    {
+      "discovery": "relations",
+      "state": "explicitly_absent",
+      "reason": "The request does not express any dependencies, refinements, conflicts, conditionals or prerequisites between requirements."
+    },
+    {
+      "discovery": "operating_scenarios",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "assumptions",
+      "state": "explicitly_absent",
+      "reason": "No implicit information or prior knowledge was necessary to interpret the request."
+    },
+    {
+      "discovery": "unknowns",
+      "state": "explicitly_absent",
+      "reason": "All required information for defining the device's functions is provided in the request."
+    }
+  ]
+}

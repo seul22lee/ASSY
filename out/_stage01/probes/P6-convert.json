@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SPEC-001",
+    "design_id": "design-001",
+    "producer": "s01_requirement_interpreter",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "source_text": "Design a device that converts a rotating input into a straight-line output.",
+  "product_intent": "A mechanism that transforms rotational motion into linear motion.",
+  "user_intent_summary": "Design a device that converts a rotating input into a straight-line output.",
+  "clauses": [
+    {
+      "id": "C-001",
+      "text": "Design a device that converts a rotating input into a straight-line output.",
+      "source": "request",
+      "disposition": "function"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The device must convert rotational motion into linear motion.",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-001"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "linear movement of output as input rotates",
+        "condition": "input rotation produces corresponding linear output movement",
+        "reason": null
+      }
+    }
+  ],
+  "operating_scenarios": [
+    {
+      "id": "SCN-001",
+      "name": "Rotational to Linear Motion Conversion",
+      "description": "A device operates under conditions where rotational input is converted to straight-line output motion.",
+      "applies_to": [
+        "REQ-001"
+      ],
+      "derived_from": [
+        "C-001"
+      ]
+    }
+  ],
+  "assumptions": [],
+  "unknowns": [],
+  "freedoms": [],
+  "relations": [
+    {
+      "kind": "depends_on",
+      "source": "None",
+      "target": "None",
+      "rationale": "The request does not express any dependency, refinement, conflict, conditional relationship, or prerequisite among requirements."
+    }
+  ],
+  "discovery_outcomes": [
+    {
+      "discovery": "clauses",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "intent",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "requirements",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "freedoms",
+      "state": "explicitly_absent",
+      "reason": "No clause in the request indicates that the user left any aspect open, permitted, forbade, or preferred."
+    },
+    {
+      "discovery": "relations",
+      "state": "explicitly_absent",
+      "reason": "The request does not express any dependency, refinement, conflict, conditional relationship, or prerequisite among requirements."
+    },
+    {
+      "discovery": "operating_scenarios",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "assumptions",
+      "state": "explicitly_absent",
+      "reason": "No inferred or project default assumptions were necessary to process the request."
+    },
+    {
+      "discovery": "unknowns",
+      "state": "explicitly_absent",
+      "reason": "No information was missing that would require an unknown to be identified."
+    }
+  ]
+}

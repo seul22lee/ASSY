@@ -1,0 +1,416 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SPEC-001",
+    "design_id": "design-001",
+    "producer": "s01_requirement_interpreter",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "source_text": "Design a compact desktop indexing box. The user should rotate an external hand crank to advance an internal indexing platform by one discrete step. The output should remain stationary between indexing events. The mechanism should be enclosed inside a protective housing. The product should be mechanically plausible, easy to assemble, practical to manufacture, and suitable for repeated manual operation.",
+  "product_intent": "A compact desktop device that enables manual rotation to advance an internal platform in discrete steps while maintaining stationary output between operations, contained within a protective housing.",
+  "user_intent_summary": "Design a compact desktop indexing box that advances an internal platform by one discrete step when rotated by a hand crank, with the output staying stationary between events, enclosed in a protective housing.",
+  "clauses": [
+    {
+      "id": "C-001",
+      "text": "Design a compact desktop indexing box",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-002",
+      "text": "The user should rotate an external hand crank to advance an internal indexing platform by one discrete step",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-003",
+      "text": "The output should remain stationary between indexing events",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-004",
+      "text": "The mechanism should be enclosed inside a protective housing",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-005",
+      "text": "The product should be mechanically plausible, easy to assemble, practical to manufacture, and suitable for repeated manual operation",
+      "source": "request",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-006",
+      "text": "Desktop-sized product",
+      "source": "clarification",
+      "disposition": "context"
+    },
+    {
+      "id": "C-007",
+      "text": "Manual operation only",
+      "source": "clarification",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-008",
+      "text": "The number of indexed positions is not prescribed",
+      "source": "clarification",
+      "disposition": "freedom"
+    },
+    {
+      "id": "C-009",
+      "text": "Different housing layouts are acceptable",
+      "source": "clarification",
+      "disposition": "freedom"
+    },
+    {
+      "id": "C-010",
+      "text": "Multiple support strategies are acceptable",
+      "source": "clarification",
+      "disposition": "freedom"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The product must enable a user to rotate an external hand crank to advance an internal indexing platform by one discrete step",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-002"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Hand crank rotation causing internal platform advancement by one discrete step",
+        "condition": "Manual operation of hand crank results in indexed movement",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-002",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The product must maintain stationary output between indexing events",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-003"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Internal platform remaining stationary between indexing operations",
+        "condition": "No movement occurs during non-indexing periods",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-003",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The product must enclose the mechanism inside a protective housing",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-004"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "Mechanism completely enclosed within housing structure",
+        "condition": "All internal components protected by housing",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-004",
+      "kind": "performance",
+      "origin": "user_stated",
+      "statement": "The product must be mechanically plausible",
+      "bound": null,
+      "priority": 2,
+      "derived_from": [
+        "C-005"
+      ],
+      "verification": {
+        "kind": "analysis",
+        "observable": "Mechanical system design compatibility with intended function",
+        "condition": "System can be built according to physical laws and engineering principles",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-005",
+      "kind": "performance",
+      "origin": "user_stated",
+      "statement": "The product must be easy to assemble",
+      "bound": null,
+      "priority": 2,
+      "derived_from": [
+        "C-005"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "Assembly process requiring minimal tools and time",
+        "condition": "Component integration completed without excessive difficulty",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-006",
+      "kind": "performance",
+      "origin": "user_stated",
+      "statement": "The product must be practical to manufacture",
+      "bound": null,
+      "priority": 2,
+      "derived_from": [
+        "C-005"
+      ],
+      "verification": {
+        "kind": "analysis",
+        "observable": "Manufacturing process feasibility",
+        "condition": "Production can occur using available manufacturing methods",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-007",
+      "kind": "performance",
+      "origin": "user_stated",
+      "statement": "The product must be suitable for repeated manual operation",
+      "bound": null,
+      "priority": 2,
+      "derived_from": [
+        "C-005"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Repeated hand crank operation without failure",
+        "condition": "Device withstands multiple manual operations",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-008",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The product must be desktop-sized",
+      "bound": null,
+      "priority": 2,
+      "derived_from": [
+        "C-006"
+      ],
+      "verification": {
+        "kind": "measurement",
+        "observable": "Product dimensions fitting typical desktop workspace",
+        "condition": "Size appropriate for desktop placement and operation",
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-009",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The product must operate manually only",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-007"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Operation requiring only human hand force for movement",
+        "condition": "No power source or automated mechanisms involved",
+        "reason": null
+      }
+    }
+  ],
+  "operating_scenarios": [
+    {
+      "id": "SCN-001",
+      "name": "Indexing Operation",
+      "description": "User rotates hand crank to advance internal platform by one discrete step",
+      "applies_to": [
+        "REQ-001",
+        "REQ-002"
+      ],
+      "derived_from": [
+        "C-002",
+        "C-003"
+      ]
+    },
+    {
+      "id": "SCN-002",
+      "name": "Stationary Operation",
+      "description": "Internal platform remains stationary between indexing events",
+      "applies_to": [
+        "REQ-002"
+      ],
+      "derived_from": [
+        "C-003"
+      ]
+    },
+    {
+      "id": "SCN-003",
+      "name": "Desktop Environment",
+      "description": "Product operates in typical desktop workspace conditions",
+      "applies_to": [
+        "REQ-008"
+      ],
+      "derived_from": [
+        "C-006"
+      ]
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "AS-001",
+      "statement": "The product will be operated manually by human users",
+      "stands_in_for": null,
+      "origin": "inferred",
+      "derived_from": [
+        "C-007"
+      ]
+    },
+    {
+      "id": "AS-002",
+      "statement": "The indexing mechanism can provide discrete step movements",
+      "stands_in_for": null,
+      "origin": "inferred",
+      "derived_from": [
+        "C-002"
+      ]
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "U-001",
+      "subject": "Number of indexed positions",
+      "reason": "The request does not specify how many discrete positions the indexing platform should have",
+      "affects": [
+        "REQ-001"
+      ],
+      "resolvable_by": "Specification of required number of indexed positions",
+      "derived_from": [
+        "C-008"
+      ]
+    },
+    {
+      "id": "U-002",
+      "subject": "Housing design parameters",
+      "reason": "The request does not specify exact dimensions, materials or construction details for the protective housing",
+      "affects": [
+        "REQ-003"
+      ],
+      "resolvable_by": "Specification of housing dimensions, materials and structural requirements",
+      "derived_from": [
+        "C-004",
+        "C-009"
+      ]
+    },
+    {
+      "id": "U-003",
+      "subject": "Support strategy details",
+      "reason": "The request does not specify exact support mechanisms or mounting strategies for the device",
+      "affects": [
+        "REQ-001",
+        "REQ-002"
+      ],
+      "resolvable_by": "Specification of mounting or support requirements",
+      "derived_from": [
+        "C-010"
+      ]
+    }
+  ],
+  "freedoms": [
+    {
+      "id": "F-001",
+      "kind": "unconstrained",
+      "subject": "Number of indexed positions",
+      "statement": "The number of indexed positions is not prescribed",
+      "origin": "clarification",
+      "derived_from": [
+        "C-008"
+      ]
+    },
+    {
+      "id": "F-002",
+      "kind": "permitted",
+      "subject": "Housing layouts",
+      "statement": "Different housing layouts are acceptable",
+      "origin": "clarification",
+      "derived_from": [
+        "C-009"
+      ]
+    },
+    {
+      "id": "F-003",
+      "kind": "permitted",
+      "subject": "Support strategies",
+      "statement": "Multiple support strategies are acceptable",
+      "origin": "clarification",
+      "derived_from": [
+        "C-010"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "kind": "depends_on",
+      "source": "REQ-002",
+      "target": "REQ-001",
+      "rationale": "Output stationary requirement depends on the indexing mechanism being functional"
+    },
+    {
+      "kind": "refines",
+      "source": "REQ-001",
+      "target": "REQ-009",
+      "rationale": "Manual operation constraint refines the indexing mechanism's operational requirements"
+    }
+  ],
+  "discovery_outcomes": [
+    {
+      "discovery": "clauses",
+      "state": "found",
+      "reason": "All clauses from request and clarifications were processed"
+    },
+    {
+      "discovery": "intent",
+      "state": "found",
+      "reason": "Both user intent summary and product intent were written"
+    },
+    {
+      "discovery": "requirements",
+      "state": "found",
+      "reason": "All functional, performance and constraint requirements were derived from clauses"
+    },
+    {
+      "discovery": "freedoms",
+      "state": "found",
+      "reason": "Freedom clauses were identified and recorded"
+    },
+    {
+      "discovery": "relations",
+      "state": "found",
+      "reason": "Dependencies and refinements between requirements were identified"
+    },
+    {
+      "discovery": "operating_scenarios",
+      "state": "found",
+      "reason": "Operating scenarios derived from behavioral requirements"
+    },
+    {
+      "discovery": "assumptions",
+      "state": "found",
+      "reason": "Inferred assumptions were identified and recorded"
+    },
+    {
+      "discovery": "unknowns",
+      "state": "found",
+      "reason": "Gaps in information that would prevent complete specification were identified"
+    }
+  ]
+}

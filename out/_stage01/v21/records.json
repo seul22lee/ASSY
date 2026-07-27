@@ -1,0 +1,153 @@
+[
+  {
+    "benchmark": "BM-001",
+    "rep": 1,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.0,
+    "accepted": false,
+    "acceptance_pass": 25,
+    "acceptance_total": 30,
+    "failures": [
+      "A-1",
+      "A-8",
+      "A-20",
+      "A-29",
+      "A-31"
+    ],
+    "flags": [
+      "D-3"
+    ],
+    "clauses": 6,
+    "function_clauses": 2,
+    "function_clauses_covered": 2,
+    "requirements": 7,
+    "functional": 2,
+    "quantitative": 0,
+    "freedoms": 2,
+    "relations": 0,
+    "scenarios": 2,
+    "assumptions": 2,
+    "unknowns": 5,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 7,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 2408,
+    "output_tokens": 2209,
+    "seconds": 29.4,
+    "attempts": 1,
+    "statements": [
+      "The storage box must be designed for additive manufacturing",
+      "The storage box must be desktop-sized",
+      "The storage box must be easy to assemble",
+      "The storage box must be practical to manufacture",
+      "The storage box must be safe to use",
+      "The storage box must have a hinged lid that remains closed until manually released by a user's thumb",
+      "The storage box must operate manually only"
+    ],
+    "intent": "A small desktop-sized storage box with a hinged lid that remains closed until manually opened by a user's thumb release"
+  },
+  {
+    "benchmark": "BM-002",
+    "rep": 1,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.0,
+    "accepted": false,
+    "acceptance_pass": 26,
+    "acceptance_total": 30,
+    "failures": [
+      "A-1",
+      "A-3",
+      "A-8",
+      "A-31"
+    ],
+    "flags": [
+      "D-1",
+      "D-3"
+    ],
+    "clauses": 11,
+    "function_clauses": 3,
+    "function_clauses_covered": 2,
+    "requirements": 11,
+    "functional": 2,
+    "quantitative": 2,
+    "freedoms": 3,
+    "relations": 0,
+    "scenarios": 3,
+    "assumptions": 0,
+    "unknowns": 2,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 11,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 5579,
+    "output_tokens": 5410,
+    "seconds": 74.0,
+    "attempts": 2,
+    "statements": [
+      "The mechanism must be enclosed inside the housing",
+      "The platform must lift approximately 80-100 mm",
+      "The platform must support a payload of approximately 1 kg",
+      "The product must avoid obvious jamming or unstable operation",
+      "The product must be desktop-sized",
+      "The product must be easy to assemble",
+      "The product must be mechanically plausible",
+      "The product must be practical to manufacture",
+      "The product must be safe to use",
+      "The product must operate manually only",
+      "The product must raise and lower an internal platform through external hand crank rotation"
+    ],
+    "intent": "A desktop-sized manual lifting mechanism that raises and lowers an internal platform through external hand crank rotation within specified height and payload limits"
+  },
+  {
+    "benchmark": "BM-101",
+    "rep": 1,
+    "model": "qwen3-coder:latest",
+    "temperature": 0.0,
+    "accepted": false,
+    "acceptance_pass": 27,
+    "acceptance_total": 30,
+    "failures": [
+      "A-1",
+      "A-3",
+      "A-31"
+    ],
+    "flags": [
+      "D-3"
+    ],
+    "clauses": 10,
+    "function_clauses": 4,
+    "function_clauses_covered": 3,
+    "requirements": 9,
+    "functional": 3,
+    "quantitative": 0,
+    "freedoms": 3,
+    "relations": 0,
+    "scenarios": 3,
+    "assumptions": 0,
+    "unknowns": 0,
+    "origins": [
+      "user_stated"
+    ],
+    "verification_covered": 9,
+    "not_yet_verifiable": 0,
+    "prompt_tokens": 2450,
+    "output_tokens": 2097,
+    "seconds": 27.6,
+    "attempts": 1,
+    "statements": [
+      "The product must advance an internal indexing platform by one discrete step when an external hand crank is rotated",
+      "The product must be desktop-sized",
+      "The product must be easy to assemble",
+      "The product must be mechanically plausible",
+      "The product must be practical to manufacture",
+      "The product must be suitable for repeated manual operation",
+      "The product must enclose its internal mechanism within a protective housing",
+      "The product must maintain stationary output between indexing events",
+      "The product must operate manually only"
+    ],
+    "intent": "A compact desktop device that advances an internal platform in discrete steps through manual rotation of an external crank while maintaining positional stability between steps"
+  }
+]

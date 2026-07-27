@@ -1,0 +1,177 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SPEC-001",
+    "design_id": "design-001",
+    "producer": "s01_requirement_interpreter",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "source_text": "Design a device that raises a mass vertically.",
+  "product_intent": "A device that performs vertical lifting of a mass.",
+  "user_intent_summary": "Design a device that raises a mass vertically.",
+  "clauses": [
+    {
+      "id": "C-001",
+      "text": "Design a device that raises a mass vertically.",
+      "source": "request",
+      "disposition": "function"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The device must raise a mass vertically.",
+      "bound": null,
+      "priority": 1,
+      "derived_from": [
+        "C-001"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "Vertical movement of the mass",
+        "condition": "The mass moves upward along a vertical path",
+        "reason": null
+      }
+    }
+  ],
+  "operating_scenarios": [
+    {
+      "id": "SCN-001",
+      "name": "Mass lifting operation",
+      "description": "A mass is raised vertically by the device",
+      "applies_to": [
+        "REQ-001"
+      ],
+      "derived_from": [
+        "C-001"
+      ]
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "AS-001",
+      "statement": "The device is designed to perform vertical lifting of a mass without specifying the exact mechanism",
+      "stands_in_for": null,
+      "origin": "inferred",
+      "derived_from": [
+        "C-001"
+      ]
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "U-001",
+      "subject": "The mass to be raised",
+      "reason": "The request does not specify the mass that needs to be raised",
+      "affects": [
+        "REQ-001"
+      ],
+      "resolvable_by": "Specification of the mass to be raised by the user",
+      "derived_from": [
+        "C-001"
+      ]
+    },
+    {
+      "id": "U-002",
+      "subject": "The height to which the mass is raised",
+      "reason": "The request does not specify how high the mass must be raised",
+      "affects": [
+        "REQ-001"
+      ],
+      "resolvable_by": "Specification of the lifting height by the user",
+      "derived_from": [
+        "C-001"
+      ]
+    },
+    {
+      "id": "U-003",
+      "subject": "The speed or rate of vertical movement",
+      "reason": "The request does not specify how fast the mass must be raised",
+      "affects": [
+        "REQ-001"
+      ],
+      "resolvable_by": "Specification of the lifting speed by the user",
+      "derived_from": [
+        "C-001"
+      ]
+    },
+    {
+      "id": "U-004",
+      "subject": "The type of mass to be raised (e.g., solid, liquid, gas)",
+      "reason": "The request does not specify the physical state of the mass",
+      "affects": [
+        "REQ-001"
+      ],
+      "resolvable_by": "Specification of the mass type by the user",
+      "derived_from": [
+        "C-001"
+      ]
+    }
+  ],
+  "freedoms": [
+    {
+      "id": "F-001",
+      "kind": "unconstrained",
+      "subject": "The specific mechanism or method used to raise the mass",
+      "statement": "The device may use any means to raise a mass vertically",
+      "origin": "user_stated",
+      "derived_from": [
+        "C-001"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "kind": "depends_on",
+      "source": "None",
+      "target": "None",
+      "rationale": "The request does not express any dependency, refinement, conflict, conditional relationship, or prerequisite among requirements."
+    }
+  ],
+  "discovery_outcomes": [
+    {
+      "discovery": "clauses",
+      "state": "found",
+      "reason": "One function clause was identified from the request."
+    },
+    {
+      "discovery": "intent",
+      "state": "found",
+      "reason": "Both user intent summary and product intent were stated."
+    },
+    {
+      "discovery": "requirements",
+      "state": "found",
+      "reason": "One functional requirement was derived from the clause."
+    },
+    {
+      "discovery": "freedoms",
+      "state": "found",
+      "reason": "One freedom was identified regarding the method of lifting."
+    },
+    {
+      "discovery": "relations",
+      "state": "explicitly_absent",
+      "reason": "No explicit relationship between requirements was expressed in the request."
+    },
+    {
+      "discovery": "operating_scenarios",
+      "state": "found",
+      "reason": "One operating scenario was derived from the function clause."
+    },
+    {
+      "discovery": "assumptions",
+      "state": "found",
+      "reason": "One assumption was inferred regarding unspecified device characteristics."
+    },
+    {
+      "discovery": "unknowns",
+      "state": "found",
+      "reason": "Four unknowns were identified regarding unspecified parameters of the mass and lifting operation."
+    }
+  ]
+}

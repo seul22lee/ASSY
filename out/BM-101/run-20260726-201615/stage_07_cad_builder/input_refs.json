@@ -1,0 +1,16 @@
+{
+  "stage": "stage_07_cad_builder",
+  "question": "Can the solved design be deterministically realised as CAD?",
+  "consumes": [
+    {
+      "object": "SolvedDesign",
+      "object_id": "SOLVED-001",
+      "location": "../stage_06_parametric_solver/output.json"
+    },
+    {
+      "object": "CADReadyEngineeringDefinition",
+      "object_id": "CRED-001",
+      "location": "../stage_05_engineering_integration/output.json"
+    }
+  ]
+}

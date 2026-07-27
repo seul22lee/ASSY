@@ -1,0 +1,88 @@
+[
+  {
+    "probe": "P1-lift",
+    "rules": "30/34",
+    "fails": [
+      "A-20",
+      "A-22",
+      "A-29",
+      "A-33"
+    ],
+    "behavioural": 1,
+    "in_recoverable": false,
+    "out_recoverable": true,
+    "freedoms": 1,
+    "unknowns": 4,
+    "outcomes": 8,
+    "intent": "A device that performs vertical lifting of a mass."
+  },
+  {
+    "probe": "P2-hold",
+    "rules": "34/34",
+    "fails": [],
+    "behavioural": 2,
+    "in_recoverable": false,
+    "out_recoverable": true,
+    "freedoms": 0,
+    "unknowns": 0,
+    "outcomes": 8,
+    "intent": "A mechanism that maintains a lid in a closed position until "
+  },
+  {
+    "probe": "P3-rotate",
+    "rules": "33/34",
+    "fails": [
+      "A-22"
+    ],
+    "behavioural": 1,
+    "in_recoverable": true,
+    "out_recoverable": true,
+    "freedoms": 0,
+    "unknowns": 0,
+    "outcomes": 8,
+    "intent": "A device that continuously rotates or moves an output when o"
+  },
+  {
+    "probe": "P4-index",
+    "rules": "32/34",
+    "fails": [
+      "A-20",
+      "A-22"
+    ],
+    "behavioural": 1,
+    "in_recoverable": false,
+    "out_recoverable": true,
+    "freedoms": 1,
+    "unknowns": 0,
+    "outcomes": 8,
+    "intent": "A device that moves an output one position forward with each"
+  },
+  {
+    "probe": "P5-clamp",
+    "rules": "33/34",
+    "fails": [
+      "A-22"
+    ],
+    "behavioural": 2,
+    "in_recoverable": false,
+    "out_recoverable": true,
+    "freedoms": 0,
+    "unknowns": 0,
+    "outcomes": 8,
+    "intent": "A device that can secure two flat plates in a clamped state "
+  },
+  {
+    "probe": "P6-convert",
+    "rules": "33/34",
+    "fails": [
+      "A-22"
+    ],
+    "behavioural": 1,
+    "in_recoverable": true,
+    "out_recoverable": true,
+    "freedoms": 0,
+    "unknowns": 0,
+    "outcomes": 8,
+    "intent": "A mechanism that transforms rotational motion into linear mo"
+  }
+]
