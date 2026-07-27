@@ -1,0 +1,26 @@
+{
+  "stage": "stage_05_engineering_integration",
+  "question": "How must this design be engineered to become CAD-ready?",
+  "consumes": [
+    {
+      "object": "RequirementSpec",
+      "object_id": "SPEC-001",
+      "location": "../stage_01_requirement_interpreter/output.json"
+    },
+    {
+      "object": "MechanicalArchitecture",
+      "object_id": "MECH-001",
+      "location": "../stage_02_mechanical_architecture/output.json"
+    },
+    {
+      "object": "ProductArchitecture",
+      "object_id": "PROD-001",
+      "location": "../stage_03_product_architecture/output.json"
+    },
+    {
+      "object": "ConceptVisualization",
+      "object_id": "CONCEPT-001",
+      "location": "../stage_04_concept_visualization/output.json"
+    }
+  ]
+}

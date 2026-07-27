@@ -1,0 +1,297 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SOLVED-001",
+    "design_id": "design-001",
+    "producer": "s06_parametric_solver",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "status": "solved",
+  "parameters": [
+    {
+      "name": "input_member.radial_support",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-011",
+      "derived": false
+    },
+    {
+      "name": "input_member.support_span",
+      "value": 60.0,
+      "unit": "mm",
+      "commitment_id": "C-012",
+      "derived": false
+    },
+    {
+      "name": "input_member.diameter",
+      "value": 8.0,
+      "unit": "mm",
+      "commitment_id": "C-013",
+      "derived": false
+    },
+    {
+      "name": "input_member.radial_load",
+      "value": 14.81,
+      "unit": "N",
+      "commitment_id": "C-014",
+      "derived": false
+    },
+    {
+      "name": "input_member.deflection_allowable",
+      "value": 0.15,
+      "unit": "mm",
+      "commitment_id": "C-015",
+      "derived": false
+    },
+    {
+      "name": "input_member.pinch_access",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-026",
+      "derived": false
+    },
+    {
+      "name": "input_member.crank_radius",
+      "value": 40.0,
+      "unit": "mm",
+      "commitment_id": "C-028",
+      "derived": false
+    },
+    {
+      "name": "input_member.grip_force",
+      "value": 0.0,
+      "unit": "N",
+      "commitment_id": "C-030",
+      "derived": false
+    },
+    {
+      "name": "transmission_shaft.radial_support",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-045",
+      "derived": false
+    },
+    {
+      "name": "transmission_shaft.support_span",
+      "value": 60.0,
+      "unit": "mm",
+      "commitment_id": "C-046",
+      "derived": false
+    },
+    {
+      "name": "transmission_shaft.diameter",
+      "value": 8.0,
+      "unit": "mm",
+      "commitment_id": "C-047",
+      "derived": false
+    },
+    {
+      "name": "transmission_shaft.radial_load",
+      "value": 14.81,
+      "unit": "N",
+      "commitment_id": "C-048",
+      "derived": false
+    },
+    {
+      "name": "transmission_shaft.deflection_allowable",
+      "value": 0.15,
+      "unit": "mm",
+      "commitment_id": "C-049",
+      "derived": false
+    },
+    {
+      "name": "threaded_member.radial_support",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-068",
+      "derived": false
+    },
+    {
+      "name": "threaded_member.support_span",
+      "value": 60.0,
+      "unit": "mm",
+      "commitment_id": "C-069",
+      "derived": false
+    },
+    {
+      "name": "threaded_member.diameter",
+      "value": 8.0,
+      "unit": "mm",
+      "commitment_id": "C-070",
+      "derived": false
+    },
+    {
+      "name": "threaded_member.radial_load",
+      "value": 14.81,
+      "unit": "N",
+      "commitment_id": "C-071",
+      "derived": false
+    },
+    {
+      "name": "threaded_member.deflection_allowable",
+      "value": 0.15,
+      "unit": "mm",
+      "commitment_id": "C-072",
+      "derived": false
+    },
+    {
+      "name": "threaded_member.pitch_diameter",
+      "value": 8.0,
+      "unit": "mm",
+      "commitment_id": "C-083",
+      "derived": false
+    },
+    {
+      "name": "threaded_member.lead",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-084",
+      "derived": false
+    },
+    {
+      "name": "threaded_member.lead_relation",
+      "value": 2.0,
+      "unit": "mm/turn",
+      "commitment_id": "C-085",
+      "derived": true
+    },
+    {
+      "name": "threaded_member.thread_engagement",
+      "value": 12.0,
+      "unit": "mm",
+      "commitment_id": "C-087",
+      "derived": false
+    },
+    {
+      "name": "threaded_member.raise_torque",
+      "value": 26.18,
+      "unit": "Nmm",
+      "commitment_id": "C-088",
+      "derived": false
+    },
+    {
+      "name": "travelling_member.guidance",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-120",
+      "derived": false
+    },
+    {
+      "name": "travelling_member.guide_span",
+      "value": 70.0,
+      "unit": "mm",
+      "commitment_id": "C-121",
+      "derived": false
+    },
+    {
+      "name": "travelling_member.guide_overhang",
+      "value": 25.0,
+      "unit": "mm",
+      "commitment_id": "C-122",
+      "derived": false
+    },
+    {
+      "name": "travelling_member.jamming_index",
+      "value": 0.25,
+      "unit": "mm",
+      "commitment_id": "C-123",
+      "derived": true
+    },
+    {
+      "name": "travelling_member.travel_envelope",
+      "value": 90.0,
+      "unit": "mm",
+      "commitment_id": "C-124",
+      "derived": true
+    },
+    {
+      "name": "travelling_member.motion_clearance",
+      "value": 5.0,
+      "unit": "mm",
+      "commitment_id": "C-125",
+      "derived": false
+    },
+    {
+      "name": "housing.internal_height",
+      "value": 120.0,
+      "unit": "mm",
+      "commitment_id": "C-155",
+      "derived": false
+    },
+    {
+      "name": "housing.internal_width",
+      "value": 110.0,
+      "unit": "mm",
+      "commitment_id": "C-156",
+      "derived": false
+    },
+    {
+      "name": "housing.internal_depth",
+      "value": 90.0,
+      "unit": "mm",
+      "commitment_id": "C-157",
+      "derived": false
+    },
+    {
+      "name": "panel_alignment.tolerance_chain",
+      "value": 0.3,
+      "unit": "mm",
+      "commitment_id": "C-162",
+      "derived": true
+    },
+    {
+      "name": "housing.wall_thickness",
+      "value": 2.4,
+      "unit": "mm",
+      "commitment_id": "C-268",
+      "derived": false
+    }
+  ],
+  "satisfied": [
+    {
+      "commitment_id": "C-015",
+      "expression": "input_member deflection allowable",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-049",
+      "expression": "transmission_shaft deflection allowable",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-072",
+      "expression": "threaded_member deflection allowable",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-086",
+      "expression": "mu > tan(lambda)",
+      "satisfied": true,
+      "residual": null,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-123",
+      "expression": "overhang/span < 1/(2*mu)",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    }
+  ],
+  "violated": [],
+  "objective_values": {
+    "input_effort": 0.0
+  },
+  "diagnostics": [
+    "1 objective(s) recorded but not optimised in this implementation"
+  ],
+  "source_definition_id": "CRED-001"
+}

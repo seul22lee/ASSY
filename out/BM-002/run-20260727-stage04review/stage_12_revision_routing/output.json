@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "REV-001",
+    "design_id": "design-001",
+    "producer": "s12_revision_routing",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "restart": "none",
+  "diagnosis": "all requirements satisfied on valid evidence",
+  "evidence": [],
+  "preserve": [],
+  "allowed_scope": [],
+  "target_commitments": [],
+  "expected_effects": [],
+  "risks": [],
+  "confidence": 0.9,
+  "source_evaluation_id": "EVAL-001"
+}

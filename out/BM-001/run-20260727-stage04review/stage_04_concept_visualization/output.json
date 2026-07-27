@@ -1,0 +1,323 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "CONCEPT-001",
+    "design_id": "design-001",
+    "producer": "s04_concept_visualization",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "authoritative": false,
+  "image_refs": [],
+  "reference_frame": {
+    "primary_axis": "closure_member_axis",
+    "primary_motion": "hinged_arc",
+    "derived_from": "closure_member is the moving element whose hinged_arc motion dominates the product organisation",
+    "access_faces": [
+      "disturbance_region",
+      "closure_member_access_region"
+    ]
+  },
+  "region_placements": [
+    {
+      "region": "working_volume",
+      "zone": "core",
+      "relative_to": "closure_member",
+      "why": "reacts the alignment obligation of detent_feature"
+    },
+    {
+      "region": "support_region",
+      "zone": "flanking",
+      "relative_to": "opening_interface",
+      "why": "reacts the guidance obligation of closure_member"
+    },
+    {
+      "region": "retention_region",
+      "zone": "boundary",
+      "relative_to": "closure_member_axis",
+      "why": "a retention_zone region sits boundary by construction"
+    },
+    {
+      "region": "travel_limit_region",
+      "zone": "end",
+      "relative_to": "opening_stop",
+      "why": "reacts the travel_limit obligation of closure_member"
+    },
+    {
+      "region": "structural_shell",
+      "zone": "external",
+      "relative_to": "housing",
+      "why": "reacts the user_access obligation of closure_member"
+    },
+    {
+      "region": "closure_member_swept_volume",
+      "zone": "core",
+      "relative_to": "closure_member",
+      "why": "reacts the alignment obligation of detent_feature"
+    },
+    {
+      "region": "opening_interface_swept_volume",
+      "zone": "flanking",
+      "relative_to": "opening_interface",
+      "why": "reacts the guidance obligation of closure_member"
+    },
+    {
+      "region": "disturbance_region",
+      "zone": "external",
+      "relative_to": "closure_member_axis",
+      "why": "a payload region sits external by construction"
+    },
+    {
+      "region": "closure_member_access_region",
+      "zone": "external",
+      "relative_to": "closure_member_axis",
+      "why": "a user_access region sits external by construction"
+    }
+  ],
+  "swept_volumes": [
+    {
+      "region": "closure_member_swept_volume",
+      "element": "closure_member",
+      "motion": "hinged_arc",
+      "shape": "arc_sector",
+      "external": false,
+      "must_stay_clear_of": [
+        "working_volume",
+        "support_region",
+        "retention_region",
+        "travel_limit_region",
+        "disturbance_region",
+        "closure_member_access_region"
+      ]
+    },
+    {
+      "region": "opening_interface_swept_volume",
+      "element": "opening_interface",
+      "motion": "hinged_arc",
+      "shape": "arc_sector",
+      "external": false,
+      "must_stay_clear_of": [
+        "working_volume",
+        "support_region",
+        "retention_region",
+        "travel_limit_region",
+        "disturbance_region",
+        "closure_member_access_region"
+      ]
+    }
+  ],
+  "interference_candidates": [
+    {
+      "between": [
+        "closure_member_swept_volume",
+        "support_region"
+      ],
+      "why": "the arc_sector swept by closure_member shares containment with support_region",
+      "addressed_by": "guidance"
+    },
+    {
+      "between": [
+        "closure_member_swept_volume",
+        "retention_region"
+      ],
+      "why": "the arc_sector swept by closure_member shares containment with retention_region",
+      "addressed_by": "contact_pair interface"
+    },
+    {
+      "between": [
+        "closure_member_swept_volume",
+        "travel_limit_region"
+      ],
+      "why": "the arc_sector swept by closure_member shares containment with travel_limit_region",
+      "addressed_by": "travel_limit"
+    },
+    {
+      "between": [
+        "closure_member_swept_volume",
+        "opening_interface_swept_volume"
+      ],
+      "why": "the arc_sector swept by closure_member shares containment with opening_interface_swept_volume",
+      "addressed_by": "guidance"
+    },
+    {
+      "between": [
+        "opening_interface_swept_volume",
+        "working_volume"
+      ],
+      "why": "the arc_sector swept by opening_interface shares containment with working_volume",
+      "addressed_by": "guidance"
+    },
+    {
+      "between": [
+        "opening_interface_swept_volume",
+        "retention_region"
+      ],
+      "why": "the arc_sector swept by opening_interface shares containment with retention_region",
+      "addressed_by": null
+    },
+    {
+      "between": [
+        "opening_interface_swept_volume",
+        "travel_limit_region"
+      ],
+      "why": "the arc_sector swept by opening_interface shares containment with travel_limit_region",
+      "addressed_by": null
+    }
+  ],
+  "access_routes": [
+    {
+      "region": "disturbance_region",
+      "purpose": "payload",
+      "obstructed_by": []
+    },
+    {
+      "region": "closure_member_access_region",
+      "purpose": "user_operation",
+      "obstructed_by": []
+    }
+  ],
+  "issues": [
+    {
+      "id": "SI-001",
+      "kind": "interference",
+      "concern": "opening_interface_swept_volume and retention_region may occupy the same space and nothing in the architecture separates them",
+      "regions": [
+        "opening_interface_swept_volume",
+        "retention_region"
+      ],
+      "evidence": "the arc_sector swept by opening_interface shares containment with retention_region"
+    },
+    {
+      "id": "SI-002",
+      "kind": "interference",
+      "concern": "opening_interface_swept_volume and travel_limit_region may occupy the same space and nothing in the architecture separates them",
+      "regions": [
+        "opening_interface_swept_volume",
+        "travel_limit_region"
+      ],
+      "evidence": "the arc_sector swept by opening_interface shares containment with travel_limit_region"
+    }
+  ],
+  "views": [
+    {
+      "name": "exterior",
+      "purpose": "show what the user meets and which faces must stay reachable",
+      "shows": [
+        "disturbance_region",
+        "closure_member_access_region"
+      ]
+    },
+    {
+      "name": "cutaway_along_primary_axis",
+      "purpose": "show the arrangement along closure_member_axis",
+      "shows": [
+        "working_volume",
+        "support_region",
+        "retention_region",
+        "travel_limit_region",
+        "structural_shell",
+        "closure_member_swept_volume",
+        "opening_interface_swept_volume"
+      ]
+    },
+    {
+      "name": "exploded_assembly",
+      "purpose": "show the installation order and the direction each piece enters",
+      "shows": [
+        "housing",
+        "opening_interface",
+        "closure_member",
+        "detent_feature",
+        "opening_stop"
+      ]
+    },
+    {
+      "name": "envelope_closure_member",
+      "purpose": "show the arc_sector swept by closure_member at its extremes",
+      "shows": [
+        "closure_member_swept_volume",
+        "working_volume",
+        "support_region",
+        "retention_region",
+        "travel_limit_region",
+        "disturbance_region",
+        "closure_member_access_region"
+      ]
+    },
+    {
+      "name": "envelope_opening_interface",
+      "purpose": "show the arc_sector swept by opening_interface at its extremes",
+      "shows": [
+        "opening_interface_swept_volume",
+        "working_volume",
+        "support_region",
+        "retention_region",
+        "travel_limit_region",
+        "disturbance_region",
+        "closure_member_access_region"
+      ]
+    }
+  ],
+  "annotations": [
+    {
+      "subject": "closure_member_axis",
+      "note": "principal axis; hinged_arc motion"
+    },
+    {
+      "subject": "closure_member",
+      "note": "sweeps a arc_sector, inside the enclosure"
+    },
+    {
+      "subject": "opening_interface",
+      "note": "sweeps a arc_sector, inside the enclosure"
+    },
+    {
+      "subject": "opening_interface",
+      "note": "reacts guidance for closure_member"
+    },
+    {
+      "subject": "opening_stop",
+      "note": "reacts travel_limit for closure_member"
+    },
+    {
+      "subject": "housing",
+      "note": "reacts user_access for closure_member"
+    },
+    {
+      "subject": "housing",
+      "note": "reacts clearance for detent_feature"
+    },
+    {
+      "subject": "closure_member",
+      "note": "reacts alignment for detent_feature"
+    },
+    {
+      "subject": "housing",
+      "note": "reacts structural_root for detent_feature"
+    },
+    {
+      "subject": "closure_member",
+      "note": "user_contact to housing, crossing the enclosure boundary"
+    }
+  ],
+  "source_product_id": "PROD-001",
+  "source_candidate_id": "friction_detent_catch",
+  "product_advisories": [],
+  "described_layout": "Organised along closure_member_axis (hinged_arc). 9 regions placed, 2 swept volumes, 7 interference candidates.",
+  "spatial_hypotheses": [
+    "working_volume sits core relative to closure_member",
+    "support_region sits flanking relative to opening_interface",
+    "retention_region sits boundary relative to closure_member_axis",
+    "travel_limit_region sits end relative to opening_stop",
+    "structural_shell sits external relative to housing",
+    "closure_member_swept_volume sits core relative to closure_member",
+    "opening_interface_swept_volume sits flanking relative to opening_interface",
+    "disturbance_region sits external relative to closure_member_axis",
+    "closure_member_access_region sits external relative to closure_member_axis"
+  ],
+  "review_concerns": [
+    "opening_interface_swept_volume and retention_region may occupy the same space and nothing in the architecture separates them",
+    "opening_interface_swept_volume and travel_limit_region may occupy the same space and nothing in the architecture separates them"
+  ]
+}

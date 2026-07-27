@@ -533,6 +533,20 @@ class ArchitecturalFunction(BaseModel):
 class FunctionalPart(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
+    moving: bool = False
+    """Whether this element moves in operation.
+
+    Structured because Stage 03 must derive swept volumes from it. It previously
+    survived only inside the prose `rationale`, which is not consumable.
+    """
+    engineering_roles: list[str] = Field(default_factory=list)
+    """Engineering role tags, e.g. rotating, translating, moving_boundary, compliant.
+
+    Carried so a consumer never has to re-query the knowledge base by mechanism id
+    to learn how an element behaves. `motions` declares one relation for the whole
+    chain, so it cannot say how each individual element moves.
+    """
+
     id: str
     name: str
     role: MechanismRole
@@ -644,6 +658,47 @@ class MechanicalArchitecture(DomainObject):
 # --------------------------------------------------------------------------
 # Stage 03 - Product Architecture
 # --------------------------------------------------------------------------
+class RegionKind(str, Enum):
+    """What a product region is for. Typed so Stage 04 can review it spatially."""
+
+    ENCLOSED_VOLUME = "enclosed_volume"
+    USER_ACCESS = "user_access"
+    SWEPT_VOLUME = "swept_volume"
+    SUPPORT_ZONE = "support_zone"
+    RETENTION_ZONE = "retention_zone"
+    TRAVEL_LIMIT_ZONE = "travel_limit_zone"
+    SERVICE_ACCESS = "service_access"
+    PAYLOAD = "payload"
+    STRUCTURAL = "structural"
+
+
+class PieceKind(str, Enum):
+    """What a manufactured product piece is, structurally."""
+
+    SHELL = "shell"
+    COVER = "cover"
+    MOVING_BODY = "moving_body"
+    TRANSMISSION_ELEMENT = "transmission_element"
+    SUPPORT_ELEMENT = "support_element"
+    LIMIT_ELEMENT = "limit_element"
+    RETENTION_ELEMENT = "retention_element"
+    USER_ELEMENT = "user_element"
+
+
+class PlacementKind(str, Enum):
+    """A qualitative spatial relation. Never a coordinate."""
+
+    INSIDE = "inside"
+    OUTSIDE = "outside"
+    ADJACENT = "adjacent"
+    OPPOSITE = "opposite"
+    PARALLEL = "parallel"
+    ALONG = "along"
+    SPANS = "spans"
+    CROSSES = "crosses"
+    BOUNDS = "bounds"
+
+
 class ProductRegion(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -652,12 +707,107 @@ class ProductRegion(BaseModel):
     purpose: str
     houses: list[str] = Field(default_factory=list)  # FunctionalPart ids
     external: bool = False
+    kind: RegionKind = RegionKind.STRUCTURAL
+    moving: bool = False
+    """True when the region is swept by a moving element rather than static."""
+
+
+class ProductPiece(BaseModel):
+    """A manufactured or procured piece of the product.
+
+    Distinct from a Stage 02 conceptual element: several elements may later be
+    integrated into one piece. That integration is a decision, so it is recorded
+    as unresolved rather than assumed here.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    id: str
+    name: str
+    kind: PieceKind
+    realises_elements: list[str] = Field(default_factory=list)
+    """Stage 02 conceptual element names this piece realises."""
+    engineering_roles: list[str] = Field(default_factory=list)
+    moving: bool = False
+    external: bool = False
+    rationale: str = ""
+
+
+class ObligationOwnership(BaseModel):
+    """Which product piece is answerable for a Stage 02 support obligation.
+
+    An unowned obligation is an open problem, not a silent omission.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    element: str
+    obligation: ObligationKind
+    owner_piece: str | None = None
+    region: str | None = None
+    unowned_reason: str | None = None
+
+
+class ProductInterface(BaseModel):
+    """A Stage 02 element interface, resolved onto product pieces."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    between: tuple[str, str]
+    kind: InterfaceKind
+    transmits: str = ""
+    crosses_boundary: bool = False
+    from_elements: tuple[str, str] | None = None
+
+
+class PlacementRelation(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    subject: str
+    relation: PlacementKind
+    reference: str
+    why: str = ""
+
+
+class AssemblyStep(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    order: int
+    action: str
+    pieces: list[str] = Field(default_factory=list)
+    enables: str = ""
+
+
+class LoadPathOwnership(BaseModel):
+    """One load path, with the region that owns each hop."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    name: str
+    path: list[str] = Field(default_factory=list)
+    owning_regions: list[str] = Field(default_factory=list)
+    terminates_at: str | None = None
 
 
 class ProductArchitecture(DomainObject):
     """Product-level organisation. Qualitative by design - no dimensions."""
 
     regions: list[ProductRegion] = Field(default_factory=list)
+    pieces: list[ProductPiece] = Field(default_factory=list)
+    obligation_ownership: list[ObligationOwnership] = Field(default_factory=list)
+    interfaces: list[ProductInterface] = Field(default_factory=list)
+    placements: list[PlacementRelation] = Field(default_factory=list)
+    assembly_sequence: list[AssemblyStep] = Field(default_factory=list)
+    load_path_ownership: list[LoadPathOwnership] = Field(default_factory=list)
+    unresolved_decisions: list[str] = Field(default_factory=list)
+
+    # -- traceability back to the architecture this organises ---------------
+    source_architecture_id: str = ""
+    source_candidate_id: str = ""
+    serves_requirements: list[str] = Field(default_factory=list)
+    architecture_advisories: list[str] = Field(default_factory=list)
+    """Stage 02 gaps Stage 03 could not resolve, reported rather than compensated."""
+
     housing_strategy: str = ""
     user_interaction: list[str] = Field(default_factory=list)
     assembly_strategy: str = ""
@@ -672,15 +822,172 @@ class ProductArchitecture(DomainObject):
 # --------------------------------------------------------------------------
 # Stage 04 - Concept Visualization
 # --------------------------------------------------------------------------
+class MotionClass(str, Enum):
+    """How a moving element sweeps space."""
+
+    ROTATIONAL = "rotational"
+    TRANSLATIONAL = "translational"
+    HINGED_ARC = "hinged_arc"
+    COMPOUND = "compound"
+    UNCLASSIFIED = "unclassified"
+
+
+class SweptShape(str, Enum):
+    """The qualitative shape of a swept region. Never a dimension."""
+
+    DISC = "disc"
+    PRISM = "prism"
+    ARC_SECTOR = "arc_sector"
+    COMPOUND = "compound"
+    UNKNOWN = "unknown"
+
+
+class SpatialZone(str, Enum):
+    """Where a region sits in the coarse frame. Relative, never coordinates."""
+
+    CORE = "core"
+    """On the primary axis, where the principal motion happens."""
+    FLANKING = "flanking"
+    """Beside the primary axis - guides, supports."""
+    END = "end"
+    """At one end of the primary axis - thrust, limits."""
+    OFFSET = "offset"
+    """Displaced from the primary axis - transmission compartments."""
+    BOUNDARY = "boundary"
+    """Forming or breaching the enclosure surface."""
+    EXTERNAL = "external"
+    """Outside the enclosure."""
+
+
+class AccessPurpose(str, Enum):
+    USER_OPERATION = "user_operation"
+    SERVICE = "service"
+    ASSEMBLY = "assembly"
+    PAYLOAD = "payload"
+
+
+class SpatialIssueKind(str, Enum):
+    INTERFERENCE = "interference"
+    ACCESS_BLOCKED = "access_blocked"
+    ENVELOPE_CONFLICT = "envelope_conflict"
+    UNSUPPORTED_SPAN = "unsupported_span"
+    ASSEMBLY_UNREACHABLE = "assembly_unreachable"
+
+
+class ReferenceFrame(BaseModel):
+    """The coarse frame every placement is expressed in.
+
+    Qualitative: it names axes and says what defined them. It never fixes an
+    origin, a direction cosine, or a dimension.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    primary_axis: str
+    """What the principal motion runs along, named after the element defining it."""
+    primary_motion: MotionClass = MotionClass.UNCLASSIFIED
+    derived_from: str = ""
+    access_faces: list[str] = Field(default_factory=list)
+    """Faces that must remain reachable, named by the region requiring them."""
+
+
+class RegionPlacement(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    region: str
+    zone: SpatialZone
+    relative_to: str | None = None
+    why: str = ""
+
+
+class SweptVolumeSpec(BaseModel):
+    """A moving element's swept region, classified by how it moves."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    region: str
+    element: str
+    motion: MotionClass
+    shape: SweptShape
+    external: bool = False
+    must_stay_clear_of: list[str] = Field(default_factory=list)
+
+
+class InterferenceCandidate(BaseModel):
+    """A region pair that could collide and must be kept disjoint."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    between: tuple[str, str]
+    why: str = ""
+    addressed_by: str | None = None
+    """The obligation or placement that already governs this pair, if any."""
+
+
+class AccessRoute(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    region: str
+    purpose: AccessPurpose
+    obstructed_by: list[str] = Field(default_factory=list)
+
+
+class SpatialIssue(BaseModel):
+    """A structured concern for Stage 05. Not a rendering artefact."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    id: str
+    kind: SpatialIssueKind
+    concern: str
+    regions: list[str] = Field(default_factory=list)
+    evidence: str = ""
+
+
+class ViewSpec(BaseModel):
+    """A view that would have to be produced to review this layout visually."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    name: str
+    purpose: str
+    shows: list[str] = Field(default_factory=list)
+
+
+class SpatialAnnotation(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    subject: str
+    note: str
+
+
 class ConceptVisualization(DomainObject):
     """Spatial hypothesis only.
 
     Carries ``authoritative = False`` permanently. Stage 05 may reinterpret or
     ignore anything here when it conflicts with structured engineering data.
+
+    Non-authoritative does not mean unstructured: the blueprint is expressed as
+    typed placements, swept volumes, interference candidates and issues so Stage 05
+    consumes a spatial hypothesis rather than re-deriving one from a paragraph.
     """
 
     authoritative: bool = False
     image_refs: list[str] = Field(default_factory=list)
+
+    reference_frame: ReferenceFrame | None = None
+    region_placements: list[RegionPlacement] = Field(default_factory=list)
+    swept_volumes: list[SweptVolumeSpec] = Field(default_factory=list)
+    interference_candidates: list[InterferenceCandidate] = Field(default_factory=list)
+    access_routes: list[AccessRoute] = Field(default_factory=list)
+    issues: list[SpatialIssue] = Field(default_factory=list)
+    views: list[ViewSpec] = Field(default_factory=list)
+    annotations: list[SpatialAnnotation] = Field(default_factory=list)
+
+    source_product_id: str = ""
+    source_candidate_id: str = ""
+    product_advisories: list[str] = Field(default_factory=list)
+
     described_layout: str = ""
     spatial_hypotheses: list[str] = Field(default_factory=list)
     review_concerns: list[str] = Field(default_factory=list)

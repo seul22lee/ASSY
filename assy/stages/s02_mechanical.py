@@ -150,6 +150,8 @@ class MechanicalArchitectureGenerator(PipelineStage):
                 id=new_id("FP"),
                 name=t.name,
                 role=MechanismRole(t.role),
+                moving=t.moving,
+                engineering_roles=list(t.roles),
                 rationale=f"{'moving' if t.moving else 'fixed'} element in the {fam.id} chain",
             )
             for t in fam.roles
