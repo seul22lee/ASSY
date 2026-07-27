@@ -39,6 +39,10 @@ class ResolveContext:
     process: str = "FDM"
     family_id: str = "lead_screw"
     self_locking_required: bool = True
+    allowable_strain: float = 0.015
+    """Design strain limit for a compliant element. Conservative for brittle PLA."""
+    max_release_force_n: float = 15.0
+    """Comfortable single-thumb effort."""
 
 
 Resolver = Callable[[Problem, EngineeringWorkingState, ResolveContext], list[Resolution]]
@@ -538,6 +542,173 @@ def resolve_tolerance(p: Problem, state, ctx: ResolveContext):
                     unit="mm",
                     expression=",".join(str(x) for x in parts),
                 )
+            ],
+            score=1.0,
+        )
+    ]
+
+
+# --------------------------------------------------------------------------
+# Hinged bodies
+# --------------------------------------------------------------------------
+@resolver("hinge_axis", "angular_range", "hinge_support", "closing_clearance")
+def resolve_hinge(p: Problem, state, ctx: ResolveContext):
+    e = _entity(p)
+    open_deg = 105.0
+    depth = 90.0
+    thickness = 6.0
+    offset = 4.0
+    rear_clearance = 5.0
+    reach = el.hinge_swing_clearance(thickness, offset, open_deg)
+    return [
+        Resolution(
+            problem_id=p.id,
+            approach=f"rear hinge axis, {open_deg:g} deg swing on two knuckles",
+            method="hinge_axis_placement/swing_sweep",
+            benefits=[
+                f"{open_deg:g} deg holds the lid clear of the opening",
+                f"rearward corner reach {reach:.1f} mm is relieved behind the axis",
+            ],
+            risks=["lid corner interferes if the axis moves inboard"],
+            commitments=[
+                _c(f"{e}.hinge_axis", CommitmentKind.MOTION, f"{e} hinge axis at the rear edge",
+                   value="rear_edge_x", expression="axis = rear_edge"),
+                _c(f"{e}.angular_range", CommitmentKind.MOTION, f"{e} swing range",
+                   value=open_deg, unit="deg", expression="0 <= theta <= open_angle"),
+                _c(f"{e}.hinge_support", CommitmentKind.SUPPORT, f"{e} on two hinge knuckles", value=2),
+                _c(f"{e}.hinge_offset", CommitmentKind.PARAMETER, f"{e} axis offset from rear face",
+                   value=offset, unit="mm"),
+                _c(f"{e}.depth", CommitmentKind.PARAMETER, f"{e} depth", value=depth, unit="mm"),
+                _c(f"{e}.thickness", CommitmentKind.PARAMETER, f"{e} plate thickness",
+                   value=thickness, unit="mm"),
+                _c(f"{e}.closing_clearance", CommitmentKind.PARAMETER, f"{e} closing gap",
+                   value=0.4, unit="mm"),
+                _c(f"{e}.swing_reach", CommitmentKind.PARAMETER, f"{e} rearward swing reach",
+                   value=round(reach, 2), unit="mm"),
+                _c(f"{e}.rear_clearance", CommitmentKind.PARAMETER, f"{e} clearance behind the axis",
+                   value=rear_clearance, unit="mm"),
+            ],
+            score=1.0,
+        )
+    ]
+
+
+# --------------------------------------------------------------------------
+# Compliant elements and retention
+# --------------------------------------------------------------------------
+@resolver("beam_geometry", "deflection_strain", "insertion_force")
+def resolve_snap_beam(p: Problem, state, ctx: ResolveContext):
+    """Size the beam so peak strain stays inside the material allowable.
+
+    Geometry, strain, and actuation force are one coupled problem, so a single
+    resolution commits all three rather than leaving the agenda to rediscover
+    the coupling.
+    """
+    e = _entity(p)
+    material = mat.material(ctx.structural_material)
+    length, width, thickness, undercut = 12.0, 6.0, 1.2, 0.8
+    strain = el.cantilever_snap_strain(undercut, length, thickness)
+    force = el.cantilever_snap_deflection_force(
+        undercut, length, width, thickness, material.youngs_modulus_mpa
+    )
+    allowable = ctx.allowable_strain
+    return [
+        Resolution(
+            problem_id=p.id,
+            approach=f"{length:g}x{width:g}x{thickness:g} mm cantilever, {undercut:g} mm undercut",
+            method="cantilever_beam/strain_limited_sizing",
+            benefits=[
+                f"peak strain {strain:.4f} against {allowable:.4f} allowable "
+                f"({allowable / strain if strain else 0:.2f}x margin)",
+                f"deflection force {force:.2f} N",
+            ],
+            risks=[
+                f"{ctx.structural_material} creeps under sustained deflection",
+                "strain rises with the square of shortening the beam",
+            ],
+            commitments=[
+                _c(f"{e}.beam_geometry", CommitmentKind.INTERFACE, f"{e} cantilever geometry",
+                   value=f"{length}x{width}x{thickness}"),
+                _c(f"{e}.length", CommitmentKind.PARAMETER, f"{e} beam length", value=length, unit="mm"),
+                _c(f"{e}.width", CommitmentKind.PARAMETER, f"{e} beam width", value=width, unit="mm"),
+                _c(f"{e}.thickness", CommitmentKind.PARAMETER, f"{e} beam thickness", value=thickness, unit="mm"),
+                _c(f"{e}.undercut", CommitmentKind.PARAMETER, f"{e} undercut depth", value=undercut, unit="mm"),
+                _c(f"{e}.deflection_strain", CommitmentKind.CONSTRAINT, f"{e} peak strain",
+                   value=round(strain, 5), expression="1.5*t*y/L^2 <= allowable_strain"),
+                _c(f"{e}.strain_allowable", CommitmentKind.CONSTRAINT, f"{e} allowable strain",
+                   value=allowable),
+                _c(f"{e}.deflection_force", CommitmentKind.PARAMETER, f"{e} deflection force",
+                   value=round(force, 3), unit="N"),
+                _c(f"{e}.insertion_force", CommitmentKind.CRITICAL_CHARACTERISTIC,
+                   f"{e} force to close past the catch", value=None, unit="N",
+                   expression="P*(mu+tan(lead))/(1-mu*tan(lead))"),
+            ],
+            score=1.0,
+        )
+    ]
+
+
+@resolver("engagement_geometry", "retention_force", "release_force", "release_actuation")
+def resolve_engagement(p: Problem, state, ctx: ResolveContext):
+    """Choose the two face angles that set the retention/release tradeoff."""
+    e = _entity(p)
+    beam = state.find_subject("snap_beam.deflection_force")
+    force = float(beam.value) if beam else 4.0
+    mu = mat.material(ctx.structural_material).friction_vs_self
+    lead, retain = 30.0, 60.0
+    limit = el.self_locking_face_angle(mu)
+    f_insert = el.snap_engagement_force(force, lead, mu)
+    f_retain = el.snap_engagement_force(force, retain, mu)
+    f_release = force * (1.0 + mu)
+    return [
+        Resolution(
+            problem_id=p.id,
+            approach=f"{lead:g} deg lead face, {retain:g} deg retention face",
+            method="snap_face_angles/retention_release_tradeoff",
+            benefits=[
+                f"insertion {f_insert:.2f} N, retention {f_retain:.2f} N "
+                f"({f_retain / f_insert if f_insert else 0:.1f}x asymmetry)",
+                f"thumb release {f_release:.2f} N by deflecting the beam directly",
+                f"retention face stays below the {limit:.1f} deg self-locking angle",
+            ],
+            risks=["retention and release cannot both be improved by face angle alone"],
+            commitments=[
+                _c(f"{e}.engagement_geometry", CommitmentKind.INTERFACE, f"{e} face angles",
+                   value=f"lead={lead},retain={retain}"),
+                _c(f"{e}.lead_angle", CommitmentKind.PARAMETER, f"{e} lead face angle", value=lead, unit="deg"),
+                _c(f"{e}.retention_angle", CommitmentKind.PARAMETER, f"{e} retention face angle",
+                   value=retain, unit="deg"),
+                _c(f"{e}.retention_force", CommitmentKind.CRITICAL_CHARACTERISTIC,
+                   f"{e} force resisting opening", value=round(f_retain, 3), unit="N"),
+                _c(f"{e}.release_force", CommitmentKind.CRITICAL_CHARACTERISTIC,
+                   f"{e} thumb release effort", value=round(f_release, 3), unit="N"),
+                _c(f"{e}.release_actuation", CommitmentKind.INTERFACE,
+                   f"{e} thumb pad deflects the beam clear of the catch", value="thumb_pad"),
+                _c("retention_vs_release", CommitmentKind.OBJECTIVE,
+                   "maximise retention while keeping release effort comfortable",
+                   expression="maximize(retention_force) subject to release_force <= 15 N"),
+                _c(f"{e}.self_locking_limit", CommitmentKind.CONSTRAINT,
+                   f"{e} retention angle must stay below the self-locking angle",
+                   value=round(limit, 2), unit="deg", expression="retention_angle < atan(1/mu)"),
+            ],
+            score=1.0,
+        )
+    ]
+
+
+@resolver("boundary_clearance")
+def resolve_boundary(p: Problem, state, ctx: ResolveContext):
+    e = _entity(p)
+    return [
+        Resolution(
+            problem_id=p.id,
+            approach=f"{e} runs with a shrouded 1.5 mm gap to the static shell",
+            method="moving_boundary_gap",
+            benefits=["below the 3 mm pinch threshold, so no guard is required"],
+            commitments=[
+                _c(f"{e}.boundary_clearance", CommitmentKind.PARAMETER, f"{e} boundary gap",
+                   value=1.5, unit="mm"),
+                _c(f"{e}.pinch_access", CommitmentKind.PARAMETER, f"{e} exposed gap", value=1.5, unit="mm"),
             ],
             score=1.0,
         )

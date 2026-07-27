@@ -36,6 +36,11 @@ REQUIRED_ASPECTS: dict[str, list[str]] = {
     "user_contact": ["pinch_access"],
     "manufactured": ["material", "process", "build_orientation"],
     "precision_interface": ["tolerance_chain"],
+    "hinged": ["hinge_axis", "angular_range", "hinge_support", "material", "process"],
+    "compliant": ["beam_geometry", "deflection_strain", "material", "process"],
+    "retention_interface": ["engagement_geometry", "retention_force"],
+    "user_release": ["release_force"],
+    "moving_boundary": ["boundary_clearance"],
 }
 
 
@@ -142,7 +147,7 @@ def definition_closure(state: EngineeringWorkingState) -> Outcome:
 def kinematic_consistency(state: EngineeringWorkingState) -> Outcome:
     motions = state.active_by_kind(CommitmentKind.MOTION)
     if not motions:
-        return Outcome(CheckResult.INCONCLUSIVE, "no motion commitments")
+        return Outcome(CheckResult.NOT_APPLICABLE, "no motion commitments in this design")
     problems: list[Problem] = []
     inputs = [m.subject for m in motions]
     for m in motions:
@@ -172,7 +177,7 @@ def motion_interference(state: EngineeringWorkingState) -> Outcome:
     movers = [e for e in _entities(state) if "translating" in e.roles]
     shells = [e for e in _entities(state) if "enclosure" in e.roles]
     if not movers or not shells:
-        return Outcome(CheckResult.INCONCLUSIVE, "no translating body inside an enclosure")
+        return Outcome(CheckResult.NOT_APPLICABLE, "no translating body inside an enclosure")
 
     problems: list[Problem] = []
     inputs: list[str] = []
@@ -210,7 +215,7 @@ def motion_interference(state: EngineeringWorkingState) -> Outcome:
         return Outcome(CheckResult.FAIL, "swept travel exceeds the enclosure", margin=worst,
                        problems=problems, inputs=inputs)
     if worst is None:
-        return Outcome(CheckResult.INCONCLUSIVE, "no comparable envelope pair", inputs=inputs)
+        return Outcome(CheckResult.NOT_APPLICABLE, "no comparable envelope pair", inputs=inputs)
     return Outcome(CheckResult.PASS, f"clearance margin {worst:.1f} mm", margin=worst, inputs=inputs)
 
 
@@ -261,7 +266,7 @@ def shaft_deflection(state: EngineeringWorkingState) -> Outcome:
     matc = state.find_subject("drive_shaft.material")
     inputs = [c.subject for c in (dia, span, load, allow, matc) if c]
     if not all((dia, span, load, allow, matc)):
-        return Outcome(CheckResult.INCONCLUSIVE, "shaft inputs incomplete", inputs=inputs)
+        return Outcome(CheckResult.NOT_APPLICABLE, "no shaft with complete inputs", inputs=inputs)
 
     e = mat.material(str(matc.value)).youngs_modulus_mpa
     d = shaft_deflection_simply_supported(
@@ -286,6 +291,108 @@ def shaft_deflection(state: EngineeringWorkingState) -> Outcome:
             inputs=inputs,
         )
     return Outcome(CheckResult.PASS, f"deflection {d:.3f} mm within {limit:.3f} mm", margin=margin, inputs=inputs)
+
+
+def compliant_strain_margin(state: EngineeringWorkingState) -> Outcome:
+    """Analytical: peak strain in every compliant element against its allowable.
+
+    A compliant element is strain-limited, not stress-limited: it fails by
+    cracking at the root long before the beam force becomes interesting.
+    """
+    problems: list[Problem] = []
+    inputs: list[str] = []
+    worst: float | None = None
+
+    for ent in _entities(state):
+        if "compliant" not in ent.roles:
+            continue
+        strain = state.find_subject(f"{ent.subject}.deflection_strain")
+        allowable = state.find_subject(f"{ent.subject}.strain_allowable")
+        if not (strain and allowable):
+            continue
+        inputs += [strain.subject, allowable.subject]
+        s, a = float(strain.value), float(allowable.value)
+        margin = a - s
+        worst = margin if worst is None else min(worst, margin)
+        if s > a:
+            problems.append(
+                _problem(
+                    [ent.subject],
+                    "deflection_strain",
+                    f"{ent.subject}: peak strain {s:.4f} exceeds allowable {a:.4f}",
+                    "peak_deflection",
+                    "compliant_strain_margin",
+                )
+            )
+
+    if not inputs:
+        return Outcome(CheckResult.NOT_APPLICABLE, "no compliant elements in this design")
+    if problems:
+        return Outcome(CheckResult.FAIL, "strain allowable exceeded", problems=problems, inputs=inputs)
+    return Outcome(CheckResult.PASS, f"strain margin {worst:.4f}", margin=worst, inputs=inputs)
+
+
+def release_effort(state: EngineeringWorkingState) -> Outcome:
+    """Rule: a user-releasable feature must be releasable by hand."""
+    limit = 15.0
+    problems: list[Problem] = []
+    inputs: list[str] = []
+    worst: float | None = None
+    for ent in _entities(state):
+        if "user_release" not in ent.roles:
+            continue
+        force = state.find_subject(f"{ent.subject}.release_force")
+        if force is None:
+            continue
+        inputs.append(force.subject)
+        f = float(force.value)
+        margin = limit - f
+        worst = margin if worst is None else min(worst, margin)
+        if f > limit:
+            problems.append(
+                _problem(
+                    [ent.subject],
+                    "release_force",
+                    f"{ent.subject}: {f:.1f} N release effort exceeds the {limit:.0f} N comfort limit",
+                    "release",
+                    "release_effort",
+                )
+            )
+    if not inputs:
+        return Outcome(CheckResult.NOT_APPLICABLE, "no user-releasable features in this design")
+    if problems:
+        return Outcome(CheckResult.FAIL, "release effort too high", problems=problems, inputs=inputs)
+    return Outcome(CheckResult.PASS, f"release margin {worst:.1f} N", margin=worst, inputs=inputs)
+
+
+def hinge_swing_clearance(state: EngineeringWorkingState) -> Outcome:
+    """Deterministic: swept clearance of a hinged body over its full swing."""
+    problems: list[Problem] = []
+    inputs: list[str] = []
+    for ent in _entities(state):
+        if "hinged" not in ent.roles:
+            continue
+        reach = state.find_subject(f"{ent.subject}.swing_reach")
+        available = state.find_subject(f"{ent.subject}.rear_clearance")
+        if not (reach and available):
+            continue
+        inputs += [reach.subject, available.subject]
+        if float(reach.value) > float(available.value):
+            problems.append(
+                _problem(
+                    [ent.subject],
+                    "rear_swing_relief",
+                    f"{ent.subject}: rearward swing reach {reach.value} mm exceeds the "
+                    f"{available.value} mm available behind the axis",
+                    "full_swing",
+                    "hinge_swing_clearance",
+                )
+            )
+    if not inputs:
+        return Outcome(CheckResult.NOT_APPLICABLE, "no hinged bodies in this design")
+    if problems:
+        return Outcome(CheckResult.FAIL, "swing interference", problems=problems, inputs=inputs)
+    return Outcome(CheckResult.PASS, "hinged bodies clear through full swing", inputs=inputs)
 
 
 # --------------------------------------------------------------------------
@@ -336,7 +443,7 @@ def tolerance_closure(state: EngineeringWorkingState) -> Outcome:
 
     chains = state.active_by_kind(CommitmentKind.TOLERANCE)
     if not chains:
-        return Outcome(CheckResult.INCONCLUSIVE, "no tolerance chains declared")
+        return Outcome(CheckResult.NOT_APPLICABLE, "no tolerance chains declared")
     inputs = [c.subject for c in chains]
     problems: list[Problem] = []
     worst = None
@@ -470,6 +577,9 @@ CHECKS: list[CheckSpec] = [
     CheckSpec("motion_interference", CheckKind.DETERMINISTIC, "full_stroke", motion_interference, True),
     CheckSpec("support_closure", CheckKind.RULE, "static", support_closure, True),
     CheckSpec("shaft_deflection", CheckKind.ANALYTICAL, "static", shaft_deflection, False),
+    CheckSpec("compliant_strain_margin", CheckKind.ANALYTICAL, "peak_deflection", compliant_strain_margin, False),
+    CheckSpec("release_effort", CheckKind.RULE, "release", release_effort, False),
+    CheckSpec("hinge_swing_clearance", CheckKind.DETERMINISTIC, "full_swing", hinge_swing_clearance, False),
     CheckSpec("assembly_feasibility", CheckKind.DETERMINISTIC, "all_assembly_states", assembly_feasibility, True),
     CheckSpec("tolerance_closure", CheckKind.ANALYTICAL, "all_tolerance_extremes", tolerance_closure, True),
     CheckSpec("manufacturing_legality", CheckKind.RULE, "static", manufacturing_legality, True),
@@ -495,7 +605,7 @@ def run_check(spec: CheckSpec, state: EngineeringWorkingState) -> tuple[Check, l
     )
     state.record_check(check)
 
-    if outcome.result == CheckResult.PASS:
+    if outcome.result in (CheckResult.PASS, CheckResult.NOT_APPLICABLE):
         # The check that opens a problem is the authority that closes it.
         state.clear_problems_from(spec.name, check.id)
         return check, []

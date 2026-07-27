@@ -113,8 +113,29 @@ def _rail(e: str, ctx: BuildCtx) -> Part:
     return Cylinder(radius=4.0, height=max(h, 10.0))
 
 
+def _lid(e: str, ctx: BuildCtx) -> Part:
+    w = ctx.get("housing.internal_width", 110.0)
+    d = ctx.get(f"{e}.depth", ctx.get("housing.internal_depth", 90.0))
+    t = ctx.need(f"{e}.thickness")
+    return Box(w, d, t)
+
+
 def _beam(e: str, ctx: BuildCtx) -> Part:
-    return Box(20.0, 6.0, 2.0)
+    length = ctx.need(f"{e}.length")
+    width = ctx.need(f"{e}.width")
+    thickness = ctx.need(f"{e}.thickness")
+    undercut = ctx.get(f"{e}.undercut", 0.8)
+    beam = Box(width, thickness, length)
+    hook = Pos(0, -(thickness / 2 + undercut / 2), length / 2 - 1.0) * Box(
+        width, undercut, 1.6
+    )
+    return beam + hook
+
+
+def _catch(e: str, ctx: BuildCtx) -> Part:
+    width = ctx.get("snap_beam.width", 6.0)
+    undercut = ctx.get("snap_beam.undercut", 0.8)
+    return Box(width * 1.4, undercut * 3.0, 5.0)
 
 
 def _generic(e: str, ctx: BuildCtx) -> Part:
@@ -128,9 +149,11 @@ SHAPE_RULES: tuple[ShapeRule, ...] = (
     ShapeRule("gear_disc", ("gear_pair",), _disc),
     ShapeRule("index_disc", ("intermittent_pair",), _disc),
     ShapeRule("crank", ("rotating", "user_contact"), _crank),
+    ShapeRule("snap_beam", ("compliant",), _beam),
+    ShapeRule("lid", ("hinged",), _lid),
+    ShapeRule("catch", ("retention_interface",), _catch),
     ShapeRule("shaft", ("rotating",), _shaft),
     ShapeRule("plate", ("translating",), _plate),
-    ShapeRule("snap_beam", ("precision_interface",), _beam),
     ShapeRule("rail", ("load_bearing",), _rail),
     ShapeRule("generic", (), _generic),
 )

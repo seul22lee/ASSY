@@ -502,6 +502,110 @@ closes rather than terminating at the directive.
 
 ---
 
+## 2026-07-26 (b)
+
+### Summary
+
+Added a real validation path for BM-001 and reorganised persistence into a
+run-oriented, stage-separated artifact layer.
+
+### Completed
+
+- **Two validation backends.** `ValidationBackend` is now part of the domain.
+  Compliant-element physics goes to a closed-form backend; rigid-body motion and
+  contact go to MuJoCo. Every test declares its phenomenon and validity domain.
+- **Role-driven test planning** (`assy/knowledge/testplan.py`). Tests are implied
+  by roles — `hinged`, `retention_interface`, `compliant`, `user_release`,
+  `moving_boundary` — never by the presence of a named entity.
+- BM-001 now plans and runs five tests: `latch_compliance` (analytical) plus
+  `close_and_engage`, `hold_under_disturbance`, `release_latch`, and
+  `reopen_without_interference` (MuJoCo). All complete.
+- **Evaluation requires both evidence classes.** A compliant mechanism cannot
+  reach `pass` on motion evidence alone (`assess_evidence` in Stage 11).
+- **Run-artifact layer** (`assy/runartifacts.py`), orthogonal to stage contracts:
+  `out/<benchmark>/run-<id>/stage_NN_name/` with `input_refs.json`,
+  `output.json`, `report.md`, plus `run_manifest.json`, `run_summary.md`, and
+  `assumptions.md`. Stage 05 is split into six review projections so the design
+  loop is readable without opening one very large file.
+- **Visualization layer** (`assy/viz.py`), derived and non-authoritative: CAD
+  isometric/transparent/section/exploded views, per-test displacement, force,
+  and contact-state plots, MuJoCo animations, and an analytical force/strain
+  summary. A render failure can never fail a run.
+
+### Decisions
+
+**AD-010 — `NOT_APPLICABLE` is distinct from `INCONCLUSIVE`.** A mandatory check
+that has nothing to evaluate in this product class is vacuously satisfied; one
+that applies but lacks inputs is a genuine gap. Collapsing them made a
+swept-motion check block a product with no translating body.
+
+**AD-011 — A check closes the problems it opens.** If a deterministic check is
+the authority for raising a problem, a later passing run of the same check is the
+authority for clearing it. Without this, a transient detection blocks the agenda
+permanently even after the design has moved past it.
+
+**AD-012 — Resolution application is idempotent.** One resolver may answer several
+related problems and re-propose the same commitments each time. Re-asserting an
+identical active commitment is a no-op, not a new engineering decision. This cut
+BM-001 from 321 commitments to 88 with no loss of information.
+
+**AD-013 — Simulation models declare what they cannot represent.**
+`SimulationPlan.modelling_limitations` is populated by the model builder. The
+latch model states plainly that the beam is a lumped torsional spring, that its
+armature exceeds physical beam inertia for integrability, and that strain,
+stress, creep, and fatigue are *not* in its validity domain.
+
+### Observations
+
+**Four defects in this work were mine, and each was invisible from inside its own
+stage.** They are worth recording because they share a shape: a plausible-looking
+number that was wrong for a reason no single stage could see.
+
+1. **Wrong governing dimension.** `hinge_swing_clearance` used lid *depth* for
+   rearward reach, but a rear-hinged lid's rearward protrusion is set by its
+   *thickness*. The check flagged every possible lid, and the agenda could never
+   converge. A check can be structurally perfect and physically wrong.
+2. **Unit boundary.** MuJoCo `qpos` and position-actuator `ctrl` are radians at
+   runtime regardless of `compiler angle="degree"`. Feeding degrees meant 55 rad,
+   i.e. 3151°. Every test "failed" while the physics was fine.
+3. **Detector, not dynamics.** A flat `|qvel| > 60` threshold reported legitimate
+   snap-through (peak 48.9 rad/s, no solver warnings, finite state) as
+   instability. Divergence detection now uses MuJoCo's own warning counters plus
+   finiteness, with a far higher runaway threshold.
+4. **Sign of a lumped DOF.** Positive `beam_flex` tilted the beam *inward*,
+   jamming the latch it was supposed to release. Retention passed and release
+   silently did nothing — the most dangerous combination, because the design
+   looked safe.
+
+**An initial rest state that overlaps is not a physics result.** The first latch
+model had the lid penetrating all four walls by 0.6 mm, which injects a large
+contact impulse at t=0 and destroys the run before anything happens. Latch
+geometry is now computed with explicit clearances rather than hand-placed.
+
+**A position servo must be sized against what it works against.** The thumb-release
+actuator delivered 0.096 N·m against a 0.29 N·m spring, so the latch never
+released. Its gain is now derived from the beam stiffness rather than guessed.
+
+### Open Questions
+
+- **OA-004 — partially answered.** Supporting BM-001 required five new roles, five
+  spawn rules, four resolvers, three checks, and a second backend. That is the
+  approximate cost of a new product class in the current design.
+- **OA-007** Should `modelling_limitations` gate evaluation automatically, rather
+  than only being reported? A claim outside a backend's validity domain is
+  currently detectable but not blocked.
+- **OA-008** The lid plate is on a separate contact group, so lid/wall
+  interference is not evaluated. Full-body swept interference needs either a
+  finer model or a dedicated geometric check.
+
+### Next Objective
+
+Implement revision re-execution so the loop in SYSTEM_ARCHITECTURE section 3
+closes, and add a geometric swept-interference check to cover what the contact
+group split currently excludes.
+
+---
+
 # Future Log Entries
 
 Append new entries below this section.

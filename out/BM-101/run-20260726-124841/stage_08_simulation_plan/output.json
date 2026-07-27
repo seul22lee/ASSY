@@ -1,0 +1,16 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SIMPLAN-001",
+    "design_id": "design-001",
+    "producer": "s08_simulation_plan",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "tests": [],
+  "model_path": null,
+  "contact_assumptions": {},
+  "source_manifest_id": "CAD-001",
+  "modelling_limitations": []
+}

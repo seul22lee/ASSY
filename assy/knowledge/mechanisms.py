@@ -130,22 +130,45 @@ FAMILIES: tuple[MechanismFamily, ...] = (
     ),
     MechanismFamily(
         id="cantilever_snap",
-        principle="Cantilever snap-fit providing releasable retention",
+        principle="Hinged lid retained by a cantilever snap-fit with thumb release",
         converts_from="displacement",
         converts_to="retention",
         parts=(
-            PartTemplate("snap_beam", "retention", ("load_bearing", "manufactured", "precision_interface")),
-            PartTemplate("catch", "retention", ("load_bearing", "manufactured")),
+            PartTemplate(
+                "lid",
+                "output",
+                ("hinged", "moving_boundary", "user_contact", "load_bearing", "manufactured"),
+            ),
+            PartTemplate("hinge_pin", "guidance", ("rotating", "load_bearing", "manufactured")),
+            PartTemplate(
+                "snap_beam",
+                "retention",
+                (
+                    "compliant",
+                    "retention_interface",
+                    "user_release",
+                    "precision_interface",
+                    "load_bearing",
+                    "manufactured",
+                ),
+            ),
+            PartTemplate(
+                "catch", "retention", ("retention_interface", "load_bearing", "manufactured")
+            ),
             PartTemplate("housing", "structure", ("enclosure", "load_bearing", "manufactured")),
         ),
-        relation="retention_force = f(beam_stiffness, undercut)",
+        relation="retention_force = f(beam_stiffness, undercut, engagement_angle)",
         self_locking=False,
-        part_count=3,
+        part_count=5,
         compactness=0.95,
         efficiency=1.0,
-        strengths=("zero added parts", "tool-free release"),
-        weaknesses=("creep under sustained load", "strain-limited"),
-        risks=("beam yields if over-deflected during assembly",),
+        strengths=("no separate fasteners", "tool-free release", "integral to the moulding"),
+        weaknesses=("creep under sustained load", "strain-limited", "wears with cycling"),
+        risks=(
+            "beam yields if over-deflected during assembly",
+            "retention and release force are in direct tension",
+        ),
+        open_questions=("beam thickness versus release effort",),
     ),
 )
 

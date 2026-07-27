@@ -1,0 +1,13 @@
+{
+  "ready": false,
+  "no_blocking_problems": true,
+  "mandatory_checks_executed": true,
+  "mandatory_checks_passing": true,
+  "all_commitments_determined": true,
+  "system_structurally_solvable": true,
+  "undetermined": [],
+  "missing_checks": [],
+  "failing_checks": [],
+  "blocked_reason": "cyclic resolution",
+  "recommended_restart": "engineering_integration"
+}

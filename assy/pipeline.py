@@ -17,9 +17,11 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from assy.version import __version__
 from assy.domain.common import ObjectMeta, Stage, new_id, reset_ids
 from assy.domain.downstream import ReqStatus, RestartStage
 from assy.domain.session import DesignSession, IterationRecord, SessionStatus
+from assy.runartifacts import RunArtifactWriter, RunLayout
 from assy.stages import (
     Budget,
     CADBuilder,
@@ -50,6 +52,7 @@ class StageRecord:
 @dataclass
 class PipelineResult:
     session: DesignSession
+    run_dir: Path | None = None
     objects: dict[str, Any] = field(default_factory=dict)
     stages: list[StageRecord] = field(default_factory=list)
 
@@ -81,10 +84,16 @@ class Pipeline:
         out_dir: str | Path = "out",
         reasoner: Reasoner | None = None,
         budget: Budget | None = None,
+        benchmark_id: str = "custom",
+        tier: str = "core",
+        run_id: str | None = None,
     ):
         self.out = Path(out_dir)
         self.reasoner = reasoner
         self.budget = budget
+        self.benchmark_id = benchmark_id
+        self.tier = tier
+        self.run_id = run_id
 
     def run(
         self,
@@ -97,11 +106,17 @@ class Pipeline:
         reset_ids()
         self.out.mkdir(parents=True, exist_ok=True)
 
+        # The run layout is created up front so stages write their raw artifacts
+        # directly into the stage directory that owns them.
+        layout = RunLayout.create(self.out, self.benchmark_id, self.run_id)
+        cad_dir = layout.dir_for("CADArtifactManifest") / "cad"
+        sim_dir = layout.dir_for("SimulationResult") / "raw"
+
         session = DesignSession(
             meta=ObjectMeta(object_id=new_id("SESSION"), producer=Stage.SESSION, design_id=design_id),
-            artifact_dir=str(self.out),
+            artifact_dir=str(layout.root),
         )
-        result = PipelineResult(session=session)
+        result = PipelineResult(session=session, run_dir=layout.root)
 
         def step(name: str, fn, produces: str, detail=lambda o: ""):
             try:
@@ -182,17 +197,17 @@ class Pipeline:
         if solved is not None:
             manifest = step(
                 "07 cad builder",
-                lambda: CADBuilder(self.out / "cad").run(solved=solved, definition=definition),
+                lambda: CADBuilder(cad_dir).run(solved=solved, definition=definition),
                 "CADArtifactManifest",
                 lambda o: f"{o.status.value}, {len(o.parts)} parts",
             )
 
         # -- Stage 08-11: validation ----------------------------------------
-        plan = metrics = evaluation = None
+        plan = sim = metrics = evaluation = None
         if solved is not None and manifest is not None:
             plan = step(
                 "08 simulation plan",
-                lambda: SimulationPlanBuilder(self.out / "sim").run(
+                lambda: SimulationPlanBuilder(sim_dir).run(
                     spec=spec, solved=solved, manifest=manifest, definition=definition
                 ),
                 "SimulationPlan",
@@ -201,9 +216,9 @@ class Pipeline:
         if plan is not None:
             sim = step(
                 "09 simulation runner",
-                lambda: SimulationRunner(self.out / "sim").run(plan=plan),
+                lambda: SimulationRunner(sim_dir).run(plan=plan, definition=definition),
                 "SimulationResult",
-                lambda o: ", ".join(f"{r.test_id}:{r.status.value}" for r in o.results),
+                lambda o: ", ".join(f"{r.backend.value}:{r.status.value}" for r in o.results),
             )
             if sim is not None:
                 metrics = step(
@@ -216,7 +231,7 @@ class Pipeline:
             evaluation = step(
                 "11 requirement evaluation",
                 lambda: RequirementEvaluation().run(
-                    spec=spec, metrics=metrics, definition=definition
+                    spec=spec, metrics=metrics, definition=definition, plan=plan, result=sim
                 ),
                 "EvaluationReport",
                 lambda o: f"overall={o.overall.value}, {len(o.failed)} failed",
@@ -262,18 +277,6 @@ class Pipeline:
             session.status = SessionStatus.FAILED
 
         if persist:
-            self._persist(result)
+            writer = RunArtifactWriter(layout, self.benchmark_id, self.tier, __version__)
+            writer.write(result)
         return result
-
-    def _persist(self, result: PipelineResult) -> None:
-        objects_dir = self.out / "objects"
-        objects_dir.mkdir(parents=True, exist_ok=True)
-        for name, obj in result.objects.items():
-            if hasattr(obj, "model_dump"):
-                (objects_dir / f"{name}.json").write_text(
-                    json.dumps(obj.model_dump(mode="json"), indent=2)
-                )
-        (objects_dir / "DesignSession.json").write_text(
-            json.dumps(result.session.model_dump(mode="json"), indent=2)
-        )
-        (self.out / "pipeline_report.txt").write_text(result.report())

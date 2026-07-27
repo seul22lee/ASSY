@@ -29,6 +29,7 @@ from assy.domain.downstream import (
     SolveStatus,
     SolvedDesign,
     SolvedParameter,
+    ValidationBackend,
 )
 from assy.domain.engineering import (
     GATING_KINDS,
@@ -122,6 +123,7 @@ __all__ = [
     "SolvedDesign",
     "SolvedParameter",
     "Stage",
+    "ValidationBackend",
     "new_id",
     "reset_ids",
 ]

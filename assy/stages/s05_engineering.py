@@ -191,7 +191,9 @@ class EngineeringIntegration(PipelineStage):
                 missing.append(name)
                 continue
             executed.append(name)
-            if k.result == CheckResult.PASS and not k.stale:
+            if k.is_satisfied:
+                # PASS, or NOT_APPLICABLE because this product class has nothing
+                # for the check to evaluate - vacuously satisfied either way.
                 passing.append(name)
             else:
                 failing.append(f"{name}:{k.result.value}{' (stale)' if k.stale else ''}")

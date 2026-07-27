@@ -23,21 +23,24 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.benchmark:
         bm = ALL[args.benchmark]
-        request, clarifications, out = bm.request, list(bm.clarifications), f"{args.out}/{bm.id}"
-        print(f"=== {bm.id}  {bm.name}  [{bm.tier.value}] ===")
+        request, clarifications = bm.request, list(bm.clarifications)
+        bid, tier = bm.id, bm.tier.value
+        print(f"=== {bm.id}  {bm.name}  [{tier}] ===")
         if bm.tier is Tier.ADVANCED:
             print(
                 "note: advanced benchmarks validate a mature pipeline and are outside\n"
                 "      the initial implementation milestone; incomplete results are expected."
             )
     elif args.request:
-        request, clarifications, out = args.request, [], args.out
+        request, clarifications, bid, tier = args.request, [], "custom", "core"
         print("=== custom request ===")
     else:
         ap.error("one of --benchmark or --request is required")
         return 2
 
-    result = Pipeline(out_dir=out).run(request, clarifications=clarifications)
+    pipeline = Pipeline(out_dir=args.out, benchmark_id=bid, tier=tier)
+    result = pipeline.run(request, clarifications=clarifications)
+    out = str(result.run_dir) if result.run_dir else args.out
     print()
     print(result.report())
 

@@ -6,6 +6,5 @@ simulation -> requirement evaluation -> revision.
 """
 
 from assy.pipeline import Pipeline, PipelineResult, StageRecord
-
-__version__ = "0.1.0"
+from assy.version import __version__
 __all__ = ["Pipeline", "PipelineResult", "StageRecord"]

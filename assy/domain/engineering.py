@@ -224,6 +224,13 @@ class CheckResult(str, Enum):
     PASS = "pass"
     FAIL = "fail"
     INCONCLUSIVE = "inconclusive"
+    """Applies to this design, but the inputs it needs are missing. A genuine gap."""
+    NOT_APPLICABLE = "not_applicable"
+    """This product class has nothing for the check to evaluate. Vacuously satisfied.
+
+    Distinct from INCONCLUSIVE: a swept-motion check on a product with no moving
+    body is not a missing result, and must not block CAD readiness.
+    """
     NOT_RUN = "not_run"
 
 
@@ -252,6 +259,14 @@ class Check(BaseModel):
     @property
     def is_valid_evidence(self) -> bool:
         return (not self.stale) and self.result != CheckResult.NOT_RUN
+
+    @property
+    def is_satisfied(self) -> bool:
+        """Passing, or vacuously satisfied because it does not apply here."""
+        return (not self.stale) and self.result in (
+            CheckResult.PASS,
+            CheckResult.NOT_APPLICABLE,
+        )
 
     @property
     def gates(self) -> bool:
@@ -357,6 +372,12 @@ class EngineeringWorkingState(BaseModel):
             if old in self.commitments:
                 self.supersede(old, r.id)
         for c in r.commitments:
+            # Idempotent: one resolver may answer several related problems and
+            # re-propose the same commitments each time. Re-asserting an identical
+            # active commitment is a no-op, not a new engineering decision.
+            existing = self.find_subject(c.subject)
+            if existing is not None and existing.value == c.value and existing.kind == c.kind:
+                continue
             c.provenance.resolution_id = r.id
             c.provenance.problem_id = r.problem_id
             c.provenance.method = r.method

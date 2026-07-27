@@ -1,0 +1,297 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SOLVED-001",
+    "design_id": "design-001",
+    "producer": "s06_parametric_solver",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "status": "solved",
+  "parameters": [
+    {
+      "name": "crank.radial_support",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-008",
+      "derived": false
+    },
+    {
+      "name": "crank.support_span",
+      "value": 60.0,
+      "unit": "mm",
+      "commitment_id": "C-009",
+      "derived": false
+    },
+    {
+      "name": "crank.diameter",
+      "value": 8.0,
+      "unit": "mm",
+      "commitment_id": "C-010",
+      "derived": false
+    },
+    {
+      "name": "crank.radial_load",
+      "value": 14.81,
+      "unit": "N",
+      "commitment_id": "C-011",
+      "derived": false
+    },
+    {
+      "name": "crank.deflection_allowable",
+      "value": 0.15,
+      "unit": "mm",
+      "commitment_id": "C-012",
+      "derived": false
+    },
+    {
+      "name": "crank.pinch_access",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-023",
+      "derived": false
+    },
+    {
+      "name": "crank.crank_radius",
+      "value": 40.0,
+      "unit": "mm",
+      "commitment_id": "C-025",
+      "derived": false
+    },
+    {
+      "name": "crank.grip_force",
+      "value": 0.0,
+      "unit": "N",
+      "commitment_id": "C-027",
+      "derived": false
+    },
+    {
+      "name": "drive_shaft.radial_support",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-034",
+      "derived": false
+    },
+    {
+      "name": "drive_shaft.support_span",
+      "value": 60.0,
+      "unit": "mm",
+      "commitment_id": "C-035",
+      "derived": false
+    },
+    {
+      "name": "drive_shaft.diameter",
+      "value": 8.0,
+      "unit": "mm",
+      "commitment_id": "C-036",
+      "derived": false
+    },
+    {
+      "name": "drive_shaft.radial_load",
+      "value": 14.81,
+      "unit": "N",
+      "commitment_id": "C-037",
+      "derived": false
+    },
+    {
+      "name": "drive_shaft.deflection_allowable",
+      "value": 0.15,
+      "unit": "mm",
+      "commitment_id": "C-038",
+      "derived": false
+    },
+    {
+      "name": "lift_screw.radial_support",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-057",
+      "derived": false
+    },
+    {
+      "name": "lift_screw.support_span",
+      "value": 60.0,
+      "unit": "mm",
+      "commitment_id": "C-058",
+      "derived": false
+    },
+    {
+      "name": "lift_screw.diameter",
+      "value": 8.0,
+      "unit": "mm",
+      "commitment_id": "C-059",
+      "derived": false
+    },
+    {
+      "name": "lift_screw.radial_load",
+      "value": 14.81,
+      "unit": "N",
+      "commitment_id": "C-060",
+      "derived": false
+    },
+    {
+      "name": "lift_screw.deflection_allowable",
+      "value": 0.15,
+      "unit": "mm",
+      "commitment_id": "C-061",
+      "derived": false
+    },
+    {
+      "name": "lift_screw.pitch_diameter",
+      "value": 8.0,
+      "unit": "mm",
+      "commitment_id": "C-072",
+      "derived": false
+    },
+    {
+      "name": "lift_screw.lead",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-073",
+      "derived": false
+    },
+    {
+      "name": "lift_screw.lead_relation",
+      "value": 2.0,
+      "unit": "mm/turn",
+      "commitment_id": "C-074",
+      "derived": true
+    },
+    {
+      "name": "lift_screw.thread_engagement",
+      "value": 12.0,
+      "unit": "mm",
+      "commitment_id": "C-076",
+      "derived": false
+    },
+    {
+      "name": "lift_screw.raise_torque",
+      "value": 26.18,
+      "unit": "Nmm",
+      "commitment_id": "C-077",
+      "derived": false
+    },
+    {
+      "name": "platform.guidance",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-101",
+      "derived": false
+    },
+    {
+      "name": "platform.guide_span",
+      "value": 70.0,
+      "unit": "mm",
+      "commitment_id": "C-102",
+      "derived": false
+    },
+    {
+      "name": "platform.guide_overhang",
+      "value": 25.0,
+      "unit": "mm",
+      "commitment_id": "C-103",
+      "derived": false
+    },
+    {
+      "name": "platform.jamming_index",
+      "value": 0.25,
+      "unit": "mm",
+      "commitment_id": "C-104",
+      "derived": true
+    },
+    {
+      "name": "platform.travel_envelope",
+      "value": 90.0,
+      "unit": "mm",
+      "commitment_id": "C-105",
+      "derived": true
+    },
+    {
+      "name": "platform.motion_clearance",
+      "value": 5.0,
+      "unit": "mm",
+      "commitment_id": "C-106",
+      "derived": false
+    },
+    {
+      "name": "housing.internal_height",
+      "value": 120.0,
+      "unit": "mm",
+      "commitment_id": "C-128",
+      "derived": false
+    },
+    {
+      "name": "housing.internal_width",
+      "value": 110.0,
+      "unit": "mm",
+      "commitment_id": "C-129",
+      "derived": false
+    },
+    {
+      "name": "housing.internal_depth",
+      "value": 90.0,
+      "unit": "mm",
+      "commitment_id": "C-130",
+      "derived": false
+    },
+    {
+      "name": "panel_alignment.tolerance_chain",
+      "value": 0.3,
+      "unit": "mm",
+      "commitment_id": "C-135",
+      "derived": true
+    },
+    {
+      "name": "housing.wall_thickness",
+      "value": 2.4,
+      "unit": "mm",
+      "commitment_id": "C-223",
+      "derived": false
+    }
+  ],
+  "satisfied": [
+    {
+      "commitment_id": "C-012",
+      "expression": "crank deflection allowable",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-038",
+      "expression": "drive_shaft deflection allowable",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-061",
+      "expression": "lift_screw deflection allowable",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-075",
+      "expression": "mu > tan(lambda)",
+      "satisfied": true,
+      "residual": null,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-104",
+      "expression": "overhang/span < 1/(2*mu)",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    }
+  ],
+  "violated": [],
+  "objective_values": {
+    "input_effort": 0.0
+  },
+  "diagnostics": [
+    "1 objective(s) recorded but not optimised in this implementation"
+  ],
+  "source_definition_id": "CRED-001"
+}

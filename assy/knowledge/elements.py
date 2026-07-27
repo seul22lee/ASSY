@@ -129,6 +129,45 @@ def cantilever_snap_strain(
     return 1.5 * thickness_mm * deflection_mm / length_mm**2
 
 
+def snap_engagement_force(
+    deflection_force_n: float, face_angle_deg: float, friction: float
+) -> float:
+    """Force to traverse a snap face inclined at ``face_angle_deg``.
+
+    F = P (mu + tan a) / (1 - mu tan a)
+
+    As ``a`` approaches arctan(1/mu) the denominator vanishes: the feature becomes
+    self-locking and cannot be separated without damage. Returned as infinity so a
+    caller cannot mistake a permanent latch for a strong releasable one.
+    """
+    a = math.radians(face_angle_deg)
+    denominator = 1.0 - friction * math.tan(a)
+    if denominator <= 1e-6:
+        return float("inf")
+    return deflection_force_n * (friction + math.tan(a)) / denominator
+
+
+def self_locking_face_angle(friction: float) -> float:
+    """Face angle beyond which a snap becomes permanent: arctan(1/mu)."""
+    if friction <= 0:
+        return 90.0
+    return math.degrees(math.atan(1.0 / friction))
+
+
+def hinge_swing_clearance(
+    lid_thickness_mm: float, axis_offset_mm: float, angle_deg: float
+) -> float:
+    """Rearward protrusion of a rear-hinged lid as it swings open.
+
+    The lid's far edge sweeps up and *forward*; what reaches backwards past the
+    axis is the lid's own section swinging about it, so the governing dimension
+    is thickness, not depth. Returns how far that protrusion exceeds the material
+    already behind the axis.
+    """
+    a = math.radians(min(angle_deg, 180.0))
+    return max(0.0, lid_thickness_mm * math.sin(a) - axis_offset_mm)
+
+
 # --------------------------------------------------------------------------
 # Tolerance
 # --------------------------------------------------------------------------

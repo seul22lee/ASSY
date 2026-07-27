@@ -108,11 +108,27 @@ class CADArtifactManifest(DomainObject):
 # --------------------------------------------------------------------------
 # Stage 08/09 - Simulation
 # --------------------------------------------------------------------------
+class ValidationBackend(str, Enum):
+    """No single backend has universal authority (SYSTEM_ARCHITECTURE section 16).
+
+    The correct method depends on the physics being evaluated: rigid-body contact
+    goes to MuJoCo, compliant-element behaviour goes to closed-form analysis.
+    """
+
+    MUJOCO = "mujoco"
+    ANALYTICAL = "analytical"
+
+
 class SimTest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     id: str
     name: str
+    backend: ValidationBackend = ValidationBackend.MUJOCO
+    phenomenon: str = ""
+    """The physical phenomenon under test, e.g. 'compliant_retention'."""
+    validity_domain: list[str] = Field(default_factory=list)
+    """What this method can legitimately conclude about. Claims outside it are invalid."""
     serves_requirements: list[str] = Field(default_factory=list)
     duration_s: float = 3.0
     timestep_s: float = 0.002
@@ -128,6 +144,11 @@ class SimulationPlan(DomainObject):
     model_path: str | None = None
     contact_assumptions: dict[str, float] = Field(default_factory=dict)
     source_manifest_id: str = ""
+    modelling_limitations: list[str] = Field(default_factory=list)
+    """Explicit statements of what the chosen models cannot represent."""
+
+    def by_backend(self, backend: ValidationBackend) -> list[SimTest]:
+        return [t for t in self.tests if t.backend is backend]
 
 
 class SimRunStatus(str, Enum):
@@ -142,6 +163,7 @@ class SimTestResult(BaseModel):
 
     test_id: str
     status: SimRunStatus
+    backend: ValidationBackend = ValidationBackend.MUJOCO
     simulator: str = "mujoco"
     simulator_version: str = ""
     duration_s: float = 0.0

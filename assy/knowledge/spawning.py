@@ -122,6 +122,42 @@ RULES: list[SpawnRule] = [
         rationale="Any user-reachable moving boundary is a safety surface.",
     ),
     SpawnRule(
+        name="hinged_body_needs_axis_and_range",
+        role="hinged",
+        phenomena=["hinge_axis", "angular_range", "hinge_support", "closing_clearance"],
+        domain="full_swing",
+        rationale="A hinged body needs a located axis, a bounded swing, and clearance through it.",
+    ),
+    SpawnRule(
+        name="compliant_element_needs_strain_budget",
+        role="compliant",
+        phenomena=["beam_geometry", "deflection_strain", "insertion_force"],
+        rationale=(
+            "A compliant element is strain-limited: its geometry, peak strain, and "
+            "actuation force are one coupled problem."
+        ),
+    ),
+    SpawnRule(
+        name="retention_interface_needs_force_pair",
+        role="retention_interface",
+        phenomena=["engagement_geometry", "retention_force"],
+        rationale="Retention and release are a tradeoff pair, not independent targets.",
+    ),
+    SpawnRule(
+        name="user_release_needs_effort",
+        role="user_release",
+        phenomena=["release_force", "release_actuation"],
+        origin=ProblemOrigin.REQUIREMENT,
+        rationale="A releasable feature needs a bounded, reachable release effort.",
+    ),
+    SpawnRule(
+        name="moving_boundary_needs_clearance",
+        role="moving_boundary",
+        phenomena=["boundary_clearance"],
+        domain="full_swing",
+        rationale="A moving boundary against a static one is both a clearance and a safety surface.",
+    ),
+    SpawnRule(
         name="load_bearing_needs_path",
         role="load_bearing",
         phenomena=["load_path", "structural_margin"],
