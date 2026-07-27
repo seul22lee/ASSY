@@ -1,21 +1,18 @@
-"""Benchmark fixtures — pipeline evaluation.
+"""Benchmark fixtures — synchronized with the BM Markdown documents.
 
-A **benchmark** evaluates the complete ASSY pipeline on a product-level problem.
-An **architecture experiment** validates or falsifies an architectural hypothesis
-and lives in ``experiments/``. The two are related but not the same thing:
+The BM Markdown files are the **golden problem definitions**. These fixtures carry
+only the *User Requirement* and *Clarifications* sections verbatim, because those
+are the only sections Stage 01 may consume. Everything else in a BM document
+(fixed requirements, stress map, success criteria) is reviewer material and must
+never reach the pipeline.
+
+A **benchmark** evaluates the complete pipeline; an **architecture experiment**
+validates one hypothesis and lives in ``experiments/``.
 
     Experiment  ->  architectural evidence
     Benchmark   ->  pipeline evaluation
 
-A product may legitimately appear in both categories in different roles. The
-Geneva mechanism is one: it is historical evidence for the Stage 05 working-state
-architecture (``experiments/geneva_stage05/``) *and* an advanced benchmark
-(BM-101) for validating a mature implementation.
-
-Fixtures live here, never in the core (Rule BM-2). A new benchmark should need
-new fixtures and tests, not architecture changes (Rule BM-3). Benchmark
-requirements must never prescribe a mechanism — that is what the pipeline is
-being evaluated on.
+Fixtures live here, never in the core (Rule BM-2).
 """
 
 from dataclasses import dataclass, field
@@ -23,13 +20,11 @@ from enum import Enum
 
 
 class Tier(str, Enum):
-    """Benchmarks are tiered by what maturity of implementation they evaluate."""
-
     CORE = "core"
-    """Evaluates the initial implementation milestone. Expected to run today."""
+    """Evaluates the initial implementation milestone."""
 
     ADVANCED = "advanced"
-    """Reserved for validating a mature pipeline. Not part of the initial milestone."""
+    """Reserved for validating a mature pipeline."""
 
 
 @dataclass(frozen=True)
@@ -39,41 +34,56 @@ class Benchmark:
     request: str
     tier: Tier = Tier.CORE
     clarifications: list[str] = field(default_factory=list)
+    document: str = ""
 
 
 BM001 = Benchmark(
     id="BM-001",
     name="Latching Storage Box",
     tier=Tier.CORE,
+    document="BM-001_LATCHING_STORAGE_BOX.md",
     request=(
-        "Design a small storage box with a hinged lid. "
-        "The lid should stay closed until the user releases it with a thumb. "
-        "The box should be safe to use, easy to assemble, and practical to manufacture."
+        "Design a compact desktop storage box with a reusable latch. "
+        "The box should open and close repeatedly without accidental opening during "
+        "normal handling. "
+        "The latch should be easy for a user to operate while remaining secure during "
+        "transport. "
+        "The product should be suitable for low-cost manufacturing and should be "
+        "practical for desktop use. "
+        "The design should be mechanically plausible and easy to assemble."
     ),
     clarifications=[
-        "Desktop-sized product.",
-        "Manual operation only.",
-        "Additive manufacturing is expected.",
+        "Approximate product size: desktop-sized (roughly hand-held).",
+        "Opening angle is not prescribed.",
+        "One-handed operation is desirable but not mandatory.",
+        "Repeated opening and closing is expected.",
+        "A separate metal fastener is allowed but not required.",
+        "Multiple engineering solutions are acceptable.",
     ],
 )
 
 BM002 = Benchmark(
     id="BM-002",
-    name="Hand-Cranked Lift Box",
+    name="Enclosed Hand-Cranked Platform Lift",
     tier=Tier.CORE,
+    document="BM-002_ENCLOSED_HAND_CRANKED_PLATFORM_LIFT.md",
     request=(
-        "Design a compact desktop lifting box. "
-        "The user should rotate an external hand crank to raise and lower an internal platform. "
-        "The platform should lift approximately 80-100 mm and support a payload of approximately 1 kg. "
-        "The mechanism should be enclosed inside the housing. "
+        "Design a compact desktop platform-lifting device enclosed within a housing. "
+        "The user should rotate an external hand crank to raise and lower an internal "
+        "platform. "
+        "The platform should move approximately 80-100 mm and support a payload of "
+        "approximately 1 kg. "
+        "The mechanism should remain enclosed within the housing during normal operation. "
         "The product should be safe to use, mechanically plausible, easy to assemble, "
-        "and practical to manufacture. Avoid obvious jamming or unstable operation."
+        "and practical to manufacture. "
+        "Avoid obvious jamming or unstable operation."
     ),
     clarifications=[
         "Desktop-sized product.",
         "Manual operation only.",
         "Continuous or intermittent lifting is acceptable.",
         "Self-locking is optional if justified.",
+        "Different transmission mechanisms are acceptable.",
         "Multiple shafts, bearings, guides, and supports are allowed.",
     ],
 )
@@ -82,8 +92,7 @@ BM101 = Benchmark(
     id="BM-101",
     name="Geneva Indexing Box",
     tier=Tier.ADVANCED,
-    # Note: the request never names a mechanism. Which mechanism realises
-    # intermittent indexing is what the pipeline is being evaluated on.
+    document="BM-101_GENEVA_INDEXING_BOX.md",
     request=(
         "Design a compact desktop indexing box. "
         "The user should rotate an external hand crank to advance an internal indexing "
@@ -99,6 +108,7 @@ BM101 = Benchmark(
         "The number of indexed positions is not prescribed.",
         "Different housing layouts are acceptable.",
         "Multiple support strategies are acceptable.",
+        "The Geneva implementation may vary provided the required behavior is achieved.",
     ],
 )
 

@@ -20,6 +20,7 @@ from typing import Any
 from assy.version import __version__
 from assy.domain.common import ObjectMeta, Stage, new_id, reset_ids
 from assy.domain.downstream import ReqStatus, RestartStage
+from assy.domain.upstream import Stage01ContractDeficiency
 from assy.domain.session import DesignSession, IterationRecord, SessionStatus
 from assy.runartifacts import RunArtifactWriter, RunLayout
 from assy.stages import (
@@ -149,11 +150,21 @@ class Pipeline:
 
         mech = step(
             "02 mechanical architecture",
-            lambda: MechanicalArchitectureGenerator(self.reasoner).run(spec=spec),
+            lambda: MechanicalArchitectureGenerator().run(spec=spec),
             "MechanicalArchitecture",
-            lambda o: f"{len(o.candidates)} candidates, selected '{o.selected_id}'",
+            lambda o: (
+                f"CONTRACT DEFICIENCY: {len(o.items)} blocking item(s)"
+                if isinstance(o, Stage01ContractDeficiency)
+                else f"{len(o.candidates)} candidates, selected '{o.selected_id}'"
+                + (f", {len(o.contract_advisories)} advisory" if o.contract_advisories else "")
+            ),
         )
-        if mech is None:
+        if mech is None or isinstance(mech, Stage01ContractDeficiency):
+            # A typed deficiency stops the pipeline deliberately. Stage 02 refuses to
+            # re-read the request, so there is nothing downstream can proceed from.
+            if isinstance(mech, Stage01ContractDeficiency):
+                result.objects["Stage01ContractDeficiency"] = mech
+                result.objects.pop("MechanicalArchitecture", None)
             session.status = SessionStatus.BLOCKED
             return result
 

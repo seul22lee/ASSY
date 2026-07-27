@@ -1,0 +1,151 @@
+{
+  "BM-001": {
+    "deficiency": false,
+    "behaviours": [
+      [
+        "REQ-001",
+        "force->state/intermittent",
+        true
+      ],
+      [
+        "REQ-002",
+        "force->state/continuous",
+        false
+      ],
+      [
+        "REQ-003",
+        "force->state/intermittent",
+        true
+      ],
+      [
+        "REQ-004",
+        "force->state/continuous",
+        false
+      ],
+      [
+        "REQ-005",
+        "none->state/single_event",
+        false
+      ],
+      [
+        "REQ-006",
+        "none->state/continuous",
+        false
+      ],
+      [
+        "REQ-007",
+        "none->state/single_event",
+        false
+      ],
+      [
+        "REQ-008",
+        "force->state/intermittent",
+        true
+      ]
+    ],
+    "bounds": [],
+    "freedoms": [
+      "Opening angle is not prescribed.",
+      "One-handed operation is desirable but not mandatory.",
+      "A separate metal fastener is allowed but not require",
+      "Multiple engineering solutions are acceptable."
+    ],
+    "scenarios": 3,
+    "candidates": [
+      "compliant_catch",
+      "over_centre_catch",
+      "friction_detent_catch"
+    ],
+    "selected": "friction_detent_catch",
+    "deficiency_items": [],
+    "source_text_invariant": true
+  },
+  "BM-002": {
+    "deficiency": false,
+    "behaviours": [
+      [
+        "REQ-001",
+        "rotation->translation/intermittent",
+        true
+      ],
+      [
+        "REQ-004",
+        "none->state/held",
+        false
+      ],
+      [
+        "REQ-007",
+        "none->state/held",
+        false
+      ]
+    ],
+    "bounds": [
+      [
+        "REQ-002",
+        "between",
+        80.0,
+        100.0,
+        "mm",
+        "bounded"
+      ],
+      [
+        "REQ-003",
+        "==",
+        1.0,
+        1.0,
+        "kg",
+        "approximate"
+      ]
+    ],
+    "freedoms": [
+      "Continuous or intermittent lifting is acceptable",
+      "Self-locking is optional if justified",
+      "Different transmission mechanisms are acceptable",
+      "Multiple shafts, bearings, guides, and supports are "
+    ],
+    "scenarios": 2,
+    "candidates": [
+      "screw_drive",
+      "toothed_linear_drive",
+      "flexible_tension_drive"
+    ],
+    "selected": "screw_drive",
+    "deficiency_items": [],
+    "source_text_invariant": true
+  },
+  "BM-101": {
+    "deficiency": false,
+    "behaviours": [
+      [
+        "REQ-001",
+        "rotation->rotation/intermittent",
+        false
+      ],
+      [
+        "REQ-002",
+        "none->state/held",
+        false
+      ],
+      [
+        "REQ-003",
+        "none->state/held",
+        false
+      ]
+    ],
+    "bounds": [],
+    "freedoms": [
+      "The number of indexed positions is not prescribed.",
+      "Different housing layouts are acceptable.",
+      "Multiple support strategies are acceptable.",
+      "The Geneva implementation may vary provided the requ"
+    ],
+    "scenarios": 3,
+    "candidates": [
+      "intermittent_indexing_pair",
+      "pawl_advance_pair"
+    ],
+    "selected": "intermittent_indexing_pair",
+    "deficiency_items": [],
+    "source_text_invariant": true
+  }
+}

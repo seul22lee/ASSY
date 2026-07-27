@@ -483,6 +483,59 @@ class MechanicalArchitectureCandidate(BaseModel):
     open_questions: list[str] = Field(default_factory=list)
     serves_requirements: list[str] = Field(default_factory=list)
 
+    # -- conceptual content consumed by product architecture and geometry --
+    functional_chain: list[str] = Field(default_factory=list)
+    """Ordered path from input to output, in element roles."""
+    state_relations: list[str] = Field(default_factory=list)
+    holding_principle: str | None = None
+    """How a maintained state is held, and how it is released. Conceptual only."""
+    support_obligations: list[str] = Field(default_factory=list)
+    """What must be located or retained, without saying where or by what part."""
+    load_path: list[str] = Field(default_factory=list)
+    interfaces: list[str] = Field(default_factory=list)
+    spatial_implications: list[str] = Field(default_factory=list)
+    """Arrangement consequences: what must be inside, outside, adjacent, or aligned."""
+    motion_envelopes: list[str] = Field(default_factory=list)
+    """Qualitative swept regions. No dimensions."""
+    tradeoffs: list[str] = Field(default_factory=list)
+    assumptions: list[str] = Field(default_factory=list)
+    downstream_decisions: list[str] = Field(default_factory=list)
+    """Geometry decisions deliberately left to later stages."""
+
+
+class DeficiencyItem(BaseModel):
+    """One piece of structured information Stage 02 needs and did not receive."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    missing_field: str
+    """The structured field that is absent, e.g. `requirement.behaviour.input_kind`."""
+    requirement_id: str | None = None
+    why_stage02_needs_it: str = ""
+    """What mechanical or geometric synthesis cannot proceed without it."""
+    remedy: str = ""
+    blocking: bool = True
+    """True only when geometric synthesis genuinely cannot proceed.
+
+    A gap that does not materially affect downstream shape, motion, arrangement,
+    or packaging is reported as an advisory and does not stop the stage."""
+
+
+class Stage01ContractDeficiency(DomainObject):
+    """Stage 02 refuses to proceed rather than re-reading the request.
+
+    Falling back to natural-language interpretation would hide the deficiency and
+    reintroduce the coupling this rewrite removes. A deficiency is a typed result,
+    not an exception to be swallowed.
+    """
+
+    items: list[DeficiencyItem] = Field(default_factory=list)
+    source_spec_id: str = ""
+
+    @property
+    def blocking(self) -> bool:
+        return bool(self.items)
+
 
 class MechanicalArchitecture(DomainObject):
     """Candidate set. Count is adaptive (1..N), never a fixed number."""
@@ -491,6 +544,8 @@ class MechanicalArchitecture(DomainObject):
     selected_id: str | None = None
     selection_rationale: str = ""
     rejected: dict[str, str] = Field(default_factory=dict)
+    contract_advisories: list[str] = Field(default_factory=list)
+    """Non-blocking Stage 01 gaps, carried forward rather than silently dropped."""
 
     @property
     def selected(self) -> MechanicalArchitectureCandidate:
