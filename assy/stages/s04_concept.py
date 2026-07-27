@@ -40,6 +40,7 @@ from assy.domain.upstream import (
     MotionClass,
     ObligationKind,
     PieceKind,
+    PlacedPiece,
     ProductArchitecture,
     ReferenceFrame,
     RegionKind,
@@ -179,21 +180,63 @@ class ConceptVisualizer(PipelineStage):
             # An obligation refines where an *internal* region sits. It can never
             # pull an externally reachable region inside: a surface the user must
             # reach is external whatever else its element also does.
-            if not r.external:
+            # The shell *is* the boundary; reacting an obligation cannot move it,
+            # and neither can it move an element that forms the enclosure surface.
+            if not r.external and r.kind is not RegionKind.STRUCTURAL:
                 for element in r.houses:
-                    if element in zone_by_element:
-                        zone, why = zone_by_element[element]
-                        ref = element
-                        break
+                    if element not in zone_by_element:
+                        continue
+                    candidate, reason = zone_by_element[element]
+                    # An internal region cannot be placed outside by an obligation
+                    # its occupant happens to react for someone else.
+                    if candidate is SpatialZone.EXTERNAL:
+                        continue
+                    zone, why, ref = candidate, reason, element
+                    break
             placements.append(
                 RegionPlacement(
                     region=r.name,
                     zone=zone,
                     relative_to=ref or frame.primary_axis,
                     why=why or f"a {r.kind.value} region sits {zone.value} by construction",
+                    houses=list(r.houses),
                 )
             )
         return placements
+
+    def _placed_pieces(self, product, placements) -> list[PlacedPiece]:
+        """Every piece, with the region and zone Stage 04 put it in."""
+        zone_of = {p.region: p.zone for p in placements}
+        # A piece may be housed by several regions; its primary one is the first
+        # non-swept region that holds it, so a piece is not reported as living
+        # only inside its own envelope.
+        primary: dict[str, str] = {}
+        for p in placements:
+            if p.region.endswith("_swept_volume"):
+                continue
+            for element in p.houses:
+                primary.setdefault(element, p.region)
+
+        def piece_zone(piece):
+            # An element that forms part of the enclosure surface sits on the
+            # boundary even when the region housing it is interior: a lid is the
+            # box's own wall, not something buried inside the storage volume.
+            if "moving_boundary" in piece.engineering_roles:
+                return SpatialZone.BOUNDARY
+            return zone_of.get(primary.get(piece.name))
+
+        return [
+            PlacedPiece(
+                name=piece.name,
+                kind=piece.kind,
+                region=primary.get(piece.name),
+                zone=piece_zone(piece),
+                moving=piece.moving,
+                external=piece.external,
+                motion=self._motion_of(piece) if piece.moving else None,
+            )
+            for piece in product.pieces
+        ]
 
     # -- swept volumes -------------------------------------------------------
     def _swept(self, product) -> list[SweptVolumeSpec]:
@@ -496,6 +539,7 @@ class ConceptVisualizer(PipelineStage):
             image_refs=[],  # no image backend; the blueprint is the structured content
             reference_frame=frame,
             region_placements=placements,
+            placed_pieces=self._placed_pieces(product, placements),
             swept_volumes=swept,
             interference_candidates=interference,
             access_routes=access,

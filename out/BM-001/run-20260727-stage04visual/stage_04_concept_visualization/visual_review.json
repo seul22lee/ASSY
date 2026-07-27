@@ -1,0 +1,52 @@
+{
+  "benchmark_id": "BM-001",
+  "candidate": "friction_detent_catch",
+  "reviewed_artifact": "concept_layout.png",
+  "reviewer": "model visual review of the rendered block layout",
+  "authority": "none - review artifact only; output.json remains authoritative",
+  "verdict": "not yet spatially coherent - two placement contradictions must be resolved before Stage 05",
+  "checks": {
+    "accessibility": "pass - closure_member_access_region and disturbance_region render outside the shell; the release surface is reachable",
+    "user_reachability": "pass - the detent and the closure sit on the same outward face, so one hand reaches both",
+    "enclosure_consistency": "pass - the shell bounds all interior regions; the closure forms part of the boundary rather than floating inside it",
+    "swept_volume_conflicts": "pass - the closure arc extends outward beyond the shell, which is correct for an outward-opening lid, and clears the storage volume",
+    "serviceability": "pass - no separate cover is drawn; the closure itself is the service opening",
+    "assembly_feasibility": "concern - the opening_stop is drawn at the far end from both the hinge and the closure, so the piece that limits the swing does not touch what swings",
+    "obvious_spatial_conflicts": "fail - see VR-001-1",
+    "packaging": "pass - the storage volume occupies the core and nothing intrudes into it"
+  },
+  "findings": [
+    {
+      "id": "VR-001-1",
+      "severity": "high",
+      "visible_in": ["isometric", "front", "top"],
+      "new_in_visualization": true,
+      "concern": "The hinge and the closure it carries are on opposite sides of the product. opening_interface renders as a tall slab on the left flank; closure_member renders on the right boundary face. A hinge must attach to the closure it hinges.",
+      "why_the_json_missed_it": "The blueprint records 'closure_member guidance <- opening_interface' and a parallel placement, but zone assignment is independent: the obligation put the hinge in FLANKING while the closure is in BOUNDARY. Nothing in the schema forces a reactor to be adjacent to what it reacts.",
+      "belongs_to": "Stage 04",
+      "missing_information": "zones express distance from the primary axis but not adjacency; a support placed to react an obligation must be co-located with the element it serves"
+    },
+    {
+      "id": "VR-001-2",
+      "severity": "medium",
+      "visible_in": ["front", "cutaway", "regions by zone (front)"],
+      "new_in_visualization": true,
+      "concern": "opening_stop is placed at the bottom end of the primary axis, remote from the hinge line and the closure. A travel stop that does not meet the moving element cannot limit it.",
+      "why_the_json_missed_it": "The TRAVEL_LIMIT obligation maps to zone END, and END is a single zone with no statement of which end, nor of which element it must meet.",
+      "belongs_to": "Stage 04",
+      "missing_information": "the END zone does not distinguish the two ends of the primary axis, and carries no adjacency to the element it bounds"
+    },
+    {
+      "id": "VR-001-3",
+      "severity": "low",
+      "visible_in": ["front", "top"],
+      "new_in_visualization": true,
+      "concern": "BOUNDARY does not say which face. The closure and the detent are drawn on the same side face; for a storage box a lid would normally be the top face and the catch the front. The renderer chose a face the blueprint never specified.",
+      "belongs_to": "Stage 04",
+      "missing_information": "no face identity (top/front/side) on boundary placements"
+    }
+  ],
+  "confirmed_from_blueprint": [
+    "closure_member and opening_interface swept arcs overlap the retention and travel-limit regions (2 unresolved interference candidates) - visible as overlapping pale envelopes"
+  ]
+}

@@ -1,0 +1,798 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "CONCEPT-001",
+    "design_id": "design-001",
+    "producer": "s04_concept_visualization",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "authoritative": false,
+  "image_refs": [
+    "concept_layout.png"
+  ],
+  "reference_frame": {
+    "primary_axis": "travelling_member_axis",
+    "primary_motion": "translational",
+    "derived_from": "travelling_member is the moving element whose translational motion dominates the product organisation",
+    "access_faces": [
+      "user_input_region",
+      "input_member_swept_volume",
+      "payload_region",
+      "service_access_region"
+    ]
+  },
+  "region_placements": [
+    {
+      "region": "user_input_region",
+      "zone": "external",
+      "relative_to": "travelling_member_axis",
+      "why": "a user_access region sits external by construction",
+      "houses": [
+        "input_member"
+      ]
+    },
+    {
+      "region": "support_region",
+      "zone": "end",
+      "relative_to": "input_support",
+      "why": "reacts the radial_support obligation of input_member",
+      "houses": [
+        "input_support",
+        "thrust_support"
+      ]
+    },
+    {
+      "region": "transmission_region",
+      "zone": "core",
+      "relative_to": "travelling_member_axis",
+      "why": "a enclosed_volume region sits core by construction",
+      "houses": [
+        "transmission_shaft",
+        "threaded_member"
+      ]
+    },
+    {
+      "region": "working_volume",
+      "zone": "core",
+      "relative_to": "travelling_member_axis",
+      "why": "a enclosed_volume region sits core by construction",
+      "houses": [
+        "travelling_member"
+      ]
+    },
+    {
+      "region": "guidance_region",
+      "zone": "flanking",
+      "relative_to": "guide_member",
+      "why": "reacts the anti_rotation obligation of travelling_member",
+      "houses": [
+        "guide_member"
+      ]
+    },
+    {
+      "region": "travel_limit_region",
+      "zone": "end",
+      "relative_to": "travel_stop",
+      "why": "reacts the travel_limit obligation of travelling_member",
+      "houses": [
+        "travel_stop"
+      ]
+    },
+    {
+      "region": "structural_shell",
+      "zone": "boundary",
+      "relative_to": "travelling_member_axis",
+      "why": "a structural region sits boundary by construction",
+      "houses": [
+        "housing"
+      ]
+    },
+    {
+      "region": "input_member_swept_volume",
+      "zone": "external",
+      "relative_to": "travelling_member_axis",
+      "why": "swept by an element that sits outside the enclosure",
+      "houses": [
+        "input_member"
+      ]
+    },
+    {
+      "region": "transmission_shaft_swept_volume",
+      "zone": "core",
+      "relative_to": "travelling_member_axis",
+      "why": "a swept_volume region sits core by construction",
+      "houses": [
+        "transmission_shaft"
+      ]
+    },
+    {
+      "region": "threaded_member_swept_volume",
+      "zone": "core",
+      "relative_to": "travelling_member_axis",
+      "why": "a swept_volume region sits core by construction",
+      "houses": [
+        "threaded_member"
+      ]
+    },
+    {
+      "region": "travelling_member_swept_volume",
+      "zone": "core",
+      "relative_to": "travelling_member_axis",
+      "why": "a swept_volume region sits core by construction",
+      "houses": [
+        "travelling_member"
+      ]
+    },
+    {
+      "region": "payload_region",
+      "zone": "external",
+      "relative_to": "travelling_member_axis",
+      "why": "a payload region sits external by construction",
+      "houses": [
+        "payload"
+      ]
+    },
+    {
+      "region": "service_access_region",
+      "zone": "boundary",
+      "relative_to": "travelling_member_axis",
+      "why": "a service_access region sits boundary by construction",
+      "houses": [
+        "service_cover"
+      ]
+    }
+  ],
+  "placed_pieces": [
+    {
+      "name": "input_member",
+      "kind": "user_element",
+      "region": "user_input_region",
+      "zone": "external",
+      "moving": true,
+      "external": true,
+      "motion": "rotational"
+    },
+    {
+      "name": "input_support",
+      "kind": "support_element",
+      "region": "support_region",
+      "zone": "end",
+      "moving": false,
+      "external": false,
+      "motion": null
+    },
+    {
+      "name": "transmission_shaft",
+      "kind": "transmission_element",
+      "region": "transmission_region",
+      "zone": "core",
+      "moving": true,
+      "external": false,
+      "motion": "rotational"
+    },
+    {
+      "name": "threaded_member",
+      "kind": "transmission_element",
+      "region": "transmission_region",
+      "zone": "core",
+      "moving": true,
+      "external": false,
+      "motion": "rotational"
+    },
+    {
+      "name": "thrust_support",
+      "kind": "support_element",
+      "region": "support_region",
+      "zone": "end",
+      "moving": false,
+      "external": false,
+      "motion": null
+    },
+    {
+      "name": "travelling_member",
+      "kind": "moving_body",
+      "region": "working_volume",
+      "zone": "core",
+      "moving": true,
+      "external": false,
+      "motion": "translational"
+    },
+    {
+      "name": "guide_member",
+      "kind": "support_element",
+      "region": "guidance_region",
+      "zone": "flanking",
+      "moving": false,
+      "external": false,
+      "motion": null
+    },
+    {
+      "name": "travel_stop",
+      "kind": "limit_element",
+      "region": "travel_limit_region",
+      "zone": "end",
+      "moving": false,
+      "external": false,
+      "motion": null
+    },
+    {
+      "name": "housing",
+      "kind": "shell",
+      "region": "structural_shell",
+      "zone": "boundary",
+      "moving": false,
+      "external": false,
+      "motion": null
+    },
+    {
+      "name": "service_cover",
+      "kind": "cover",
+      "region": "service_access_region",
+      "zone": "boundary",
+      "moving": false,
+      "external": true,
+      "motion": null
+    }
+  ],
+  "swept_volumes": [
+    {
+      "region": "input_member_swept_volume",
+      "element": "input_member",
+      "motion": "rotational",
+      "shape": "disc",
+      "external": true,
+      "must_stay_clear_of": [
+        "user_input_region",
+        "support_region",
+        "transmission_region",
+        "working_volume",
+        "guidance_region",
+        "travel_limit_region",
+        "payload_region",
+        "service_access_region"
+      ]
+    },
+    {
+      "region": "transmission_shaft_swept_volume",
+      "element": "transmission_shaft",
+      "motion": "rotational",
+      "shape": "disc",
+      "external": false,
+      "must_stay_clear_of": [
+        "user_input_region",
+        "support_region",
+        "transmission_region",
+        "working_volume",
+        "guidance_region",
+        "travel_limit_region",
+        "payload_region",
+        "service_access_region"
+      ]
+    },
+    {
+      "region": "threaded_member_swept_volume",
+      "element": "threaded_member",
+      "motion": "rotational",
+      "shape": "disc",
+      "external": false,
+      "must_stay_clear_of": [
+        "user_input_region",
+        "support_region",
+        "transmission_region",
+        "working_volume",
+        "guidance_region",
+        "travel_limit_region",
+        "payload_region",
+        "service_access_region"
+      ]
+    },
+    {
+      "region": "travelling_member_swept_volume",
+      "element": "travelling_member",
+      "motion": "translational",
+      "shape": "prism",
+      "external": false,
+      "must_stay_clear_of": [
+        "structural_shell"
+      ]
+    }
+  ],
+  "interference_candidates": [
+    {
+      "between": [
+        "input_member_swept_volume",
+        "payload_region"
+      ],
+      "why": "the disc swept by input_member shares containment with payload_region",
+      "addressed_by": null
+    },
+    {
+      "between": [
+        "input_member_swept_volume",
+        "service_access_region"
+      ],
+      "why": "the disc swept by input_member shares containment with service_access_region",
+      "addressed_by": null
+    },
+    {
+      "between": [
+        "support_region",
+        "transmission_shaft_swept_volume"
+      ],
+      "why": "the disc swept by transmission_shaft shares containment with support_region",
+      "addressed_by": null
+    },
+    {
+      "between": [
+        "transmission_shaft_swept_volume",
+        "working_volume"
+      ],
+      "why": "the disc swept by transmission_shaft shares containment with working_volume",
+      "addressed_by": null
+    },
+    {
+      "between": [
+        "guidance_region",
+        "transmission_shaft_swept_volume"
+      ],
+      "why": "the disc swept by transmission_shaft shares containment with guidance_region",
+      "addressed_by": null
+    },
+    {
+      "between": [
+        "transmission_shaft_swept_volume",
+        "travel_limit_region"
+      ],
+      "why": "the disc swept by transmission_shaft shares containment with travel_limit_region",
+      "addressed_by": null
+    },
+    {
+      "between": [
+        "threaded_member_swept_volume",
+        "transmission_shaft_swept_volume"
+      ],
+      "why": "the disc swept by transmission_shaft shares containment with threaded_member_swept_volume",
+      "addressed_by": "fixed_attachment interface"
+    },
+    {
+      "between": [
+        "transmission_shaft_swept_volume",
+        "travelling_member_swept_volume"
+      ],
+      "why": "the disc swept by transmission_shaft shares containment with travelling_member_swept_volume",
+      "addressed_by": null
+    },
+    {
+      "between": [
+        "support_region",
+        "threaded_member_swept_volume"
+      ],
+      "why": "the disc swept by threaded_member shares containment with support_region",
+      "addressed_by": "axial_thrust"
+    },
+    {
+      "between": [
+        "threaded_member_swept_volume",
+        "working_volume"
+      ],
+      "why": "the disc swept by threaded_member shares containment with working_volume",
+      "addressed_by": "threaded_pair interface"
+    },
+    {
+      "between": [
+        "guidance_region",
+        "threaded_member_swept_volume"
+      ],
+      "why": "the disc swept by threaded_member shares containment with guidance_region",
+      "addressed_by": null
+    },
+    {
+      "between": [
+        "threaded_member_swept_volume",
+        "travel_limit_region"
+      ],
+      "why": "the disc swept by threaded_member shares containment with travel_limit_region",
+      "addressed_by": null
+    },
+    {
+      "between": [
+        "threaded_member_swept_volume",
+        "travelling_member_swept_volume"
+      ],
+      "why": "the disc swept by threaded_member shares containment with travelling_member_swept_volume",
+      "addressed_by": "threaded_pair interface"
+    },
+    {
+      "between": [
+        "support_region",
+        "travelling_member_swept_volume"
+      ],
+      "why": "the prism swept by travelling_member shares containment with support_region",
+      "addressed_by": null
+    },
+    {
+      "between": [
+        "transmission_region",
+        "travelling_member_swept_volume"
+      ],
+      "why": "the prism swept by travelling_member shares containment with transmission_region",
+      "addressed_by": "threaded_pair interface"
+    },
+    {
+      "between": [
+        "guidance_region",
+        "travelling_member_swept_volume"
+      ],
+      "why": "the prism swept by travelling_member shares containment with guidance_region",
+      "addressed_by": "guidance"
+    },
+    {
+      "between": [
+        "travel_limit_region",
+        "travelling_member_swept_volume"
+      ],
+      "why": "the prism swept by travelling_member shares containment with travel_limit_region",
+      "addressed_by": "travel_limit"
+    }
+  ],
+  "access_routes": [
+    {
+      "region": "user_input_region",
+      "purpose": "user_operation",
+      "obstructed_by": []
+    },
+    {
+      "region": "payload_region",
+      "purpose": "payload",
+      "obstructed_by": [
+        "input_member_swept_volume"
+      ]
+    },
+    {
+      "region": "service_access_region",
+      "purpose": "service",
+      "obstructed_by": [
+        "input_member_swept_volume"
+      ]
+    },
+    {
+      "region": "service_access_region",
+      "purpose": "assembly",
+      "obstructed_by": [
+        "input_member_swept_volume"
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "SI-001",
+      "kind": "interference",
+      "concern": "input_member_swept_volume and payload_region may occupy the same space and nothing in the architecture separates them",
+      "regions": [
+        "input_member_swept_volume",
+        "payload_region"
+      ],
+      "evidence": "the disc swept by input_member shares containment with payload_region"
+    },
+    {
+      "id": "SI-002",
+      "kind": "interference",
+      "concern": "input_member_swept_volume and service_access_region may occupy the same space and nothing in the architecture separates them",
+      "regions": [
+        "input_member_swept_volume",
+        "service_access_region"
+      ],
+      "evidence": "the disc swept by input_member shares containment with service_access_region"
+    },
+    {
+      "id": "SI-003",
+      "kind": "interference",
+      "concern": "support_region and transmission_shaft_swept_volume may occupy the same space and nothing in the architecture separates them",
+      "regions": [
+        "support_region",
+        "transmission_shaft_swept_volume"
+      ],
+      "evidence": "the disc swept by transmission_shaft shares containment with support_region"
+    },
+    {
+      "id": "SI-004",
+      "kind": "interference",
+      "concern": "transmission_shaft_swept_volume and working_volume may occupy the same space and nothing in the architecture separates them",
+      "regions": [
+        "transmission_shaft_swept_volume",
+        "working_volume"
+      ],
+      "evidence": "the disc swept by transmission_shaft shares containment with working_volume"
+    },
+    {
+      "id": "SI-005",
+      "kind": "interference",
+      "concern": "guidance_region and transmission_shaft_swept_volume may occupy the same space and nothing in the architecture separates them",
+      "regions": [
+        "guidance_region",
+        "transmission_shaft_swept_volume"
+      ],
+      "evidence": "the disc swept by transmission_shaft shares containment with guidance_region"
+    },
+    {
+      "id": "SI-006",
+      "kind": "interference",
+      "concern": "transmission_shaft_swept_volume and travel_limit_region may occupy the same space and nothing in the architecture separates them",
+      "regions": [
+        "transmission_shaft_swept_volume",
+        "travel_limit_region"
+      ],
+      "evidence": "the disc swept by transmission_shaft shares containment with travel_limit_region"
+    },
+    {
+      "id": "SI-007",
+      "kind": "interference",
+      "concern": "transmission_shaft_swept_volume and travelling_member_swept_volume may occupy the same space and nothing in the architecture separates them",
+      "regions": [
+        "transmission_shaft_swept_volume",
+        "travelling_member_swept_volume"
+      ],
+      "evidence": "the disc swept by transmission_shaft shares containment with travelling_member_swept_volume"
+    },
+    {
+      "id": "SI-008",
+      "kind": "interference",
+      "concern": "guidance_region and threaded_member_swept_volume may occupy the same space and nothing in the architecture separates them",
+      "regions": [
+        "guidance_region",
+        "threaded_member_swept_volume"
+      ],
+      "evidence": "the disc swept by threaded_member shares containment with guidance_region"
+    },
+    {
+      "id": "SI-009",
+      "kind": "interference",
+      "concern": "threaded_member_swept_volume and travel_limit_region may occupy the same space and nothing in the architecture separates them",
+      "regions": [
+        "threaded_member_swept_volume",
+        "travel_limit_region"
+      ],
+      "evidence": "the disc swept by threaded_member shares containment with travel_limit_region"
+    },
+    {
+      "id": "SI-010",
+      "kind": "interference",
+      "concern": "support_region and travelling_member_swept_volume may occupy the same space and nothing in the architecture separates them",
+      "regions": [
+        "support_region",
+        "travelling_member_swept_volume"
+      ],
+      "evidence": "the prism swept by travelling_member shares containment with support_region"
+    },
+    {
+      "id": "SI-011",
+      "kind": "access_blocked",
+      "concern": "payload_region must be reachable for payload but input_member_swept_volume sweeps across it",
+      "regions": [
+        "payload_region",
+        "input_member_swept_volume"
+      ],
+      "evidence": "both lie outside the enclosure boundary"
+    },
+    {
+      "id": "SI-012",
+      "kind": "access_blocked",
+      "concern": "service_access_region must be reachable for service but input_member_swept_volume sweeps across it",
+      "regions": [
+        "service_access_region",
+        "input_member_swept_volume"
+      ],
+      "evidence": "both lie outside the enclosure boundary"
+    },
+    {
+      "id": "SI-013",
+      "kind": "access_blocked",
+      "concern": "service_access_region must be reachable for assembly but input_member_swept_volume sweeps across it",
+      "regions": [
+        "service_access_region",
+        "input_member_swept_volume"
+      ],
+      "evidence": "both lie outside the enclosure boundary"
+    },
+    {
+      "id": "SI-014",
+      "kind": "unsupported_span",
+      "concern": "transmission_shaft rotates but no radial support is assigned to it",
+      "regions": [
+        "transmission_shaft_swept_volume"
+      ],
+      "evidence": "no radial_support obligation names this element"
+    }
+  ],
+  "views": [
+    {
+      "name": "exterior",
+      "purpose": "show what the user meets and which faces must stay reachable",
+      "shows": [
+        "user_input_region",
+        "input_member_swept_volume",
+        "payload_region",
+        "service_access_region"
+      ]
+    },
+    {
+      "name": "cutaway_along_primary_axis",
+      "purpose": "show the arrangement along travelling_member_axis",
+      "shows": [
+        "support_region",
+        "transmission_region",
+        "working_volume",
+        "guidance_region",
+        "travel_limit_region",
+        "structural_shell",
+        "transmission_shaft_swept_volume",
+        "threaded_member_swept_volume",
+        "travelling_member_swept_volume"
+      ]
+    },
+    {
+      "name": "exploded_assembly",
+      "purpose": "show the installation order and the direction each piece enters",
+      "shows": [
+        "housing",
+        "guide_member",
+        "input_support",
+        "thrust_support",
+        "threaded_member",
+        "transmission_shaft",
+        "travelling_member",
+        "travel_stop",
+        "input_member",
+        "service_cover"
+      ]
+    },
+    {
+      "name": "envelope_input_member",
+      "purpose": "show the disc swept by input_member at its extremes",
+      "shows": [
+        "input_member_swept_volume",
+        "user_input_region",
+        "support_region",
+        "transmission_region",
+        "working_volume",
+        "guidance_region",
+        "travel_limit_region",
+        "payload_region",
+        "service_access_region"
+      ]
+    },
+    {
+      "name": "envelope_transmission_shaft",
+      "purpose": "show the disc swept by transmission_shaft at its extremes",
+      "shows": [
+        "transmission_shaft_swept_volume",
+        "user_input_region",
+        "support_region",
+        "transmission_region",
+        "working_volume",
+        "guidance_region",
+        "travel_limit_region",
+        "payload_region",
+        "service_access_region"
+      ]
+    },
+    {
+      "name": "envelope_threaded_member",
+      "purpose": "show the disc swept by threaded_member at its extremes",
+      "shows": [
+        "threaded_member_swept_volume",
+        "user_input_region",
+        "support_region",
+        "transmission_region",
+        "working_volume",
+        "guidance_region",
+        "travel_limit_region",
+        "payload_region",
+        "service_access_region"
+      ]
+    },
+    {
+      "name": "envelope_travelling_member",
+      "purpose": "show the prism swept by travelling_member at its extremes",
+      "shows": [
+        "travelling_member_swept_volume",
+        "structural_shell"
+      ]
+    }
+  ],
+  "annotations": [
+    {
+      "subject": "travelling_member_axis",
+      "note": "principal axis; translational motion"
+    },
+    {
+      "subject": "input_member",
+      "note": "sweeps a disc, outside the enclosure"
+    },
+    {
+      "subject": "transmission_shaft",
+      "note": "sweeps a disc, inside the enclosure"
+    },
+    {
+      "subject": "threaded_member",
+      "note": "sweeps a disc, inside the enclosure"
+    },
+    {
+      "subject": "travelling_member",
+      "note": "sweeps a prism, inside the enclosure"
+    },
+    {
+      "subject": "input_support",
+      "note": "reacts radial_support for input_member"
+    },
+    {
+      "subject": "housing",
+      "note": "reacts radial_support for threaded_member"
+    },
+    {
+      "subject": "thrust_support",
+      "note": "reacts axial_thrust for threaded_member"
+    },
+    {
+      "subject": "guide_member",
+      "note": "reacts anti_rotation for travelling_member"
+    },
+    {
+      "subject": "guide_member",
+      "note": "reacts guidance for travelling_member"
+    },
+    {
+      "subject": "travel_stop",
+      "note": "reacts travel_limit for travelling_member"
+    },
+    {
+      "subject": "housing",
+      "note": "reacts clearance for travelling_member"
+    },
+    {
+      "subject": "housing",
+      "note": "reacts user_access for input_member"
+    },
+    {
+      "subject": "input_member",
+      "note": "fixed_attachment to transmission_shaft, crossing the enclosure boundary"
+    }
+  ],
+  "source_product_id": "PROD-001",
+  "source_candidate_id": "screw_drive",
+  "product_advisories": [],
+  "described_layout": "Organised along travelling_member_axis (translational). 13 regions placed, 4 swept volumes, 17 interference candidates.",
+  "spatial_hypotheses": [
+    "user_input_region sits external relative to travelling_member_axis",
+    "support_region sits end relative to input_support",
+    "transmission_region sits core relative to travelling_member_axis",
+    "working_volume sits core relative to travelling_member_axis",
+    "guidance_region sits flanking relative to guide_member",
+    "travel_limit_region sits end relative to travel_stop",
+    "structural_shell sits boundary relative to travelling_member_axis",
+    "input_member_swept_volume sits external relative to travelling_member_axis",
+    "transmission_shaft_swept_volume sits core relative to travelling_member_axis",
+    "threaded_member_swept_volume sits core relative to travelling_member_axis",
+    "travelling_member_swept_volume sits core relative to travelling_member_axis",
+    "payload_region sits external relative to travelling_member_axis",
+    "service_access_region sits boundary relative to travelling_member_axis"
+  ],
+  "review_concerns": [
+    "input_member_swept_volume and payload_region may occupy the same space and nothing in the architecture separates them",
+    "input_member_swept_volume and service_access_region may occupy the same space and nothing in the architecture separates them",
+    "support_region and transmission_shaft_swept_volume may occupy the same space and nothing in the architecture separates them",
+    "transmission_shaft_swept_volume and working_volume may occupy the same space and nothing in the architecture separates them",
+    "guidance_region and transmission_shaft_swept_volume may occupy the same space and nothing in the architecture separates them",
+    "transmission_shaft_swept_volume and travel_limit_region may occupy the same space and nothing in the architecture separates them",
+    "transmission_shaft_swept_volume and travelling_member_swept_volume may occupy the same space and nothing in the architecture separates them",
+    "guidance_region and threaded_member_swept_volume may occupy the same space and nothing in the architecture separates them",
+    "threaded_member_swept_volume and travel_limit_region may occupy the same space and nothing in the architecture separates them",
+    "support_region and travelling_member_swept_volume may occupy the same space and nothing in the architecture separates them",
+    "payload_region must be reachable for payload but input_member_swept_volume sweeps across it",
+    "service_access_region must be reachable for service but input_member_swept_volume sweeps across it",
+    "service_access_region must be reachable for assembly but input_member_swept_volume sweeps across it",
+    "transmission_shaft rotates but no radial support is assigned to it"
+  ]
+}

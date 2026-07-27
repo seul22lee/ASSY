@@ -1,0 +1,64 @@
+{
+  "benchmark_id": "BM-002",
+  "candidate": "screw_drive",
+  "reviewed_artifact": "concept_layout.png",
+  "reviewer": "model visual review of the rendered block layout",
+  "authority": "none - review artifact only; output.json remains authoritative",
+  "verdict": "not yet spatially coherent - the payload cannot reach the platform, and the crank blocks the only service opening",
+  "checks": {
+    "accessibility": "fail - see VR-002-1",
+    "user_reachability": "pass - input_member renders outside the shell on the front face with its swept disc clear of the housing wall",
+    "enclosure_consistency": "fail - see VR-002-1",
+    "swept_volume_conflicts": "concern - transmission_shaft's disc overlaps the travelling_member prism in the cutaway; they have no declared interface",
+    "serviceability": "fail - see VR-002-2",
+    "assembly_feasibility": "pass - the cover renders last on the front face and no piece is drawn behind it",
+    "obvious_spatial_conflicts": "concern - see VR-002-3",
+    "packaging": "concern - see VR-002-4"
+  },
+  "findings": [
+    {
+      "id": "VR-002-1",
+      "severity": "high",
+      "visible_in": ["regions by zone (top)", "regions by zone (front)", "isometric"],
+      "new_in_visualization": true,
+      "concern": "The payload region renders OUTSIDE the shell while the platform that must carry it renders inside the core. The only boundary crossings are the crank and the service cover, so there is no opening through which a payload reaches the platform. As drawn, the product cannot be loaded.",
+      "why_the_json_missed_it": "The blueprint records payload_region as external and working_volume as core, each individually reasonable. It never asks whether the payload can reach the element that lifts it - there is no load-path-to-access check.",
+      "belongs_to": "Stage 03",
+      "missing_information": "Stage 03 declares a payload region and an enclosure but never an access opening connecting the payload to the moving platform. A CLEARANCE or USER_ACCESS obligation on the travelling member is absent."
+    },
+    {
+      "id": "VR-002-2",
+      "severity": "high",
+      "visible_in": ["top", "side"],
+      "new_in_visualization": false,
+      "concern": "The service cover spans the front face and the crank sits directly outside its centre. The cover cannot be removed without removing the crank first, yet the crank is installed last in the assembly sequence.",
+      "why_the_json_missed_it": "The blueprint does flag this as access_blocked, but only the picture shows the crank is centred on the cover rather than beside it, and that the assembly order therefore reverses.",
+      "belongs_to": "Stage 04",
+      "missing_information": "external pieces and boundary openings are both placed on the same nominal face with no lateral offset expressed"
+    },
+    {
+      "id": "VR-002-3",
+      "severity": "medium",
+      "visible_in": ["front", "cutaway"],
+      "new_in_visualization": true,
+      "concern": "The travelling member is guided on one side only. guide_member renders as a single slab to the left of the platform with nothing opposing it. An eccentric payload would cock the platform about the screw.",
+      "why_the_json_missed_it": "The architecture declares one guide_member element and the blueprint faithfully places one. The JSON has no notion of a balanced or opposed pair, so a single guide reads as satisfied guidance.",
+      "belongs_to": "Stage 02",
+      "missing_information": "the mechanism catalogue declares guidance as one element; it does not express that guidance against an eccentric load requires opposed supports"
+    },
+    {
+      "id": "VR-002-4",
+      "severity": "medium",
+      "visible_in": ["front", "side", "regions by zone (front)"],
+      "new_in_visualization": true,
+      "concern": "thrust_support renders at the top end and input_support at the bottom end, but both belong to the single support_region, which itself renders only at the bottom. Piece placement and region placement disagree.",
+      "why_the_json_missed_it": "Both obligations map to zone END. END is one zone used for two opposite ends, so the renderer had to choose, and its choice contradicts the region it belongs to.",
+      "belongs_to": "Stage 04",
+      "missing_information": "END does not distinguish near from far along the primary axis, so two supports at opposite ends are indistinguishable in the blueprint"
+    }
+  ],
+  "confirmed_from_blueprint": [
+    "transmission_shaft rotates with no radial_support obligation (unsupported_span) - visible as a green block spanning the core with no red support touching it",
+    "10 unresolved interference candidates concentrated in the core column - visible as heavily overlapping blocks in the cutaway"
+  ]
+}

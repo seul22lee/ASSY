@@ -1,0 +1,6015 @@
+[
+  {
+    "id": "R-001",
+    "problem_id": "P-001",
+    "approach": "shroud the closure_member boundary and keep the running gap beneath it",
+    "method": "guard_decouples_safety_gap",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-007",
+        "kind": "parameter",
+        "subject": "closure_member.pinch_access",
+        "statement": "closure_member exposed gap",
+        "value": 2.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-001",
+          "resolution_id": "R-001",
+          "method": "guard_decouples_safety_gap",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-008",
+        "kind": "interface",
+        "subject": "closure_member.guard",
+        "statement": "closure_member shroud lip",
+        "value": "shroud_lip",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-001",
+          "resolution_id": "R-001",
+          "method": "guard_decouples_safety_gap",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "decouples the safety gap from the running clearance"
+    ],
+    "risks": [
+      "adds a lip to the moulding/print"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-002",
+    "problem_id": "P-002",
+    "approach": "40 mm crank radius",
+    "method": "hand_crank_effort",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-009",
+        "kind": "parameter",
+        "subject": "closure_member.crank_radius",
+        "statement": "crank radius",
+        "value": 40.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-002",
+          "resolution_id": "R-002",
+          "method": "hand_crank_effort",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-010",
+        "kind": "interface",
+        "subject": "closure_member.ergonomic_reach",
+        "statement": "crank grip reachable externally",
+        "value": "side_face",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-002",
+          "resolution_id": "R-002",
+          "method": "hand_crank_effort",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-011",
+        "kind": "critical_characteristic",
+        "subject": "closure_member.grip_force",
+        "statement": "tangential effort at the crank grip",
+        "value": 0.0,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-002",
+          "resolution_id": "R-002",
+          "method": "hand_crank_effort",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "0.00 N tangential effort at the grip"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-003",
+    "problem_id": "P-003",
+    "approach": "30 deg lead face, 60 deg retention face",
+    "method": "snap_face_angles/retention_release_tradeoff",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-012",
+        "kind": "interface",
+        "subject": "closure_member.engagement_geometry",
+        "statement": "closure_member face angles",
+        "value": "lead=30.0,retain=60.0",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-003",
+          "resolution_id": "R-003",
+          "method": "snap_face_angles/retention_release_tradeoff",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-013",
+        "kind": "parameter",
+        "subject": "closure_member.lead_angle",
+        "statement": "closure_member lead face angle",
+        "value": 30.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-003",
+          "resolution_id": "R-003",
+          "method": "snap_face_angles/retention_release_tradeoff",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-014",
+        "kind": "parameter",
+        "subject": "closure_member.retention_angle",
+        "statement": "closure_member retention face angle",
+        "value": 60.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-003",
+          "resolution_id": "R-003",
+          "method": "snap_face_angles/retention_release_tradeoff",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-015",
+        "kind": "critical_characteristic",
+        "subject": "closure_member.retention_force",
+        "statement": "closure_member force resisting opening",
+        "value": 21.149,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-003",
+          "resolution_id": "R-003",
+          "method": "snap_face_angles/retention_release_tradeoff",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-016",
+        "kind": "critical_characteristic",
+        "subject": "closure_member.release_force",
+        "statement": "closure_member thumb release effort",
+        "value": 5.4,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-003",
+          "resolution_id": "R-003",
+          "method": "snap_face_angles/retention_release_tradeoff",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-017",
+        "kind": "interface",
+        "subject": "closure_member.release_actuation",
+        "statement": "closure_member thumb pad deflects the beam clear of the catch",
+        "value": "thumb_pad",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-003",
+          "resolution_id": "R-003",
+          "method": "snap_face_angles/retention_release_tradeoff",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-018",
+        "kind": "objective",
+        "subject": "retention_vs_release",
+        "statement": "maximise retention while keeping release effort comfortable",
+        "value": null,
+        "unit": null,
+        "symbolic": false,
+        "expression": "maximize(retention_force) subject to release_force <= 15 N",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-003",
+          "resolution_id": "R-003",
+          "method": "snap_face_angles/retention_release_tradeoff",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-019",
+        "kind": "constraint",
+        "subject": "closure_member.self_locking_limit",
+        "statement": "closure_member retention angle must stay below the self-locking angle",
+        "value": 70.71,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": "retention_angle < atan(1/mu)",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-003",
+          "resolution_id": "R-003",
+          "method": "snap_face_angles/retention_release_tradeoff",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "insertion 4.65 N, retention 21.15 N (4.5x asymmetry)",
+      "thumb release 5.40 N by deflecting the beam directly",
+      "retention face stays below the 70.7 deg self-locking angle"
+    ],
+    "risks": [
+      "retention and release cannot both be improved by face angle alone"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-004",
+    "problem_id": "P-004",
+    "approach": "30 deg lead face, 60 deg retention face",
+    "method": "snap_face_angles/retention_release_tradeoff",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-020",
+        "kind": "interface",
+        "subject": "closure_member.engagement_geometry",
+        "statement": "closure_member face angles",
+        "value": "lead=30.0,retain=60.0",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-021",
+        "kind": "parameter",
+        "subject": "closure_member.lead_angle",
+        "statement": "closure_member lead face angle",
+        "value": 30.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-022",
+        "kind": "parameter",
+        "subject": "closure_member.retention_angle",
+        "statement": "closure_member retention face angle",
+        "value": 60.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-023",
+        "kind": "critical_characteristic",
+        "subject": "closure_member.retention_force",
+        "statement": "closure_member force resisting opening",
+        "value": 21.149,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-024",
+        "kind": "critical_characteristic",
+        "subject": "closure_member.release_force",
+        "statement": "closure_member thumb release effort",
+        "value": 5.4,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-025",
+        "kind": "interface",
+        "subject": "closure_member.release_actuation",
+        "statement": "closure_member thumb pad deflects the beam clear of the catch",
+        "value": "thumb_pad",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-026",
+        "kind": "objective",
+        "subject": "retention_vs_release",
+        "statement": "maximise retention while keeping release effort comfortable",
+        "value": null,
+        "unit": null,
+        "symbolic": false,
+        "expression": "maximize(retention_force) subject to release_force <= 15 N",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-027",
+        "kind": "constraint",
+        "subject": "closure_member.self_locking_limit",
+        "statement": "closure_member retention angle must stay below the self-locking angle",
+        "value": 70.71,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": "retention_angle < atan(1/mu)",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "insertion 4.65 N, retention 21.15 N (4.5x asymmetry)",
+      "thumb release 5.40 N by deflecting the beam directly",
+      "retention face stays below the 70.7 deg self-locking angle"
+    ],
+    "risks": [
+      "retention and release cannot both be improved by face angle alone"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-005",
+    "problem_id": "P-005",
+    "approach": "closure_member runs with a shrouded 1.5 mm gap to the static shell",
+    "method": "moving_boundary_gap",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-028",
+        "kind": "parameter",
+        "subject": "closure_member.boundary_clearance",
+        "statement": "closure_member boundary gap",
+        "value": 1.5,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-005",
+          "resolution_id": "R-005",
+          "method": "moving_boundary_gap",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-029",
+        "kind": "parameter",
+        "subject": "closure_member.pinch_access",
+        "statement": "closure_member exposed gap",
+        "value": 1.5,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-005",
+          "resolution_id": "R-005",
+          "method": "moving_boundary_gap",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "below the 3 mm pinch threshold, so no guard is required"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-006",
+    "problem_id": "P-006",
+    "approach": "closure_member: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-030",
+        "kind": "manufacturing",
+        "subject": "closure_member.material",
+        "statement": "closure_member material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-006",
+          "resolution_id": "R-006",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-031",
+        "kind": "manufacturing",
+        "subject": "closure_member.process",
+        "statement": "closure_member process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-006",
+          "resolution_id": "R-006",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-032",
+        "kind": "manufacturing",
+        "subject": "closure_member.build_orientation",
+        "statement": "closure_member printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-006",
+          "resolution_id": "R-006",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-007",
+    "problem_id": "P-007",
+    "approach": "closure_member: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-033",
+        "kind": "manufacturing",
+        "subject": "closure_member.material",
+        "statement": "closure_member material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-034",
+        "kind": "manufacturing",
+        "subject": "closure_member.process",
+        "statement": "closure_member process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-035",
+        "kind": "manufacturing",
+        "subject": "closure_member.build_orientation",
+        "statement": "closure_member printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-008",
+    "problem_id": "P-008",
+    "approach": "rear hinge axis, 105 deg swing on two knuckles",
+    "method": "hinge_axis_placement/swing_sweep",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-036",
+        "kind": "motion",
+        "subject": "opening_interface.hinge_axis",
+        "statement": "opening_interface hinge axis at the rear edge",
+        "value": "rear_edge_x",
+        "unit": null,
+        "symbolic": false,
+        "expression": "axis = rear_edge",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-008",
+          "resolution_id": "R-008",
+          "method": "hinge_axis_placement/swing_sweep",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-037",
+        "kind": "motion",
+        "subject": "opening_interface.angular_range",
+        "statement": "opening_interface swing range",
+        "value": 105.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": "0 <= theta <= open_angle",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-008",
+          "resolution_id": "R-008",
+          "method": "hinge_axis_placement/swing_sweep",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-038",
+        "kind": "support",
+        "subject": "opening_interface.hinge_support",
+        "statement": "opening_interface on two hinge knuckles",
+        "value": 2.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-008",
+          "resolution_id": "R-008",
+          "method": "hinge_axis_placement/swing_sweep",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-039",
+        "kind": "parameter",
+        "subject": "opening_interface.hinge_offset",
+        "statement": "opening_interface axis offset from rear face",
+        "value": 4.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-008",
+          "resolution_id": "R-008",
+          "method": "hinge_axis_placement/swing_sweep",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-040",
+        "kind": "parameter",
+        "subject": "opening_interface.depth",
+        "statement": "opening_interface depth",
+        "value": 90.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-008",
+          "resolution_id": "R-008",
+          "method": "hinge_axis_placement/swing_sweep",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-041",
+        "kind": "parameter",
+        "subject": "opening_interface.thickness",
+        "statement": "opening_interface plate thickness",
+        "value": 6.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-008",
+          "resolution_id": "R-008",
+          "method": "hinge_axis_placement/swing_sweep",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-042",
+        "kind": "parameter",
+        "subject": "opening_interface.closing_clearance",
+        "statement": "opening_interface closing gap",
+        "value": 0.4,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-008",
+          "resolution_id": "R-008",
+          "method": "hinge_axis_placement/swing_sweep",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-043",
+        "kind": "parameter",
+        "subject": "opening_interface.swing_reach",
+        "statement": "opening_interface rearward swing reach",
+        "value": 1.8,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-008",
+          "resolution_id": "R-008",
+          "method": "hinge_axis_placement/swing_sweep",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-044",
+        "kind": "parameter",
+        "subject": "opening_interface.rear_clearance",
+        "statement": "opening_interface clearance behind the axis",
+        "value": 5.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-008",
+          "resolution_id": "R-008",
+          "method": "hinge_axis_placement/swing_sweep",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "105 deg holds the lid clear of the opening",
+      "rearward corner reach 1.8 mm is relieved behind the axis"
+    ],
+    "risks": [
+      "lid corner interferes if the axis moves inboard"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-009",
+    "problem_id": "P-009",
+    "approach": "rear hinge axis, 105 deg swing on two knuckles",
+    "method": "hinge_axis_placement/swing_sweep",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-045",
+        "kind": "motion",
+        "subject": "opening_interface.hinge_axis",
+        "statement": "opening_interface hinge axis at the rear edge",
+        "value": "rear_edge_x",
+        "unit": null,
+        "symbolic": false,
+        "expression": "axis = rear_edge",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-046",
+        "kind": "motion",
+        "subject": "opening_interface.angular_range",
+        "statement": "opening_interface swing range",
+        "value": 105.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": "0 <= theta <= open_angle",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-047",
+        "kind": "support",
+        "subject": "opening_interface.hinge_support",
+        "statement": "opening_interface on two hinge knuckles",
+        "value": 2.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-048",
+        "kind": "parameter",
+        "subject": "opening_interface.hinge_offset",
+        "statement": "opening_interface axis offset from rear face",
+        "value": 4.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-049",
+        "kind": "parameter",
+        "subject": "opening_interface.depth",
+        "statement": "opening_interface depth",
+        "value": 90.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-050",
+        "kind": "parameter",
+        "subject": "opening_interface.thickness",
+        "statement": "opening_interface plate thickness",
+        "value": 6.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-051",
+        "kind": "parameter",
+        "subject": "opening_interface.closing_clearance",
+        "statement": "opening_interface closing gap",
+        "value": 0.4,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-052",
+        "kind": "parameter",
+        "subject": "opening_interface.swing_reach",
+        "statement": "opening_interface rearward swing reach",
+        "value": 1.8,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-053",
+        "kind": "parameter",
+        "subject": "opening_interface.rear_clearance",
+        "statement": "opening_interface clearance behind the axis",
+        "value": 5.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "105 deg holds the lid clear of the opening",
+      "rearward corner reach 1.8 mm is relieved behind the axis"
+    ],
+    "risks": [
+      "lid corner interferes if the axis moves inboard"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-010",
+    "problem_id": "P-010",
+    "approach": "rear hinge axis, 105 deg swing on two knuckles",
+    "method": "hinge_axis_placement/swing_sweep",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-054",
+        "kind": "motion",
+        "subject": "opening_interface.hinge_axis",
+        "statement": "opening_interface hinge axis at the rear edge",
+        "value": "rear_edge_x",
+        "unit": null,
+        "symbolic": false,
+        "expression": "axis = rear_edge",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-055",
+        "kind": "motion",
+        "subject": "opening_interface.angular_range",
+        "statement": "opening_interface swing range",
+        "value": 105.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": "0 <= theta <= open_angle",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-056",
+        "kind": "support",
+        "subject": "opening_interface.hinge_support",
+        "statement": "opening_interface on two hinge knuckles",
+        "value": 2.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-057",
+        "kind": "parameter",
+        "subject": "opening_interface.hinge_offset",
+        "statement": "opening_interface axis offset from rear face",
+        "value": 4.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-058",
+        "kind": "parameter",
+        "subject": "opening_interface.depth",
+        "statement": "opening_interface depth",
+        "value": 90.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-059",
+        "kind": "parameter",
+        "subject": "opening_interface.thickness",
+        "statement": "opening_interface plate thickness",
+        "value": 6.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-060",
+        "kind": "parameter",
+        "subject": "opening_interface.closing_clearance",
+        "statement": "opening_interface closing gap",
+        "value": 0.4,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-061",
+        "kind": "parameter",
+        "subject": "opening_interface.swing_reach",
+        "statement": "opening_interface rearward swing reach",
+        "value": 1.8,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-062",
+        "kind": "parameter",
+        "subject": "opening_interface.rear_clearance",
+        "statement": "opening_interface clearance behind the axis",
+        "value": 5.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "105 deg holds the lid clear of the opening",
+      "rearward corner reach 1.8 mm is relieved behind the axis"
+    ],
+    "risks": [
+      "lid corner interferes if the axis moves inboard"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-011",
+    "problem_id": "P-011",
+    "approach": "rear hinge axis, 105 deg swing on two knuckles",
+    "method": "hinge_axis_placement/swing_sweep",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-063",
+        "kind": "motion",
+        "subject": "opening_interface.hinge_axis",
+        "statement": "opening_interface hinge axis at the rear edge",
+        "value": "rear_edge_x",
+        "unit": null,
+        "symbolic": false,
+        "expression": "axis = rear_edge",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-064",
+        "kind": "motion",
+        "subject": "opening_interface.angular_range",
+        "statement": "opening_interface swing range",
+        "value": 105.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": "0 <= theta <= open_angle",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-065",
+        "kind": "support",
+        "subject": "opening_interface.hinge_support",
+        "statement": "opening_interface on two hinge knuckles",
+        "value": 2.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-066",
+        "kind": "parameter",
+        "subject": "opening_interface.hinge_offset",
+        "statement": "opening_interface axis offset from rear face",
+        "value": 4.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-067",
+        "kind": "parameter",
+        "subject": "opening_interface.depth",
+        "statement": "opening_interface depth",
+        "value": 90.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-068",
+        "kind": "parameter",
+        "subject": "opening_interface.thickness",
+        "statement": "opening_interface plate thickness",
+        "value": 6.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-069",
+        "kind": "parameter",
+        "subject": "opening_interface.closing_clearance",
+        "statement": "opening_interface closing gap",
+        "value": 0.4,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-070",
+        "kind": "parameter",
+        "subject": "opening_interface.swing_reach",
+        "statement": "opening_interface rearward swing reach",
+        "value": 1.8,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-071",
+        "kind": "parameter",
+        "subject": "opening_interface.rear_clearance",
+        "statement": "opening_interface clearance behind the axis",
+        "value": 5.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "105 deg holds the lid clear of the opening",
+      "rearward corner reach 1.8 mm is relieved behind the axis"
+    ],
+    "risks": [
+      "lid corner interferes if the axis moves inboard"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-012",
+    "problem_id": "P-012",
+    "approach": "route opening_interface load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-072",
+        "kind": "relation",
+        "subject": "opening_interface.load_path",
+        "statement": "opening_interface -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-012",
+          "resolution_id": "R-012",
+          "method": "direct_load_path_to_ground",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-013",
+    "problem_id": "P-013",
+    "approach": "route opening_interface load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-073",
+        "kind": "relation",
+        "subject": "opening_interface.load_path",
+        "statement": "opening_interface -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-014",
+    "problem_id": "P-014",
+    "approach": "opening_interface: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-074",
+        "kind": "manufacturing",
+        "subject": "opening_interface.material",
+        "statement": "opening_interface material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-014",
+          "resolution_id": "R-014",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-075",
+        "kind": "manufacturing",
+        "subject": "opening_interface.process",
+        "statement": "opening_interface process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-014",
+          "resolution_id": "R-014",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-076",
+        "kind": "manufacturing",
+        "subject": "opening_interface.build_orientation",
+        "statement": "opening_interface printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-014",
+          "resolution_id": "R-014",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-015",
+    "problem_id": "P-015",
+    "approach": "opening_interface: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-077",
+        "kind": "manufacturing",
+        "subject": "opening_interface.material",
+        "statement": "opening_interface material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-078",
+        "kind": "manufacturing",
+        "subject": "opening_interface.process",
+        "statement": "opening_interface process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-079",
+        "kind": "manufacturing",
+        "subject": "opening_interface.build_orientation",
+        "statement": "opening_interface printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-016",
+    "problem_id": "P-016",
+    "approach": "30 deg lead face, 60 deg retention face",
+    "method": "snap_face_angles/retention_release_tradeoff",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-080",
+        "kind": "interface",
+        "subject": "detent_feature.engagement_geometry",
+        "statement": "detent_feature face angles",
+        "value": "lead=30.0,retain=60.0",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-016",
+          "resolution_id": "R-016",
+          "method": "snap_face_angles/retention_release_tradeoff",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-081",
+        "kind": "parameter",
+        "subject": "detent_feature.lead_angle",
+        "statement": "detent_feature lead face angle",
+        "value": 30.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-016",
+          "resolution_id": "R-016",
+          "method": "snap_face_angles/retention_release_tradeoff",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-082",
+        "kind": "parameter",
+        "subject": "detent_feature.retention_angle",
+        "statement": "detent_feature retention face angle",
+        "value": 60.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-016",
+          "resolution_id": "R-016",
+          "method": "snap_face_angles/retention_release_tradeoff",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-083",
+        "kind": "critical_characteristic",
+        "subject": "detent_feature.retention_force",
+        "statement": "detent_feature force resisting opening",
+        "value": 21.149,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-016",
+          "resolution_id": "R-016",
+          "method": "snap_face_angles/retention_release_tradeoff",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-084",
+        "kind": "critical_characteristic",
+        "subject": "detent_feature.release_force",
+        "statement": "detent_feature thumb release effort",
+        "value": 5.4,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-016",
+          "resolution_id": "R-016",
+          "method": "snap_face_angles/retention_release_tradeoff",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-085",
+        "kind": "interface",
+        "subject": "detent_feature.release_actuation",
+        "statement": "detent_feature thumb pad deflects the beam clear of the catch",
+        "value": "thumb_pad",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-016",
+          "resolution_id": "R-016",
+          "method": "snap_face_angles/retention_release_tradeoff",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-086",
+        "kind": "objective",
+        "subject": "retention_vs_release",
+        "statement": "maximise retention while keeping release effort comfortable",
+        "value": null,
+        "unit": null,
+        "symbolic": false,
+        "expression": "maximize(retention_force) subject to release_force <= 15 N",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-087",
+        "kind": "constraint",
+        "subject": "detent_feature.self_locking_limit",
+        "statement": "detent_feature retention angle must stay below the self-locking angle",
+        "value": 70.71,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": "retention_angle < atan(1/mu)",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-016",
+          "resolution_id": "R-016",
+          "method": "snap_face_angles/retention_release_tradeoff",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "insertion 4.65 N, retention 21.15 N (4.5x asymmetry)",
+      "thumb release 5.40 N by deflecting the beam directly",
+      "retention face stays below the 70.7 deg self-locking angle"
+    ],
+    "risks": [
+      "retention and release cannot both be improved by face angle alone"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-017",
+    "problem_id": "P-017",
+    "approach": "30 deg lead face, 60 deg retention face",
+    "method": "snap_face_angles/retention_release_tradeoff",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-088",
+        "kind": "interface",
+        "subject": "detent_feature.engagement_geometry",
+        "statement": "detent_feature face angles",
+        "value": "lead=30.0,retain=60.0",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-089",
+        "kind": "parameter",
+        "subject": "detent_feature.lead_angle",
+        "statement": "detent_feature lead face angle",
+        "value": 30.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-090",
+        "kind": "parameter",
+        "subject": "detent_feature.retention_angle",
+        "statement": "detent_feature retention face angle",
+        "value": 60.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-091",
+        "kind": "critical_characteristic",
+        "subject": "detent_feature.retention_force",
+        "statement": "detent_feature force resisting opening",
+        "value": 21.149,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-092",
+        "kind": "critical_characteristic",
+        "subject": "detent_feature.release_force",
+        "statement": "detent_feature thumb release effort",
+        "value": 5.4,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-093",
+        "kind": "interface",
+        "subject": "detent_feature.release_actuation",
+        "statement": "detent_feature thumb pad deflects the beam clear of the catch",
+        "value": "thumb_pad",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-094",
+        "kind": "objective",
+        "subject": "retention_vs_release",
+        "statement": "maximise retention while keeping release effort comfortable",
+        "value": null,
+        "unit": null,
+        "symbolic": false,
+        "expression": "maximize(retention_force) subject to release_force <= 15 N",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-095",
+        "kind": "constraint",
+        "subject": "detent_feature.self_locking_limit",
+        "statement": "detent_feature retention angle must stay below the self-locking angle",
+        "value": 70.71,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": "retention_angle < atan(1/mu)",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "insertion 4.65 N, retention 21.15 N (4.5x asymmetry)",
+      "thumb release 5.40 N by deflecting the beam directly",
+      "retention face stays below the 70.7 deg self-locking angle"
+    ],
+    "risks": [
+      "retention and release cannot both be improved by face angle alone"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-018",
+    "problem_id": "P-018",
+    "approach": "detent_feature: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-096",
+        "kind": "manufacturing",
+        "subject": "detent_feature.material",
+        "statement": "detent_feature material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-018",
+          "resolution_id": "R-018",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-097",
+        "kind": "manufacturing",
+        "subject": "detent_feature.process",
+        "statement": "detent_feature process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-018",
+          "resolution_id": "R-018",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-098",
+        "kind": "manufacturing",
+        "subject": "detent_feature.build_orientation",
+        "statement": "detent_feature printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-018",
+          "resolution_id": "R-018",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-019",
+    "problem_id": "P-019",
+    "approach": "detent_feature: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-099",
+        "kind": "manufacturing",
+        "subject": "detent_feature.material",
+        "statement": "detent_feature material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-100",
+        "kind": "manufacturing",
+        "subject": "detent_feature.process",
+        "statement": "detent_feature process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-101",
+        "kind": "manufacturing",
+        "subject": "detent_feature.build_orientation",
+        "statement": "detent_feature printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-020",
+    "problem_id": "P-020",
+    "approach": "route opening_stop load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-102",
+        "kind": "relation",
+        "subject": "opening_stop.load_path",
+        "statement": "opening_stop -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-020",
+          "resolution_id": "R-020",
+          "method": "direct_load_path_to_ground",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-021",
+    "problem_id": "P-021",
+    "approach": "route opening_stop load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-103",
+        "kind": "relation",
+        "subject": "opening_stop.load_path",
+        "statement": "opening_stop -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-022",
+    "problem_id": "P-022",
+    "approach": "opening_stop: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-104",
+        "kind": "manufacturing",
+        "subject": "opening_stop.material",
+        "statement": "opening_stop material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-022",
+          "resolution_id": "R-022",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-105",
+        "kind": "manufacturing",
+        "subject": "opening_stop.process",
+        "statement": "opening_stop process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-022",
+          "resolution_id": "R-022",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-106",
+        "kind": "manufacturing",
+        "subject": "opening_stop.build_orientation",
+        "statement": "opening_stop printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-022",
+          "resolution_id": "R-022",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-023",
+    "problem_id": "P-023",
+    "approach": "opening_stop: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-107",
+        "kind": "manufacturing",
+        "subject": "opening_stop.material",
+        "statement": "opening_stop material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-108",
+        "kind": "manufacturing",
+        "subject": "opening_stop.process",
+        "statement": "opening_stop process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-109",
+        "kind": "manufacturing",
+        "subject": "opening_stop.build_orientation",
+        "statement": "opening_stop printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-024",
+    "problem_id": "P-024",
+    "approach": "internal envelope sized for 90 mm stroke",
+    "method": "stroke_plus_reserve",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-110",
+        "kind": "parameter",
+        "subject": "housing.internal_height",
+        "statement": "housing internal height",
+        "value": 120.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-024",
+          "resolution_id": "R-024",
+          "method": "stroke_plus_reserve",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-111",
+        "kind": "parameter",
+        "subject": "housing.internal_width",
+        "statement": "housing internal width",
+        "value": 110.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-024",
+          "resolution_id": "R-024",
+          "method": "stroke_plus_reserve",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-112",
+        "kind": "parameter",
+        "subject": "housing.internal_depth",
+        "statement": "housing internal depth",
+        "value": 90.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-024",
+          "resolution_id": "R-024",
+          "method": "stroke_plus_reserve",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "contains the full stroke with end reserve"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-025",
+    "problem_id": "P-025",
+    "approach": "removable side panel carrying one bushing of each pair",
+    "method": "split_at_bearing_plane",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-113",
+        "kind": "assembly",
+        "subject": "housing.assembly_access",
+        "statement": "removable side panel",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-025",
+          "resolution_id": "R-025",
+          "method": "split_at_bearing_plane",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-114",
+        "kind": "assembly",
+        "subject": "housing.service_access",
+        "statement": "panel exposes the drive",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-025",
+          "resolution_id": "R-025",
+          "method": "split_at_bearing_plane",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-115",
+        "kind": "assembly",
+        "subject": "housing.part_insertion",
+        "statement": "insert through the open side face",
+        "value": "side_face",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-025",
+          "resolution_id": "R-025",
+          "method": "split_at_bearing_plane",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-116",
+        "kind": "assembly",
+        "subject": "assembly.sequence",
+        "statement": "guides -> platform -> screw -> shaft -> panel -> crank",
+        "value": "guides,platform,screw,shaft,panel,crank",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-025",
+          "resolution_id": "R-025",
+          "method": "split_at_bearing_plane",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-117",
+        "kind": "tolerance",
+        "subject": "panel_alignment.tolerance_chain",
+        "statement": "dowel-controlled bearing coaxiality across the split",
+        "value": 0.3,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": "0.10,0.10,0.20",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-025",
+          "resolution_id": "R-025",
+          "method": "split_at_bearing_plane",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "mechanism inserts before closure",
+      "service without disturbing the platform"
+    ],
+    "risks": [
+      "bearing coaxiality now spans a parting line and needs dowels"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-026",
+    "problem_id": "P-026",
+    "approach": "removable side panel carrying one bushing of each pair",
+    "method": "split_at_bearing_plane",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-118",
+        "kind": "assembly",
+        "subject": "housing.assembly_access",
+        "statement": "removable side panel",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-119",
+        "kind": "assembly",
+        "subject": "housing.service_access",
+        "statement": "panel exposes the drive",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-120",
+        "kind": "assembly",
+        "subject": "housing.part_insertion",
+        "statement": "insert through the open side face",
+        "value": "side_face",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-121",
+        "kind": "assembly",
+        "subject": "assembly.sequence",
+        "statement": "guides -> platform -> screw -> shaft -> panel -> crank",
+        "value": "guides,platform,screw,shaft,panel,crank",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-122",
+        "kind": "tolerance",
+        "subject": "panel_alignment.tolerance_chain",
+        "statement": "dowel-controlled bearing coaxiality across the split",
+        "value": 0.3,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": "0.10,0.10,0.20",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "mechanism inserts before closure",
+      "service without disturbing the platform"
+    ],
+    "risks": [
+      "bearing coaxiality now spans a parting line and needs dowels"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-027",
+    "problem_id": "P-027",
+    "approach": "removable side panel carrying one bushing of each pair",
+    "method": "split_at_bearing_plane",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-123",
+        "kind": "assembly",
+        "subject": "housing.assembly_access",
+        "statement": "removable side panel",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-124",
+        "kind": "assembly",
+        "subject": "housing.service_access",
+        "statement": "panel exposes the drive",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-125",
+        "kind": "assembly",
+        "subject": "housing.part_insertion",
+        "statement": "insert through the open side face",
+        "value": "side_face",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-126",
+        "kind": "assembly",
+        "subject": "assembly.sequence",
+        "statement": "guides -> platform -> screw -> shaft -> panel -> crank",
+        "value": "guides,platform,screw,shaft,panel,crank",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-127",
+        "kind": "tolerance",
+        "subject": "panel_alignment.tolerance_chain",
+        "statement": "dowel-controlled bearing coaxiality across the split",
+        "value": 0.3,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": "0.10,0.10,0.20",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "mechanism inserts before closure",
+      "service without disturbing the platform"
+    ],
+    "risks": [
+      "bearing coaxiality now spans a parting line and needs dowels"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-028",
+    "problem_id": "P-028",
+    "approach": "route housing load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-128",
+        "kind": "relation",
+        "subject": "housing.load_path",
+        "statement": "housing -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-028",
+          "resolution_id": "R-028",
+          "method": "direct_load_path_to_ground",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-029",
+    "problem_id": "P-029",
+    "approach": "route housing load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-129",
+        "kind": "relation",
+        "subject": "housing.load_path",
+        "statement": "housing -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-030",
+    "problem_id": "P-030",
+    "approach": "housing: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-130",
+        "kind": "manufacturing",
+        "subject": "housing.material",
+        "statement": "housing material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-030",
+          "resolution_id": "R-030",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-131",
+        "kind": "manufacturing",
+        "subject": "housing.process",
+        "statement": "housing process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-030",
+          "resolution_id": "R-030",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-132",
+        "kind": "manufacturing",
+        "subject": "housing.build_orientation",
+        "statement": "housing printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-030",
+          "resolution_id": "R-030",
+          "method": "material_process_compatibility",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-031",
+    "problem_id": "P-031",
+    "approach": "housing: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-133",
+        "kind": "manufacturing",
+        "subject": "housing.material",
+        "statement": "housing material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-134",
+        "kind": "manufacturing",
+        "subject": "housing.process",
+        "statement": "housing process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-135",
+        "kind": "manufacturing",
+        "subject": "housing.build_orientation",
+        "statement": "housing printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-032",
+    "problem_id": "P-032",
+    "approach": "closure_member runs with a shrouded 1.5 mm gap to the static shell",
+    "method": "moving_boundary_gap",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-136",
+        "kind": "parameter",
+        "subject": "closure_member.boundary_clearance",
+        "statement": "closure_member boundary gap",
+        "value": 1.5,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-137",
+        "kind": "parameter",
+        "subject": "closure_member.pinch_access",
+        "statement": "closure_member exposed gap",
+        "value": 1.5,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-032",
+          "resolution_id": "R-032",
+          "method": "moving_boundary_gap",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "below the 3 mm pinch threshold, so no guard is required"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-033",
+    "problem_id": "P-033",
+    "approach": "shroud the closure_member boundary and keep the running gap beneath it",
+    "method": "guard_decouples_safety_gap",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-138",
+        "kind": "parameter",
+        "subject": "closure_member.pinch_access",
+        "statement": "closure_member exposed gap",
+        "value": 2.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-139",
+        "kind": "interface",
+        "subject": "closure_member.guard",
+        "statement": "closure_member shroud lip",
+        "value": "shroud_lip",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "decouples the safety gap from the running clearance"
+    ],
+    "risks": [
+      "adds a lip to the moulding/print"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-034",
+    "problem_id": "P-034",
+    "approach": "30 deg lead face, 60 deg retention face",
+    "method": "snap_face_angles/retention_release_tradeoff",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-140",
+        "kind": "interface",
+        "subject": "closure_member.engagement_geometry",
+        "statement": "closure_member face angles",
+        "value": "lead=30.0,retain=60.0",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-141",
+        "kind": "parameter",
+        "subject": "closure_member.lead_angle",
+        "statement": "closure_member lead face angle",
+        "value": 30.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-142",
+        "kind": "parameter",
+        "subject": "closure_member.retention_angle",
+        "statement": "closure_member retention face angle",
+        "value": 60.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-143",
+        "kind": "critical_characteristic",
+        "subject": "closure_member.retention_force",
+        "statement": "closure_member force resisting opening",
+        "value": 21.149,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-144",
+        "kind": "critical_characteristic",
+        "subject": "closure_member.release_force",
+        "statement": "closure_member thumb release effort",
+        "value": 5.4,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-145",
+        "kind": "interface",
+        "subject": "closure_member.release_actuation",
+        "statement": "closure_member thumb pad deflects the beam clear of the catch",
+        "value": "thumb_pad",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-146",
+        "kind": "objective",
+        "subject": "retention_vs_release",
+        "statement": "maximise retention while keeping release effort comfortable",
+        "value": null,
+        "unit": null,
+        "symbolic": false,
+        "expression": "maximize(retention_force) subject to release_force <= 15 N",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-147",
+        "kind": "constraint",
+        "subject": "closure_member.self_locking_limit",
+        "statement": "closure_member retention angle must stay below the self-locking angle",
+        "value": 70.71,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": "retention_angle < atan(1/mu)",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "insertion 4.65 N, retention 21.15 N (4.5x asymmetry)",
+      "thumb release 5.40 N by deflecting the beam directly",
+      "retention face stays below the 70.7 deg self-locking angle"
+    ],
+    "risks": [
+      "retention and release cannot both be improved by face angle alone"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-035",
+    "problem_id": "P-035",
+    "approach": "closure_member in PLA",
+    "method": "material_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-148",
+        "kind": "manufacturing",
+        "subject": "closure_member.material",
+        "statement": "closure_member material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-036",
+    "problem_id": "P-036",
+    "approach": "closure_member made by FDM",
+    "method": "process_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-149",
+        "kind": "manufacturing",
+        "subject": "closure_member.process",
+        "statement": "closure_member process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-037",
+    "problem_id": "P-037",
+    "approach": "closure_member: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-150",
+        "kind": "manufacturing",
+        "subject": "closure_member.material",
+        "statement": "closure_member material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-151",
+        "kind": "manufacturing",
+        "subject": "closure_member.process",
+        "statement": "closure_member process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-152",
+        "kind": "manufacturing",
+        "subject": "closure_member.build_orientation",
+        "statement": "closure_member printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-038",
+    "problem_id": "P-038",
+    "approach": "rear hinge axis, 105 deg swing on two knuckles",
+    "method": "hinge_axis_placement/swing_sweep",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-153",
+        "kind": "motion",
+        "subject": "opening_interface.hinge_axis",
+        "statement": "opening_interface hinge axis at the rear edge",
+        "value": "rear_edge_x",
+        "unit": null,
+        "symbolic": false,
+        "expression": "axis = rear_edge",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-154",
+        "kind": "motion",
+        "subject": "opening_interface.angular_range",
+        "statement": "opening_interface swing range",
+        "value": 105.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": "0 <= theta <= open_angle",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-155",
+        "kind": "support",
+        "subject": "opening_interface.hinge_support",
+        "statement": "opening_interface on two hinge knuckles",
+        "value": 2.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-156",
+        "kind": "parameter",
+        "subject": "opening_interface.hinge_offset",
+        "statement": "opening_interface axis offset from rear face",
+        "value": 4.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-157",
+        "kind": "parameter",
+        "subject": "opening_interface.depth",
+        "statement": "opening_interface depth",
+        "value": 90.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-158",
+        "kind": "parameter",
+        "subject": "opening_interface.thickness",
+        "statement": "opening_interface plate thickness",
+        "value": 6.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-159",
+        "kind": "parameter",
+        "subject": "opening_interface.closing_clearance",
+        "statement": "opening_interface closing gap",
+        "value": 0.4,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-160",
+        "kind": "parameter",
+        "subject": "opening_interface.swing_reach",
+        "statement": "opening_interface rearward swing reach",
+        "value": 1.8,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-161",
+        "kind": "parameter",
+        "subject": "opening_interface.rear_clearance",
+        "statement": "opening_interface clearance behind the axis",
+        "value": 5.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "105 deg holds the lid clear of the opening",
+      "rearward corner reach 1.8 mm is relieved behind the axis"
+    ],
+    "risks": [
+      "lid corner interferes if the axis moves inboard"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-039",
+    "problem_id": "P-039",
+    "approach": "rear hinge axis, 105 deg swing on two knuckles",
+    "method": "hinge_axis_placement/swing_sweep",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-162",
+        "kind": "motion",
+        "subject": "opening_interface.hinge_axis",
+        "statement": "opening_interface hinge axis at the rear edge",
+        "value": "rear_edge_x",
+        "unit": null,
+        "symbolic": false,
+        "expression": "axis = rear_edge",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-163",
+        "kind": "motion",
+        "subject": "opening_interface.angular_range",
+        "statement": "opening_interface swing range",
+        "value": 105.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": "0 <= theta <= open_angle",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-164",
+        "kind": "support",
+        "subject": "opening_interface.hinge_support",
+        "statement": "opening_interface on two hinge knuckles",
+        "value": 2.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-165",
+        "kind": "parameter",
+        "subject": "opening_interface.hinge_offset",
+        "statement": "opening_interface axis offset from rear face",
+        "value": 4.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-166",
+        "kind": "parameter",
+        "subject": "opening_interface.depth",
+        "statement": "opening_interface depth",
+        "value": 90.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-167",
+        "kind": "parameter",
+        "subject": "opening_interface.thickness",
+        "statement": "opening_interface plate thickness",
+        "value": 6.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-168",
+        "kind": "parameter",
+        "subject": "opening_interface.closing_clearance",
+        "statement": "opening_interface closing gap",
+        "value": 0.4,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-169",
+        "kind": "parameter",
+        "subject": "opening_interface.swing_reach",
+        "statement": "opening_interface rearward swing reach",
+        "value": 1.8,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-170",
+        "kind": "parameter",
+        "subject": "opening_interface.rear_clearance",
+        "statement": "opening_interface clearance behind the axis",
+        "value": 5.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "105 deg holds the lid clear of the opening",
+      "rearward corner reach 1.8 mm is relieved behind the axis"
+    ],
+    "risks": [
+      "lid corner interferes if the axis moves inboard"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-040",
+    "problem_id": "P-040",
+    "approach": "rear hinge axis, 105 deg swing on two knuckles",
+    "method": "hinge_axis_placement/swing_sweep",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-171",
+        "kind": "motion",
+        "subject": "opening_interface.hinge_axis",
+        "statement": "opening_interface hinge axis at the rear edge",
+        "value": "rear_edge_x",
+        "unit": null,
+        "symbolic": false,
+        "expression": "axis = rear_edge",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-172",
+        "kind": "motion",
+        "subject": "opening_interface.angular_range",
+        "statement": "opening_interface swing range",
+        "value": 105.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": "0 <= theta <= open_angle",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-173",
+        "kind": "support",
+        "subject": "opening_interface.hinge_support",
+        "statement": "opening_interface on two hinge knuckles",
+        "value": 2.0,
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-174",
+        "kind": "parameter",
+        "subject": "opening_interface.hinge_offset",
+        "statement": "opening_interface axis offset from rear face",
+        "value": 4.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-175",
+        "kind": "parameter",
+        "subject": "opening_interface.depth",
+        "statement": "opening_interface depth",
+        "value": 90.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-176",
+        "kind": "parameter",
+        "subject": "opening_interface.thickness",
+        "statement": "opening_interface plate thickness",
+        "value": 6.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-177",
+        "kind": "parameter",
+        "subject": "opening_interface.closing_clearance",
+        "statement": "opening_interface closing gap",
+        "value": 0.4,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-178",
+        "kind": "parameter",
+        "subject": "opening_interface.swing_reach",
+        "statement": "opening_interface rearward swing reach",
+        "value": 1.8,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-179",
+        "kind": "parameter",
+        "subject": "opening_interface.rear_clearance",
+        "statement": "opening_interface clearance behind the axis",
+        "value": 5.0,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "105 deg holds the lid clear of the opening",
+      "rearward corner reach 1.8 mm is relieved behind the axis"
+    ],
+    "risks": [
+      "lid corner interferes if the axis moves inboard"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-041",
+    "problem_id": "P-041",
+    "approach": "opening_interface in PLA",
+    "method": "material_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-180",
+        "kind": "manufacturing",
+        "subject": "opening_interface.material",
+        "statement": "opening_interface material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-042",
+    "problem_id": "P-042",
+    "approach": "opening_interface made by FDM",
+    "method": "process_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-181",
+        "kind": "manufacturing",
+        "subject": "opening_interface.process",
+        "statement": "opening_interface process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-043",
+    "problem_id": "P-043",
+    "approach": "route opening_interface load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-182",
+        "kind": "relation",
+        "subject": "opening_interface.load_path",
+        "statement": "opening_interface -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-044",
+    "problem_id": "P-048",
+    "approach": "opening_interface: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-183",
+        "kind": "manufacturing",
+        "subject": "opening_interface.material",
+        "statement": "opening_interface material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-184",
+        "kind": "manufacturing",
+        "subject": "opening_interface.process",
+        "statement": "opening_interface process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-185",
+        "kind": "manufacturing",
+        "subject": "opening_interface.build_orientation",
+        "statement": "opening_interface printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-045",
+    "problem_id": "P-049",
+    "approach": "30 deg lead face, 60 deg retention face",
+    "method": "snap_face_angles/retention_release_tradeoff",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-186",
+        "kind": "interface",
+        "subject": "detent_feature.engagement_geometry",
+        "statement": "detent_feature face angles",
+        "value": "lead=30.0,retain=60.0",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-187",
+        "kind": "parameter",
+        "subject": "detent_feature.lead_angle",
+        "statement": "detent_feature lead face angle",
+        "value": 30.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-188",
+        "kind": "parameter",
+        "subject": "detent_feature.retention_angle",
+        "statement": "detent_feature retention face angle",
+        "value": 60.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-189",
+        "kind": "critical_characteristic",
+        "subject": "detent_feature.retention_force",
+        "statement": "detent_feature force resisting opening",
+        "value": 21.149,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-190",
+        "kind": "critical_characteristic",
+        "subject": "detent_feature.release_force",
+        "statement": "detent_feature thumb release effort",
+        "value": 5.4,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-191",
+        "kind": "interface",
+        "subject": "detent_feature.release_actuation",
+        "statement": "detent_feature thumb pad deflects the beam clear of the catch",
+        "value": "thumb_pad",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-192",
+        "kind": "objective",
+        "subject": "retention_vs_release",
+        "statement": "maximise retention while keeping release effort comfortable",
+        "value": null,
+        "unit": null,
+        "symbolic": false,
+        "expression": "maximize(retention_force) subject to release_force <= 15 N",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-193",
+        "kind": "constraint",
+        "subject": "detent_feature.self_locking_limit",
+        "statement": "detent_feature retention angle must stay below the self-locking angle",
+        "value": 70.71,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": "retention_angle < atan(1/mu)",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "insertion 4.65 N, retention 21.15 N (4.5x asymmetry)",
+      "thumb release 5.40 N by deflecting the beam directly",
+      "retention face stays below the 70.7 deg self-locking angle"
+    ],
+    "risks": [
+      "retention and release cannot both be improved by face angle alone"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-046",
+    "problem_id": "P-050",
+    "approach": "30 deg lead face, 60 deg retention face",
+    "method": "snap_face_angles/retention_release_tradeoff",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-194",
+        "kind": "interface",
+        "subject": "detent_feature.engagement_geometry",
+        "statement": "detent_feature face angles",
+        "value": "lead=30.0,retain=60.0",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-195",
+        "kind": "parameter",
+        "subject": "detent_feature.lead_angle",
+        "statement": "detent_feature lead face angle",
+        "value": 30.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-196",
+        "kind": "parameter",
+        "subject": "detent_feature.retention_angle",
+        "statement": "detent_feature retention face angle",
+        "value": 60.0,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-197",
+        "kind": "critical_characteristic",
+        "subject": "detent_feature.retention_force",
+        "statement": "detent_feature force resisting opening",
+        "value": 21.149,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-198",
+        "kind": "critical_characteristic",
+        "subject": "detent_feature.release_force",
+        "statement": "detent_feature thumb release effort",
+        "value": 5.4,
+        "unit": "N",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-199",
+        "kind": "interface",
+        "subject": "detent_feature.release_actuation",
+        "statement": "detent_feature thumb pad deflects the beam clear of the catch",
+        "value": "thumb_pad",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-200",
+        "kind": "objective",
+        "subject": "retention_vs_release",
+        "statement": "maximise retention while keeping release effort comfortable",
+        "value": null,
+        "unit": null,
+        "symbolic": false,
+        "expression": "maximize(retention_force) subject to release_force <= 15 N",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-201",
+        "kind": "constraint",
+        "subject": "detent_feature.self_locking_limit",
+        "statement": "detent_feature retention angle must stay below the self-locking angle",
+        "value": 70.71,
+        "unit": "deg",
+        "symbolic": false,
+        "expression": "retention_angle < atan(1/mu)",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "insertion 4.65 N, retention 21.15 N (4.5x asymmetry)",
+      "thumb release 5.40 N by deflecting the beam directly",
+      "retention face stays below the 70.7 deg self-locking angle"
+    ],
+    "risks": [
+      "retention and release cannot both be improved by face angle alone"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-047",
+    "problem_id": "P-051",
+    "approach": "detent_feature in PLA",
+    "method": "material_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-202",
+        "kind": "manufacturing",
+        "subject": "detent_feature.material",
+        "statement": "detent_feature material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-048",
+    "problem_id": "P-052",
+    "approach": "detent_feature made by FDM",
+    "method": "process_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-203",
+        "kind": "manufacturing",
+        "subject": "detent_feature.process",
+        "statement": "detent_feature process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-049",
+    "problem_id": "P-053",
+    "approach": "detent_feature: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-204",
+        "kind": "manufacturing",
+        "subject": "detent_feature.material",
+        "statement": "detent_feature material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-205",
+        "kind": "manufacturing",
+        "subject": "detent_feature.process",
+        "statement": "detent_feature process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-206",
+        "kind": "manufacturing",
+        "subject": "detent_feature.build_orientation",
+        "statement": "detent_feature printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-050",
+    "problem_id": "P-054",
+    "approach": "route opening_stop load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-207",
+        "kind": "relation",
+        "subject": "opening_stop.load_path",
+        "statement": "opening_stop -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-051",
+    "problem_id": "P-055",
+    "approach": "opening_stop in PLA",
+    "method": "material_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-208",
+        "kind": "manufacturing",
+        "subject": "opening_stop.material",
+        "statement": "opening_stop material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-052",
+    "problem_id": "P-056",
+    "approach": "opening_stop made by FDM",
+    "method": "process_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-209",
+        "kind": "manufacturing",
+        "subject": "opening_stop.process",
+        "statement": "opening_stop process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-053",
+    "problem_id": "P-059",
+    "approach": "opening_stop: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-210",
+        "kind": "manufacturing",
+        "subject": "opening_stop.material",
+        "statement": "opening_stop material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-211",
+        "kind": "manufacturing",
+        "subject": "opening_stop.process",
+        "statement": "opening_stop process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-212",
+        "kind": "manufacturing",
+        "subject": "opening_stop.build_orientation",
+        "statement": "opening_stop printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-054",
+    "problem_id": "P-060",
+    "approach": "removable side panel carrying one bushing of each pair",
+    "method": "split_at_bearing_plane",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-213",
+        "kind": "assembly",
+        "subject": "housing.assembly_access",
+        "statement": "removable side panel",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-214",
+        "kind": "assembly",
+        "subject": "housing.service_access",
+        "statement": "panel exposes the drive",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-215",
+        "kind": "assembly",
+        "subject": "housing.part_insertion",
+        "statement": "insert through the open side face",
+        "value": "side_face",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-216",
+        "kind": "assembly",
+        "subject": "assembly.sequence",
+        "statement": "guides -> platform -> screw -> shaft -> panel -> crank",
+        "value": "guides,platform,screw,shaft,panel,crank",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-217",
+        "kind": "tolerance",
+        "subject": "panel_alignment.tolerance_chain",
+        "statement": "dowel-controlled bearing coaxiality across the split",
+        "value": 0.3,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": "0.10,0.10,0.20",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "mechanism inserts before closure",
+      "service without disturbing the platform"
+    ],
+    "risks": [
+      "bearing coaxiality now spans a parting line and needs dowels"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-055",
+    "problem_id": "P-061",
+    "approach": "housing in PLA",
+    "method": "material_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-218",
+        "kind": "manufacturing",
+        "subject": "housing.material",
+        "statement": "housing material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-056",
+    "problem_id": "P-062",
+    "approach": "housing made by FDM",
+    "method": "process_selection",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-219",
+        "kind": "manufacturing",
+        "subject": "housing.process",
+        "statement": "housing process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-057",
+    "problem_id": "P-063",
+    "approach": "2.4 mm wall (FDM minimum 1.2 mm)",
+    "method": "process_minimum_wall",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-220",
+        "kind": "parameter",
+        "subject": "housing.wall_thickness",
+        "statement": "housing wall",
+        "value": 2.4,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-063",
+          "resolution_id": "R-057",
+          "method": "process_minimum_wall",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "2x the process minimum gives margin for load and print variation"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-058",
+    "problem_id": "P-064",
+    "approach": "route housing load through the shell to the base",
+    "method": "direct_load_path_to_ground",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-221",
+        "kind": "relation",
+        "subject": "housing.load_path",
+        "statement": "housing -> guidance -> shell -> base",
+        "value": "shell_to_base",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "shortest path to ground",
+      "no bending in the shell wall"
+    ],
+    "risks": [],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-059",
+    "problem_id": "P-069",
+    "approach": "housing: PLA via FDM",
+    "method": "material_process_compatibility",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-222",
+        "kind": "manufacturing",
+        "subject": "housing.material",
+        "statement": "housing material",
+        "value": "PLA",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-223",
+        "kind": "manufacturing",
+        "subject": "housing.process",
+        "statement": "housing process",
+        "value": "FDM",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-224",
+        "kind": "manufacturing",
+        "subject": "housing.build_orientation",
+        "statement": "housing printed with loads in-plane",
+        "value": "loads_in_plane",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "PLA is listed compatible with FDM"
+    ],
+    "risks": [
+      "anisotropic layer adhesion"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  },
+  {
+    "id": "R-060",
+    "problem_id": "P-070",
+    "approach": "removable side panel carrying one bushing of each pair",
+    "method": "split_at_bearing_plane",
+    "status": "applied",
+    "commitments": [
+      {
+        "id": "C-225",
+        "kind": "assembly",
+        "subject": "assembly.assembly_access",
+        "statement": "removable side panel",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-070",
+          "resolution_id": "R-060",
+          "method": "split_at_bearing_plane",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-226",
+        "kind": "assembly",
+        "subject": "assembly.service_access",
+        "statement": "panel exposes the drive",
+        "value": "side_panel",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-070",
+          "resolution_id": "R-060",
+          "method": "split_at_bearing_plane",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-227",
+        "kind": "assembly",
+        "subject": "assembly.part_insertion",
+        "statement": "insert through the open side face",
+        "value": "side_face",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": "P-070",
+          "resolution_id": "R-060",
+          "method": "split_at_bearing_plane",
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-228",
+        "kind": "assembly",
+        "subject": "assembly.sequence",
+        "statement": "guides -> platform -> screw -> shaft -> panel -> crank",
+        "value": "guides,platform,screw,shaft,panel,crank",
+        "unit": null,
+        "symbolic": false,
+        "expression": null,
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      },
+      {
+        "id": "C-229",
+        "kind": "tolerance",
+        "subject": "panel_alignment.tolerance_chain",
+        "statement": "dowel-controlled bearing coaxiality across the split",
+        "value": 0.3,
+        "unit": "mm",
+        "symbolic": false,
+        "expression": "0.10,0.10,0.20",
+        "status": "provisional",
+        "roles": [],
+        "provenance": {
+          "requirements": [],
+          "problem_id": null,
+          "resolution_id": null,
+          "method": null,
+          "depends_on_assumptions": [],
+          "supported_by_checks": []
+        },
+        "superseded_by": null,
+        "replaces": null
+      }
+    ],
+    "supersedes": [],
+    "benefits": [
+      "mechanism inserts before closure",
+      "service without disturbing the platform"
+    ],
+    "risks": [
+      "bearing coaxiality now spans a parting line and needs dowels"
+    ],
+    "invalidates_checks": [],
+    "rejection_reason": null,
+    "score": 1.0
+  }
+]

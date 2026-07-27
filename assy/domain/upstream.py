@@ -898,6 +898,27 @@ class RegionPlacement(BaseModel):
     zone: SpatialZone
     relative_to: str | None = None
     why: str = ""
+    houses: list[str] = Field(default_factory=list)
+    """Elements arranged in this region. Carried so the blueprint stands alone."""
+
+
+class PlacedPiece(BaseModel):
+    """A product piece, with where Stage 04 put it.
+
+    The blueprint arranges these, so it carries them: a consumer of the blueprint
+    - a renderer, a reviewer, Stage 05 - must not have to re-join with Stage 03 to
+    learn what is being arranged.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    name: str
+    kind: PieceKind
+    region: str | None = None
+    zone: SpatialZone | None = None
+    moving: bool = False
+    external: bool = False
+    motion: "MotionClass | None" = None
 
 
 class SweptVolumeSpec(BaseModel):
@@ -977,6 +998,7 @@ class ConceptVisualization(DomainObject):
 
     reference_frame: ReferenceFrame | None = None
     region_placements: list[RegionPlacement] = Field(default_factory=list)
+    placed_pieces: list[PlacedPiece] = Field(default_factory=list)
     swept_volumes: list[SweptVolumeSpec] = Field(default_factory=list)
     interference_candidates: list[InterferenceCandidate] = Field(default_factory=list)
     access_routes: list[AccessRoute] = Field(default_factory=list)

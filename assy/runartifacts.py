@@ -33,6 +33,7 @@ from pathlib import Path
 from typing import Any
 
 from assy import viz
+from assy.conceptrender import render_concept
 
 
 class Authority(str):
@@ -545,6 +546,15 @@ class RunArtifactWriter:
             )
             if obj is not None:
                 _dump(out / "output.json", _obj(obj))
+                if slot.number == 4:
+                    # The concept layout is a review artifact derived from the
+                    # blueprint. It never feeds a decision, so a render failure
+                    # is recorded as an absent image, not a failed stage.
+                    obj.image_refs = [
+                        str(Path(pth).name)
+                        for pth in render_concept(_obj(obj), out)
+                    ]
+                    _dump(out / "output.json", _obj(obj))
             (out / "report.md").write_text(self._report(slot, obj, record, authority))
 
             evidence, unresolved = "-", "-"

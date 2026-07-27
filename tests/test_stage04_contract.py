@@ -322,5 +322,67 @@ class BM002SpatialBlueprint(unittest.TestCase):
         self.assertIs(zones["travel_limit_region"], SpatialZone.END)
 
 
+class ConceptRenderIsDeterministicAndDerived(unittest.TestCase):
+    """The layout image is a review artifact: reproducible, and never an authority."""
+
+    def _blueprint(self, bid):
+        return stage04(load_spec(bid))[2].model_dump(mode="json")
+
+    def test_the_blueprint_is_self_contained_for_rendering(self):
+        """A renderer must not have to re-join with Stage 03 to know what to draw."""
+        for bid in BENCHMARKS:
+            bp = self._blueprint(bid)
+            with self.subTest(benchmark=bid):
+                self.assertTrue(bp["placed_pieces"], "no pieces to draw")
+                for piece in bp["placed_pieces"]:
+                    self.assertIsNotNone(piece["zone"], f"{piece['name']} has no zone")
+                for rp in bp["region_placements"]:
+                    self.assertIn("houses", rp)
+
+    def test_rendering_is_byte_identical_across_runs(self):
+        import hashlib
+        import tempfile
+
+        from assy.conceptrender import render_concept
+
+        for bid in BENCHMARKS:
+            bp = self._blueprint(bid)
+            digests = []
+            for _ in range(2):
+                with tempfile.TemporaryDirectory() as tmp:
+                    paths = render_concept(bp, Path(tmp))
+                    self.assertTrue(paths, "no image was produced")
+                    digests.append(hashlib.sha256(Path(paths[0]).read_bytes()).hexdigest())
+            with self.subTest(benchmark=bid):
+                self.assertEqual(digests[0], digests[1], "render is not deterministic")
+
+    def test_a_render_failure_never_fails_the_stage(self):
+        import tempfile
+
+        from assy.conceptrender import render_concept
+
+        with tempfile.TemporaryDirectory() as tmp:
+            # A structurally invalid blueprint must yield no image, not an exception.
+            self.assertEqual(render_concept({"placed_pieces": [{"bad": 1}]}, Path(tmp)), [])
+
+    def test_a_moving_boundary_element_is_placed_on_the_boundary(self):
+        """A lid is the box's own wall, not something buried in the storage volume."""
+        bp = self._blueprint("BM-001")
+        closure = next(p for p in bp["placed_pieces"] if p["name"] == "closure_member")
+        self.assertEqual(closure["zone"], "boundary")
+        # ...and the volume it closes stays interior.
+        working = next(
+            r for r in bp["region_placements"] if r["region"] == "working_volume"
+        )
+        self.assertEqual(working["zone"], "core")
+
+    def test_the_shell_is_never_relocated_by_an_obligation_it_reacts(self):
+        for bid in BENCHMARKS:
+            bp = self._blueprint(bid)
+            shell = next(p for p in bp["placed_pieces"] if p["kind"] == "shell")
+            with self.subTest(benchmark=bid):
+                self.assertEqual(shell["zone"], "boundary")
+
+
 if __name__ == "__main__":
     unittest.main()
