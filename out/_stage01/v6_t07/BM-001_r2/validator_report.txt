@@ -1,0 +1,43 @@
+[FAIL] A-1   functional_intent=ok, names solution(s): hinge
+[PASS] A-32  user-imposed terms erased: none (of ['hinge'])
+[PASS] A-2   2 functional requirement(s)
+[PASS] A-3a  6/6 treatable clauses reach a record
+[PASS] A-3b  2/2 function clauses reach a behavioural requirement
+[PASS] A-3d  clauses generating the wrong record type: none
+[PASS] A-4   malformed bounds: none
+[PASS] A-5   source quantities not captured: none
+[PASS] A-6   solution terms not traceable to a cited clause: none
+[PASS] A-7   0 assumption(s), 0 supplied-origin requirement(s)
+[PASS] A-8   0 assumption(s); not marked as supplied: none
+[PASS] A-9   context objects with no anchor: none
+[PASS] A-10  7 requirements across priorities [1, 2, 3]
+[PASS] A-11  duplicate statements: 0
+[PASS] A-12  requirements without verification intent: none
+[PASS] A-13  source_text present
+[PASS] A-14  unknowns contradicting resolved targets: none
+[PASS] A-16  6 clause(s); request covered=True
+[PASS] A-17  dangling clause refs: none
+[PASS] A-18  untraceable requirements: none
+[PASS] A-19  incoherent verification intent: none
+[PASS] A-20  freedoms without a stated basis: none
+[PASS] A-21  freedoms duplicating requirements: none
+[PASS] A-22  invalid relations: none
+[PASS] A-23  conflicts without rationale: none
+[PASS] A-24  scenario refs not resolving: none
+[PASS] A-25  3 scenario(s), any bound=True
+[PASS] A-26  assumptions with unresolved stands_in_for: none
+[PASS] A-27  unknown.affects not resolving: none
+[PASS] A-28  unknowns missing subject/reason: none
+[FAIL] A-34  behavioural requirements without a transformation: ['REQ-005', 'REQ-006']
+[PASS] A-29  clauses yielding both a freedom and an unknown: none
+[PASS] A-30  unknowns with no affected requirement: none
+[PASS] A-35  downstream engineering decisions recorded as unknowns: none
+[FAIL] A-36  scenarios restating a requirement: none; scenarios binding fewer than two requirements: ['SCN-001', 'SCN-002', 'SCN-003']
+[PASS] A-31  empty with no completion state: none
+[PASS] A-33  semantically duplicate unknowns: none
+[PASS] D-1   3 behavioural requirement(s) vs 3 distinct source verb(s): ['closed', 'releases', 'stay']
+[PASS] D-2   requirements/clauses = 1.17
+[PASS] D-4   no disposition/generation mismatch
+[FLAG] D-3   100% of requirements are USER_STATED
+
+34/37 acceptance rules pass; 1 diagnostics/warnings raised

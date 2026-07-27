@@ -5,7 +5,7 @@
 > Phase: **implementation stabilization**. The contract is provisionally stable; the
 > question is no longer *what should Stage 01 be* but *can it be implemented faithfully*.
 
-**As of:** Prompt v4, contract r3, 15 evaluation runs at temperature 0.7.
+**As of:** Prompt v6, contract r3-final. **SEMANTICALLY FROZEN.** 15 benchmark runs + 6 general probes at temperature 0.7.
 
 ---
 
@@ -146,3 +146,100 @@ regression regardless of its effect on scores.
 **Estimated distance to freeze:** one contract decision (E-1), one targeted refinement
 (E-2), and one measurement (E-3). No architecture change and no new engineering concepts
 are anticipated.
+
+
+---
+
+# 8. Stage 02 consumer audit (added this cycle)
+
+Stage 02 was derived independently from its own engineering question before any comparison
+with Stage 01's output.
+
+**What Stage 02 needs, minimally.** To choose a physical principle it must filter a
+solution space. That requires, per function: the **input quantity kind**, the **output
+quantity kind**, and the **transformation** between them (continuous / intermittent /
+held / single event, and whether reversible). Plus what bounds the search — freedoms,
+user-imposed terms, priorities, operating conditions.
+
+**Field-by-field verdict.**
+
+| Stage 01 output | Verdict for Stage 02 |
+|---|---|
+| `product_intent` | Consumed — the abstraction it reasons from |
+| `user_intent_summary` | Useful — tells it which terms were imposed |
+| `requirements[].statement` | **Insufficient alone** — prose, must be re-parsed |
+| `requirements[].behaviour` | **Required.** Added this cycle; produced on 39% |
+| `requirements[].bound` | Consumed — sizing targets |
+| `freedoms` | Consumed — bounds the candidate set |
+| `relations` | Useful but optional at this stage |
+| `operating_scenarios` | Consumed — conditions the mechanism must hold under |
+| `unknowns` | Useful — flags where a choice would be premature |
+| `discovery_outcomes` | Useful — distinguishes "none" from "not looked" |
+| `clauses` | Not consumed by Stage 02; needed for audit |
+| `assumptions` | Useful — what may be revisited |
+| `verification` | Not consumed at Stage 02 (Stage 08's input) |
+
+**The contradiction found.** STAGE_01 §5 states that downstream stages must never
+re-interpret the original request. The current Stage 02 implementation reads
+`spec.source_text` directly, because the transformation signature exists nowhere else.
+That is a genuine contradiction between the contract and what the representation permits,
+and it is what justified the one schema addition this cycle.
+
+
+---
+
+# 9. Semantic freeze (v6)
+
+## What is frozen
+
+**The meaning of the Stage 01 → Stage 02 contract.** Not the implementation's quality.
+
+Frozen: the engineering question; the ten-section specification; the `RequirementSpec`
+schema; the boundary between recording, inferring, and selecting; the six unresolved-
+information states; the three-way separation of unknown / freedom / later-stage work; the
+verification-intent categories; the provenance model; the 37 acceptance rules.
+
+**Change these only if Stage 02 or later reveals a genuine contract deficiency — never to
+improve prompt quality or add reasoning behaviour.**
+
+Not frozen: the prompt, the reasoner, and refinements to validator implementations that
+do not alter an invariant.
+
+## Specification audit against the benchmark requests (v6)
+
+Judged on the User Requirement and Clarifications alone, ignoring downstream expectations.
+
+| Check | BM-001 | BM-002 | BM-101 |
+|---|---|---|---|
+| Invented engineering requirements | **none** | **none** | **none** |
+| Untraceable `user_stated` provenance | **none** | **none** | **none** |
+| Freedoms without a freedom clause | **none** | **none** | **none** |
+| Freedoms correctly extracted | n/a | **3/3** | **3/3** |
+| Source clauses uncovered | **none** | **none** | 1 |
+
+## Residual implementation defects (prompt quality — outside the freeze)
+
+| Rule | Rate | What it means |
+|---|---|---|
+| A-34 | 87% | Transformation stated on ~39% of behavioural requirements |
+| A-36 | 87% | Scenarios still often restate a single requirement |
+| A-1 | 80% | Interface term in `product_intent` — the open contract question |
+| A-3b | 67% | Behavioural clause not reaching a behavioural requirement |
+| A-35 | 60% | Later-stage decisions still recorded as unknowns |
+| A-3a | 40% | One clause type uncovered (BM-101 only) |
+| A-29 | 33% | Freedom/unknown duplication |
+
+Every one is detectable, named, and attributable. None is a contract ambiguity.
+
+## Trend across six prompt versions
+
+| | v1 | v2.1 | v3 | v4 | v5 | v6 |
+|---|---|---|---|---|---|---|
+| Semantic agreement | 0.72 | 0.79 | 0.73 | 0.77 | 0.76 | **0.78** |
+| Behavioural coverage | 56% | 74% | 78% | 78% | 78% | **78%** |
+| Discovery completion | n/a | 1/9 | 15/15 | 15/15 | 15/15 | **15/15** |
+| Relations | 0 | 0 | 23 | 26 | — | — |
+| **Invented mechanisms** | 0 | 0 | 0 | 0 | 0 | **0** |
+
+**Zero invented mechanisms across 81 evaluation runs and six independently derived
+prompts.** This is the property the freeze most protects.

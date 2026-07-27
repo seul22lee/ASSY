@@ -440,6 +440,26 @@ An unknown is **required** when **all** hold:
 Condition 6 is the operative one. The others narrow the field; this one decides. An
 unknown exists precisely where silence would otherwise become an unexamined choice.
 
+### Unknown, freedom, and later-stage work — the three-way separation
+
+The six states of §6.8c distinguish what is *recorded*. This distinguishes what Stage 01
+records **at all**. One discriminator decides:
+
+> **Could the user have told us?**
+
+| Case | Example shape | Record as |
+|---|---|---|
+| Only the user or their situation can supply it, and they did not | required lifetime · operating temperature · acceptable input effort · budget · duty frequency | **Unknown** |
+| The user explicitly declined to prescribe it, permitted, forbade, or preferred | "the number of positions is not prescribed" · "self-locking is optional" | **Freedom** |
+| An engineer will decide it later regardless of what the user said | support strategy · bearing placement · gear ratio · shaft arrangement · fastening strategy · tolerance allocation · housing layout | **Neither — do not record it** |
+
+**The third case is the common error.** "The user did not say how it should be supported"
+is not a gap in the request: support is not theirs to state. Recording it as an unknown
+misrepresents a later stage's untaken decision as missing user information, and would
+send Stage 02 looking for a clarification nobody can give.
+
+Stage 01 is silent about later-stage work. Silence there is correct, not incomplete.
+
 ### Semantic equivalence of unknown sets
 
 **Unknown count is not a contract obligation and must never be a freeze criterion.** Two

@@ -1,4 +1,4 @@
-# Stage 01 Common Prompt — v4
+# Stage 01 Common Prompt — v6
 
 > **An implementation of the Stage 01 specification, not the specification.**
 >
@@ -84,13 +84,35 @@ Write BOTH. They serve different readers and must not be merged.
 → record the `intent` outcome.
 
 ## C. Behaviour
-For each `function` clause: WHO acts, WHAT they do, on WHAT, UNDER WHAT CONDITION.
+For each `function` clause, fill the `behaviour` object on its requirement. Prose alone
+is not enough: whoever reads your output must be able to tell WHAT IS TRANSFORMED INTO
+WHAT without going back to the original request.
+
+- `actor`  — who or what supplies the action
+- `action` — what happens
+- `object` — what is acted upon
+- `condition` — the trigger, if any
+- `input_kind`  — what enters: rotation | translation | force | displacement | state | none
+- `output_kind` — what results: same vocabulary
+- `continuity`  — continuous | intermittent | held | single_event
+- `reversible`  — true if the request requires both directions
+
+If the request does not say what supplies the action, `input_kind` is `none` — do not
+guess a driver. Holding a state is `output_kind: state`, `continuity: held`.
 
 Forms easily lost, all of them behaviours:
 - a state that must be held ("stays closed", "remains stationary between events");
 - a behaviour with a trigger ("stays closed UNTIL released") — the trigger is part of it;
 - a behaviour stated negatively ("must not jam");
 - a motion in two directions ("raise and lower") — that is TWO behaviours.
+
+**Decompose compound intent.** One sentence often states several primitive behaviours at
+once. Separate them, because each may later be realised differently. A phrase of the form
+"holds X until Y does Z" is three behaviours: hold the state, receive the input, release
+the state. Each gets its own requirement with its own `behaviour` object.
+
+Decompose the user's INTENT only. Splitting "hold, receive input, release" is
+decomposition; naming what does the holding is a solution and is forbidden.
 
 Also: what states can the product be in, what transitions does the request require, and
 who causes each?
@@ -138,13 +160,25 @@ match applies.
 4. **You supplied a value yourself to proceed.**
    → an ASSUMPTION, naming the unknown it stands in for.
 
-Test 3's last condition is the one that decides. Silence alone is NOT an unknown — only
-silence that would otherwise become an unexamined choice.
+Before writing any unknown, apply this test: **COULD THE USER HAVE TOLD US?**
 
-Once a clause has yielded a FREEDOM, that subject is settled. Before writing each
-unknown, check it against the freedoms you just wrote: if it names the same subject,
-the freedom is right and the unknown is wrong — drop it. Never record one uncertainty
-twice under two names.
+- Information only the user or their situation can supply — how long it must last, what
+  temperature it works at, how much effort is acceptable, what it may cost, how often it
+  is used → they could have told us, and did not. That is an UNKNOWN.
+- Something the user explicitly declined to prescribe, permitted, forbade, or preferred
+  → that is a FREEDOM. They did tell us: they told us it is open.
+- Something an engineer will decide later no matter what the user said — how parts are
+  supported, arranged, proportioned, joined, or toleranced → **that is neither.** It is
+  a later stage's work. Do NOT record it as an unknown, and do NOT record it as a
+  freedom. Leave it out entirely. It is not missing user information; nobody has reached
+  it yet.
+
+The third case is the common mistake. "The user did not say how it should be supported"
+is not a gap in the request — support is not theirs to state.
+
+Once a clause has yielded a FREEDOM that subject is settled: check each unknown against
+the freedoms you just wrote, and if it names the same subject, drop the unknown. Never
+record one uncertainty twice under two names.
 → record the `freedoms` and `unknowns` outcomes.
 
 ## G. Relations between requirements
@@ -163,9 +197,14 @@ outcome as `explicitly_absent` with the reason.
 → record the `relations` outcome.
 
 ## H. Operating scenarios
-Under what conditions must these requirements hold? Derive them from THIS request — its
+A scenario is a SITUATION in which several requirements are exercised together — not a
+requirement restated. If a scenario names only one requirement and says nothing the
+requirement does not already say, it is a duplicate, not a scenario.
+
+Ask: what realistic situations will this product be in? Normal use, worst case, the
+limits of its range, being set up, being maintained. Derive them from THIS request — its
 behaviours, duty, environment. A scenario you could have written before reading the
-request is not a scenario. Each names the requirements applying under it and cites its
+request is not a scenario. Each names the requirements that apply under it and cites its
 clause.
 → record the `operating_scenarios` outcome.
 
@@ -177,19 +216,33 @@ For each requirement: how could it eventually be shown satisfied, or violated?
 - `analysis`           — established by calculation.
 - `not_yet_verifiable` — no means is conceivable. Give the reason.
 
-## J. Coverage — three separate questions
-Answer each independently before responding:
-1. Was EVERY clause processed? Each must be cited by at least one record, or be
-   `non_engineering`. A record may cite SEVERAL clauses — cite every clause that
-   contributed to it, not only the most obvious one. A clause that merely says what the
-   product IS still needs a record: its purpose, size, or setting becomes a constraint or
-   a scenario that cites it.
-2. Did every `function` clause become a `functional` or `performance` requirement?
-3. Did each clause generate the RIGHT KIND of record — a `freedom` clause a freedom, a
-   `function` or `constraint` clause a requirement?
+## J. Check every reference, then check coverage
+Your output is a web of references. Before answering, walk it once and repair it.
 
-A clause can be covered yet wrongly classified, or classified right yet generate
-nothing. Check all three.
+**Every id you wrote must point at something that exists.**
+- each `derived_from` entry names a clause you actually created;
+- each relation `source` and `target` names a requirement you actually created, and no
+  relation points at itself;
+- each `affects` entry names a real requirement; each `stands_in_for` a real unknown;
+- each freedom cites a clause you dispositioned `freedom`.
+If a reference does not resolve, either the reference or the record is wrong. Fix it —
+do not delete the record to make the reference go away.
+
+**Every clause must be pointed AT.**
+Go clause by clause, not record by record. For each clause ask: which record cites this?
+- none, and it is not `non_engineering` → you have missed it;
+- a clause may be cited by SEVERAL records, and a record may cite SEVERAL clauses. When
+  two clauses say the same thing, the record cites BOTH;
+- a clause that only says what the product IS still needs a record — its purpose, size,
+  or setting is a constraint or a scenario that cites it.
+
+**Then check the kind of each record.**
+- every `function` clause is cited by a `functional` or `performance` requirement;
+- every `freedom` clause is cited by a freedom;
+- every `constraint` clause is cited by a requirement.
+
+A clause can be covered yet wrongly classified, or classified right yet generate nothing.
+These are different mistakes.
 
 Finally: no solution word appears in `product_intent`, and none appears in a requirement
 unless the clause it cites contains it.
@@ -212,6 +265,11 @@ Return ONLY valid JSON:
      "statement":"what must be achieved",
      "bound":{"comparator":">=|<=|==|between","lower":0,"upper":0,"unit":"mm",
               "approximate":false} or null,
+     "behaviour":{"actor":"...","action":"...","object":"...","condition":null,
+                  "input_kind":"rotation|translation|force|displacement|state|none",
+                  "output_kind":"rotation|translation|force|displacement|state|none",
+                  "continuity":"continuous|intermittent|held|single_event",
+                  "reversible":false} or null,
      "priority":1,
      "derived_from":["C-001"],
      "verification":{"kind":"measurement|demonstration|inspection|analysis|not_yet_verifiable",
@@ -456,3 +514,38 @@ take a different approach rather than restate the same instruction more firmly.
 on two counts — it triggered on `unknowns` (which imply information is *missing*, not
 supplied) and inspected only requirement origins, ignoring that supplied content lives in
 `assumptions`. Corrected: **12/15 → 0/15** on the same v3 outputs.
+
+
+## v5 — integrated revision (Stage 02 interface)
+
+| Field | Content |
+|---|---|
+| **Reason** | Two root causes found by a Stage 02 consumer audit and six general probes: (RC-1) behaviour recorded as prose, so the transformation a function performs is unavailable downstream; (RC-2) cross-references emitted without a resolution check |
+| **Evidence** | Stage 02 provably re-parses `spec.source_text` (`s02_mechanical.py:53`). Input quantity recoverable from structured output in **2/6 probes**. A-22 failed **5/6 probes**; A-20 2/6; A-3a/A-3b 60/67% on benchmarks |
+| **Contract sections implemented** | RD-2 (given a representation), §5 downstream contract, §9.1e coverage. **No contract obligation added** — RD-2 always required actor/action/object/condition |
+| **Expected** | Transformation signature expressible and produced; reference errors eliminated by an explicit walk |
+| **Observed** | Transformation **now expressible and useful where produced** — signatures like `rotation->translation/intermittent`, `none->state/held`. But produced on only **29/75 (39%)** behavioural requirements, so A-34 fails 93%. A-3a 60% → 53%; A-22 0/15 on benchmarks. A-3b, A-29 unchanged |
+| **Unexpected regressions** | A-31 0 → 2/15 (13%). A-6 fired once — **investigated and it is not an invented mechanism**: the term is in the source but the requirement cites the wrong clause, i.e. RC-2 again. Semantic agreement 0.77 → 0.76 |
+
+**Discipline note.** One revision touching schema, validator, and prompt together, from two
+named root causes — not five sequential micro-fixes. The schema addition gives an existing
+obligation a representation; it is not a new engineering concept.
+
+
+## v6 — final semantic revision before freeze
+
+| Field | Content |
+|---|---|
+| **Reason** | Finalise the Stage 01 → Stage 02 semantic contract: separate unknown from design freedom from later-stage work; decompose compound intent; make scenarios situations rather than restated requirements |
+| **Evidence** | Unknowns such as "specific support strategy" and "specific housing layout" duplicated declared freedoms; scenarios restated single requirements; compound intent ("holds X until Y") recorded as one behaviour |
+| **Contract sections implemented** | §6.8c three-way separation (added) · RD-2 decomposition · RD-8 scenario semantics. **No new schema object** |
+| **Expected** | Later-stage decisions absent from unknowns; freedoms not duplicated; scenarios binding several requirements; compound intent split |
+| **Observed** | Source-clause coverage **complete for BM-001 and BM-002** (A-3a 53% → 40% failure). Semantic agreement **0.76 → 0.78**. Acceptance 33.0/37 on BM-001. **Zero invented engineering terms, zero untraceable provenance, zero misattributed freedoms** across all three. A-35 (corrected discriminator) shows **60%** of runs still misfile a later-stage decision as an unknown |
+| **Unexpected regressions** | A-3d 13% → 27%; A-31 13% → 20%. Prompt grew 283 words — the largest growth of any revision, justified by three distinct contract obligations |
+
+**Validator correction this cycle.** A-35's first implementation tested for solution
+*nouns*. That both false-failed ("required torque for hand crank operation" is missing
+user information, merely phrased in the user's own word) and missed ("transmission ratio"
+names no listed solution). The discriminator is **decision nouns** — ratio, layout,
+placement, strategy, approach, configuration — not solution nouns. Corrected and
+re-scored: 20% → 60%, now detecting the real defect.

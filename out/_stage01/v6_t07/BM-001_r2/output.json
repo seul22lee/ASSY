@@ -1,0 +1,317 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SPEC-001",
+    "design_id": "design-001",
+    "producer": "s01_requirement_interpreter",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "source_text": "Design a small storage box with a hinged lid. The lid should stay closed until the user releases it with a thumb. The box should be safe to use, easy to assemble, and practical to manufacture.",
+  "product_intent": "A small storage box with a hinged lid that maintains its closed state until manually opened by a user's thumb, designed for additive manufacturing production.",
+  "user_intent_summary": "Design a small, desktop-sized storage box with a hinged lid that stays closed until released by the user's thumb, using additive manufacturing for production.",
+  "clauses": [
+    {
+      "id": "C-001",
+      "text": "Design a small storage box with a hinged lid.",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-002",
+      "text": "The lid should stay closed until the user releases it with a thumb.",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-003",
+      "text": "The box should be safe to use, easy to assemble, and practical to manufacture.",
+      "source": "request",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-004",
+      "text": "Desktop-sized product.",
+      "source": "clarification",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-005",
+      "text": "Manual operation only.",
+      "source": "clarification",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-006",
+      "text": "Additive manufacturing is expected.",
+      "source": "clarification",
+      "disposition": "constraint"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The storage box shall have a hinged lid that maintains its closed state until manually opened by the user's thumb.",
+      "bound": null,
+      "behaviour": {
+        "actor": "user",
+        "action": "releases",
+        "object": "lid",
+        "condition": null,
+        "input_kind": "force",
+        "output_kind": "state",
+        "continuity": "held",
+        "reversible": false
+      },
+      "priority": 1,
+      "derived_from": [
+        "C-001",
+        "C-002"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "lid remains closed until user applies force to release it",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-002",
+      "kind": "safety",
+      "origin": "user_stated",
+      "statement": "The storage box shall be safe to use.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 2,
+      "derived_from": [
+        "C-003"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "no sharp edges or hazardous components",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-003",
+      "kind": "assembly",
+      "origin": "user_stated",
+      "statement": "The storage box shall be easy to assemble.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 2,
+      "derived_from": [
+        "C-003"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "assembly process requires minimal tools and steps",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-004",
+      "kind": "manufacturing",
+      "origin": "user_stated",
+      "statement": "The storage box shall be practical to manufacture.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 2,
+      "derived_from": [
+        "C-003"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "manufacturing process is feasible and cost-effective",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-005",
+      "kind": "performance",
+      "origin": "user_stated",
+      "statement": "The storage box shall be desktop-sized.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 3,
+      "derived_from": [
+        "C-004"
+      ],
+      "verification": {
+        "kind": "measurement",
+        "observable": "dimensions of the storage box",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-006",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The storage box shall operate manually only.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 3,
+      "derived_from": [
+        "C-005"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "no electronic or powered components required for operation",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-007",
+      "kind": "manufacturing",
+      "origin": "user_stated",
+      "statement": "The storage box shall be produced using additive manufacturing.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 3,
+      "derived_from": [
+        "C-006"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "manufacturing process is additive manufacturing",
+        "condition": null,
+        "reason": null
+      }
+    }
+  ],
+  "operating_scenarios": [
+    {
+      "id": "SCN-001",
+      "name": "Normal Use Scenario",
+      "description": "User places items in storage box, closes lid manually, and holds it closed until ready to access contents.",
+      "applies_to": [
+        "REQ-001"
+      ],
+      "derived_from": [
+        "C-001",
+        "C-002"
+      ]
+    },
+    {
+      "id": "SCN-002",
+      "name": "Assembly Scenario",
+      "description": "User assembles the storage box following specified assembly instructions without requiring special tools.",
+      "applies_to": [
+        "REQ-003"
+      ],
+      "derived_from": [
+        "C-003"
+      ]
+    },
+    {
+      "id": "SCN-003",
+      "name": "Manufacturing Scenario",
+      "description": "Storage box is produced using additive manufacturing techniques in a standard manufacturing environment.",
+      "applies_to": [
+        "REQ-007"
+      ],
+      "derived_from": [
+        "C-006"
+      ]
+    }
+  ],
+  "assumptions": [],
+  "unknowns": [
+    {
+      "id": "U-001",
+      "subject": "Specific dimensions of desktop-sized product",
+      "reason": "The user did not specify exact dimensions for the desktop-sized product",
+      "affects": [
+        "REQ-005"
+      ],
+      "resolvable_by": "User to provide specific size requirements",
+      "derived_from": [
+        "C-004"
+      ]
+    },
+    {
+      "id": "U-002",
+      "subject": "Required strength and durability specifications",
+      "reason": "The user did not specify what level of strength or durability is required for the storage box",
+      "affects": [
+        "REQ-002",
+        "REQ-004"
+      ],
+      "resolvable_by": "User to provide performance requirements for materials and construction",
+      "derived_from": [
+        "C-003"
+      ]
+    },
+    {
+      "id": "U-003",
+      "subject": "Specific additive manufacturing process to be used",
+      "reason": "The user did not specify which additive manufacturing technology or material should be used",
+      "affects": [
+        "REQ-007"
+      ],
+      "resolvable_by": "User to specify manufacturing process and materials requirements",
+      "derived_from": [
+        "C-006"
+      ]
+    }
+  ],
+  "freedoms": [],
+  "relations": [
+    {
+      "kind": "depends_on",
+      "source": "REQ-001",
+      "target": "REQ-006",
+      "rationale": "Manual operation is required for the lid release mechanism to function properly"
+    }
+  ],
+  "discovery_outcomes": [
+    {
+      "discovery": "clauses",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "intent",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "requirements",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "freedoms",
+      "state": "explicitly_absent",
+      "reason": "No clause in the request or clarifications explicitly left any matter open, permitted, forbidden, or preferred"
+    },
+    {
+      "discovery": "relations",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "operating_scenarios",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "assumptions",
+      "state": "explicitly_absent",
+      "reason": "No information was inferred or project defaults applied that were not explicitly stated in the request or clarifications"
+    },
+    {
+      "discovery": "unknowns",
+      "state": "found",
+      "reason": "None"
+    }
+  ]
+}

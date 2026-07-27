@@ -527,6 +527,54 @@ def _acceptance(spec: RequirementSpec) -> list[RuleResult]:
     ]
     rule("A-30", not unanchored, f"unknowns with no affected requirement: {unanchored or 'none'}")
 
+    # A-35 an unknown must be missing USER information, not later-stage work.
+    # Discriminator: could the user have told us?
+    #   user-suppliable  -> effort, force, torque, lifetime, temperature, cost,
+    #                       frequency, environment, size limit ... an UNKNOWN
+    #   engineering choice -> ratio, layout, arrangement, placement, strategy,
+    #                       approach, method, configuration ... NEITHER unknown nor
+    #                       freedom; a later stage's work, and not Stage 01's to record
+    # The first implementation tested for solution NOUNS, which both false-failed
+    # ("required torque for hand crank operation" is missing user information merely
+    # phrased in the user's word) and missed ("transmission ratio" names no listed
+    # solution). Decision nouns are the correct discriminator.
+    DECISION_NOUNS = (
+        "ratio", "layout", "arrangement", "placement", "strategy", "approach",
+        "method", "configuration", "architecture", "design parameter", "topology",
+        "allocation", "sizing", "selection",
+    )
+    misfiled = []
+    for u in spec.unknowns:
+        subject = u.subject.lower()
+        hits = [w for w in DECISION_NOUNS if w in subject]
+        if hits:
+            misfiled.append(f"{u.id}({hits[0]})")
+    rule(
+        "A-35",
+        not misfiled,
+        f"later-stage engineering decisions recorded as unknowns: {misfiled or 'none'}",
+    )
+
+    # A-36 a scenario is a situation exercising several requirements together,
+    # not a requirement restated in other words.
+    stmts = {r.statement.strip().lower() for r in spec.requirements}
+    restated = [
+        s_.id
+        for s_ in spec.operating_scenarios
+        if s_.description.strip().lower() in stmts or s_.name.strip().lower() in stmts
+    ]
+    thin = (
+        [s_.id for s_ in spec.operating_scenarios if len(s_.applies_to) < 2]
+        if len(spec.requirements) >= 3
+        else []
+    )
+    rule(
+        "A-36",
+        not restated and not thin,
+        f"scenarios restating a requirement: {restated or 'none'}"
+        + (f"; scenarios binding fewer than two requirements: {thin}" if thin else ""),
+    )
+
     # A-31 every required discovery reaches a completion state.
     # Absence is a STATE, not a closing action (SD-9 revised). An empty list is
     # ambiguous between "none exist" and "the pass never ran"; a state is not.

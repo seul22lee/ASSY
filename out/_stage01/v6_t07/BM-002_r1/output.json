@@ -1,0 +1,493 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SPEC-001",
+    "design_id": "design-001",
+    "producer": "s01_requirement_interpreter",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "source_text": "Design a compact desktop lifting box. The user should rotate an external hand crank to raise and lower an internal platform. The platform should lift approximately 80-100 mm and support a payload of approximately 1 kg. The mechanism should be enclosed inside the housing. The product should be safe to use, mechanically plausible, easy to assemble, and practical to manufacture. Avoid obvious jamming or unstable operation.",
+  "product_intent": "A compact desktop lifting device that enables manual lifting and lowering of a platform through external hand crank rotation, with the platform moving approximately 80-100 mm and supporting about 1 kg while maintaining mechanical stability and safety.",
+  "user_intent_summary": "Design a compact desktop lifting box that uses an external hand crank to rotate and raise/lower an internal platform by 80-100 mm while supporting 1 kg, with all mechanisms enclosed, safe, mechanically plausible, easy to assemble, and practical to manufacture.",
+  "clauses": [
+    {
+      "id": "C-001",
+      "text": "Design a compact desktop lifting box.",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-002",
+      "text": "The user should rotate an external hand crank to raise and lower an internal platform.",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-003",
+      "text": "The platform should lift approximately 80-100 mm and support a payload of approximately 1 kg.",
+      "source": "request",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-004",
+      "text": "The mechanism should be enclosed inside the housing.",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-005",
+      "text": "The product should be safe to use, mechanically plausible, easy to assemble, and practical to manufacture.",
+      "source": "request",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-006",
+      "text": "Avoid obvious jamming or unstable operation.",
+      "source": "request",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-007",
+      "text": "Desktop-sized product.",
+      "source": "clarification",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-008",
+      "text": "Manual operation only.",
+      "source": "clarification",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-009",
+      "text": "Continuous or intermittent lifting is acceptable.",
+      "source": "clarification",
+      "disposition": "freedom"
+    },
+    {
+      "id": "C-010",
+      "text": "Self-locking is optional if justified.",
+      "source": "clarification",
+      "disposition": "freedom"
+    },
+    {
+      "id": "C-011",
+      "text": "Multiple shafts, bearings, guides, and supports are allowed.",
+      "source": "clarification",
+      "disposition": "freedom"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The product must enable an internal platform to be raised and lowered through rotation of an external hand crank.",
+      "bound": null,
+      "behaviour": {
+        "actor": "user",
+        "action": "rotate",
+        "object": "external hand crank",
+        "condition": null,
+        "input_kind": "rotation",
+        "output_kind": "translation",
+        "continuity": "intermittent",
+        "reversible": true
+      },
+      "priority": 1,
+      "derived_from": [
+        "C-002"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "platform movement in response to hand crank rotation",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-002",
+      "kind": "performance",
+      "origin": "user_stated",
+      "statement": "The internal platform must move approximately 80-100 mm during lifting and lowering operations.",
+      "bound": {
+        "comparator": "between",
+        "lower": 80.0,
+        "upper": 100.0,
+        "unit": "mm",
+        "tolerance": null,
+        "approximate": true
+      },
+      "behaviour": null,
+      "priority": 2,
+      "derived_from": [
+        "C-003"
+      ],
+      "verification": {
+        "kind": "measurement",
+        "observable": "platform vertical displacement",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-003",
+      "kind": "performance",
+      "origin": "user_stated",
+      "statement": "The internal platform must support a payload of approximately 1 kg.",
+      "bound": {
+        "comparator": "==",
+        "lower": 1.0,
+        "upper": 1.0,
+        "unit": "kg",
+        "tolerance": null,
+        "approximate": true
+      },
+      "behaviour": null,
+      "priority": 2,
+      "derived_from": [
+        "C-003"
+      ],
+      "verification": {
+        "kind": "measurement",
+        "observable": "maximum supported payload",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-004",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "All mechanisms must be enclosed within the housing.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 1,
+      "derived_from": [
+        "C-004"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "mechanism enclosure",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-005",
+      "kind": "safety",
+      "origin": "user_stated",
+      "statement": "The product must be safe to use.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 1,
+      "derived_from": [
+        "C-005"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "safety features and operational stability",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-006",
+      "kind": "manufacturing",
+      "origin": "user_stated",
+      "statement": "The product must be mechanically plausible, easy to assemble, and practical to manufacture.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 1,
+      "derived_from": [
+        "C-005"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "assembly ease and manufacturing practicability",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-007",
+      "kind": "performance",
+      "origin": "user_stated",
+      "statement": "The product must avoid obvious jamming or unstable operation.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 1,
+      "derived_from": [
+        "C-006"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "smooth operation without jamming or instability",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-008",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The product must be desktop-sized.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 2,
+      "derived_from": [
+        "C-007"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "product dimensions relative to desktop space",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-009",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The product must operate manually only.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 1,
+      "derived_from": [
+        "C-008"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "absence of power source or automated operation",
+        "condition": null,
+        "reason": null
+      }
+    }
+  ],
+  "operating_scenarios": [
+    {
+      "id": "SCN-001",
+      "name": "Normal operation with platform movement",
+      "description": "User rotates hand crank to raise or lower the internal platform within the specified range while supporting the specified payload.",
+      "applies_to": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-003"
+      ],
+      "derived_from": [
+        "C-002",
+        "C-003"
+      ]
+    },
+    {
+      "id": "SCN-002",
+      "name": "Enclosure maintenance and assembly",
+      "description": "Assembly of internal mechanisms within the housing, with attention to mechanical plausibility and ease of manufacturing.",
+      "applies_to": [
+        "REQ-004",
+        "REQ-006",
+        "REQ-009"
+      ],
+      "derived_from": [
+        "C-004",
+        "C-005",
+        "C-008"
+      ]
+    },
+    {
+      "id": "SCN-003",
+      "name": "Safety and stability operation",
+      "description": "Product operates without jamming or unstable behavior under normal usage conditions.",
+      "applies_to": [
+        "REQ-005",
+        "REQ-007"
+      ],
+      "derived_from": [
+        "C-005",
+        "C-006"
+      ]
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "AS-001",
+      "statement": "The specified 80-100 mm lifting range is sufficient for intended desktop use.",
+      "stands_in_for": null,
+      "origin": "inferred",
+      "derived_from": [
+        "C-003"
+      ]
+    },
+    {
+      "id": "AS-002",
+      "statement": "The specified 1 kg payload is achievable with manual hand crank operation.",
+      "stands_in_for": null,
+      "origin": "inferred",
+      "derived_from": [
+        "C-003"
+      ]
+    },
+    {
+      "id": "AS-003",
+      "statement": "The desktop-sized constraint allows for typical desk workspace dimensions.",
+      "stands_in_for": null,
+      "origin": "inferred",
+      "derived_from": [
+        "C-007"
+      ]
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "U-001",
+      "subject": "specific mechanical transmission ratio",
+      "reason": "The request does not specify how the hand crank rotation translates to platform movement, nor what specific gear ratios are needed for the required lift and payload.",
+      "affects": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-003"
+      ],
+      "resolvable_by": "user to specify desired transmission ratio or mechanical advantage requirements",
+      "derived_from": [
+        "C-002",
+        "C-003"
+      ]
+    },
+    {
+      "id": "U-002",
+      "subject": "required torque for hand crank operation",
+      "reason": "While payload and lift range are specified, the required operational effort or torque needed to rotate the hand crank is not specified by the user.",
+      "affects": [
+        "REQ-001",
+        "REQ-009"
+      ],
+      "resolvable_by": "user to specify acceptable operational effort or torque requirements",
+      "derived_from": [
+        "C-002",
+        "C-008"
+      ]
+    },
+    {
+      "id": "U-003",
+      "subject": "specific dimensions of the housing",
+      "reason": "While desktop-sized is specified, exact housing dimensions are not provided by the user.",
+      "affects": [
+        "REQ-004",
+        "REQ-008"
+      ],
+      "resolvable_by": "user to specify exact housing dimensions for desktop placement",
+      "derived_from": [
+        "C-001",
+        "C-007"
+      ]
+    },
+    {
+      "id": "U-004",
+      "subject": "specific materials and manufacturing methods",
+      "reason": "Although manufacturing practicability is mentioned, specific material or manufacturing requirements are not provided.",
+      "affects": [
+        "REQ-006"
+      ],
+      "resolvable_by": "user to specify materials or manufacturing constraints",
+      "derived_from": [
+        "C-005"
+      ]
+    }
+  ],
+  "freedoms": [
+    {
+      "id": "F-001",
+      "kind": "optional",
+      "subject": "type of lifting operation (continuous vs intermittent)",
+      "statement": "Continuous or intermittent lifting is acceptable.",
+      "origin": "clarification",
+      "derived_from": [
+        "C-009"
+      ]
+    },
+    {
+      "id": "F-002",
+      "kind": "optional",
+      "subject": "self-locking mechanism",
+      "statement": "Self-locking is optional if justified.",
+      "origin": "clarification",
+      "derived_from": [
+        "C-010"
+      ]
+    },
+    {
+      "id": "F-003",
+      "kind": "permitted",
+      "subject": "mechanism components",
+      "statement": "Multiple shafts, bearings, guides, and supports are allowed.",
+      "origin": "clarification",
+      "derived_from": [
+        "C-011"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "kind": "depends_on",
+      "source": "REQ-002",
+      "target": "REQ-001",
+      "rationale": "Platform movement is a consequence of hand crank rotation"
+    },
+    {
+      "kind": "depends_on",
+      "source": "REQ-003",
+      "target": "REQ-001",
+      "rationale": "Payload support is a consequence of hand crank rotation"
+    },
+    {
+      "kind": "depends_on",
+      "source": "REQ-004",
+      "target": "REQ-001",
+      "rationale": "Enclosure of mechanisms follows from the functional requirement"
+    }
+  ],
+  "discovery_outcomes": [
+    {
+      "discovery": "clauses",
+      "state": "found",
+      "reason": "All clauses from request and clarifications were identified and dispositioned"
+    },
+    {
+      "discovery": "intent",
+      "state": "found",
+      "reason": "Both user intent summary and product intent were formulated correctly"
+    },
+    {
+      "discovery": "requirements",
+      "state": "found",
+      "reason": "All functional, performance, safety, and constraint requirements were derived from the clauses"
+    },
+    {
+      "discovery": "freedoms",
+      "state": "found",
+      "reason": "Three freedoms were identified from the clarifications"
+    },
+    {
+      "discovery": "relations",
+      "state": "found",
+      "reason": "Dependencies between requirements were correctly identified"
+    },
+    {
+      "discovery": "operating_scenarios",
+      "state": "found",
+      "reason": "Three realistic operating scenarios were derived from the request"
+    },
+    {
+      "discovery": "assumptions",
+      "state": "found",
+      "reason": "Three assumptions were properly inferred from the request"
+    },
+    {
+      "discovery": "unknowns",
+      "state": "found",
+      "reason": "Four unknowns were correctly identified as missing information that could not be determined from the request"
+    }
+  ]
+}

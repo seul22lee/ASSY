@@ -1,0 +1,330 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SPEC-001",
+    "design_id": "design-001",
+    "producer": "s01_requirement_interpreter",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "source_text": "Design a small storage box with a hinged lid. The lid should stay closed until the user releases it with a thumb. The box should be safe to use, easy to assemble, and practical to manufacture.",
+  "product_intent": "A small storage box with a hinged lid that remains closed until manually opened by a user's thumb, designed for easy assembly and practical manufacture using additive manufacturing techniques.",
+  "user_intent_summary": "Design a small, desktop-sized storage box with a hinged lid that stays closed until released by the user's thumb, using additive manufacturing for production.",
+  "clauses": [
+    {
+      "id": "C-001",
+      "text": "Design a small storage box with a hinged lid.",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-002",
+      "text": "The lid should stay closed until the user releases it with a thumb.",
+      "source": "request",
+      "disposition": "function"
+    },
+    {
+      "id": "C-003",
+      "text": "The box should be safe to use, easy to assemble, and practical to manufacture.",
+      "source": "request",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-004",
+      "text": "Desktop-sized product.",
+      "source": "clarification",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-005",
+      "text": "Manual operation only.",
+      "source": "clarification",
+      "disposition": "constraint"
+    },
+    {
+      "id": "C-006",
+      "text": "Additive manufacturing is expected.",
+      "source": "clarification",
+      "disposition": "constraint"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "kind": "functional",
+      "origin": "user_stated",
+      "statement": "The storage box must have a hinged lid that remains closed until manually released by the user's thumb.",
+      "bound": null,
+      "behaviour": {
+        "actor": "user",
+        "action": "releases",
+        "object": "lid",
+        "condition": null,
+        "input_kind": "force",
+        "output_kind": "state",
+        "continuity": "held",
+        "reversible": false
+      },
+      "priority": 1,
+      "derived_from": [
+        "C-001",
+        "C-002"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "lid remains closed until thumb release",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-002",
+      "kind": "safety",
+      "origin": "user_stated",
+      "statement": "The storage box must be safe to use.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 2,
+      "derived_from": [
+        "C-003"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "absence of sharp edges or hazardous features",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-003",
+      "kind": "assembly",
+      "origin": "user_stated",
+      "statement": "The storage box must be easy to assemble.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 2,
+      "derived_from": [
+        "C-003"
+      ],
+      "verification": {
+        "kind": "demonstration",
+        "observable": "ease of assembly process",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-004",
+      "kind": "manufacturing",
+      "origin": "user_stated",
+      "statement": "The storage box must be practical to manufacture.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 2,
+      "derived_from": [
+        "C-003"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "manufacturability characteristics",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-005",
+      "kind": "performance",
+      "origin": "user_stated",
+      "statement": "The storage box must be desktop-sized.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 3,
+      "derived_from": [
+        "C-004"
+      ],
+      "verification": {
+        "kind": "measurement",
+        "observable": "dimensions of the storage box",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-006",
+      "kind": "performance",
+      "origin": "user_stated",
+      "statement": "The storage box must operate manually only.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 3,
+      "derived_from": [
+        "C-005"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "absence of mechanical or electronic components",
+        "condition": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "REQ-007",
+      "kind": "manufacturing",
+      "origin": "user_stated",
+      "statement": "The storage box must be designed for additive manufacturing.",
+      "bound": null,
+      "behaviour": null,
+      "priority": 2,
+      "derived_from": [
+        "C-006"
+      ],
+      "verification": {
+        "kind": "inspection",
+        "observable": "design characteristics suitable for additive manufacturing",
+        "condition": null,
+        "reason": null
+      }
+    }
+  ],
+  "operating_scenarios": [
+    {
+      "id": "SCN-001",
+      "name": "Normal use scenario",
+      "description": "A user places items in the storage box and closes the lid manually, then opens it by releasing the lid with their thumb when needed.",
+      "applies_to": [
+        "REQ-001",
+        "REQ-005"
+      ],
+      "derived_from": [
+        "C-001",
+        "C-002",
+        "C-004"
+      ]
+    },
+    {
+      "id": "SCN-002",
+      "name": "Assembly scenario",
+      "description": "A user assembles the storage box manually without any tools, following the design intended for easy assembly.",
+      "applies_to": [
+        "REQ-003"
+      ],
+      "derived_from": [
+        "C-003"
+      ]
+    },
+    {
+      "id": "SCN-003",
+      "name": "Manufacturing scenario",
+      "description": "The storage box is produced using additive manufacturing techniques, with design considerations for this method.",
+      "applies_to": [
+        "REQ-007"
+      ],
+      "derived_from": [
+        "C-006"
+      ]
+    }
+  ],
+  "assumptions": [],
+  "unknowns": [
+    {
+      "id": "U-001",
+      "subject": "Specific dimensions of desktop-sized product",
+      "reason": "The user did not specify exact dimensions for 'desktop-sized' but the size must be determined for design purposes",
+      "affects": [
+        "REQ-005"
+      ],
+      "resolvable_by": "Explicit specification of dimensions",
+      "derived_from": [
+        "C-004"
+      ]
+    },
+    {
+      "id": "U-002",
+      "subject": "Specific safety requirements and standards to be met",
+      "reason": "User did not specify exact safety requirements, but the product must meet general safety standards for storage boxes",
+      "affects": [
+        "REQ-002"
+      ],
+      "resolvable_by": "Specification of relevant safety standards or requirements",
+      "derived_from": [
+        "C-003"
+      ]
+    },
+    {
+      "id": "U-003",
+      "subject": "Specific assembly complexity and time required",
+      "reason": "User did not specify exact assembly requirements, but the product must be easy to assemble",
+      "affects": [
+        "REQ-003"
+      ],
+      "resolvable_by": "Explicit specification of assembly time or complexity requirements",
+      "derived_from": [
+        "C-003"
+      ]
+    },
+    {
+      "id": "U-004",
+      "subject": "Specific manufacturing constraints for additive manufacturing",
+      "reason": "User did not specify exact additive manufacturing limitations or capabilities required",
+      "affects": [
+        "REQ-007"
+      ],
+      "resolvable_by": "Specification of additive manufacturing requirements or constraints",
+      "derived_from": [
+        "C-006"
+      ]
+    }
+  ],
+  "freedoms": [],
+  "relations": [
+    {
+      "kind": "depends_on",
+      "source": "REQ-001",
+      "target": "REQ-005",
+      "rationale": "The lid behavior depends on the product size being desktop-sized"
+    }
+  ],
+  "discovery_outcomes": [
+    {
+      "discovery": "clauses",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "intent",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "requirements",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "freedoms",
+      "state": "explicitly_absent",
+      "reason": "No freedom clauses were present in the request or clarifications"
+    },
+    {
+      "discovery": "relations",
+      "state": "found",
+      "reason": "The requirement for lid behavior depends on the product size being desktop-sized"
+    },
+    {
+      "discovery": "operating_scenarios",
+      "state": "found",
+      "reason": "None"
+    },
+    {
+      "discovery": "assumptions",
+      "state": "explicitly_absent",
+      "reason": "No assumptions were inferred from the request"
+    },
+    {
+      "discovery": "unknowns",
+      "state": "found",
+      "reason": "Four unknowns identified regarding specific requirements that were not fully specified by user"
+    }
+  ]
+}
