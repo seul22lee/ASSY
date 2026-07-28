@@ -1,0 +1,110 @@
+{
+  "parameters": [
+    "closure_member.boundary_clearance",
+    "closure_member.crank_radius",
+    "closure_member.lead_angle",
+    "closure_member.length",
+    "closure_member.pinch_access",
+    "closure_member.retention_angle",
+    "closure_member.thickness",
+    "closure_member.width",
+    "detent_feature.height",
+    "detent_feature.lead_angle",
+    "detent_feature.length",
+    "detent_feature.retention_angle",
+    "detent_feature.width",
+    "housing.height",
+    "housing.internal_depth",
+    "housing.internal_height",
+    "housing.internal_width",
+    "housing.length",
+    "housing.wall",
+    "housing.wall_thickness",
+    "housing.width",
+    "motion.opening_interface.diameter",
+    "motion.opening_interface.radial_load",
+    "motion.opening_interface.support_span",
+    "opening_interface.closing_clearance",
+    "opening_interface.depth",
+    "opening_interface.hinge_offset",
+    "opening_interface.length",
+    "opening_interface.rear_clearance",
+    "opening_interface.section",
+    "opening_interface.swing_reach",
+    "opening_interface.thickness",
+    "opening_stop.height",
+    "opening_stop.length",
+    "opening_stop.width"
+  ],
+  "linked": [
+    "closure_member.length",
+    "housing.length",
+    "housing.wall"
+  ],
+  "unlinked": [
+    "closure_member.boundary_clearance",
+    "closure_member.crank_radius",
+    "closure_member.lead_angle",
+    "closure_member.pinch_access",
+    "closure_member.retention_angle",
+    "closure_member.thickness",
+    "closure_member.width",
+    "detent_feature.height",
+    "detent_feature.lead_angle",
+    "detent_feature.length",
+    "detent_feature.retention_angle",
+    "detent_feature.width",
+    "housing.height",
+    "housing.internal_depth",
+    "housing.internal_height",
+    "housing.internal_width",
+    "housing.wall_thickness",
+    "housing.width",
+    "motion.opening_interface.diameter",
+    "motion.opening_interface.radial_load",
+    "motion.opening_interface.support_span",
+    "opening_interface.closing_clearance",
+    "opening_interface.depth",
+    "opening_interface.hinge_offset",
+    "opening_interface.length",
+    "opening_interface.rear_clearance",
+    "opening_interface.section",
+    "opening_interface.swing_reach",
+    "opening_interface.thickness",
+    "opening_stop.height",
+    "opening_stop.length",
+    "opening_stop.width"
+  ],
+  "constraints": [
+    {
+      "subject": "covers.closure_member",
+      "expression": "closure_member.length >= housing.length - 2*housing.wall",
+      "why": "a closure occludes an aperture only if it is at least as large as the opening it covers"
+    },
+    {
+      "subject": "closure_member.self_locking_limit",
+      "expression": "retention_angle < atan(1/mu)",
+      "why": "closure_member retention angle must stay below the self-locking angle"
+    },
+    {
+      "subject": "detent_feature.self_locking_limit",
+      "expression": "retention_angle < atan(1/mu)",
+      "why": "detent_feature retention angle must stay below the self-locking angle"
+    },
+    {
+      "subject": "motion.opening_interface.deflection_allowable",
+      "expression": null,
+      "why": "motion.opening_interface deflection allowable"
+    }
+  ],
+  "objectives": [
+    {
+      "subject": "objective.envelope",
+      "expression": "minimise (closure_member.thickness/2) + (housing.height/2)"
+    },
+    {
+      "subject": "retention_vs_release",
+      "expression": "maximize(retention_force) subject to release_force <= 15 N"
+    }
+  ]
+}

@@ -342,7 +342,10 @@ def release_effort(state: EngineeringWorkingState) -> Outcome:
         if "user_release" not in ent.roles:
             continue
         force = state.find_subject(f"{ent.subject}.release_force")
-        if force is None:
+        if force is None or force.value is None:
+            # Named but not yet determined. A check cannot evaluate a symbolic
+            # parameter, and must not read its absence as a pass: it simply has
+            # nothing to test until Stage 06 gives it a number.
             continue
         inputs.append(force.subject)
         f = float(force.value)

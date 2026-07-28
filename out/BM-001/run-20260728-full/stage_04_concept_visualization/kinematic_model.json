@@ -1,0 +1,36 @@
+{
+  "selected": "friction_detent_catch",
+  "views": [
+    "side",
+    "front"
+  ],
+  "states": [
+    "closed",
+    "released",
+    "open",
+    "stopped"
+  ],
+  "axes": {
+    "closure_member": "x",
+    "detent_feature": "x",
+    "opening_interface": "x",
+    "opening_stop": "x"
+  },
+  "free_choices": {},
+  "unplaced": [],
+  "contradictions": [],
+  "joints": {
+    "opening_interface": {
+      "type": "revolute",
+      "axis": "x",
+      "parent": "housing",
+      "child": "closure_member"
+    }
+  },
+  "coordinates": {
+    "closed|opening_interface": 0.0,
+    "released|opening_interface": 0.0,
+    "open|opening_interface": 0.9163,
+    "stopped|opening_interface": 1.8326
+  }
+}

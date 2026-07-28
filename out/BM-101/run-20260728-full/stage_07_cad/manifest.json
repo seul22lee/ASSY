@@ -1,0 +1,231 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "CAD-003",
+    "design_id": "design-001",
+    "producer": "s07_cad_builder",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "status": "partial",
+  "parts": [
+    {
+      "part_id": "input_member",
+      "name": "input_member",
+      "step_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/input_member.step",
+      "mesh_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/input_member.stl",
+      "volume_mm3": 54385110.65,
+      "mass_g": 67437.54,
+      "bbox_mm": [
+        157.46,
+        682.67,
+        662.98
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        36.46,
+        -84.53
+      ]
+    },
+    {
+      "part_id": "input_support",
+      "name": "input_support",
+      "step_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/input_support.step",
+      "mesh_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/input_support.stl",
+      "volume_mm3": 12307.51,
+      "mass_g": 15.26,
+      "bbox_mm": [
+        16.57,
+        38.54,
+        36.46
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "part_id": "driver_member",
+      "name": "driver_member",
+      "step_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/driver_member.step",
+      "mesh_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/driver_member.stl",
+      "volume_mm3": 28613195.94,
+      "mass_g": 35480.36,
+      "bbox_mm": [
+        82.87,
+        673.34,
+        662.98
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        39.36,
+        36.46,
+        -84.53
+      ]
+    },
+    {
+      "part_id": "driver_member_engagement",
+      "name": "driver_member_engagement",
+      "step_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/driver_member_engagement.step",
+      "mesh_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/driver_member_engagement.stl",
+      "volume_mm3": 572864.4,
+      "mass_g": 710.35,
+      "bbox_mm": [
+        82.87,
+        93.23,
+        82.87
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "part_id": "indexed_member_engagement",
+      "name": "indexed_member_engagement",
+      "step_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/indexed_member_engagement.step",
+      "mesh_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/indexed_member_engagement.stl",
+      "volume_mm3": 4568.02,
+      "mass_g": 5.66,
+      "bbox_mm": [
+        11.6,
+        19.68,
+        21.55
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "part_id": "indexed_member",
+      "name": "indexed_member",
+      "step_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/indexed_member.step",
+      "mesh_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/indexed_member.stl",
+      "volume_mm3": 28618887.59,
+      "mass_g": 35487.42,
+      "bbox_mm": [
+        82.87,
+        678.52,
+        662.98
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        36.46,
+        49.72
+      ]
+    },
+    {
+      "part_id": "output_support",
+      "name": "output_support",
+      "step_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/output_support.step",
+      "mesh_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/output_support.stl",
+      "volume_mm3": 12307.51,
+      "mass_g": 15.26,
+      "bbox_mm": [
+        16.57,
+        38.54,
+        36.46
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "part_id": "housing",
+      "name": "housing",
+      "step_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/housing.step",
+      "mesh_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/housing.stl",
+      "volume_mm3": 403149.19,
+      "mass_g": 499.9,
+      "bbox_mm": [
+        82.87,
+        83.91,
+        89.09
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "part_id": "payload_aperture",
+      "name": "payload_aperture",
+      "step_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/payload_aperture.step",
+      "mesh_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/payload_aperture.stl",
+      "volume_mm3": 162204.29,
+      "mass_g": 201.13,
+      "bbox_mm": [
+        157.46,
+        124.31,
+        8.29
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        0.0,
+        49.72
+      ]
+    },
+    {
+      "part_id": "service_cover",
+      "name": "service_cover",
+      "step_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/service_cover.step",
+      "mesh_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/service_cover.stl",
+      "volume_mm3": 162204.29,
+      "mass_g": 201.13,
+      "bbox_mm": [
+        157.46,
+        124.31,
+        8.29
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        0.0,
+        49.72
+      ]
+    }
+  ],
+  "assembly_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/assembly.step",
+  "semantic_map": {
+    "input_member": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/input_member.step",
+    "input_support": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/input_support.step",
+    "driver_member": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/driver_member.step",
+    "driver_member_engagement": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/driver_member_engagement.step",
+    "indexed_member_engagement": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/indexed_member_engagement.step",
+    "indexed_member": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/indexed_member.step",
+    "output_support": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/output_support.step",
+    "housing": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/housing.step",
+    "payload_aperture": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/payload_aperture.step",
+    "service_cover": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-101/run-20260728-full/stage_07_cad/service_cover.step"
+  },
+  "warnings": [
+    "placements taken from the concept layout, scaled by 82.9 mm per concept unit to match the solved part sizes",
+    "input_member: no solved value for length; the concept estimate was used, so this part is drawn to a first cut rather than to a solved size",
+    "input_support: no solved value for length, bore; the concept estimate was used, so this part is drawn to a first cut rather than to a solved size",
+    "indexed_member_engagement: no solved value for length, width, height; the concept estimate was used, so this part is drawn to a first cut rather than to a solved size",
+    "output_support: no solved value for length, bore; the concept estimate was used, so this part is drawn to a first cut rather than to a solved size",
+    "payload_aperture: no solved value for length, width, thickness; the concept estimate was used, so this part is drawn to a first cut rather than to a solved size",
+    "service_cover: no solved value for length, width, thickness; the concept estimate was used, so this part is drawn to a first cut rather than to a solved size",
+    "placements taken from the concept layout, scaled by 82.9 mm per concept unit to match the solved part sizes"
+  ],
+  "failures": [
+    "housing.wall: no form was derived for it upstream, so there is no shape to build"
+  ],
+  "source_solved_id": "SOLVED-003"
+}

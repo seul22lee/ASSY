@@ -1,0 +1,100 @@
+{
+  "guide_member": [
+    "anti_rotation_flat",
+    "boss",
+    "fastener_feature",
+    "mount_pad",
+    "rail_face"
+  ],
+  "guide_member_opposed": [
+    "anti_rotation_flat",
+    "boss",
+    "fastener_feature",
+    "mount_pad",
+    "rail_face"
+  ],
+  "housing": [
+    "bore",
+    "boss",
+    "cavity",
+    "clearance_recess",
+    "fastener_feature",
+    "foot",
+    "mount_pad",
+    "opening"
+  ],
+  "input_member": [
+    "fastener_feature",
+    "journal",
+    "mount_pad",
+    "shoulder"
+  ],
+  "input_support": [
+    "bearing_seat",
+    "boss",
+    "fastener_feature",
+    "mount_pad"
+  ],
+  "payload_aperture": [
+    "fastener_feature",
+    "mount_pad"
+  ],
+  "redirect_member": [
+    "fastener_feature",
+    "mount_pad",
+    "tooth_form"
+  ],
+  "service_cover": [
+    "fastener_feature",
+    "mount_pad"
+  ],
+  "threaded_member": [
+    "boss",
+    "fastener_feature",
+    "journal",
+    "mount_pad",
+    "shoulder",
+    "thread"
+  ],
+  "thrust_support": [
+    "bearing_seat",
+    "bore",
+    "boss",
+    "fastener_feature",
+    "mount_pad",
+    "shoulder",
+    "thrust_face"
+  ],
+  "transmission_shaft": [
+    "boss",
+    "fastener_feature",
+    "mount_pad",
+    "tooth_form"
+  ],
+  "travel_stop": [
+    "contact_face",
+    "fastener_feature",
+    "mount_pad",
+    "stop_face"
+  ],
+  "travel_stop_far": [
+    "contact_face",
+    "fastener_feature",
+    "mount_pad",
+    "stop_face"
+  ],
+  "travelling_member": [
+    "boss",
+    "contact_face",
+    "fastener_feature",
+    "grip",
+    "mount_pad",
+    "slide_face",
+    "thread"
+  ],
+  "travelling_nut": [
+    "fastener_feature",
+    "mount_pad",
+    "thread"
+  ]
+}

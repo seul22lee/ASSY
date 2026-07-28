@@ -114,6 +114,14 @@ class ProblemType(str, Enum):
 
 class ProblemOrigin(str, Enum):
     REQUIREMENT = "requirement-derived"
+    UPSTREAM = "upstream-unresolved"
+    """An earlier stage recorded a choice it could not derive.
+
+    Distinct from SPAWNED: nothing Stage 05 committed created it. Stage 04 states
+    which of its choices are free rather than resolving them by convention, and
+    those arrive here as open decisions that must be made or carried, never as
+    settled inputs.
+    """
     SPAWNED = "spawned-by-commitment"
     CHECK = "detected-by-check"
     MANUFACTURING = "manufacturing-derived"

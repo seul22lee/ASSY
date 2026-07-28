@@ -1,0 +1,127 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "CAD-001",
+    "design_id": "design-001",
+    "producer": "s07_cad_builder",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "status": "partial",
+  "parts": [
+    {
+      "part_id": "closure_member",
+      "name": "closure_member",
+      "step_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-001/run-20260728-full/stage_07_cad/closure_member.step",
+      "mesh_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-001/run-20260728-full/stage_07_cad/closure_member.stl",
+      "volume_mm3": 293294.28,
+      "mass_g": 363.68,
+      "bbox_mm": [
+        66.08,
+        78.47,
+        66.08
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        3.3,
+        79.3
+      ]
+    },
+    {
+      "part_id": "opening_interface",
+      "name": "opening_interface",
+      "step_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-001/run-20260728-full/stage_07_cad/opening_interface.step",
+      "mesh_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-001/run-20260728-full/stage_07_cad/opening_interface.stl",
+      "volume_mm3": 4082.31,
+      "mass_g": 5.06,
+      "bbox_mm": [
+        66.08,
+        8.92,
+        7.93
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "part_id": "detent_feature",
+      "name": "detent_feature",
+      "step_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-001/run-20260728-full/stage_07_cad/detent_feature.step",
+      "mesh_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-001/run-20260728-full/stage_07_cad/detent_feature.stl",
+      "volume_mm3": 284638.27,
+      "mass_g": 352.95,
+      "bbox_mm": [
+        66.08,
+        66.08,
+        66.08
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "part_id": "opening_stop",
+      "name": "opening_stop",
+      "step_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-001/run-20260728-full/stage_07_cad/opening_stop.step",
+      "mesh_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-001/run-20260728-full/stage_07_cad/opening_stop.stl",
+      "volume_mm3": 2315.72,
+      "mass_g": 2.87,
+      "bbox_mm": [
+        9.25,
+        15.69,
+        17.18
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "part_id": "housing",
+      "name": "housing",
+      "step_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-001/run-20260728-full/stage_07_cad/housing.step",
+      "mesh_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-001/run-20260728-full/stage_07_cad/housing.stl",
+      "volume_mm3": 209333.68,
+      "mass_g": 259.57,
+      "bbox_mm": [
+        66.08,
+        75.17,
+        71.04
+      ],
+      "material": "PLA",
+      "placement_mm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "assembly_path": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-001/run-20260728-full/stage_07_cad/assembly.step",
+  "semantic_map": {
+    "closure_member": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-001/run-20260728-full/stage_07_cad/closure_member.step",
+    "opening_interface": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-001/run-20260728-full/stage_07_cad/opening_interface.step",
+    "detent_feature": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-001/run-20260728-full/stage_07_cad/detent_feature.step",
+    "opening_stop": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-001/run-20260728-full/stage_07_cad/opening_stop.step",
+    "housing": "/home/ftk3187/github/ASSY_Ver2.0/out/BM-001/run-20260728-full/stage_07_cad/housing.step"
+  },
+  "warnings": [
+    "placements taken from the concept layout, scaled by 66.1 mm per concept unit to match the solved part sizes",
+    "opening_interface: no solved value for section; the concept estimate was used, so this part is drawn to a first cut rather than to a solved size",
+    "opening_stop: no solved value for length, width, height; the concept estimate was used, so this part is drawn to a first cut rather than to a solved size",
+    "placements taken from the concept layout, scaled by 66.1 mm per concept unit to match the solved part sizes"
+  ],
+  "failures": [
+    "housing.wall: no form was derived for it upstream, so there is no shape to build"
+  ],
+  "source_solved_id": "SOLVED-001"
+}

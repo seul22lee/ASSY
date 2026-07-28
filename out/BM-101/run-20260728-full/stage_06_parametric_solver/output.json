@@ -1,0 +1,431 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SOLVED-003",
+    "design_id": "design-001",
+    "producer": "s06_parametric_solver",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "status": "underdetermined",
+  "parameters": [
+    {
+      "name": "input_member.radial_support",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-1021",
+      "derived": false
+    },
+    {
+      "name": "input_member.support_span",
+      "value": 60.0,
+      "unit": "mm",
+      "commitment_id": "C-1022",
+      "derived": false
+    },
+    {
+      "name": "input_member.diameter",
+      "value": 8.0,
+      "unit": "mm",
+      "commitment_id": "C-1023",
+      "derived": false
+    },
+    {
+      "name": "input_member.radial_load",
+      "value": 15.0,
+      "unit": "N",
+      "commitment_id": "C-1024",
+      "derived": false
+    },
+    {
+      "name": "input_member.deflection_allowable",
+      "value": 0.15,
+      "unit": "mm",
+      "commitment_id": "C-1025",
+      "derived": false
+    },
+    {
+      "name": "input_member.pinch_access",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-1036",
+      "derived": false
+    },
+    {
+      "name": "input_member.crank_radius",
+      "value": 40.0,
+      "unit": "mm",
+      "commitment_id": "C-1038",
+      "derived": false
+    },
+    {
+      "name": "input_member.grip_force",
+      "value": 0.0,
+      "unit": "N",
+      "commitment_id": "C-1040",
+      "derived": false
+    },
+    {
+      "name": "driver_member.radial_support",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-1055",
+      "derived": false
+    },
+    {
+      "name": "driver_member.support_span",
+      "value": 60.0,
+      "unit": "mm",
+      "commitment_id": "C-1056",
+      "derived": false
+    },
+    {
+      "name": "driver_member.diameter",
+      "value": 8.0,
+      "unit": "mm",
+      "commitment_id": "C-1057",
+      "derived": false
+    },
+    {
+      "name": "driver_member.radial_load",
+      "value": 15.0,
+      "unit": "N",
+      "commitment_id": "C-1058",
+      "derived": false
+    },
+    {
+      "name": "driver_member.deflection_allowable",
+      "value": 0.15,
+      "unit": "mm",
+      "commitment_id": "C-1059",
+      "derived": false
+    },
+    {
+      "name": "indexed_member.radial_support",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-1094",
+      "derived": false
+    },
+    {
+      "name": "indexed_member.support_span",
+      "value": 60.0,
+      "unit": "mm",
+      "commitment_id": "C-1095",
+      "derived": false
+    },
+    {
+      "name": "indexed_member.diameter",
+      "value": 8.0,
+      "unit": "mm",
+      "commitment_id": "C-1096",
+      "derived": false
+    },
+    {
+      "name": "indexed_member.radial_load",
+      "value": 15.0,
+      "unit": "N",
+      "commitment_id": "C-1097",
+      "derived": false
+    },
+    {
+      "name": "indexed_member.deflection_allowable",
+      "value": 0.15,
+      "unit": "mm",
+      "commitment_id": "C-1098",
+      "derived": false
+    },
+    {
+      "name": "housing.internal_height",
+      "value": 120.0,
+      "unit": "mm",
+      "commitment_id": "C-1125",
+      "derived": false
+    },
+    {
+      "name": "housing.internal_width",
+      "value": 110.0,
+      "unit": "mm",
+      "commitment_id": "C-1126",
+      "derived": false
+    },
+    {
+      "name": "housing.internal_depth",
+      "value": 90.0,
+      "unit": "mm",
+      "commitment_id": "C-1127",
+      "derived": false
+    },
+    {
+      "name": "panel_alignment.tolerance_chain",
+      "value": 0.3,
+      "unit": "mm",
+      "commitment_id": "C-1132",
+      "derived": true
+    },
+    {
+      "name": "motion.input_support.radial_support",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-1151",
+      "derived": false
+    },
+    {
+      "name": "motion.input_support.support_span",
+      "value": 60.0,
+      "unit": "mm",
+      "commitment_id": "C-1152",
+      "derived": false
+    },
+    {
+      "name": "motion.input_support.diameter",
+      "value": 8.0,
+      "unit": "mm",
+      "commitment_id": "C-1153",
+      "derived": false
+    },
+    {
+      "name": "motion.input_support.radial_load",
+      "value": 15.0,
+      "unit": "N",
+      "commitment_id": "C-1154",
+      "derived": false
+    },
+    {
+      "name": "motion.input_support.deflection_allowable",
+      "value": 0.15,
+      "unit": "mm",
+      "commitment_id": "C-1155",
+      "derived": false
+    },
+    {
+      "name": "motion.output_support.radial_support",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-1166",
+      "derived": false
+    },
+    {
+      "name": "motion.output_support.support_span",
+      "value": 60.0,
+      "unit": "mm",
+      "commitment_id": "C-1167",
+      "derived": false
+    },
+    {
+      "name": "motion.output_support.diameter",
+      "value": 8.0,
+      "unit": "mm",
+      "commitment_id": "C-1168",
+      "derived": false
+    },
+    {
+      "name": "motion.output_support.radial_load",
+      "value": 15.0,
+      "unit": "N",
+      "commitment_id": "C-1169",
+      "derived": false
+    },
+    {
+      "name": "motion.output_support.deflection_allowable",
+      "value": 0.15,
+      "unit": "mm",
+      "commitment_id": "C-1170",
+      "derived": false
+    },
+    {
+      "name": "housing.wall_thickness",
+      "value": 2.4,
+      "unit": "mm",
+      "commitment_id": "C-1255",
+      "derived": false
+    },
+    {
+      "name": "driver_member.length",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-1261",
+      "derived": false
+    },
+    {
+      "name": "driver_member_engagement.height",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-1262",
+      "derived": false
+    },
+    {
+      "name": "driver_member_engagement.length",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-1263",
+      "derived": false
+    },
+    {
+      "name": "driver_member_engagement.width",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-1264",
+      "derived": false
+    },
+    {
+      "name": "housing.height",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-1265",
+      "derived": false
+    },
+    {
+      "name": "housing.length",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-1266",
+      "derived": false
+    },
+    {
+      "name": "housing.wall",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-1267",
+      "derived": false
+    },
+    {
+      "name": "housing.width",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-1269",
+      "derived": false
+    },
+    {
+      "name": "indexed_member.length",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-1271",
+      "derived": false
+    }
+  ],
+  "satisfied": [
+    {
+      "commitment_id": "C-1008",
+      "expression": "(indexed_member.diameter/2) + (payload_aperture.width/2) <= 0.44",
+      "satisfied": true,
+      "residual": null,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-1009",
+      "expression": "(indexed_member.diameter/2) + (service_cover.width/2) <= 0.44",
+      "satisfied": true,
+      "residual": null,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-1010",
+      "expression": "(payload_aperture.thickness/2) + (service_cover.thickness/2) <= 0",
+      "satisfied": true,
+      "residual": null,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-1011",
+      "expression": "(0.5*(indexed_member.diameter/2) + 0.866*(indexed_member.diameter/2)) + (payload_aperture.width/2) <= 0.44",
+      "satisfied": true,
+      "residual": null,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-1012",
+      "expression": "(0.5*(indexed_member.diameter/2) + 0.866*(indexed_member.diameter/2)) + (service_cover.width/2) <= 0.44",
+      "satisfied": true,
+      "residual": null,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-1013",
+      "expression": "(payload_aperture.thickness/2) + (service_cover.thickness/2) <= 0",
+      "satisfied": true,
+      "residual": null,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-1014",
+      "expression": "(0.866*(indexed_member.diameter/2) + 0.5*(indexed_member.diameter/2)) + (payload_aperture.width/2) <= 0.44",
+      "satisfied": true,
+      "residual": null,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-1015",
+      "expression": "(0.866*(indexed_member.diameter/2) + 0.5*(indexed_member.diameter/2)) + (service_cover.width/2) <= 0.44",
+      "satisfied": true,
+      "residual": null,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-1016",
+      "expression": "(payload_aperture.thickness/2) + (service_cover.thickness/2) <= 0",
+      "satisfied": true,
+      "residual": null,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-1017",
+      "expression": "input_support.bore = input_member.diameter + running_clearance",
+      "satisfied": true,
+      "residual": null,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-1018",
+      "expression": "output_support.bore = indexed_member.diameter + running_clearance",
+      "satisfied": true,
+      "residual": null,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-1025",
+      "expression": "input_member deflection allowable",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-1059",
+      "expression": "driver_member deflection allowable",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-1098",
+      "expression": "indexed_member deflection allowable",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-1155",
+      "expression": "motion.input_support deflection allowable",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-1170",
+      "expression": "motion.output_support deflection allowable",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    }
+  ],
+  "violated": [],
+  "objective_values": {
+    "objective.envelope": 0.0
+  },
+  "diagnostics": [
+    "1 objective(s) recorded but not optimised in this implementation",
+    "undetermined parameters: indexed_member_engagement.height, indexed_member_engagement.length, indexed_member_engagement.width, input_member.diameter, input_member.length, input_support.bore, input_support.length, output_support.bore, output_support.length, payload_aperture.length, payload_aperture.thickness, payload_aperture.width, service_cover.length, service_cover.thickness, service_cover.width"
+  ],
+  "source_definition_id": "CRED-003"
+}

@@ -1,0 +1,2107 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "MECH-001",
+    "design_id": "design-001",
+    "producer": "s02_mechanical_architecture",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "candidates": [
+    {
+      "id": "compliant_catch",
+      "principle": "Elastic element deflecting over a feature and springing back to retain",
+      "parts": [
+        {
+          "moving": true,
+          "engineering_roles": [
+            "moving_boundary",
+            "user_contact",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "plate",
+          "permits_motion": "fixed",
+          "id": "FP-001",
+          "name": "closure_member",
+          "role": "output",
+          "rationale": "moving element in the compliant_catch chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "hinged",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "joint",
+          "form": "rail",
+          "permits_motion": "rotation",
+          "id": "FP-002",
+          "name": "opening_interface",
+          "role": "support",
+          "rationale": "fixed element in the compliant_catch chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "compliant",
+            "retention_interface",
+            "user_release",
+            "precision_interface",
+            "manufactured"
+          ],
+          "motion_kind": "compliant_deformation",
+          "element_class": "body",
+          "form": "plate",
+          "permits_motion": "fixed",
+          "id": "FP-003",
+          "name": "compliant_element",
+          "role": "retention",
+          "rationale": "moving element in the compliant_catch chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "retention_interface",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "feature",
+          "form": "block",
+          "permits_motion": "fixed",
+          "id": "FP-004",
+          "name": "catch_feature",
+          "role": "retention",
+          "rationale": "fixed element in the compliant_catch chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "feature",
+          "form": "block",
+          "permits_motion": "fixed",
+          "id": "FP-005",
+          "name": "opening_stop",
+          "role": "limit",
+          "rationale": "fixed element in the compliant_catch chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "enclosure",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "body",
+          "form": "shell",
+          "permits_motion": "fixed",
+          "id": "FP-006",
+          "name": "housing",
+          "role": "structure",
+          "rationale": "fixed element in the compliant_catch chain"
+        }
+      ],
+      "motions": [
+        {
+          "id": "MO-001",
+          "driver": "user input",
+          "driven": "closure_member",
+          "relation": "force->state",
+          "ratio_symbol": "held",
+          "dof": 1
+        }
+      ],
+      "strengths": [
+        "no separate fastener required",
+        "tool-free repeated operation",
+        "low part count",
+        "compact"
+      ],
+      "weaknesses": [
+        "strain-limited",
+        "may relax over many cycles"
+      ],
+      "risks": [
+        "permanent deformation if over-deflected",
+        "retention weakening with cycling",
+        "root fatigue",
+        "insertion or release force outside a usable range",
+        "sensitivity to tolerance and material"
+      ],
+      "open_questions": [
+        "element proportions",
+        "engagement angles",
+        "actuation surface form"
+      ],
+      "serves_requirements": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-008"
+      ],
+      "functions": [
+        {
+          "function": "provide an enclosure opening",
+          "performed_by": [
+            "housing",
+            "closure_member"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "move the closure between open and closed",
+          "performed_by": [
+            "closure_member",
+            "opening_interface"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "retain the closure in the closed state",
+          "performed_by": [
+            "compliant_element"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "resist accidental release",
+          "performed_by": [
+            "compliant_element"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "receive intentional user input",
+          "performed_by": [
+            "compliant_element"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "release retention",
+          "performed_by": [
+            "compliant_element",
+            "compliant_element"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "permit repeated cycling",
+          "performed_by": [
+            "closure_member",
+            "compliant_element"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "limit opening travel",
+          "performed_by": [
+            "opening_stop"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "transfer retention loads into the structure",
+          "performed_by": [
+            "housing"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        }
+      ],
+      "element_chain": [
+        "user input",
+        "compliant_element",
+        "catch_feature",
+        "closure_member"
+      ],
+      "state_relations": [
+        "closed state is held until a deliberate input deflects the element",
+        "the same element re-engages on closing"
+      ],
+      "holding_principle": "elastic deflection and re-engagement; released by deflecting the element clear",
+      "support_obligations": [
+        {
+          "element": "closure_member",
+          "kind": "guidance",
+          "reacted_by": "opening_interface",
+          "why": "opening motion needs a defined rotational or translational interface"
+        },
+        {
+          "element": "closure_member",
+          "kind": "travel_limit",
+          "reacted_by": "opening_stop",
+          "why": "opening travel must stop before the closure or its interface is overloaded"
+        },
+        {
+          "element": "compliant_element",
+          "kind": "user_access",
+          "reacted_by": "housing",
+          "why": "the release surface must stay reachable from outside the closed product"
+        },
+        {
+          "element": "compliant_element",
+          "kind": "clearance",
+          "reacted_by": "housing",
+          "why": "retention and release features must not obstruct the usable internal volume"
+        },
+        {
+          "element": "compliant_element",
+          "kind": "structural_root",
+          "reacted_by": "housing",
+          "why": "a deflecting element needs a structurally supported root to react bending"
+        },
+        {
+          "element": "catch_feature",
+          "kind": "alignment",
+          "reacted_by": "closure_member",
+          "why": "the catch must resist the retaining force and stay aligned with the element"
+        },
+        {
+          "element": "compliant_element",
+          "kind": "clearance",
+          "reacted_by": "housing",
+          "why": "deflection space must stay clear behind the element through its full travel"
+        }
+      ],
+      "spatial_constraints": [
+        {
+          "between": [
+            "compliant_element",
+            "catch_feature"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:contact_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a contact pair transmits only where the surfaces meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "compliant_element",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_interface"
+          ],
+          "relation": "shared_axis",
+          "source": "interface:rotational_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a revolute pair turns about one axis, so both members must lie on it",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_stop"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:contact_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a contact pair transmits only where the surfaces meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "compliant_element",
+            "housing"
+          ],
+          "relation": "exterior_reachable",
+          "source": "interface:user_contact",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a surface a user acts on must be reachable from outside the boundary",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "opening_interface",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "catch_feature",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "opening_stop",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_interface"
+          ],
+          "relation": "common_travel_direction",
+          "source": "obligation:guidance",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "guidance acts along the guided motion over a shared span",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_stop"
+          ],
+          "relation": "contact_at_extreme",
+          "source": "obligation:travel_limit",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a limit acts only where the motion reaches its extreme",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "compliant_element",
+            "housing"
+          ],
+          "relation": "exterior_reachable",
+          "source": "obligation:user_access",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a surface a user must reach cannot be sealed inside the boundary",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "compliant_element",
+            "housing"
+          ],
+          "relation": "disjoint_swept",
+          "source": "obligation:clearance",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a region kept clear must not be entered by the swept volume",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "compliant_element",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "obligation:structural_root",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a root reacts bending through the structure it is built into",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "catch_feature",
+            "closure_member"
+          ],
+          "relation": "mating_adjacency",
+          "source": "obligation:alignment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "features held in alignment must meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "compliant_element",
+            "housing"
+          ],
+          "relation": "disjoint_swept",
+          "source": "obligation:clearance",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a region kept clear must not be entered by the swept volume",
+          "status": "not_checkable",
+          "detail": ""
+        }
+      ],
+      "states": [
+        {
+          "name": "closed",
+          "role": "holding",
+          "holds": [
+            "compliant_element"
+          ],
+          "covers": [
+            "closure_member"
+          ],
+          "clears": [],
+          "at_limit_of": [],
+          "why": "the retaining pair is engaged and the closure occludes the opening"
+        },
+        {
+          "name": "released",
+          "role": "releasing",
+          "holds": [],
+          "covers": [
+            "closure_member"
+          ],
+          "clears": [],
+          "at_limit_of": [],
+          "why": "retention has been broken but the closure has not yet moved"
+        },
+        {
+          "name": "open",
+          "role": "moving",
+          "holds": [],
+          "covers": [],
+          "clears": [
+            "closure_member"
+          ],
+          "at_limit_of": [],
+          "why": "the closure has swung clear of the opening it covered"
+        },
+        {
+          "name": "stopped",
+          "role": "limited",
+          "holds": [],
+          "covers": [],
+          "clears": [
+            "closure_member"
+          ],
+          "at_limit_of": [
+            "opening_stop"
+          ],
+          "why": "the swing has reached the limit that bounds it"
+        }
+      ],
+      "transitions": [
+        {
+          "from_state": "closed",
+          "to_state": "released",
+          "driven_by": "release retention",
+          "moves": [
+            "compliant_element"
+          ],
+          "why": "a deliberate input breaks the retaining engagement"
+        },
+        {
+          "from_state": "released",
+          "to_state": "open",
+          "driven_by": "move the closure between open and closed",
+          "moves": [
+            "closure_member"
+          ],
+          "why": "with retention broken the closure is free to swing clear"
+        },
+        {
+          "from_state": "open",
+          "to_state": "stopped",
+          "driven_by": "limit opening travel",
+          "moves": [
+            "closure_member"
+          ],
+          "why": "the swing continues until the stop bounds it"
+        }
+      ],
+      "constrained_by": [],
+      "bounds": [],
+      "load_path": [
+        "disturbance",
+        "closure_member",
+        "catch_feature",
+        "compliant_element",
+        "housing"
+      ],
+      "interfaces": [
+        {
+          "between": [
+            "compliant_element",
+            "catch_feature"
+          ],
+          "kind": "contact_pair",
+          "transmits": "retention force",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "compliant_element",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "bending reaction at the root",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_interface"
+          ],
+          "kind": "rotational_joint",
+          "transmits": "opening motion and closure weight",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_stop"
+          ],
+          "kind": "contact_pair",
+          "transmits": "end-of-opening reaction",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "compliant_element",
+            "housing"
+          ],
+          "kind": "user_contact",
+          "transmits": "release input",
+          "crosses_boundary": true,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "opening_interface",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "catch_feature",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "opening_stop",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        }
+      ],
+      "spatial_implications": [
+        "the actuation surface must be reachable from outside",
+        "the retaining pair sits at the closure boundary",
+        "deflection space must stay clear behind the element"
+      ],
+      "motion_envelopes": [
+        "the compliant element sweeps its deflection during engagement and release",
+        "the closure member sweeps its opening path"
+      ],
+      "tradeoffs": [
+        "retention security against ease of intentional release"
+      ],
+      "assumptions": [
+        "the retaining element may be integral to a moulded or printed part",
+        "4 solution choice(s) were left open by the user and are treated as available to this candidate"
+      ],
+      "downstream_decisions": [
+        "element proportions",
+        "engagement angles",
+        "actuation surface form",
+        "unresolved at Stage 01: specific dimensions of the box",
+        "unresolved at Stage 01: exact manufacturing cost constraints",
+        "unresolved at Stage 01: specific force requirements for operation",
+        "unresolved at Stage 01: specific durability requirements for repeated use"
+      ]
+    },
+    {
+      "id": "over_centre_catch",
+      "principle": "Linkage passing through an over-centre position to hold a closure",
+      "parts": [
+        {
+          "moving": true,
+          "engineering_roles": [
+            "moving_boundary",
+            "user_contact",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "plate",
+          "permits_motion": "fixed",
+          "id": "FP-007",
+          "name": "closure_member",
+          "role": "output",
+          "rationale": "moving element in the over_centre_catch chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "hinged",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "joint",
+          "form": "rail",
+          "permits_motion": "rotation",
+          "id": "FP-008",
+          "name": "opening_interface",
+          "role": "support",
+          "rationale": "fixed element in the over_centre_catch chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "rotating",
+            "user_contact",
+            "user_release",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "link",
+          "permits_motion": "fixed",
+          "id": "FP-009",
+          "name": "actuating_lever",
+          "role": "release",
+          "rationale": "moving element in the over_centre_catch chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "retention_interface",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "rotation_translation",
+          "element_class": "body",
+          "form": "link",
+          "permits_motion": "fixed",
+          "id": "FP-010",
+          "name": "tension_link",
+          "role": "retention",
+          "rationale": "moving element in the over_centre_catch chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "retention_interface",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "feature",
+          "form": "block",
+          "permits_motion": "fixed",
+          "id": "FP-011",
+          "name": "catch_feature",
+          "role": "retention",
+          "rationale": "fixed element in the over_centre_catch chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "feature",
+          "form": "block",
+          "permits_motion": "fixed",
+          "id": "FP-012",
+          "name": "opening_stop",
+          "role": "limit",
+          "rationale": "fixed element in the over_centre_catch chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "enclosure",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "body",
+          "form": "shell",
+          "permits_motion": "fixed",
+          "id": "FP-013",
+          "name": "housing",
+          "role": "structure",
+          "rationale": "fixed element in the over_centre_catch chain"
+        }
+      ],
+      "motions": [
+        {
+          "id": "MO-002",
+          "driver": "user input",
+          "driven": "closure_member",
+          "relation": "force->state",
+          "ratio_symbol": "held",
+          "dof": 1
+        }
+      ],
+      "strengths": [
+        "high and adjustable retaining force",
+        "unambiguous open and closed states",
+        "good transport security"
+      ],
+      "weaknesses": [
+        "more parts",
+        "protrudes beyond the closure boundary"
+      ],
+      "risks": [
+        "snagging on the protruding lever",
+        "over-centre position lost if geometry shifts",
+        "larger envelope and higher assembly cost"
+      ],
+      "open_questions": [
+        "lever proportions",
+        "link geometry",
+        "over-centre offset"
+      ],
+      "serves_requirements": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-008"
+      ],
+      "functions": [
+        {
+          "function": "provide an enclosure opening",
+          "performed_by": [
+            "housing",
+            "closure_member"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "move the closure between open and closed",
+          "performed_by": [
+            "closure_member",
+            "opening_interface"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "retain the closure in the closed state",
+          "performed_by": [
+            "tension_link"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "resist accidental release",
+          "performed_by": [
+            "tension_link"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "receive intentional user input",
+          "performed_by": [
+            "actuating_lever"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "release retention",
+          "performed_by": [
+            "actuating_lever",
+            "tension_link"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "permit repeated cycling",
+          "performed_by": [
+            "closure_member",
+            "tension_link"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "limit opening travel",
+          "performed_by": [
+            "opening_stop"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "transfer retention loads into the structure",
+          "performed_by": [
+            "housing"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        }
+      ],
+      "element_chain": [
+        "user input",
+        "actuating_lever",
+        "tension_link",
+        "catch_feature",
+        "closure_member"
+      ],
+      "state_relations": [
+        "past the over-centre position the closure is held without further input",
+        "the state changes only when the lever is driven back"
+      ],
+      "holding_principle": "geometric over-centre lock; released by reversing the lever",
+      "support_obligations": [
+        {
+          "element": "closure_member",
+          "kind": "guidance",
+          "reacted_by": "opening_interface",
+          "why": "opening motion needs a defined rotational or translational interface"
+        },
+        {
+          "element": "closure_member",
+          "kind": "travel_limit",
+          "reacted_by": "opening_stop",
+          "why": "opening travel must stop before the closure or its interface is overloaded"
+        },
+        {
+          "element": "actuating_lever",
+          "kind": "user_access",
+          "reacted_by": "housing",
+          "why": "the release surface must stay reachable from outside the closed product"
+        },
+        {
+          "element": "tension_link",
+          "kind": "clearance",
+          "reacted_by": "housing",
+          "why": "retention and release features must not obstruct the usable internal volume"
+        },
+        {
+          "element": "actuating_lever",
+          "kind": "radial_support",
+          "reacted_by": "housing",
+          "why": "the lever needs a located pivot to define the over-centre position"
+        },
+        {
+          "element": "tension_link",
+          "kind": "alignment",
+          "reacted_by": "catch_feature",
+          "why": "the link needs defined attachment at both ends or the lock is lost"
+        },
+        {
+          "element": "actuating_lever",
+          "kind": "clearance",
+          "reacted_by": "housing",
+          "why": "the lever swings outside the closure boundary and needs external clearance"
+        }
+      ],
+      "spatial_constraints": [
+        {
+          "between": [
+            "actuating_lever",
+            "housing"
+          ],
+          "relation": "shared_axis",
+          "source": "interface:rotational_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a revolute pair turns about one axis, so both members must lie on it",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "actuating_lever",
+            "tension_link"
+          ],
+          "relation": "shared_axis",
+          "source": "interface:rotational_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a revolute pair turns about one axis, so both members must lie on it",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "tension_link",
+            "catch_feature"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:contact_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a contact pair transmits only where the surfaces meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_interface"
+          ],
+          "relation": "shared_axis",
+          "source": "interface:rotational_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a revolute pair turns about one axis, so both members must lie on it",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_stop"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:contact_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a contact pair transmits only where the surfaces meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "actuating_lever",
+            "housing"
+          ],
+          "relation": "exterior_reachable",
+          "source": "interface:user_contact",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a surface a user acts on must be reachable from outside the boundary",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "opening_interface",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "catch_feature",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "opening_stop",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_interface"
+          ],
+          "relation": "common_travel_direction",
+          "source": "obligation:guidance",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "guidance acts along the guided motion over a shared span",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_stop"
+          ],
+          "relation": "contact_at_extreme",
+          "source": "obligation:travel_limit",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a limit acts only where the motion reaches its extreme",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "actuating_lever",
+            "housing"
+          ],
+          "relation": "exterior_reachable",
+          "source": "obligation:user_access",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a surface a user must reach cannot be sealed inside the boundary",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "tension_link",
+            "housing"
+          ],
+          "relation": "disjoint_swept",
+          "source": "obligation:clearance",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a region kept clear must not be entered by the swept volume",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "actuating_lever",
+            "housing"
+          ],
+          "relation": "axis_surrounded",
+          "source": "obligation:radial_support",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a radial reaction acts around the axis it locates",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "tension_link",
+            "catch_feature"
+          ],
+          "relation": "mating_adjacency",
+          "source": "obligation:alignment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "features held in alignment must meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "actuating_lever",
+            "housing"
+          ],
+          "relation": "disjoint_swept",
+          "source": "obligation:clearance",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a region kept clear must not be entered by the swept volume",
+          "status": "not_checkable",
+          "detail": ""
+        }
+      ],
+      "states": [
+        {
+          "name": "closed",
+          "role": "holding",
+          "holds": [
+            "tension_link"
+          ],
+          "covers": [
+            "closure_member"
+          ],
+          "clears": [],
+          "at_limit_of": [],
+          "why": "the retaining pair is engaged and the closure occludes the opening"
+        },
+        {
+          "name": "released",
+          "role": "releasing",
+          "holds": [],
+          "covers": [
+            "closure_member"
+          ],
+          "clears": [],
+          "at_limit_of": [],
+          "why": "retention has been broken but the closure has not yet moved"
+        },
+        {
+          "name": "open",
+          "role": "moving",
+          "holds": [],
+          "covers": [],
+          "clears": [
+            "closure_member"
+          ],
+          "at_limit_of": [],
+          "why": "the closure has swung clear of the opening it covered"
+        },
+        {
+          "name": "stopped",
+          "role": "limited",
+          "holds": [],
+          "covers": [],
+          "clears": [
+            "closure_member"
+          ],
+          "at_limit_of": [
+            "opening_stop"
+          ],
+          "why": "the swing has reached the limit that bounds it"
+        }
+      ],
+      "transitions": [
+        {
+          "from_state": "closed",
+          "to_state": "released",
+          "driven_by": "release retention",
+          "moves": [
+            "actuating_lever"
+          ],
+          "why": "a deliberate input breaks the retaining engagement"
+        },
+        {
+          "from_state": "released",
+          "to_state": "open",
+          "driven_by": "move the closure between open and closed",
+          "moves": [
+            "closure_member"
+          ],
+          "why": "with retention broken the closure is free to swing clear"
+        },
+        {
+          "from_state": "open",
+          "to_state": "stopped",
+          "driven_by": "limit opening travel",
+          "moves": [
+            "closure_member"
+          ],
+          "why": "the swing continues until the stop bounds it"
+        }
+      ],
+      "constrained_by": [],
+      "bounds": [],
+      "load_path": [
+        "disturbance",
+        "closure_member",
+        "catch_feature",
+        "tension_link",
+        "housing"
+      ],
+      "interfaces": [
+        {
+          "between": [
+            "actuating_lever",
+            "housing"
+          ],
+          "kind": "rotational_joint",
+          "transmits": "lever pivot reaction",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "actuating_lever",
+            "tension_link"
+          ],
+          "kind": "rotational_joint",
+          "transmits": "clamping force",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "tension_link",
+            "catch_feature"
+          ],
+          "kind": "contact_pair",
+          "transmits": "retention force",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_interface"
+          ],
+          "kind": "rotational_joint",
+          "transmits": "opening motion and closure weight",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_stop"
+          ],
+          "kind": "contact_pair",
+          "transmits": "end-of-opening reaction",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "actuating_lever",
+            "housing"
+          ],
+          "kind": "user_contact",
+          "transmits": "release input",
+          "crosses_boundary": true,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "opening_interface",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "catch_feature",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "opening_stop",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        }
+      ],
+      "spatial_implications": [
+        "the lever swings outside the closure boundary and needs external clearance",
+        "the linkage occupies a plane across the closure line"
+      ],
+      "motion_envelopes": [
+        "the lever sweeps an arc outside the product",
+        "the link sweeps a plane through the over-centre position"
+      ],
+      "tradeoffs": [
+        "retention force against part count and protrusion"
+      ],
+      "assumptions": [
+        "external clearance is available for the lever swing",
+        "4 solution choice(s) were left open by the user and are treated as available to this candidate"
+      ],
+      "downstream_decisions": [
+        "lever proportions",
+        "link geometry",
+        "over-centre offset",
+        "unresolved at Stage 01: specific dimensions of the box",
+        "unresolved at Stage 01: exact manufacturing cost constraints",
+        "unresolved at Stage 01: specific force requirements for operation",
+        "unresolved at Stage 01: specific durability requirements for repeated use"
+      ]
+    },
+    {
+      "id": "friction_detent_catch",
+      "principle": "Interference between mating features held by friction or light preload",
+      "parts": [
+        {
+          "moving": true,
+          "engineering_roles": [
+            "moving_boundary",
+            "user_contact",
+            "user_release",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "plate",
+          "permits_motion": "fixed",
+          "id": "FP-014",
+          "name": "closure_member",
+          "role": "output",
+          "rationale": "moving element in the friction_detent_catch chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "hinged",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "joint",
+          "form": "rail",
+          "permits_motion": "rotation",
+          "id": "FP-015",
+          "name": "opening_interface",
+          "role": "support",
+          "rationale": "fixed element in the friction_detent_catch chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "retention_interface",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "feature",
+          "form": "block",
+          "permits_motion": "fixed",
+          "id": "FP-016",
+          "name": "detent_feature",
+          "role": "retention",
+          "rationale": "fixed element in the friction_detent_catch chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "feature",
+          "form": "block",
+          "permits_motion": "fixed",
+          "id": "FP-017",
+          "name": "opening_stop",
+          "role": "limit",
+          "rationale": "fixed element in the friction_detent_catch chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "enclosure",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "body",
+          "form": "shell",
+          "permits_motion": "fixed",
+          "id": "FP-018",
+          "name": "housing",
+          "role": "structure",
+          "rationale": "fixed element in the friction_detent_catch chain"
+        }
+      ],
+      "motions": [
+        {
+          "id": "MO-003",
+          "driver": "user input",
+          "driven": "closure_member",
+          "relation": "force->state",
+          "ratio_symbol": "held",
+          "dof": 1
+        }
+      ],
+      "strengths": [
+        "fewest parts",
+        "nothing protrudes"
+      ],
+      "weaknesses": [
+        "retention force is least predictable",
+        "wears with cycling"
+      ],
+      "risks": [
+        "retention decaying with repeated use",
+        "accidental opening if preload is low",
+        "release force rising if the interference is set high"
+      ],
+      "open_questions": [
+        "interference amount",
+        "feature form",
+        "material pairing"
+      ],
+      "serves_requirements": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-008"
+      ],
+      "functions": [
+        {
+          "function": "provide an enclosure opening",
+          "performed_by": [
+            "housing",
+            "closure_member"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "move the closure between open and closed",
+          "performed_by": [
+            "closure_member",
+            "opening_interface"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "retain the closure in the closed state",
+          "performed_by": [
+            "detent_feature"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "resist accidental release",
+          "performed_by": [
+            "detent_feature"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "receive intentional user input",
+          "performed_by": [
+            "closure_member"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "release retention",
+          "performed_by": [
+            "closure_member",
+            "detent_feature"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "permit repeated cycling",
+          "performed_by": [
+            "closure_member",
+            "detent_feature"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "limit opening travel",
+          "performed_by": [
+            "opening_stop"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        },
+        {
+          "function": "transfer retention loads into the structure",
+          "performed_by": [
+            "housing"
+          ],
+          "serves_requirements": [
+            "REQ-001",
+            "REQ-002",
+            "REQ-008"
+          ]
+        }
+      ],
+      "element_chain": [
+        "user input",
+        "detent_feature",
+        "closure_member"
+      ],
+      "state_relations": [
+        "the closed state is held by interference until a deliberate pull exceeds it"
+      ],
+      "holding_principle": "frictional or interference preload; released by exceeding it",
+      "support_obligations": [
+        {
+          "element": "closure_member",
+          "kind": "guidance",
+          "reacted_by": "opening_interface",
+          "why": "opening motion needs a defined rotational or translational interface"
+        },
+        {
+          "element": "closure_member",
+          "kind": "travel_limit",
+          "reacted_by": "opening_stop",
+          "why": "opening travel must stop before the closure or its interface is overloaded"
+        },
+        {
+          "element": "closure_member",
+          "kind": "user_access",
+          "reacted_by": "housing",
+          "why": "the release surface must stay reachable from outside the closed product"
+        },
+        {
+          "element": "detent_feature",
+          "kind": "clearance",
+          "reacted_by": "housing",
+          "why": "retention and release features must not obstruct the usable internal volume"
+        },
+        {
+          "element": "detent_feature",
+          "kind": "alignment",
+          "reacted_by": "closure_member",
+          "why": "the mating features must stay aligned across repeated cycles"
+        },
+        {
+          "element": "detent_feature",
+          "kind": "structural_root",
+          "reacted_by": "housing",
+          "why": "the interference feature reacts the retaining force into the structure"
+        }
+      ],
+      "spatial_constraints": [
+        {
+          "between": [
+            "closure_member",
+            "detent_feature"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:contact_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a contact pair transmits only where the surfaces meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_interface"
+          ],
+          "relation": "shared_axis",
+          "source": "interface:rotational_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a revolute pair turns about one axis, so both members must lie on it",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_stop"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:contact_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a contact pair transmits only where the surfaces meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "closure_member",
+            "housing"
+          ],
+          "relation": "exterior_reachable",
+          "source": "interface:user_contact",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a surface a user acts on must be reachable from outside the boundary",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "opening_interface",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "detent_feature",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "opening_stop",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_interface"
+          ],
+          "relation": "common_travel_direction",
+          "source": "obligation:guidance",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "guidance acts along the guided motion over a shared span",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_stop"
+          ],
+          "relation": "contact_at_extreme",
+          "source": "obligation:travel_limit",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a limit acts only where the motion reaches its extreme",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "closure_member",
+            "housing"
+          ],
+          "relation": "exterior_reachable",
+          "source": "obligation:user_access",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a surface a user must reach cannot be sealed inside the boundary",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "detent_feature",
+            "housing"
+          ],
+          "relation": "disjoint_swept",
+          "source": "obligation:clearance",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a region kept clear must not be entered by the swept volume",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "detent_feature",
+            "closure_member"
+          ],
+          "relation": "mating_adjacency",
+          "source": "obligation:alignment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "features held in alignment must meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "detent_feature",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "obligation:structural_root",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a root reacts bending through the structure it is built into",
+          "status": "not_checkable",
+          "detail": ""
+        }
+      ],
+      "states": [
+        {
+          "name": "closed",
+          "role": "holding",
+          "holds": [
+            "detent_feature"
+          ],
+          "covers": [
+            "closure_member"
+          ],
+          "clears": [],
+          "at_limit_of": [],
+          "why": "the retaining pair is engaged and the closure occludes the opening"
+        },
+        {
+          "name": "released",
+          "role": "releasing",
+          "holds": [],
+          "covers": [
+            "closure_member"
+          ],
+          "clears": [],
+          "at_limit_of": [],
+          "why": "retention has been broken but the closure has not yet moved"
+        },
+        {
+          "name": "open",
+          "role": "moving",
+          "holds": [],
+          "covers": [],
+          "clears": [
+            "closure_member"
+          ],
+          "at_limit_of": [],
+          "why": "the closure has swung clear of the opening it covered"
+        },
+        {
+          "name": "stopped",
+          "role": "limited",
+          "holds": [],
+          "covers": [],
+          "clears": [
+            "closure_member"
+          ],
+          "at_limit_of": [
+            "opening_stop"
+          ],
+          "why": "the swing has reached the limit that bounds it"
+        }
+      ],
+      "transitions": [
+        {
+          "from_state": "closed",
+          "to_state": "released",
+          "driven_by": "release retention",
+          "moves": [
+            "closure_member"
+          ],
+          "why": "a deliberate input breaks the retaining engagement"
+        },
+        {
+          "from_state": "released",
+          "to_state": "open",
+          "driven_by": "move the closure between open and closed",
+          "moves": [
+            "closure_member"
+          ],
+          "why": "with retention broken the closure is free to swing clear"
+        },
+        {
+          "from_state": "open",
+          "to_state": "stopped",
+          "driven_by": "limit opening travel",
+          "moves": [
+            "closure_member"
+          ],
+          "why": "the swing continues until the stop bounds it"
+        }
+      ],
+      "constrained_by": [],
+      "bounds": [],
+      "load_path": [
+        "disturbance",
+        "closure_member",
+        "detent_feature",
+        "housing"
+      ],
+      "interfaces": [
+        {
+          "between": [
+            "closure_member",
+            "detent_feature"
+          ],
+          "kind": "contact_pair",
+          "transmits": "interference retention force",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_interface"
+          ],
+          "kind": "rotational_joint",
+          "transmits": "opening motion and closure weight",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "closure_member",
+            "opening_stop"
+          ],
+          "kind": "contact_pair",
+          "transmits": "end-of-opening reaction",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "closure_member",
+            "housing"
+          ],
+          "kind": "user_contact",
+          "transmits": "release input",
+          "crosses_boundary": true,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "opening_interface",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "detent_feature",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "opening_stop",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        }
+      ],
+      "spatial_implications": [
+        "no protrusion beyond the closure boundary",
+        "the interference pair sits on the closure line itself"
+      ],
+      "motion_envelopes": [
+        "the closure member sweeps its opening path; no separate element moves"
+      ],
+      "tradeoffs": [
+        "simplicity against retention predictability"
+      ],
+      "assumptions": [
+        "moderate retention is sufficient for the stated handling",
+        "4 solution choice(s) were left open by the user and are treated as available to this candidate"
+      ],
+      "downstream_decisions": [
+        "interference amount",
+        "feature form",
+        "material pairing",
+        "unresolved at Stage 01: specific dimensions of the box",
+        "unresolved at Stage 01: exact manufacturing cost constraints",
+        "unresolved at Stage 01: specific force requirements for operation",
+        "unresolved at Stage 01: specific durability requirements for repeated use"
+      ]
+    }
+  ],
+  "selected_id": "friction_detent_catch",
+  "selection_rationale": "selected from structured behaviour signatures force->state/continuous, force->state/intermittent; ranked lexicographically on holding need, reversibility, unperformed functions and element count: {'compliant_catch': (True, True, 0, -3), 'over_centre_catch': (True, True, 0, -4), 'friction_detent_catch': (True, True, 0, -2)}",
+  "rejected": {
+    "compliant_catch": "ranks (True, True, 0, -3) below friction_detent_catch ((True, True, 0, -2)); strain-limited",
+    "over_centre_catch": "ranks (True, True, 0, -4) below friction_detent_catch ((True, True, 0, -2)); more parts"
+  },
+  "contract_advisories": [],
+  "undecided_between": []
+}

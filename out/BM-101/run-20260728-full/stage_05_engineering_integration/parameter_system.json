@@ -1,0 +1,184 @@
+{
+  "parameters": [
+    "driver_member.diameter",
+    "driver_member.length",
+    "driver_member.radial_load",
+    "driver_member.support_span",
+    "driver_member_engagement.height",
+    "driver_member_engagement.length",
+    "driver_member_engagement.width",
+    "housing.height",
+    "housing.internal_depth",
+    "housing.internal_height",
+    "housing.internal_width",
+    "housing.length",
+    "housing.wall",
+    "housing.wall_thickness",
+    "housing.width",
+    "indexed_member.diameter",
+    "indexed_member.length",
+    "indexed_member.radial_load",
+    "indexed_member.support_span",
+    "indexed_member_engagement.height",
+    "indexed_member_engagement.length",
+    "indexed_member_engagement.width",
+    "input_member.crank_radius",
+    "input_member.diameter",
+    "input_member.length",
+    "input_member.pinch_access",
+    "input_member.radial_load",
+    "input_member.support_span",
+    "input_support.bore",
+    "input_support.length",
+    "motion.input_support.diameter",
+    "motion.input_support.radial_load",
+    "motion.input_support.support_span",
+    "motion.output_support.diameter",
+    "motion.output_support.radial_load",
+    "motion.output_support.support_span",
+    "output_support.bore",
+    "output_support.length",
+    "payload_aperture.length",
+    "payload_aperture.thickness",
+    "payload_aperture.width",
+    "service_cover.length",
+    "service_cover.thickness",
+    "service_cover.width"
+  ],
+  "linked": [
+    "indexed_member.diameter",
+    "input_member.diameter",
+    "input_support.bore",
+    "output_support.bore",
+    "payload_aperture.thickness",
+    "payload_aperture.width",
+    "service_cover.thickness",
+    "service_cover.width"
+  ],
+  "unlinked": [
+    "driver_member.diameter",
+    "driver_member.length",
+    "driver_member.radial_load",
+    "driver_member.support_span",
+    "driver_member_engagement.height",
+    "driver_member_engagement.length",
+    "driver_member_engagement.width",
+    "housing.height",
+    "housing.internal_depth",
+    "housing.internal_height",
+    "housing.internal_width",
+    "housing.length",
+    "housing.wall",
+    "housing.wall_thickness",
+    "housing.width",
+    "indexed_member.length",
+    "indexed_member.radial_load",
+    "indexed_member.support_span",
+    "indexed_member_engagement.height",
+    "indexed_member_engagement.length",
+    "indexed_member_engagement.width",
+    "input_member.crank_radius",
+    "input_member.length",
+    "input_member.pinch_access",
+    "input_member.radial_load",
+    "input_member.support_span",
+    "input_support.length",
+    "motion.input_support.diameter",
+    "motion.input_support.radial_load",
+    "motion.input_support.support_span",
+    "motion.output_support.diameter",
+    "motion.output_support.radial_load",
+    "motion.output_support.support_span",
+    "output_support.length",
+    "payload_aperture.length",
+    "service_cover.length"
+  ],
+  "constraints": [
+    {
+      "subject": "disjoint.indexed_member.payload_aperture.dwell",
+      "expression": "(indexed_member.diameter/2) + (payload_aperture.width/2) <= 0.44",
+      "why": "indexed_member and payload_aperture must not occupy the same space in state dwell; separated along y, their half-extents must fit the 0.44 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.indexed_member.service_cover.dwell",
+      "expression": "(indexed_member.diameter/2) + (service_cover.width/2) <= 0.44",
+      "why": "indexed_member and service_cover must not occupy the same space in state dwell; separated along y, their half-extents must fit the 0.44 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.payload_aperture.service_cover.dwell",
+      "expression": "(payload_aperture.thickness/2) + (service_cover.thickness/2) <= 0",
+      "why": "payload_aperture and service_cover must not occupy the same space in state dwell; separated along z, their half-extents must fit the 0 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.indexed_member.payload_aperture.advancing",
+      "expression": "(0.5*(indexed_member.diameter/2) + 0.866*(indexed_member.diameter/2)) + (payload_aperture.width/2) <= 0.44",
+      "why": "indexed_member and payload_aperture must not occupy the same space in state advancing; separated along y, their half-extents must fit the 0.44 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.indexed_member.service_cover.advancing",
+      "expression": "(0.5*(indexed_member.diameter/2) + 0.866*(indexed_member.diameter/2)) + (service_cover.width/2) <= 0.44",
+      "why": "indexed_member and service_cover must not occupy the same space in state advancing; separated along y, their half-extents must fit the 0.44 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.payload_aperture.service_cover.advancing",
+      "expression": "(payload_aperture.thickness/2) + (service_cover.thickness/2) <= 0",
+      "why": "payload_aperture and service_cover must not occupy the same space in state advancing; separated along z, their half-extents must fit the 0 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.indexed_member.payload_aperture.indexed",
+      "expression": "(0.866*(indexed_member.diameter/2) + 0.5*(indexed_member.diameter/2)) + (payload_aperture.width/2) <= 0.44",
+      "why": "indexed_member and payload_aperture must not occupy the same space in state indexed; separated along y, their half-extents must fit the 0.44 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.indexed_member.service_cover.indexed",
+      "expression": "(0.866*(indexed_member.diameter/2) + 0.5*(indexed_member.diameter/2)) + (service_cover.width/2) <= 0.44",
+      "why": "indexed_member and service_cover must not occupy the same space in state indexed; separated along y, their half-extents must fit the 0.44 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.payload_aperture.service_cover.indexed",
+      "expression": "(payload_aperture.thickness/2) + (service_cover.thickness/2) <= 0",
+      "why": "payload_aperture and service_cover must not occupy the same space in state indexed; separated along z, their half-extents must fit the 0 available at the concept layout"
+    },
+    {
+      "subject": "fit.input_member.input_support",
+      "expression": "input_support.bore = input_member.diameter + running_clearance",
+      "why": "a journal turns inside its bore, so the bore is the shaft plus a running fit, never an independent dimension"
+    },
+    {
+      "subject": "fit.indexed_member.output_support",
+      "expression": "output_support.bore = indexed_member.diameter + running_clearance",
+      "why": "a journal turns inside its bore, so the bore is the shaft plus a running fit, never an independent dimension"
+    },
+    {
+      "subject": "input_member.deflection_allowable",
+      "expression": null,
+      "why": "input_member deflection allowable"
+    },
+    {
+      "subject": "driver_member.deflection_allowable",
+      "expression": null,
+      "why": "driver_member deflection allowable"
+    },
+    {
+      "subject": "indexed_member.deflection_allowable",
+      "expression": null,
+      "why": "indexed_member deflection allowable"
+    },
+    {
+      "subject": "motion.input_support.deflection_allowable",
+      "expression": null,
+      "why": "motion.input_support deflection allowable"
+    },
+    {
+      "subject": "motion.output_support.deflection_allowable",
+      "expression": null,
+      "why": "motion.output_support deflection allowable"
+    }
+  ],
+  "objectives": [
+    {
+      "subject": "objective.envelope",
+      "expression": "minimise (driver_member.length/2) + (housing.height/2) + (indexed_member.length/2) + (input_member.length/2) + (payload_aperture.thickness/2) + (service_cover.thickness/2)"
+    }
+  ]
+}

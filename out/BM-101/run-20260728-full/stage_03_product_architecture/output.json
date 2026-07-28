@@ -1,0 +1,860 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "PROD-003",
+    "design_id": "design-001",
+    "producer": "s03_product_architecture",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "regions": [
+    {
+      "id": "RG-024",
+      "name": "user_input_region",
+      "purpose": "accessible external actuation",
+      "houses": [
+        "input_member"
+      ],
+      "external": true,
+      "kind": "user_access",
+      "moving": false
+    },
+    {
+      "id": "RG-025",
+      "name": "support_region",
+      "purpose": "locates a moving element and reacts its loads",
+      "houses": [
+        "input_support",
+        "output_support"
+      ],
+      "external": false,
+      "kind": "support_zone",
+      "moving": false
+    },
+    {
+      "id": "RG-026",
+      "name": "transmission_region",
+      "purpose": "enclosed motion conversion",
+      "houses": [
+        "driver_member",
+        "driver_member_engagement",
+        "indexed_member_engagement"
+      ],
+      "external": false,
+      "kind": "enclosed_volume",
+      "moving": false
+    },
+    {
+      "id": "RG-027",
+      "name": "working_volume",
+      "purpose": "the region the output element occupies and travels through",
+      "houses": [
+        "indexed_member"
+      ],
+      "external": false,
+      "kind": "enclosed_volume",
+      "moving": false
+    },
+    {
+      "id": "RG-028",
+      "name": "structural_shell",
+      "purpose": "carries load and encloses the mechanism",
+      "houses": [
+        "housing"
+      ],
+      "external": false,
+      "kind": "structural",
+      "moving": false
+    },
+    {
+      "id": "RG-029",
+      "name": "input_member_swept_volume",
+      "purpose": "the region swept by input_member through its full range",
+      "houses": [
+        "input_member"
+      ],
+      "external": true,
+      "kind": "swept_volume",
+      "moving": true
+    },
+    {
+      "id": "RG-030",
+      "name": "driver_member_swept_volume",
+      "purpose": "the region swept by driver_member through its full range",
+      "houses": [
+        "driver_member"
+      ],
+      "external": false,
+      "kind": "swept_volume",
+      "moving": true
+    },
+    {
+      "id": "RG-031",
+      "name": "driver_member_engagement_swept_volume",
+      "purpose": "the region swept by driver_member_engagement through its full range",
+      "houses": [
+        "driver_member_engagement"
+      ],
+      "external": false,
+      "kind": "swept_volume",
+      "moving": true
+    },
+    {
+      "id": "RG-032",
+      "name": "indexed_member_engagement_swept_volume",
+      "purpose": "the region swept by indexed_member_engagement through its full range",
+      "houses": [
+        "indexed_member_engagement"
+      ],
+      "external": false,
+      "kind": "swept_volume",
+      "moving": true
+    },
+    {
+      "id": "RG-033",
+      "name": "indexed_member_swept_volume",
+      "purpose": "the region swept by indexed_member through its full range",
+      "houses": [
+        "indexed_member"
+      ],
+      "external": false,
+      "kind": "swept_volume",
+      "moving": true
+    },
+    {
+      "id": "RG-034",
+      "name": "indexed load_region",
+      "purpose": "where the externally applied load (indexed load) acts on the product",
+      "houses": [
+        "indexed load"
+      ],
+      "external": true,
+      "kind": "payload",
+      "moving": false
+    },
+    {
+      "id": "RG-035",
+      "name": "service_access_region",
+      "purpose": "removable boundary through which the enclosed mechanism is assembled and serviced",
+      "houses": [
+        "service_cover"
+      ],
+      "external": true,
+      "kind": "service_access",
+      "moving": false
+    }
+  ],
+  "pieces": [
+    {
+      "id": "PP-021",
+      "name": "input_member",
+      "kind": "user_element",
+      "realises_elements": [
+        "input_member"
+      ],
+      "engineering_roles": [
+        "rotating",
+        "user_contact",
+        "manufactured"
+      ],
+      "motion_kind": "rotation",
+      "element_class": "body",
+      "permits_motion": "fixed",
+      "form": "shaft",
+      "moving": true,
+      "external": true,
+      "rationale": "realises the input element of the architecture"
+    },
+    {
+      "id": "PP-022",
+      "name": "input_support",
+      "kind": "support_element",
+      "realises_elements": [
+        "input_support"
+      ],
+      "engineering_roles": [
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "fixed",
+      "element_class": "joint",
+      "permits_motion": "rotation",
+      "form": "collar",
+      "moving": false,
+      "external": false,
+      "rationale": "realises the support element of the architecture"
+    },
+    {
+      "id": "PP-023",
+      "name": "driver_member",
+      "kind": "transmission_element",
+      "realises_elements": [
+        "driver_member"
+      ],
+      "engineering_roles": [
+        "rotating",
+        "intermittent_pair",
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "rotation",
+      "element_class": "body",
+      "permits_motion": "fixed",
+      "form": "shaft",
+      "moving": true,
+      "external": false,
+      "rationale": "realises the conversion element of the architecture"
+    },
+    {
+      "id": "PP-024",
+      "name": "driver_member_engagement",
+      "kind": "transmission_element",
+      "realises_elements": [
+        "driver_member_engagement"
+      ],
+      "engineering_roles": [
+        "intermittent_pair",
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "fixed",
+      "element_class": "feature",
+      "permits_motion": "fixed",
+      "form": "block",
+      "moving": true,
+      "external": false,
+      "rationale": "realises the conversion element of the architecture"
+    },
+    {
+      "id": "PP-025",
+      "name": "indexed_member_engagement",
+      "kind": "transmission_element",
+      "realises_elements": [
+        "indexed_member_engagement"
+      ],
+      "engineering_roles": [
+        "intermittent_pair",
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "fixed",
+      "element_class": "feature",
+      "permits_motion": "fixed",
+      "form": "block",
+      "moving": true,
+      "external": false,
+      "rationale": "realises the conversion element of the architecture"
+    },
+    {
+      "id": "PP-026",
+      "name": "indexed_member",
+      "kind": "moving_body",
+      "realises_elements": [
+        "indexed_member"
+      ],
+      "engineering_roles": [
+        "rotating",
+        "intermittent_pair",
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "rotation",
+      "element_class": "body",
+      "permits_motion": "fixed",
+      "form": "shaft",
+      "moving": true,
+      "external": false,
+      "rationale": "realises the output element of the architecture"
+    },
+    {
+      "id": "PP-027",
+      "name": "output_support",
+      "kind": "support_element",
+      "realises_elements": [
+        "output_support"
+      ],
+      "engineering_roles": [
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "fixed",
+      "element_class": "joint",
+      "permits_motion": "rotation",
+      "form": "collar",
+      "moving": false,
+      "external": false,
+      "rationale": "realises the support element of the architecture"
+    },
+    {
+      "id": "PP-028",
+      "name": "housing",
+      "kind": "shell",
+      "realises_elements": [
+        "housing"
+      ],
+      "engineering_roles": [
+        "enclosure",
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "fixed",
+      "element_class": "body",
+      "permits_motion": "fixed",
+      "form": "shell",
+      "moving": false,
+      "external": false,
+      "rationale": "realises the structure element of the architecture"
+    },
+    {
+      "id": "PP-029",
+      "name": "payload_aperture",
+      "kind": "cover",
+      "realises_elements": [],
+      "engineering_roles": [],
+      "motion_kind": "fixed",
+      "element_class": "body",
+      "permits_motion": "fixed",
+      "form": "plate",
+      "moving": false,
+      "external": true,
+      "rationale": "an enclosed product must admit payload from outside, so a boundary opening is required; its form and closure are downstream choices"
+    },
+    {
+      "id": "PP-030",
+      "name": "service_cover",
+      "kind": "cover",
+      "realises_elements": [],
+      "engineering_roles": [],
+      "motion_kind": "fixed",
+      "element_class": "body",
+      "permits_motion": "fixed",
+      "form": "plate",
+      "moving": false,
+      "external": true,
+      "rationale": "the mechanism is enclosed, so assembly and service require a removable boundary rather than a permanently sealed shell"
+    }
+  ],
+  "obligation_ownership": [
+    {
+      "element": "input_member",
+      "obligation": "radial_support",
+      "owner_piece": "input_support",
+      "region": "support_region",
+      "unowned_reason": null
+    },
+    {
+      "element": "driver_member",
+      "obligation": "radial_support",
+      "owner_piece": "housing",
+      "region": "structural_shell",
+      "unowned_reason": null
+    },
+    {
+      "element": "indexed_member",
+      "obligation": "radial_support",
+      "owner_piece": "housing",
+      "region": "structural_shell",
+      "unowned_reason": null
+    },
+    {
+      "element": "indexed_member",
+      "obligation": "alignment",
+      "owner_piece": "housing",
+      "region": "structural_shell",
+      "unowned_reason": null
+    },
+    {
+      "element": "indexed_member",
+      "obligation": "clearance",
+      "owner_piece": "housing",
+      "region": "structural_shell",
+      "unowned_reason": null
+    },
+    {
+      "element": "input_member",
+      "obligation": "user_access",
+      "owner_piece": "housing",
+      "region": "structural_shell",
+      "unowned_reason": null
+    }
+  ],
+  "interfaces": [
+    {
+      "between": [
+        "input_member",
+        "driver_member"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "torque",
+      "crosses_boundary": true,
+      "from_elements": [
+        "input_member",
+        "driver_member"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "driver_member",
+        "driver_member_engagement"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "drive torque out to a radius",
+      "crosses_boundary": false,
+      "from_elements": [
+        "driver_member",
+        "driver_member_engagement"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "indexed_member",
+        "indexed_member_engagement"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "output torque out to a radius",
+      "crosses_boundary": false,
+      "from_elements": [
+        "indexed_member",
+        "indexed_member_engagement"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "driver_member_engagement",
+        "indexed_member_engagement"
+      ],
+      "kind": "contact_pair",
+      "transmits": "advance force and locking reaction",
+      "crosses_boundary": false,
+      "from_elements": [
+        "driver_member_engagement",
+        "indexed_member_engagement"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "input_member",
+        "input_support"
+      ],
+      "kind": "rotational_joint",
+      "transmits": "radial load",
+      "crosses_boundary": false,
+      "from_elements": [
+        "input_member",
+        "input_support"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "indexed_member",
+        "housing"
+      ],
+      "kind": "rotational_joint",
+      "transmits": "radial load",
+      "crosses_boundary": false,
+      "from_elements": [
+        "indexed_member",
+        "housing"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "input_support",
+        "housing"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "reaction into the structure",
+      "crosses_boundary": false,
+      "from_elements": [
+        "input_support",
+        "housing"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "indexed_member",
+        "output_support"
+      ],
+      "kind": "rotational_joint",
+      "transmits": "the output's rotation about its own axis",
+      "crosses_boundary": false,
+      "from_elements": [
+        "indexed_member",
+        "output_support"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "output_support",
+        "housing"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "reaction into the structure",
+      "crosses_boundary": false,
+      "from_elements": [
+        "output_support",
+        "housing"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "payload_aperture",
+        "housing"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "an opening formed in the boundary",
+      "crosses_boundary": false,
+      "from_elements": null,
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "payload_aperture",
+        "indexed_member"
+      ],
+      "kind": "user_contact",
+      "transmits": "the admitted load",
+      "crosses_boundary": true,
+      "from_elements": null,
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "service_cover",
+        "housing"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "a removable part of the boundary",
+      "crosses_boundary": false,
+      "from_elements": null,
+      "axis_relation": null
+    }
+  ],
+  "access_paths": [
+    {
+      "agent": "user_hand",
+      "mode": "actuate",
+      "target": "input_member",
+      "source_region": null,
+      "boundary_interface": "input_member~driver_member:fixed_attachment",
+      "destination_region": "input_member_swept_volume",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "payload",
+      "mode": "load",
+      "target": "indexed_member",
+      "source_region": "indexed load_region",
+      "boundary_interface": "aperture:payload_aperture",
+      "destination_region": "indexed_member_swept_volume",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": "indexed load must pass to indexed_member without fouling",
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "input_support",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "support_region",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "driver_member",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "driver_member_swept_volume",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "driver_member_engagement",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "driver_member_engagement_swept_volume",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "indexed_member_engagement",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "indexed_member_engagement_swept_volume",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "indexed_member",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "indexed_member_swept_volume",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "output_support",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "support_region",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "housing",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "structural_shell",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    }
+  ],
+  "placements": [
+    {
+      "subject": "input_member",
+      "relation": "adjacent",
+      "reference": "input_support",
+      "why": "the support must meet the element it locates"
+    },
+    {
+      "subject": "driver_member",
+      "relation": "adjacent",
+      "reference": "housing",
+      "why": "the support must meet the element it locates"
+    },
+    {
+      "subject": "indexed_member",
+      "relation": "adjacent",
+      "reference": "housing",
+      "why": "the support must meet the element it locates"
+    },
+    {
+      "subject": "indexed_member",
+      "relation": "adjacent",
+      "reference": "housing",
+      "why": "aligned features must meet"
+    },
+    {
+      "subject": "indexed_member",
+      "relation": "inside",
+      "reference": "housing",
+      "why": "the swept region must stay clear inside the product"
+    },
+    {
+      "subject": "input_member",
+      "relation": "outside",
+      "reference": "housing",
+      "why": "the surface must be reachable from outside"
+    },
+    {
+      "subject": "driver_member",
+      "relation": "crosses",
+      "reference": "housing",
+      "why": "this interface passes through the enclosure boundary"
+    },
+    {
+      "subject": "input_member",
+      "relation": "opposite",
+      "reference": "indexed_member",
+      "why": "the chain runs from input to output across the product"
+    }
+  ],
+  "assembly_sequence": [
+    {
+      "order": 1,
+      "action": "establish the structural shell: housing",
+      "pieces": [
+        "housing"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 2,
+      "action": "install the support element: input_support",
+      "pieces": [
+        "input_support"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 3,
+      "action": "install the support element: output_support",
+      "pieces": [
+        "output_support"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 4,
+      "action": "install and engage the transmission element: driver_member",
+      "pieces": [
+        "driver_member"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 5,
+      "action": "install and engage the transmission element: driver_member_engagement",
+      "pieces": [
+        "driver_member_engagement"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 6,
+      "action": "install and engage the transmission element: indexed_member_engagement",
+      "pieces": [
+        "indexed_member_engagement"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 7,
+      "action": "install the moving body onto its supports: indexed_member",
+      "pieces": [
+        "indexed_member"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 8,
+      "action": "attach the externally accessible element: input_member",
+      "pieces": [
+        "input_member"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 9,
+      "action": "close the service cover: payload_aperture",
+      "pieces": [
+        "payload_aperture"
+      ],
+      "enables": "closes the product"
+    },
+    {
+      "order": 10,
+      "action": "close the service cover: service_cover",
+      "pieces": [
+        "service_cover"
+      ],
+      "enables": "closes the product"
+    }
+  ],
+  "load_path_ownership": [
+    {
+      "name": "primary",
+      "path": [
+        "indexed load",
+        "indexed_member",
+        "driver_member",
+        "housing"
+      ],
+      "owning_regions": [
+        "indexed load_region",
+        "indexed_member_swept_volume",
+        "driver_member_swept_volume",
+        "structural_shell"
+      ],
+      "terminates_at": "housing"
+    },
+    {
+      "name": "actuation",
+      "path": [
+        "input_member",
+        "driver_member",
+        "indexed_member"
+      ],
+      "owning_regions": [
+        "input_member_swept_volume",
+        "driver_member_swept_volume",
+        "indexed_member_swept_volume"
+      ],
+      "terminates_at": "indexed_member"
+    }
+  ],
+  "unresolved_decisions": [
+    "station count",
+    "axis separation",
+    "engagement and locking geometry",
+    "unresolved at Stage 01: specific dimensions of desktop-sized product",
+    "unresolved at Stage 01: specific mechanical implementation details",
+    "unresolved at Stage 01: specific housing design details",
+    "which conceptual elements are integrated into a single manufactured piece, and which stay separate",
+    "housing split direction and service-panel orientation",
+    "material and manufacturing process"
+  ],
+  "source_architecture_id": "MECH-003",
+  "source_candidate_id": "intermittent_indexing_pair",
+  "serves_requirements": [
+    "REQ-001"
+  ],
+  "architecture_advisories": [],
+  "housing_strategy": "Enclosing shell with a removable service boundary; only interfaces declared as boundary-crossing reach the outside",
+  "user_interaction": [
+    "input_member is externally accessible (input)"
+  ],
+  "assembly_strategy": "10 pieces installed supports-first, closing with the externally accessible elements",
+  "service_strategy": "A removable boundary exposes the enclosed elements without disturbing the output element",
+  "protection_strategy": "Moving elements stay within the enclosure; only declared boundary-crossing interfaces reach the user",
+  "manufacturing_intent": "",
+  "load_paths": [
+    "indexed load -> indexed_member -> driver_member -> housing",
+    "input_member -> driver_member -> indexed_member"
+  ],
+  "proportions": "two parallel axes at a fixed separation set the product footprint; the indexed member's swept circle bounds the internal volume",
+  "risks": [
+    "locking geometry interfering with the engagement features",
+    "impact at engagement if entry is not tangential"
+  ]
+}

@@ -13,7 +13,7 @@ from pathlib import Path
 
 from assy.domain.common import reset_ids
 from assy.domain.upstream import (
-    MotionClass,
+    MotionKind,
     ObligationKind,
     RegionKind,
     SpatialIssueKind,
@@ -39,8 +39,15 @@ def stage04(spec):
 
 def fingerprint(c) -> dict:
     return {
-        "frame": (c.reference_frame.primary_axis, c.reference_frame.primary_motion.value,
-                  sorted(c.reference_frame.access_faces)),
+        "frame": (c.reference_frame.primary_axis.value,
+                  c.reference_frame.primary_motion.value,
+                  c.reference_frame.primary_element),
+        "faces": sorted((f.face.value, tuple(r.value for r in f.roles), tuple(f.hosts))
+                        for f in c.boundary_faces),
+        "stations": sorted((p.name, p.axis_station.value if p.axis_station else None)
+                           for p in c.placed_pieces),
+        "constraints": sorted((tuple(x.between), x.relation.value, x.status.value)
+                              for x in c.spatial_constraints),
         "placements": sorted((p.region, p.zone.value, p.relative_to) for p in c.region_placements),
         "swept": sorted((s.element, s.motion.value, s.shape.value, s.external)
                         for s in c.swept_volumes),
@@ -171,8 +178,8 @@ class SpatialBlueprintIsUsable(unittest.TestCase):
             f = self.concept(bid).reference_frame
             with self.subTest(benchmark=bid):
                 self.assertIsNotNone(f)
-                self.assertNotEqual(f.primary_axis, "unresolved")
-                self.assertIsNot(f.primary_motion, MotionClass.UNCLASSIFIED)
+                self.assertIsNot(f.primary_motion, MotionKind.UNSPECIFIED)
+                self.assertIsNotNone(f.primary_element)
                 self.assertTrue(f.derived_from)
 
     def test_every_moving_element_has_a_classified_swept_volume(self):
@@ -184,15 +191,15 @@ class SpatialBlueprintIsUsable(unittest.TestCase):
                     with self.subTest(benchmark=bid, element=piece.name):
                         self.assertIn(piece.name, classified)
                         sv = classified[piece.name]
-                        self.assertIsNot(sv.motion, MotionClass.UNCLASSIFIED)
+                        self.assertIsNot(sv.motion, MotionKind.UNSPECIFIED)
                         self.assertIsNot(sv.shape, SweptShape.UNKNOWN)
 
     def test_rotation_and_translation_sweep_different_shapes(self):
         """The distinction that motivated carrying motion kind downstream."""
         c = self.concept("BM-002")
         shapes = {s.element: s.shape for s in c.swept_volumes}
-        self.assertEqual(shapes["input_member"], SweptShape.DISC)
-        self.assertEqual(shapes["travelling_member"], SweptShape.PRISM)
+        self.assertEqual(shapes["input_member"], SweptShape.CYLINDRICAL)
+        self.assertEqual(shapes["travelling_member"], SweptShape.PRISMATIC)
 
     def test_interference_candidates_are_produced_and_triaged(self):
         for bid in BENCHMARKS:
@@ -259,20 +266,30 @@ class BM001SpatialBlueprint(unittest.TestCase):
     def setUpClass(cls):
         cls.mech, cls.prod, cls.c = stage04(load_spec("BM-001"))
 
-    def test_the_frame_follows_the_closure_not_a_rotating_part(self):
+    def test_the_frame_follows_the_closure(self):
         f = self.c.reference_frame
-        self.assertIs(f.primary_motion, MotionClass.HINGED_ARC)
-        self.assertIn("closure_member", f.primary_axis)
+        self.assertIs(f.primary_motion, MotionKind.ROTATION)
+        self.assertEqual(f.primary_element, "closure_member")
 
     def test_the_closure_sweeps_an_arc(self):
         swept = {s.element: s for s in self.c.swept_volumes}
-        self.assertIs(swept["closure_member"].shape, SweptShape.ARC_SECTOR)
+        self.assertIs(swept["closure_member"].shape, SweptShape.CYLINDRICAL)
 
-    def test_retention_sits_on_the_boundary_and_release_is_external(self):
+    def test_retention_sits_on_the_boundary_and_release_is_reachable(self):
+        """Reachable means external *or* on the boundary.
+
+        A closure a user presses is part of the enclosure surface, not a body
+        floating outside it; demanding EXTERNAL encoded the pre-synthesis model
+        where the lid was placed beside the box rather than forming its wall.
+        """
         zones = {p.region: p.zone for p in self.c.region_placements}
         self.assertIs(zones["retention_region"], SpatialZone.BOUNDARY)
         access = [z for r, z in zones.items() if "access" in r]
-        self.assertIn(SpatialZone.EXTERNAL, access)
+        self.assertTrue(access, "no access region was derived")
+        self.assertTrue(
+            set(access) & {SpatialZone.EXTERNAL, SpatialZone.BOUNDARY},
+            "the release surface is not reachable from outside",
+        )
 
     def test_no_service_access_route_is_invented(self):
         """The closure already opens the product."""
@@ -288,8 +305,8 @@ class BM002SpatialBlueprint(unittest.TestCase):
 
     def test_translation_defines_the_frame_over_rotation(self):
         f = self.c.reference_frame
-        self.assertIs(f.primary_motion, MotionClass.TRANSLATIONAL)
-        self.assertIn("travelling_member", f.primary_axis)
+        self.assertIs(f.primary_motion, MotionKind.TRANSLATION)
+        self.assertEqual(f.primary_element, "travelling_member")
 
     def test_guides_flank_and_supports_sit_at_the_ends(self):
         zones = {p.region: p.zone for p in self.c.region_placements}
@@ -299,7 +316,7 @@ class BM002SpatialBlueprint(unittest.TestCase):
     def test_the_crank_sweeps_outside_the_enclosure(self):
         crank = next(s for s in self.c.swept_volumes if s.element == "input_member")
         self.assertTrue(crank.external)
-        self.assertIs(crank.shape, SweptShape.DISC)
+        self.assertIs(crank.shape, SweptShape.CYLINDRICAL)
 
     def test_the_crank_sweep_is_flagged_against_service_access(self):
         """The golden calls this out: the cover must not be blocked by the crank."""
@@ -310,9 +327,9 @@ class BM002SpatialBlueprint(unittest.TestCase):
             "service access blocked by the crank sweep was not detected",
         )
 
-    def test_an_unsupported_rotating_element_is_reported(self):
-        """A real Stage 02 gap: transmission_shaft has no radial_support obligation."""
-        spans = [i for i in self.c.issues if i.kind is SpatialIssueKind.UNSUPPORTED_SPAN]
+    def test_a_rotating_body_with_no_permitting_joint_is_reported(self):
+        """A real Stage 02 gap: transmission_shaft has no joint permitting rotation."""
+        spans = [i for i in self.c.issues if i.kind is SpatialIssueKind.UNGROUNDED_MOTION]
         self.assertTrue(spans)
         self.assertTrue(any("transmission_shaft" in i.concern for i in spans))
 

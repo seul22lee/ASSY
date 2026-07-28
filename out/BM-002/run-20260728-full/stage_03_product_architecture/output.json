@@ -1,0 +1,1286 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "PROD-002",
+    "design_id": "design-001",
+    "producer": "s03_product_architecture",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "regions": [
+    {
+      "id": "RG-009",
+      "name": "user_input_region",
+      "purpose": "accessible external actuation",
+      "houses": [
+        "input_member"
+      ],
+      "external": true,
+      "kind": "user_access",
+      "moving": false
+    },
+    {
+      "id": "RG-010",
+      "name": "support_region",
+      "purpose": "locates a moving element and reacts its loads",
+      "houses": [
+        "input_support",
+        "thrust_support"
+      ],
+      "external": false,
+      "kind": "support_zone",
+      "moving": false
+    },
+    {
+      "id": "RG-011",
+      "name": "transmission_region",
+      "purpose": "enclosed power transmission",
+      "houses": [
+        "transmission_shaft",
+        "threaded_member",
+        "travelling_nut",
+        "redirect_member"
+      ],
+      "external": false,
+      "kind": "enclosed_volume",
+      "moving": false
+    },
+    {
+      "id": "RG-012",
+      "name": "working_volume",
+      "purpose": "the region the output element occupies and travels through",
+      "houses": [
+        "travelling_member"
+      ],
+      "external": false,
+      "kind": "enclosed_volume",
+      "moving": false
+    },
+    {
+      "id": "RG-013",
+      "name": "guidance_region",
+      "purpose": "constrains the moving element",
+      "houses": [
+        "guide_member",
+        "guide_member_opposed"
+      ],
+      "external": false,
+      "kind": "support_zone",
+      "moving": false
+    },
+    {
+      "id": "RG-014",
+      "name": "travel_limit_region",
+      "purpose": "bounds the motion of a moving element",
+      "houses": [
+        "travel_stop",
+        "travel_stop_far"
+      ],
+      "external": false,
+      "kind": "travel_limit_zone",
+      "moving": false
+    },
+    {
+      "id": "RG-015",
+      "name": "structural_shell",
+      "purpose": "carries load and encloses the mechanism",
+      "houses": [
+        "housing"
+      ],
+      "external": false,
+      "kind": "structural",
+      "moving": false
+    },
+    {
+      "id": "RG-016",
+      "name": "input_member_swept_volume",
+      "purpose": "the region swept by input_member through its full range",
+      "houses": [
+        "input_member"
+      ],
+      "external": true,
+      "kind": "swept_volume",
+      "moving": true
+    },
+    {
+      "id": "RG-017",
+      "name": "transmission_shaft_swept_volume",
+      "purpose": "the region swept by transmission_shaft through its full range",
+      "houses": [
+        "transmission_shaft"
+      ],
+      "external": false,
+      "kind": "swept_volume",
+      "moving": true
+    },
+    {
+      "id": "RG-018",
+      "name": "threaded_member_swept_volume",
+      "purpose": "the region swept by threaded_member through its full range",
+      "houses": [
+        "threaded_member"
+      ],
+      "external": false,
+      "kind": "swept_volume",
+      "moving": true
+    },
+    {
+      "id": "RG-019",
+      "name": "travelling_member_swept_volume",
+      "purpose": "the region swept by travelling_member through its full range",
+      "houses": [
+        "travelling_member"
+      ],
+      "external": false,
+      "kind": "swept_volume",
+      "moving": true
+    },
+    {
+      "id": "RG-020",
+      "name": "travelling_nut_swept_volume",
+      "purpose": "the region swept by travelling_nut through its full range",
+      "houses": [
+        "travelling_nut"
+      ],
+      "external": false,
+      "kind": "swept_volume",
+      "moving": true
+    },
+    {
+      "id": "RG-021",
+      "name": "redirect_member_swept_volume",
+      "purpose": "the region swept by redirect_member through its full range",
+      "houses": [
+        "redirect_member"
+      ],
+      "external": false,
+      "kind": "swept_volume",
+      "moving": true
+    },
+    {
+      "id": "RG-022",
+      "name": "payload_region",
+      "purpose": "where the externally applied load (payload) acts on the product",
+      "houses": [
+        "payload"
+      ],
+      "external": true,
+      "kind": "payload",
+      "moving": false
+    },
+    {
+      "id": "RG-023",
+      "name": "service_access_region",
+      "purpose": "removable boundary through which the enclosed mechanism is assembled and serviced",
+      "houses": [
+        "service_cover"
+      ],
+      "external": true,
+      "kind": "service_access",
+      "moving": false
+    }
+  ],
+  "pieces": [
+    {
+      "id": "PP-006",
+      "name": "input_member",
+      "kind": "user_element",
+      "realises_elements": [
+        "input_member"
+      ],
+      "engineering_roles": [
+        "rotating",
+        "user_contact",
+        "manufactured"
+      ],
+      "motion_kind": "rotation",
+      "element_class": "body",
+      "permits_motion": "fixed",
+      "form": "shaft",
+      "moving": true,
+      "external": true,
+      "rationale": "realises the input element of the architecture"
+    },
+    {
+      "id": "PP-007",
+      "name": "input_support",
+      "kind": "support_element",
+      "realises_elements": [
+        "input_support"
+      ],
+      "engineering_roles": [
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "fixed",
+      "element_class": "joint",
+      "permits_motion": "rotation",
+      "form": "collar",
+      "moving": false,
+      "external": false,
+      "rationale": "realises the support element of the architecture"
+    },
+    {
+      "id": "PP-008",
+      "name": "transmission_shaft",
+      "kind": "transmission_element",
+      "realises_elements": [
+        "transmission_shaft"
+      ],
+      "engineering_roles": [
+        "rotating",
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "rotation",
+      "element_class": "body",
+      "permits_motion": "fixed",
+      "form": "shaft",
+      "moving": true,
+      "external": false,
+      "rationale": "realises the transmission element of the architecture"
+    },
+    {
+      "id": "PP-009",
+      "name": "threaded_member",
+      "kind": "transmission_element",
+      "realises_elements": [
+        "threaded_member"
+      ],
+      "engineering_roles": [
+        "rotating",
+        "threaded_pair",
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "rotation",
+      "element_class": "body",
+      "permits_motion": "fixed",
+      "form": "shaft",
+      "moving": true,
+      "external": false,
+      "rationale": "realises the conversion element of the architecture"
+    },
+    {
+      "id": "PP-010",
+      "name": "thrust_support",
+      "kind": "support_element",
+      "realises_elements": [
+        "thrust_support"
+      ],
+      "engineering_roles": [
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "fixed",
+      "element_class": "joint",
+      "permits_motion": "rotation",
+      "form": "collar",
+      "moving": false,
+      "external": false,
+      "rationale": "realises the support element of the architecture"
+    },
+    {
+      "id": "PP-011",
+      "name": "travelling_member",
+      "kind": "moving_body",
+      "realises_elements": [
+        "travelling_member"
+      ],
+      "engineering_roles": [
+        "translating",
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "translation",
+      "element_class": "body",
+      "permits_motion": "fixed",
+      "form": "plate",
+      "moving": true,
+      "external": false,
+      "rationale": "realises the output element of the architecture"
+    },
+    {
+      "id": "PP-012",
+      "name": "guide_member",
+      "kind": "support_element",
+      "realises_elements": [
+        "guide_member"
+      ],
+      "engineering_roles": [
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "fixed",
+      "element_class": "joint",
+      "permits_motion": "translation",
+      "form": "rail",
+      "moving": false,
+      "external": false,
+      "rationale": "realises the guidance element of the architecture"
+    },
+    {
+      "id": "PP-013",
+      "name": "travel_stop",
+      "kind": "limit_element",
+      "realises_elements": [
+        "travel_stop"
+      ],
+      "engineering_roles": [
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "fixed",
+      "element_class": "feature",
+      "permits_motion": "fixed",
+      "form": "block",
+      "moving": false,
+      "external": false,
+      "rationale": "realises the limit element of the architecture"
+    },
+    {
+      "id": "PP-014",
+      "name": "travel_stop_far",
+      "kind": "limit_element",
+      "realises_elements": [
+        "travel_stop_far"
+      ],
+      "engineering_roles": [
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "fixed",
+      "element_class": "feature",
+      "permits_motion": "fixed",
+      "form": "block",
+      "moving": false,
+      "external": false,
+      "rationale": "realises the limit element of the architecture"
+    },
+    {
+      "id": "PP-015",
+      "name": "housing",
+      "kind": "shell",
+      "realises_elements": [
+        "housing"
+      ],
+      "engineering_roles": [
+        "enclosure",
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "fixed",
+      "element_class": "body",
+      "permits_motion": "fixed",
+      "form": "shell",
+      "moving": false,
+      "external": false,
+      "rationale": "realises the structure element of the architecture"
+    },
+    {
+      "id": "PP-016",
+      "name": "travelling_nut",
+      "kind": "transmission_element",
+      "realises_elements": [
+        "travelling_nut"
+      ],
+      "engineering_roles": [
+        "translating",
+        "threaded_pair",
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "translation",
+      "element_class": "body",
+      "permits_motion": "fixed",
+      "form": "collar",
+      "moving": true,
+      "external": false,
+      "rationale": "realises the conversion element of the architecture"
+    },
+    {
+      "id": "PP-017",
+      "name": "redirect_member",
+      "kind": "transmission_element",
+      "realises_elements": [
+        "redirect_member"
+      ],
+      "engineering_roles": [
+        "rotating",
+        "gear_pair",
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "rotation",
+      "element_class": "body",
+      "permits_motion": "fixed",
+      "form": "shaft",
+      "moving": true,
+      "external": false,
+      "rationale": "realises the transmission element of the architecture"
+    },
+    {
+      "id": "PP-018",
+      "name": "guide_member_opposed",
+      "kind": "support_element",
+      "realises_elements": [
+        "guide_member_opposed"
+      ],
+      "engineering_roles": [
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "fixed",
+      "element_class": "joint",
+      "permits_motion": "translation",
+      "form": "rail",
+      "moving": false,
+      "external": false,
+      "rationale": "realises the guidance element of the architecture"
+    },
+    {
+      "id": "PP-019",
+      "name": "payload_aperture",
+      "kind": "cover",
+      "realises_elements": [],
+      "engineering_roles": [],
+      "motion_kind": "fixed",
+      "element_class": "body",
+      "permits_motion": "fixed",
+      "form": "plate",
+      "moving": false,
+      "external": true,
+      "rationale": "an enclosed product must admit payload from outside, so a boundary opening is required; its form and closure are downstream choices"
+    },
+    {
+      "id": "PP-020",
+      "name": "service_cover",
+      "kind": "cover",
+      "realises_elements": [],
+      "engineering_roles": [],
+      "motion_kind": "fixed",
+      "element_class": "body",
+      "permits_motion": "fixed",
+      "form": "plate",
+      "moving": false,
+      "external": true,
+      "rationale": "the mechanism is enclosed, so assembly and service require a removable boundary rather than a permanently sealed shell"
+    }
+  ],
+  "obligation_ownership": [
+    {
+      "element": "input_member",
+      "obligation": "radial_support",
+      "owner_piece": "input_support",
+      "region": "support_region",
+      "unowned_reason": null
+    },
+    {
+      "element": "threaded_member",
+      "obligation": "radial_support",
+      "owner_piece": "housing",
+      "region": "structural_shell",
+      "unowned_reason": null
+    },
+    {
+      "element": "threaded_member",
+      "obligation": "axial_thrust",
+      "owner_piece": "thrust_support",
+      "region": "support_region",
+      "unowned_reason": null
+    },
+    {
+      "element": "travelling_member",
+      "obligation": "anti_rotation",
+      "owner_piece": "guide_member",
+      "region": "guidance_region",
+      "unowned_reason": null
+    },
+    {
+      "element": "travelling_member",
+      "obligation": "guidance",
+      "owner_piece": "guide_member",
+      "region": "guidance_region",
+      "unowned_reason": null
+    },
+    {
+      "element": "travelling_member",
+      "obligation": "travel_limit",
+      "owner_piece": "travel_stop",
+      "region": "travel_limit_region",
+      "unowned_reason": null
+    },
+    {
+      "element": "travelling_member",
+      "obligation": "clearance",
+      "owner_piece": "housing",
+      "region": "structural_shell",
+      "unowned_reason": null
+    },
+    {
+      "element": "input_member",
+      "obligation": "user_access",
+      "owner_piece": "housing",
+      "region": "structural_shell",
+      "unowned_reason": null
+    },
+    {
+      "element": "travelling_member",
+      "obligation": "anti_rotation",
+      "owner_piece": "guide_member_opposed",
+      "region": "guidance_region",
+      "unowned_reason": null
+    },
+    {
+      "element": "travelling_member",
+      "obligation": "travel_limit",
+      "owner_piece": "travel_stop_far",
+      "region": "travel_limit_region",
+      "unowned_reason": null
+    }
+  ],
+  "interfaces": [
+    {
+      "between": [
+        "input_member",
+        "transmission_shaft"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "torque",
+      "crosses_boundary": true,
+      "from_elements": [
+        "input_member",
+        "transmission_shaft"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "travelling_member",
+        "guide_member"
+      ],
+      "kind": "sliding_joint",
+      "transmits": "reaction moment and side load",
+      "crosses_boundary": false,
+      "from_elements": [
+        "travelling_member",
+        "guide_member"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "threaded_member",
+        "travelling_member"
+      ],
+      "kind": "threaded_pair",
+      "transmits": "axial force and torque",
+      "crosses_boundary": false,
+      "from_elements": [
+        "threaded_member",
+        "travelling_member"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "threaded_member",
+        "thrust_support"
+      ],
+      "kind": "rotational_joint",
+      "transmits": "axial thrust",
+      "crosses_boundary": false,
+      "from_elements": [
+        "threaded_member",
+        "thrust_support"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "input_member",
+        "input_support"
+      ],
+      "kind": "rotational_joint",
+      "transmits": "radial load",
+      "crosses_boundary": false,
+      "from_elements": [
+        "input_member",
+        "input_support"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "travelling_member",
+        "travel_stop"
+      ],
+      "kind": "contact_pair",
+      "transmits": "end-of-travel reaction",
+      "crosses_boundary": false,
+      "from_elements": [
+        "travelling_member",
+        "travel_stop"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "input_support",
+        "housing"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "reaction into the structure",
+      "crosses_boundary": false,
+      "from_elements": [
+        "input_support",
+        "housing"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "thrust_support",
+        "housing"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "reaction into the structure",
+      "crosses_boundary": false,
+      "from_elements": [
+        "thrust_support",
+        "housing"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "guide_member",
+        "housing"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "reaction into the structure",
+      "crosses_boundary": false,
+      "from_elements": [
+        "guide_member",
+        "housing"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "travel_stop",
+        "housing"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "reaction into the structure",
+      "crosses_boundary": false,
+      "from_elements": [
+        "travel_stop",
+        "housing"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "threaded_member",
+        "travelling_nut"
+      ],
+      "kind": "threaded_pair",
+      "transmits": "the conversion of rotation into translation",
+      "crosses_boundary": false,
+      "from_elements": [
+        "threaded_member",
+        "travelling_nut"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "travelling_nut",
+        "travelling_member"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "the converted travel and the payload reaction",
+      "crosses_boundary": false,
+      "from_elements": [
+        "travelling_nut",
+        "travelling_member"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "travelling_member",
+        "guide_member_opposed"
+      ],
+      "kind": "sliding_joint",
+      "transmits": "the opposing half of the guidance couple",
+      "crosses_boundary": false,
+      "from_elements": [
+        "travelling_member",
+        "guide_member_opposed"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "guide_member_opposed",
+        "housing"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "reaction into the structure",
+      "crosses_boundary": false,
+      "from_elements": [
+        "guide_member_opposed",
+        "housing"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "travelling_member",
+        "travel_stop_far"
+      ],
+      "kind": "contact_pair",
+      "transmits": "end-of-travel reaction at the far extreme",
+      "crosses_boundary": false,
+      "from_elements": [
+        "travelling_member",
+        "travel_stop_far"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "travel_stop_far",
+        "housing"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "reaction into the structure",
+      "crosses_boundary": false,
+      "from_elements": [
+        "travel_stop_far",
+        "housing"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "transmission_shaft",
+        "redirect_member"
+      ],
+      "kind": "toothed_mesh",
+      "transmits": "torque across a change of axis",
+      "crosses_boundary": false,
+      "from_elements": [
+        "transmission_shaft",
+        "redirect_member"
+      ],
+      "axis_relation": "intersecting"
+    },
+    {
+      "between": [
+        "redirect_member",
+        "threaded_member"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "torque on the redirected axis",
+      "crosses_boundary": false,
+      "from_elements": [
+        "redirect_member",
+        "threaded_member"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "payload_aperture",
+        "housing"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "an opening formed in the boundary",
+      "crosses_boundary": false,
+      "from_elements": null,
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "payload_aperture",
+        "travelling_member"
+      ],
+      "kind": "user_contact",
+      "transmits": "the admitted load",
+      "crosses_boundary": true,
+      "from_elements": null,
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "service_cover",
+        "housing"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "a removable part of the boundary",
+      "crosses_boundary": false,
+      "from_elements": null,
+      "axis_relation": null
+    }
+  ],
+  "access_paths": [
+    {
+      "agent": "user_hand",
+      "mode": "actuate",
+      "target": "input_member",
+      "source_region": null,
+      "boundary_interface": "input_member~transmission_shaft:fixed_attachment",
+      "destination_region": "input_member_swept_volume",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "payload",
+      "mode": "load",
+      "target": "travelling_member",
+      "source_region": "payload_region",
+      "boundary_interface": "aperture:payload_aperture",
+      "destination_region": "travelling_member_swept_volume",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": "payload must pass to travelling_member without fouling",
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "input_support",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "support_region",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "transmission_shaft",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "transmission_shaft_swept_volume",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "threaded_member",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "threaded_member_swept_volume",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "thrust_support",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "support_region",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "travelling_member",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "travelling_member_swept_volume",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "guide_member",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "guidance_region",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "travel_stop",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "travel_limit_region",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "travel_stop_far",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "travel_limit_region",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "housing",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "structural_shell",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "travelling_nut",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "travelling_nut_swept_volume",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "redirect_member",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "redirect_member_swept_volume",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "guide_member_opposed",
+      "source_region": null,
+      "boundary_interface": "removable:payload_aperture",
+      "destination_region": "guidance_region",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    }
+  ],
+  "placements": [
+    {
+      "subject": "input_member",
+      "relation": "adjacent",
+      "reference": "input_support",
+      "why": "the support must meet the element it locates"
+    },
+    {
+      "subject": "threaded_member",
+      "relation": "adjacent",
+      "reference": "housing",
+      "why": "the support must meet the element it locates"
+    },
+    {
+      "subject": "threaded_member",
+      "relation": "adjacent",
+      "reference": "thrust_support",
+      "why": "thrust is reacted at the end of the element"
+    },
+    {
+      "subject": "travelling_member",
+      "relation": "parallel",
+      "reference": "guide_member",
+      "why": "the reacting element must run alongside the travel"
+    },
+    {
+      "subject": "travelling_member",
+      "relation": "parallel",
+      "reference": "guide_member",
+      "why": "guidance runs parallel to the guided motion"
+    },
+    {
+      "subject": "travelling_member",
+      "relation": "bounds",
+      "reference": "travel_stop",
+      "why": "the limit bounds the travel of the element"
+    },
+    {
+      "subject": "travelling_member",
+      "relation": "inside",
+      "reference": "housing",
+      "why": "the swept region must stay clear inside the product"
+    },
+    {
+      "subject": "input_member",
+      "relation": "outside",
+      "reference": "housing",
+      "why": "the surface must be reachable from outside"
+    },
+    {
+      "subject": "travelling_member",
+      "relation": "parallel",
+      "reference": "guide_member_opposed",
+      "why": "the reacting element must run alongside the travel"
+    },
+    {
+      "subject": "travelling_member",
+      "relation": "bounds",
+      "reference": "travel_stop_far",
+      "why": "the limit bounds the travel of the element"
+    },
+    {
+      "subject": "transmission_shaft",
+      "relation": "crosses",
+      "reference": "housing",
+      "why": "this interface passes through the enclosure boundary"
+    },
+    {
+      "subject": "input_member",
+      "relation": "opposite",
+      "reference": "travelling_member",
+      "why": "the chain runs from input to output across the product"
+    }
+  ],
+  "assembly_sequence": [
+    {
+      "order": 1,
+      "action": "establish the structural shell: housing",
+      "pieces": [
+        "housing"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 2,
+      "action": "install the support element: guide_member",
+      "pieces": [
+        "guide_member"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 3,
+      "action": "install the support element: guide_member_opposed",
+      "pieces": [
+        "guide_member_opposed"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 4,
+      "action": "install the support element: input_support",
+      "pieces": [
+        "input_support"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 5,
+      "action": "install the support element: thrust_support",
+      "pieces": [
+        "thrust_support"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 6,
+      "action": "install and engage the transmission element: redirect_member",
+      "pieces": [
+        "redirect_member"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 7,
+      "action": "install and engage the transmission element: threaded_member",
+      "pieces": [
+        "threaded_member"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 8,
+      "action": "install and engage the transmission element: transmission_shaft",
+      "pieces": [
+        "transmission_shaft"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 9,
+      "action": "install and engage the transmission element: travelling_nut",
+      "pieces": [
+        "travelling_nut"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 10,
+      "action": "install the moving body onto its supports: travelling_member",
+      "pieces": [
+        "travelling_member"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 11,
+      "action": "install the travel limit: travel_stop",
+      "pieces": [
+        "travel_stop"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 12,
+      "action": "install the travel limit: travel_stop_far",
+      "pieces": [
+        "travel_stop_far"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 13,
+      "action": "attach the externally accessible element: input_member",
+      "pieces": [
+        "input_member"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 14,
+      "action": "close the service cover: payload_aperture",
+      "pieces": [
+        "payload_aperture"
+      ],
+      "enables": "closes the product"
+    },
+    {
+      "order": 15,
+      "action": "close the service cover: service_cover",
+      "pieces": [
+        "service_cover"
+      ],
+      "enables": "closes the product"
+    }
+  ],
+  "load_path_ownership": [
+    {
+      "name": "primary",
+      "path": [
+        "payload",
+        "travelling_member",
+        "threaded_member",
+        "thrust_support",
+        "housing"
+      ],
+      "owning_regions": [
+        "payload_region",
+        "travelling_member_swept_volume",
+        "threaded_member_swept_volume",
+        "support_region",
+        "structural_shell"
+      ],
+      "terminates_at": "housing"
+    },
+    {
+      "name": "actuation",
+      "path": [
+        "input_member",
+        "transmission_shaft",
+        "redirect_member",
+        "threaded_member",
+        "travelling_nut",
+        "travelling_member"
+      ],
+      "owning_regions": [
+        "input_member_swept_volume",
+        "transmission_shaft_swept_volume",
+        "redirect_member_swept_volume",
+        "threaded_member_swept_volume",
+        "travelling_nut_swept_volume",
+        "travelling_member_swept_volume"
+      ],
+      "terminates_at": "travelling_member"
+    }
+  ],
+  "unresolved_decisions": [
+    "thread lead",
+    "guide count and spacing",
+    "member proportions",
+    "unresolved at Stage 01: mechanical advantage required for hand crank operation",
+    "unresolved at Stage 01: required housing dimensions",
+    "unresolved at Stage 01: required transmission mechanism type",
+    "which conceptual elements are integrated into a single manufactured piece, and which stay separate",
+    "housing split direction and service-panel orientation",
+    "material and manufacturing process"
+  ],
+  "source_architecture_id": "MECH-002",
+  "source_candidate_id": "screw_drive",
+  "serves_requirements": [
+    "REQ-001"
+  ],
+  "architecture_advisories": [],
+  "housing_strategy": "Enclosing shell with a removable service boundary; only interfaces declared as boundary-crossing reach the outside",
+  "user_interaction": [
+    "input_member is externally accessible (input)"
+  ],
+  "assembly_strategy": "15 pieces installed supports-first, closing with the externally accessible elements",
+  "service_strategy": "A removable boundary exposes the enclosed elements without disturbing the output element",
+  "protection_strategy": "Moving elements stay within the enclosure; only declared boundary-crossing interfaces reach the user",
+  "manufacturing_intent": "",
+  "load_paths": [
+    "payload -> travelling_member -> threaded_member -> thrust_support -> housing",
+    "input_member -> transmission_shaft -> redirect_member -> threaded_member -> travelling_nut -> travelling_member"
+  ],
+  "proportions": "the threaded member spans the full travel and sets product height; the guide runs parallel to travel; the input member crosses the enclosure boundary",
+  "risks": [
+    "thread wear over repeated cycles",
+    "travelling member tilts if guidance is weak",
+    "binding if the guide and screw axes are not parallel",
+    "screw buckling under compressive load"
+  ]
+}

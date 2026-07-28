@@ -1,0 +1,1296 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "MECH-003",
+    "design_id": "design-001",
+    "producer": "s02_mechanical_architecture",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "candidates": [
+    {
+      "id": "intermittent_indexing_pair",
+      "principle": "Driver and driven pair producing discrete advance with dwell",
+      "parts": [
+        {
+          "moving": true,
+          "engineering_roles": [
+            "rotating",
+            "user_contact",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "shaft",
+          "permits_motion": "fixed",
+          "id": "FP-057",
+          "name": "input_member",
+          "role": "input",
+          "rationale": "moving element in the intermittent_indexing_pair chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "joint",
+          "form": "collar",
+          "permits_motion": "rotation",
+          "id": "FP-058",
+          "name": "input_support",
+          "role": "support",
+          "rationale": "fixed element in the intermittent_indexing_pair chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "rotating",
+            "intermittent_pair",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "shaft",
+          "permits_motion": "fixed",
+          "id": "FP-059",
+          "name": "driver_member",
+          "role": "conversion",
+          "rationale": "moving element in the intermittent_indexing_pair chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "intermittent_pair",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "feature",
+          "form": "block",
+          "permits_motion": "fixed",
+          "id": "FP-060",
+          "name": "driver_member_engagement",
+          "role": "conversion",
+          "rationale": "moving element in the intermittent_indexing_pair chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "intermittent_pair",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "feature",
+          "form": "block",
+          "permits_motion": "fixed",
+          "id": "FP-061",
+          "name": "indexed_member_engagement",
+          "role": "conversion",
+          "rationale": "moving element in the intermittent_indexing_pair chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "rotating",
+            "intermittent_pair",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "shaft",
+          "permits_motion": "fixed",
+          "id": "FP-062",
+          "name": "indexed_member",
+          "role": "output",
+          "rationale": "moving element in the intermittent_indexing_pair chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "joint",
+          "form": "collar",
+          "permits_motion": "rotation",
+          "id": "FP-063",
+          "name": "output_support",
+          "role": "support",
+          "rationale": "fixed element in the intermittent_indexing_pair chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "enclosure",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "body",
+          "form": "shell",
+          "permits_motion": "fixed",
+          "id": "FP-064",
+          "name": "housing",
+          "role": "structure",
+          "rationale": "fixed element in the intermittent_indexing_pair chain"
+        }
+      ],
+      "motions": [
+        {
+          "id": "MO-007",
+          "driver": "input_member",
+          "driven": "indexed_member",
+          "relation": "rotation->rotation",
+          "ratio_symbol": "intermittent",
+          "dof": 1
+        }
+      ],
+      "strengths": [
+        "positive station location",
+        "dwell arises from the geometry itself"
+      ],
+      "weaknesses": [
+        "engagement clearance varies through the cycle",
+        "entry and exit conditions are phase-dependent"
+      ],
+      "risks": [
+        "locking geometry interfering with the engagement features",
+        "impact at engagement if entry is not tangential"
+      ],
+      "open_questions": [
+        "station count",
+        "axis separation",
+        "engagement and locking geometry"
+      ],
+      "serves_requirements": [
+        "REQ-001"
+      ],
+      "functions": [
+        {
+          "function": "receive manual input",
+          "performed_by": [
+            "input_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "support the rotating input",
+          "performed_by": [
+            "input_support"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "transmit input across the enclosure boundary",
+          "performed_by": [
+            "input_member",
+            "housing"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "advance the output by one discrete station",
+          "performed_by": [
+            "driver_member",
+            "indexed_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "hold the output stationary between advances",
+          "performed_by": [
+            "driver_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "maintain the axis separation that sets engagement",
+          "performed_by": [
+            "housing"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "transfer loads into the structure",
+          "performed_by": [
+            "housing"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        }
+      ],
+      "element_chain": [
+        "input_member",
+        "driver_member",
+        "indexed_member"
+      ],
+      "state_relations": [
+        "one input revolution advances the output by one station",
+        "the output is stationary for the remainder of the input cycle"
+      ],
+      "holding_principle": "the driver geometry locks the output during dwell",
+      "support_obligations": [
+        {
+          "element": "input_member",
+          "kind": "radial_support",
+          "reacted_by": "input_support",
+          "why": "a hand-driven input shaft must be located against side load"
+        },
+        {
+          "element": "driver_member",
+          "kind": "radial_support",
+          "reacted_by": "housing",
+          "why": "the driver must run on a fixed axis"
+        },
+        {
+          "element": "indexed_member",
+          "kind": "radial_support",
+          "reacted_by": "housing",
+          "why": "the indexed member must run on a fixed parallel axis"
+        },
+        {
+          "element": "indexed_member",
+          "kind": "alignment",
+          "reacted_by": "housing",
+          "why": "axis separation fixes the engagement and must be held"
+        },
+        {
+          "element": "indexed_member",
+          "kind": "clearance",
+          "reacted_by": "housing",
+          "why": "the swept circle of the indexed member bounds the internal volume"
+        },
+        {
+          "element": "input_member",
+          "kind": "user_access",
+          "reacted_by": "housing",
+          "why": "the input must remain reachable while the mechanism stays enclosed"
+        }
+      ],
+      "spatial_constraints": [
+        {
+          "between": [
+            "input_member",
+            "driver_member"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "driver_member",
+            "driver_member_engagement"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "indexed_member",
+            "indexed_member_engagement"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "driver_member_engagement",
+            "indexed_member_engagement"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:contact_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a contact pair transmits only where the surfaces meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_member",
+            "input_support"
+          ],
+          "relation": "shared_axis",
+          "source": "interface:rotational_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a revolute pair turns about one axis, so both members must lie on it",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "indexed_member",
+            "housing"
+          ],
+          "relation": "shared_axis",
+          "source": "interface:rotational_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a revolute pair turns about one axis, so both members must lie on it",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_support",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "indexed_member",
+            "output_support"
+          ],
+          "relation": "shared_axis",
+          "source": "interface:rotational_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a revolute pair turns about one axis, so both members must lie on it",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "output_support",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_member",
+            "input_support"
+          ],
+          "relation": "axis_surrounded",
+          "source": "obligation:radial_support",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a radial reaction acts around the axis it locates",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "driver_member",
+            "housing"
+          ],
+          "relation": "axis_surrounded",
+          "source": "obligation:radial_support",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a radial reaction acts around the axis it locates",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "indexed_member",
+            "housing"
+          ],
+          "relation": "axis_surrounded",
+          "source": "obligation:radial_support",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a radial reaction acts around the axis it locates",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "indexed_member",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "obligation:alignment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "features held in alignment must meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "indexed_member",
+            "housing"
+          ],
+          "relation": "disjoint_swept",
+          "source": "obligation:clearance",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a region kept clear must not be entered by the swept volume",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_member",
+            "housing"
+          ],
+          "relation": "exterior_reachable",
+          "source": "obligation:user_access",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a surface a user must reach cannot be sealed inside the boundary",
+          "status": "not_checkable",
+          "detail": ""
+        }
+      ],
+      "states": [
+        {
+          "name": "dwell",
+          "role": "holding",
+          "holds": [
+            "indexed_member"
+          ],
+          "covers": [],
+          "clears": [],
+          "at_limit_of": [],
+          "why": "the output is locked between advances"
+        },
+        {
+          "name": "advancing",
+          "role": "moving",
+          "holds": [],
+          "covers": [],
+          "clears": [],
+          "at_limit_of": [],
+          "why": "the driver is carrying the output through one station"
+        },
+        {
+          "name": "indexed",
+          "role": "holding",
+          "holds": [
+            "indexed_member"
+          ],
+          "covers": [],
+          "clears": [],
+          "at_limit_of": [],
+          "why": "the output has reached the next station and is locked again"
+        }
+      ],
+      "transitions": [
+        {
+          "from_state": "dwell",
+          "to_state": "advancing",
+          "driven_by": "advance the output by one discrete station",
+          "moves": [
+            "indexed_member"
+          ],
+          "why": "engagement begins and the output is driven"
+        },
+        {
+          "from_state": "advancing",
+          "to_state": "indexed",
+          "driven_by": "hold the output stationary between advances",
+          "moves": [
+            "indexed_member"
+          ],
+          "why": "engagement ends and the locking geometry resumes"
+        }
+      ],
+      "constrained_by": [],
+      "bounds": [],
+      "load_path": [
+        "indexed load",
+        "indexed_member",
+        "driver_member",
+        "housing"
+      ],
+      "interfaces": [
+        {
+          "between": [
+            "input_member",
+            "driver_member"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "torque",
+          "crosses_boundary": true,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "driver_member",
+            "driver_member_engagement"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "drive torque out to a radius",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "indexed_member",
+            "indexed_member_engagement"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "output torque out to a radius",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "driver_member_engagement",
+            "indexed_member_engagement"
+          ],
+          "kind": "contact_pair",
+          "transmits": "advance force and locking reaction",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "input_member",
+            "input_support"
+          ],
+          "kind": "rotational_joint",
+          "transmits": "radial load",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "indexed_member",
+            "housing"
+          ],
+          "kind": "rotational_joint",
+          "transmits": "radial load",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "input_support",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "indexed_member",
+            "output_support"
+          ],
+          "kind": "rotational_joint",
+          "transmits": "the output's rotation about its own axis",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "output_support",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        }
+      ],
+      "spatial_implications": [
+        "two parallel axes at a fixed separation set the product footprint",
+        "the indexed member's swept circle bounds the internal volume"
+      ],
+      "motion_envelopes": [
+        "indexed member sweeps a full disc",
+        "driver sweeps a disc overlapping it at the engagement region"
+      ],
+      "tradeoffs": [
+        "dwell fraction against advance duration"
+      ],
+      "assumptions": [
+        "the output advances in one direction only",
+        "4 solution choice(s) were left open by the user and are treated as available to this candidate"
+      ],
+      "downstream_decisions": [
+        "station count",
+        "axis separation",
+        "engagement and locking geometry",
+        "unresolved at Stage 01: specific dimensions of desktop-sized product",
+        "unresolved at Stage 01: specific mechanical implementation details",
+        "unresolved at Stage 01: specific housing design details"
+      ]
+    },
+    {
+      "id": "pawl_advance_pair",
+      "principle": "Reciprocating driver engaging a toothed wheel to advance one step",
+      "parts": [
+        {
+          "moving": true,
+          "engineering_roles": [
+            "rotating",
+            "user_contact",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "shaft",
+          "permits_motion": "fixed",
+          "id": "FP-065",
+          "name": "input_member",
+          "role": "input",
+          "rationale": "moving element in the pawl_advance_pair chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "joint",
+          "form": "collar",
+          "permits_motion": "rotation",
+          "id": "FP-066",
+          "name": "input_support",
+          "role": "support",
+          "rationale": "fixed element in the pawl_advance_pair chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "compliant",
+            "intermittent_pair",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "compliant_deformation",
+          "element_class": "body",
+          "form": "link",
+          "permits_motion": "fixed",
+          "id": "FP-067",
+          "name": "driving_pawl",
+          "role": "conversion",
+          "rationale": "moving element in the pawl_advance_pair chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "rotating",
+            "intermittent_pair",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "shaft",
+          "permits_motion": "fixed",
+          "id": "FP-068",
+          "name": "toothed_wheel",
+          "role": "output",
+          "rationale": "moving element in the pawl_advance_pair chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "compliant",
+            "retention_interface",
+            "manufactured"
+          ],
+          "motion_kind": "compliant_deformation",
+          "element_class": "body",
+          "form": "link",
+          "permits_motion": "fixed",
+          "id": "FP-069",
+          "name": "holding_pawl",
+          "role": "retention",
+          "rationale": "moving element in the pawl_advance_pair chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "joint",
+          "form": "collar",
+          "permits_motion": "rotation",
+          "id": "FP-070",
+          "name": "output_support",
+          "role": "support",
+          "rationale": "fixed element in the pawl_advance_pair chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "enclosure",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "body",
+          "form": "shell",
+          "permits_motion": "fixed",
+          "id": "FP-071",
+          "name": "housing",
+          "role": "structure",
+          "rationale": "fixed element in the pawl_advance_pair chain"
+        }
+      ],
+      "motions": [
+        {
+          "id": "MO-008",
+          "driver": "input_member",
+          "driven": "toothed_wheel",
+          "relation": "rotation->rotation",
+          "ratio_symbol": "intermittent",
+          "dof": 1
+        }
+      ],
+      "strengths": [
+        "station count set by tooth count",
+        "simple one-way behaviour"
+      ],
+      "weaknesses": [
+        "compliant elements are strain-limited",
+        "position accuracy depends on holding"
+      ],
+      "risks": [
+        "reverse motion if the holding element disengages",
+        "compliant element fatigue at the root"
+      ],
+      "open_questions": [
+        "tooth count",
+        "engagement angles",
+        "compliant element proportions"
+      ],
+      "serves_requirements": [
+        "REQ-001"
+      ],
+      "functions": [
+        {
+          "function": "receive manual input",
+          "performed_by": [
+            "input_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "support the rotating input",
+          "performed_by": [
+            "input_support"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "transmit input across the enclosure boundary",
+          "performed_by": [
+            "input_member",
+            "housing"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "advance the output by one discrete station",
+          "performed_by": [
+            "driving_pawl",
+            "toothed_wheel"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "prevent reverse motion between strokes",
+          "performed_by": [
+            "holding_pawl"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "return the driving element to its rest position",
+          "performed_by": [
+            "driving_pawl"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "transfer loads into the structure",
+          "performed_by": [
+            "housing"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        }
+      ],
+      "element_chain": [
+        "input_member",
+        "driving_pawl",
+        "toothed_wheel"
+      ],
+      "state_relations": [
+        "each input stroke advances the wheel by one tooth",
+        "a holding element prevents reverse motion between strokes"
+      ],
+      "holding_principle": "a separate holding element blocks reverse rotation during dwell",
+      "support_obligations": [
+        {
+          "element": "input_member",
+          "kind": "radial_support",
+          "reacted_by": "input_support",
+          "why": "a hand-driven input shaft must be located against side load"
+        },
+        {
+          "element": "toothed_wheel",
+          "kind": "radial_support",
+          "reacted_by": "housing",
+          "why": "the wheel must run on a fixed axis"
+        },
+        {
+          "element": "driving_pawl",
+          "kind": "structural_root",
+          "reacted_by": "housing",
+          "why": "a compliant engaging element needs a fixed root and a defined rest position"
+        },
+        {
+          "element": "holding_pawl",
+          "kind": "structural_root",
+          "reacted_by": "housing",
+          "why": "the holding element reacts reverse load and must be rooted"
+        },
+        {
+          "element": "toothed_wheel",
+          "kind": "clearance",
+          "reacted_by": "housing",
+          "why": "the wheel diameter dominates the internal volume"
+        },
+        {
+          "element": "input_member",
+          "kind": "user_access",
+          "reacted_by": "housing",
+          "why": "the input must remain reachable while the mechanism stays enclosed"
+        }
+      ],
+      "spatial_constraints": [
+        {
+          "between": [
+            "input_member",
+            "driving_pawl"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "driving_pawl",
+            "toothed_wheel"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:contact_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a contact pair transmits only where the surfaces meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "holding_pawl",
+            "toothed_wheel"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:contact_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a contact pair transmits only where the surfaces meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_member",
+            "input_support"
+          ],
+          "relation": "shared_axis",
+          "source": "interface:rotational_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a revolute pair turns about one axis, so both members must lie on it",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_support",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "toothed_wheel",
+            "output_support"
+          ],
+          "relation": "shared_axis",
+          "source": "interface:rotational_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a revolute pair turns about one axis, so both members must lie on it",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "output_support",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_member",
+            "input_support"
+          ],
+          "relation": "axis_surrounded",
+          "source": "obligation:radial_support",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a radial reaction acts around the axis it locates",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "toothed_wheel",
+            "housing"
+          ],
+          "relation": "axis_surrounded",
+          "source": "obligation:radial_support",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a radial reaction acts around the axis it locates",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "driving_pawl",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "obligation:structural_root",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a root reacts bending through the structure it is built into",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "holding_pawl",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "obligation:structural_root",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a root reacts bending through the structure it is built into",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "toothed_wheel",
+            "housing"
+          ],
+          "relation": "disjoint_swept",
+          "source": "obligation:clearance",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a region kept clear must not be entered by the swept volume",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_member",
+            "housing"
+          ],
+          "relation": "exterior_reachable",
+          "source": "obligation:user_access",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a surface a user must reach cannot be sealed inside the boundary",
+          "status": "not_checkable",
+          "detail": ""
+        }
+      ],
+      "states": [
+        {
+          "name": "dwell",
+          "role": "holding",
+          "holds": [
+            "toothed_wheel"
+          ],
+          "covers": [],
+          "clears": [],
+          "at_limit_of": [],
+          "why": "the output is locked between advances"
+        },
+        {
+          "name": "advancing",
+          "role": "moving",
+          "holds": [],
+          "covers": [],
+          "clears": [],
+          "at_limit_of": [],
+          "why": "the driver is carrying the output through one station"
+        },
+        {
+          "name": "indexed",
+          "role": "holding",
+          "holds": [
+            "toothed_wheel"
+          ],
+          "covers": [],
+          "clears": [],
+          "at_limit_of": [],
+          "why": "the output has reached the next station and is locked again"
+        }
+      ],
+      "transitions": [
+        {
+          "from_state": "dwell",
+          "to_state": "advancing",
+          "driven_by": "advance the output by one discrete station",
+          "moves": [
+            "toothed_wheel"
+          ],
+          "why": "engagement begins and the output is driven"
+        },
+        {
+          "from_state": "advancing",
+          "to_state": "indexed",
+          "driven_by": "hold the output stationary between advances",
+          "moves": [
+            "toothed_wheel"
+          ],
+          "why": "engagement ends and the locking geometry resumes"
+        }
+      ],
+      "constrained_by": [],
+      "bounds": [],
+      "load_path": [
+        "indexed load",
+        "toothed_wheel",
+        "holding_pawl",
+        "housing"
+      ],
+      "interfaces": [
+        {
+          "between": [
+            "input_member",
+            "driving_pawl"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "stroke motion",
+          "crosses_boundary": true,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "driving_pawl",
+            "toothed_wheel"
+          ],
+          "kind": "contact_pair",
+          "transmits": "advance force",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "holding_pawl",
+            "toothed_wheel"
+          ],
+          "kind": "contact_pair",
+          "transmits": "reverse blocking force",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "input_member",
+            "input_support"
+          ],
+          "kind": "rotational_joint",
+          "transmits": "radial load",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "input_support",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "toothed_wheel",
+            "output_support"
+          ],
+          "kind": "rotational_joint",
+          "transmits": "the output's rotation about its own axis",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "output_support",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        }
+      ],
+      "spatial_implications": [
+        "engaging elements sit tangentially around the wheel, so the wheel diameter dominates the internal volume"
+      ],
+      "motion_envelopes": [
+        "wheel sweeps a full disc",
+        "engaging elements sweep small arcs at its periphery"
+      ],
+      "tradeoffs": [
+        "advance force against holding security"
+      ],
+      "assumptions": [
+        "one-way advance is acceptable",
+        "4 solution choice(s) were left open by the user and are treated as available to this candidate"
+      ],
+      "downstream_decisions": [
+        "tooth count",
+        "engagement angles",
+        "compliant element proportions",
+        "unresolved at Stage 01: specific dimensions of desktop-sized product",
+        "unresolved at Stage 01: specific mechanical implementation details",
+        "unresolved at Stage 01: specific housing design details"
+      ]
+    }
+  ],
+  "selected_id": "intermittent_indexing_pair",
+  "selection_rationale": "selected from structured behaviour signatures none->state/held, rotation->rotation/intermittent; ranked lexicographically on holding need, reversibility, unperformed functions and element count: {'intermittent_indexing_pair': (True, True, 0, -4), 'pawl_advance_pair': (True, True, 0, -5)}",
+  "rejected": {
+    "pawl_advance_pair": "ranks (True, True, 0, -5) below intermittent_indexing_pair ((True, True, 0, -4)); compliant elements are strain-limited"
+  },
+  "contract_advisories": [
+    "REQ-004: requirement.behaviour — the transformation a behaviour performs determines which physical principles can realize it and how elements must be arranged",
+    "REQ-005: requirement.behaviour — the transformation a behaviour performs determines which physical principles can realize it and how elements must be arranged",
+    "REQ-006: requirement.behaviour — the transformation a behaviour performs determines which physical principles can realize it and how elements must be arranged",
+    "REQ-007: requirement.behaviour — the transformation a behaviour performs determines which physical principles can realize it and how elements must be arranged",
+    "REQ-008: requirement.behaviour — the transformation a behaviour performs determines which physical principles can realize it and how elements must be arranged",
+    "REQ-009: requirement.behaviour — the transformation a behaviour performs determines which physical principles can realize it and how elements must be arranged"
+  ],
+  "undecided_between": []
+}

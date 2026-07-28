@@ -1,0 +1,3135 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "MECH-002",
+    "design_id": "design-001",
+    "producer": "s02_mechanical_architecture",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "candidates": [
+    {
+      "id": "screw_drive",
+      "principle": "Threaded pair converting continuous rotation to translation",
+      "parts": [
+        {
+          "moving": true,
+          "engineering_roles": [
+            "rotating",
+            "user_contact",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "shaft",
+          "permits_motion": "fixed",
+          "id": "FP-019",
+          "name": "input_member",
+          "role": "input",
+          "rationale": "moving element in the screw_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "joint",
+          "form": "collar",
+          "permits_motion": "rotation",
+          "id": "FP-020",
+          "name": "input_support",
+          "role": "support",
+          "rationale": "fixed element in the screw_drive chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "rotating",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "shaft",
+          "permits_motion": "fixed",
+          "id": "FP-021",
+          "name": "transmission_shaft",
+          "role": "transmission",
+          "rationale": "moving element in the screw_drive chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "rotating",
+            "threaded_pair",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "shaft",
+          "permits_motion": "fixed",
+          "id": "FP-022",
+          "name": "threaded_member",
+          "role": "conversion",
+          "rationale": "moving element in the screw_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "joint",
+          "form": "collar",
+          "permits_motion": "rotation",
+          "id": "FP-023",
+          "name": "thrust_support",
+          "role": "support",
+          "rationale": "fixed element in the screw_drive chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "translating",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "translation",
+          "element_class": "body",
+          "form": "plate",
+          "permits_motion": "fixed",
+          "id": "FP-024",
+          "name": "travelling_member",
+          "role": "output",
+          "rationale": "moving element in the screw_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "joint",
+          "form": "rail",
+          "permits_motion": "translation",
+          "id": "FP-025",
+          "name": "guide_member",
+          "role": "guidance",
+          "rationale": "fixed element in the screw_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "feature",
+          "form": "block",
+          "permits_motion": "fixed",
+          "id": "FP-026",
+          "name": "travel_stop",
+          "role": "limit",
+          "rationale": "fixed element in the screw_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "feature",
+          "form": "block",
+          "permits_motion": "fixed",
+          "id": "FP-027",
+          "name": "travel_stop_far",
+          "role": "limit",
+          "rationale": "fixed element in the screw_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "enclosure",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "body",
+          "form": "shell",
+          "permits_motion": "fixed",
+          "id": "FP-028",
+          "name": "housing",
+          "role": "structure",
+          "rationale": "fixed element in the screw_drive chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "translating",
+            "threaded_pair",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "translation",
+          "element_class": "body",
+          "form": "collar",
+          "permits_motion": "fixed",
+          "id": "FP-029",
+          "name": "travelling_nut",
+          "role": "conversion",
+          "rationale": "moving element in the screw_drive chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "rotating",
+            "gear_pair",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "shaft",
+          "permits_motion": "fixed",
+          "id": "FP-030",
+          "name": "redirect_member",
+          "role": "transmission",
+          "rationale": "moving element in the screw_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "joint",
+          "form": "rail",
+          "permits_motion": "translation",
+          "id": "FP-031",
+          "name": "guide_member_opposed",
+          "role": "guidance",
+          "rationale": "fixed element in the screw_drive chain"
+        }
+      ],
+      "motions": [
+        {
+          "id": "MO-004",
+          "driver": "input_member",
+          "driven": "travelling_member",
+          "relation": "rotation->translation",
+          "ratio_symbol": "continuous",
+          "dof": 1
+        }
+      ],
+      "strengths": [
+        "high mechanical advantage",
+        "compact along the travel axis",
+        "may hold without input"
+      ],
+      "weaknesses": [
+        "low efficiency",
+        "slow travel per input revolution"
+      ],
+      "risks": [
+        "thread wear over repeated cycles",
+        "travelling member tilts if guidance is weak",
+        "binding if the guide and screw axes are not parallel",
+        "screw buckling under compressive load"
+      ],
+      "open_questions": [
+        "thread lead",
+        "guide count and spacing",
+        "member proportions"
+      ],
+      "serves_requirements": [
+        "REQ-001"
+      ],
+      "functions": [
+        {
+          "function": "receive manual input",
+          "performed_by": [
+            "input_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "support the rotating input",
+          "performed_by": [
+            "input_support"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "transmit input across the enclosure boundary",
+          "performed_by": [
+            "input_member",
+            "housing"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "convert rotation to translation",
+          "performed_by": [
+            "threaded_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "move the output",
+          "performed_by": [
+            "travelling_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "guide the output",
+          "performed_by": [
+            "guide_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "support the payload",
+          "performed_by": [
+            "travelling_member",
+            "guide_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "control reverse motion",
+          "performed_by": [
+            "threaded_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "limit travel",
+          "performed_by": [
+            "travel_stop"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "transfer loads into the structure",
+          "performed_by": [
+            "housing"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        }
+      ],
+      "element_chain": [
+        "input_member",
+        "transmission_shaft",
+        "redirect_member",
+        "threaded_member",
+        "travelling_nut",
+        "travelling_member"
+      ],
+      "state_relations": [
+        "travel is proportional to input revolutions"
+      ],
+      "holding_principle": "friction within the threaded pair can hold position without input",
+      "support_obligations": [
+        {
+          "element": "input_member",
+          "kind": "radial_support",
+          "reacted_by": "input_support",
+          "why": "a hand-driven input shaft must be located against side load"
+        },
+        {
+          "element": "threaded_member",
+          "kind": "radial_support",
+          "reacted_by": "housing",
+          "why": "the rotating threaded member must run on a fixed axis"
+        },
+        {
+          "element": "threaded_member",
+          "kind": "axial_thrust",
+          "reacted_by": "thrust_support",
+          "why": "the payload reacts as axial thrust along the screw and must be taken out"
+        },
+        {
+          "element": "travelling_member",
+          "kind": "anti_rotation",
+          "reacted_by": "guide_member",
+          "why": "without anti-rotation the nut turns with the screw and no travel results"
+        },
+        {
+          "element": "travelling_member",
+          "kind": "guidance",
+          "reacted_by": "guide_member",
+          "why": "guidance must not depend on the thread, which cannot carry moment"
+        },
+        {
+          "element": "travelling_member",
+          "kind": "travel_limit",
+          "reacted_by": "travel_stop",
+          "why": "travel must end positively without driving the nut off the thread"
+        },
+        {
+          "element": "travelling_member",
+          "kind": "clearance",
+          "reacted_by": "housing",
+          "why": "the full swept volume of the output must stay clear"
+        },
+        {
+          "element": "input_member",
+          "kind": "user_access",
+          "reacted_by": "housing",
+          "why": "the input must remain reachable while the mechanism stays enclosed"
+        },
+        {
+          "element": "travelling_member",
+          "kind": "anti_rotation",
+          "reacted_by": "guide_member_opposed",
+          "why": "a moment cannot be reacted at one station; guidance needs a couple"
+        },
+        {
+          "element": "travelling_member",
+          "kind": "travel_limit",
+          "reacted_by": "travel_stop_far",
+          "why": "a bidirectional travel needs a limit at each reachable extreme"
+        }
+      ],
+      "spatial_constraints": [
+        {
+          "between": [
+            "input_member",
+            "transmission_shaft"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member"
+          ],
+          "relation": "common_travel_direction",
+          "source": "interface:sliding_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a prismatic pair slides along one direction over a shared span",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "threaded_member",
+            "travelling_member"
+          ],
+          "relation": "coaxial_working_overlap",
+          "source": "interface:threaded_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a helical pair is coaxial and must stay engaged over its working length",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "threaded_member",
+            "thrust_support"
+          ],
+          "relation": "shared_axis",
+          "source": "interface:rotational_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a revolute pair turns about one axis, so both members must lie on it",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_member",
+            "input_support"
+          ],
+          "relation": "shared_axis",
+          "source": "interface:rotational_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a revolute pair turns about one axis, so both members must lie on it",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:contact_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a contact pair transmits only where the surfaces meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_support",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "thrust_support",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "guide_member",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travel_stop",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "threaded_member",
+            "travelling_nut"
+          ],
+          "relation": "coaxial_working_overlap",
+          "source": "interface:threaded_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a helical pair is coaxial and must stay engaged over its working length",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_nut",
+            "travelling_member"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member_opposed"
+          ],
+          "relation": "common_travel_direction",
+          "source": "interface:sliding_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a prismatic pair slides along one direction over a shared span",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "guide_member_opposed",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop_far"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:contact_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a contact pair transmits only where the surfaces meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travel_stop_far",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "transmission_shaft",
+            "redirect_member"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:toothed_mesh",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "teeth transmit only in contact, so the mesh must be held",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "redirect_member",
+            "threaded_member"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_member",
+            "input_support"
+          ],
+          "relation": "axis_surrounded",
+          "source": "obligation:radial_support",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a radial reaction acts around the axis it locates",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "threaded_member",
+            "housing"
+          ],
+          "relation": "axis_surrounded",
+          "source": "obligation:radial_support",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a radial reaction acts around the axis it locates",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "threaded_member",
+            "thrust_support"
+          ],
+          "relation": "axial_reaction_station",
+          "source": "obligation:axial_thrust",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "an axial reaction acts along the axis at one of its ends",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member"
+          ],
+          "relation": "common_travel_direction",
+          "source": "obligation:anti_rotation",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "the reacting element must run alongside the travel to hold the couple",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member"
+          ],
+          "relation": "common_travel_direction",
+          "source": "obligation:guidance",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "guidance acts along the guided motion over a shared span",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop"
+          ],
+          "relation": "contact_at_extreme",
+          "source": "obligation:travel_limit",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a limit acts only where the motion reaches its extreme",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "housing"
+          ],
+          "relation": "disjoint_swept",
+          "source": "obligation:clearance",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a region kept clear must not be entered by the swept volume",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_member",
+            "housing"
+          ],
+          "relation": "exterior_reachable",
+          "source": "obligation:user_access",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a surface a user must reach cannot be sealed inside the boundary",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member_opposed"
+          ],
+          "relation": "common_travel_direction",
+          "source": "obligation:anti_rotation",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "the reacting element must run alongside the travel to hold the couple",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop_far"
+          ],
+          "relation": "contact_at_extreme",
+          "source": "obligation:travel_limit",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a limit acts only where the motion reaches its extreme",
+          "status": "not_checkable",
+          "detail": ""
+        }
+      ],
+      "states": [
+        {
+          "name": "retracted",
+          "role": "limited",
+          "holds": [],
+          "covers": [],
+          "clears": [],
+          "at_limit_of": [
+            "travel_stop"
+          ],
+          "why": "the output rests against one limit of its travel"
+        },
+        {
+          "name": "travelling",
+          "role": "moving",
+          "holds": [],
+          "covers": [],
+          "clears": [],
+          "at_limit_of": [],
+          "why": "input is being converted into output motion"
+        },
+        {
+          "name": "extended",
+          "role": "limited",
+          "holds": [],
+          "covers": [],
+          "clears": [],
+          "at_limit_of": [
+            "travel_stop"
+          ],
+          "why": "the output has reached the opposite limit of its travel"
+        }
+      ],
+      "transitions": [
+        {
+          "from_state": "retracted",
+          "to_state": "travelling",
+          "driven_by": "convert rotation to translation",
+          "moves": [
+            "travelling_member"
+          ],
+          "why": "input motion is transmitted to the output"
+        },
+        {
+          "from_state": "travelling",
+          "to_state": "extended",
+          "driven_by": "limit travel",
+          "moves": [
+            "travelling_member"
+          ],
+          "why": "travel continues until the limit bounds it"
+        }
+      ],
+      "constrained_by": [
+        "REQ-002",
+        "REQ-003"
+      ],
+      "bounds": [
+        {
+          "requirement_id": "REQ-002",
+          "comparator": "between",
+          "lower": 80.0,
+          "upper": 100.0,
+          "unit": "mm",
+          "precision": "bounded"
+        },
+        {
+          "requirement_id": "REQ-003",
+          "comparator": "==",
+          "lower": 1.0,
+          "upper": 1.0,
+          "unit": "kg",
+          "precision": "approximate"
+        }
+      ],
+      "load_path": [
+        "payload",
+        "travelling_member",
+        "threaded_member",
+        "thrust_support",
+        "housing"
+      ],
+      "interfaces": [
+        {
+          "between": [
+            "input_member",
+            "transmission_shaft"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "torque",
+          "crosses_boundary": true,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member"
+          ],
+          "kind": "sliding_joint",
+          "transmits": "reaction moment and side load",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "threaded_member",
+            "travelling_member"
+          ],
+          "kind": "threaded_pair",
+          "transmits": "axial force and torque",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "threaded_member",
+            "thrust_support"
+          ],
+          "kind": "rotational_joint",
+          "transmits": "axial thrust",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "input_member",
+            "input_support"
+          ],
+          "kind": "rotational_joint",
+          "transmits": "radial load",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop"
+          ],
+          "kind": "contact_pair",
+          "transmits": "end-of-travel reaction",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "input_support",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "thrust_support",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "guide_member",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travel_stop",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "threaded_member",
+            "travelling_nut"
+          ],
+          "kind": "threaded_pair",
+          "transmits": "the conversion of rotation into translation",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travelling_nut",
+            "travelling_member"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "the converted travel and the payload reaction",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member_opposed"
+          ],
+          "kind": "sliding_joint",
+          "transmits": "the opposing half of the guidance couple",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "guide_member_opposed",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop_far"
+          ],
+          "kind": "contact_pair",
+          "transmits": "end-of-travel reaction at the far extreme",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travel_stop_far",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "transmission_shaft",
+            "redirect_member"
+          ],
+          "kind": "toothed_mesh",
+          "transmits": "torque across a change of axis",
+          "crosses_boundary": false,
+          "axis_relation": "intersecting"
+        },
+        {
+          "between": [
+            "redirect_member",
+            "threaded_member"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "torque on the redirected axis",
+          "crosses_boundary": false,
+          "axis_relation": null
+        }
+      ],
+      "spatial_implications": [
+        "the threaded member spans the full travel and sets product height",
+        "the guide runs parallel to travel",
+        "the input member crosses the enclosure boundary"
+      ],
+      "motion_envelopes": [
+        "travelling member sweeps a prism along the travel axis",
+        "input member sweeps a disc outside the enclosure"
+      ],
+      "tradeoffs": [
+        "holding capability against input effort and speed"
+      ],
+      "assumptions": [
+        "continuous rotary input is available at the boundary",
+        "4 solution choice(s) were left open by the user and are treated as available to this candidate"
+      ],
+      "downstream_decisions": [
+        "thread lead",
+        "guide count and spacing",
+        "member proportions",
+        "unresolved at Stage 01: mechanical advantage required for hand crank operation",
+        "unresolved at Stage 01: required housing dimensions",
+        "unresolved at Stage 01: required transmission mechanism type"
+      ]
+    },
+    {
+      "id": "toothed_linear_drive",
+      "principle": "Toothed rotary member engaging a linear toothed member",
+      "parts": [
+        {
+          "moving": true,
+          "engineering_roles": [
+            "rotating",
+            "user_contact",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "shaft",
+          "permits_motion": "fixed",
+          "id": "FP-032",
+          "name": "input_member",
+          "role": "input",
+          "rationale": "moving element in the toothed_linear_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "joint",
+          "form": "collar",
+          "permits_motion": "rotation",
+          "id": "FP-033",
+          "name": "input_support",
+          "role": "support",
+          "rationale": "fixed element in the toothed_linear_drive chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "rotating",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "shaft",
+          "permits_motion": "fixed",
+          "id": "FP-034",
+          "name": "transmission_shaft",
+          "role": "transmission",
+          "rationale": "moving element in the toothed_linear_drive chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "rotating",
+            "gear_pair",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "shaft",
+          "permits_motion": "fixed",
+          "id": "FP-035",
+          "name": "rotary_toothed_member",
+          "role": "conversion",
+          "rationale": "moving element in the toothed_linear_drive chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "translating",
+            "gear_pair",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "translation",
+          "element_class": "body",
+          "form": "rail",
+          "permits_motion": "fixed",
+          "id": "FP-036",
+          "name": "linear_toothed_member",
+          "role": "conversion",
+          "rationale": "moving element in the toothed_linear_drive chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "translating",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "translation",
+          "element_class": "body",
+          "form": "plate",
+          "permits_motion": "fixed",
+          "id": "FP-037",
+          "name": "travelling_member",
+          "role": "output",
+          "rationale": "moving element in the toothed_linear_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "joint",
+          "form": "rail",
+          "permits_motion": "translation",
+          "id": "FP-038",
+          "name": "guide_member",
+          "role": "guidance",
+          "rationale": "fixed element in the toothed_linear_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "feature",
+          "form": "block",
+          "permits_motion": "fixed",
+          "id": "FP-039",
+          "name": "travel_stop",
+          "role": "limit",
+          "rationale": "fixed element in the toothed_linear_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "feature",
+          "form": "block",
+          "permits_motion": "fixed",
+          "id": "FP-040",
+          "name": "travel_stop_far",
+          "role": "limit",
+          "rationale": "fixed element in the toothed_linear_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "enclosure",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "body",
+          "form": "shell",
+          "permits_motion": "fixed",
+          "id": "FP-041",
+          "name": "housing",
+          "role": "structure",
+          "rationale": "fixed element in the toothed_linear_drive chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "translating",
+            "threaded_pair",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "translation",
+          "element_class": "body",
+          "form": "collar",
+          "permits_motion": "fixed",
+          "id": "FP-042",
+          "name": "travelling_nut",
+          "role": "conversion",
+          "rationale": "moving element in the toothed_linear_drive chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "rotating",
+            "gear_pair",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "shaft",
+          "permits_motion": "fixed",
+          "id": "FP-043",
+          "name": "redirect_member",
+          "role": "transmission",
+          "rationale": "moving element in the toothed_linear_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "joint",
+          "form": "rail",
+          "permits_motion": "translation",
+          "id": "FP-044",
+          "name": "guide_member_opposed",
+          "role": "guidance",
+          "rationale": "fixed element in the toothed_linear_drive chain"
+        }
+      ],
+      "motions": [
+        {
+          "id": "MO-005",
+          "driver": "input_member",
+          "driven": "travelling_member",
+          "relation": "rotation->translation",
+          "ratio_symbol": "continuous",
+          "dof": 1
+        }
+      ],
+      "strengths": [
+        "high efficiency",
+        "fast travel per input revolution"
+      ],
+      "weaknesses": [
+        "does not hold position unaided",
+        "engagement must be maintained"
+      ],
+      "risks": [
+        "output moves under load when input is released",
+        "mesh separation if alignment is lost",
+        "tooth loading concentrated at one contact"
+      ],
+      "open_questions": [
+        "tooth proportions",
+        "engagement geometry",
+        "guide arrangement",
+        "holding function"
+      ],
+      "serves_requirements": [
+        "REQ-001"
+      ],
+      "functions": [
+        {
+          "function": "receive manual input",
+          "performed_by": [
+            "input_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "support the rotating input",
+          "performed_by": [
+            "input_support"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "transmit input across the enclosure boundary",
+          "performed_by": [
+            "input_member",
+            "housing"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "convert rotation to translation",
+          "performed_by": [
+            "rotary_toothed_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "move the output",
+          "performed_by": [
+            "travelling_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "guide the output",
+          "performed_by": [
+            "guide_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "support the payload",
+          "performed_by": [
+            "travelling_member",
+            "guide_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "control reverse motion",
+          "performed_by": [
+            "rotary_toothed_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "limit travel",
+          "performed_by": [
+            "travel_stop"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "transfer loads into the structure",
+          "performed_by": [
+            "housing"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "maintain tooth engagement across the travel",
+          "performed_by": [
+            "rotary_toothed_member",
+            "linear_toothed_member",
+            "guide_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "provide a holding function",
+          "performed_by": [],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        }
+      ],
+      "element_chain": [
+        "input_member",
+        "transmission_shaft",
+        "rotary_toothed_member",
+        "linear_toothed_member",
+        "travelling_member"
+      ],
+      "state_relations": [
+        "travel is proportional to input rotation through the toothed pitch"
+      ],
+      "holding_principle": "none inherent; a separate holding function is required to keep position",
+      "support_obligations": [
+        {
+          "element": "input_member",
+          "kind": "radial_support",
+          "reacted_by": "input_support",
+          "why": "a hand-driven input shaft must be located against side load"
+        },
+        {
+          "element": "rotary_toothed_member",
+          "kind": "radial_support",
+          "reacted_by": "housing",
+          "why": "the rotary member must run on a fixed axis for the mesh to hold"
+        },
+        {
+          "element": "linear_toothed_member",
+          "kind": "guidance",
+          "reacted_by": "guide_member",
+          "why": "the linear member must be guided along its travel"
+        },
+        {
+          "element": "linear_toothed_member",
+          "kind": "alignment",
+          "reacted_by": "guide_member",
+          "why": "separation force at the mesh must not open the engagement"
+        },
+        {
+          "element": "travelling_member",
+          "kind": "travel_limit",
+          "reacted_by": "travel_stop",
+          "why": "travel must end before the toothed members disengage"
+        },
+        {
+          "element": "travelling_member",
+          "kind": "clearance",
+          "reacted_by": "housing",
+          "why": "the full swept volume of the output must stay clear"
+        },
+        {
+          "element": "input_member",
+          "kind": "user_access",
+          "reacted_by": "housing",
+          "why": "the input must remain reachable while the mechanism stays enclosed"
+        },
+        {
+          "element": "travelling_member",
+          "kind": "anti_rotation",
+          "reacted_by": "guide_member_opposed",
+          "why": "a moment cannot be reacted at one station; guidance needs a couple"
+        },
+        {
+          "element": "travelling_member",
+          "kind": "travel_limit",
+          "reacted_by": "travel_stop_far",
+          "why": "a bidirectional travel needs a limit at each reachable extreme"
+        }
+      ],
+      "spatial_constraints": [
+        {
+          "between": [
+            "input_member",
+            "transmission_shaft"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "rotary_toothed_member",
+            "linear_toothed_member"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:toothed_mesh",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "teeth transmit only in contact, so the mesh must be held",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "linear_toothed_member",
+            "travelling_member"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member"
+          ],
+          "relation": "common_travel_direction",
+          "source": "interface:sliding_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a prismatic pair slides along one direction over a shared span",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_member",
+            "input_support"
+          ],
+          "relation": "shared_axis",
+          "source": "interface:rotational_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a revolute pair turns about one axis, so both members must lie on it",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:contact_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a contact pair transmits only where the surfaces meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_support",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "guide_member",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travel_stop",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "rotary_toothed_member",
+            "travelling_nut"
+          ],
+          "relation": "coaxial_working_overlap",
+          "source": "interface:threaded_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a helical pair is coaxial and must stay engaged over its working length",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_nut",
+            "travelling_member"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member_opposed"
+          ],
+          "relation": "common_travel_direction",
+          "source": "interface:sliding_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a prismatic pair slides along one direction over a shared span",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "guide_member_opposed",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop_far"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:contact_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a contact pair transmits only where the surfaces meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travel_stop_far",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_member",
+            "input_support"
+          ],
+          "relation": "axis_surrounded",
+          "source": "obligation:radial_support",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a radial reaction acts around the axis it locates",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "rotary_toothed_member",
+            "housing"
+          ],
+          "relation": "axis_surrounded",
+          "source": "obligation:radial_support",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a radial reaction acts around the axis it locates",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "linear_toothed_member",
+            "guide_member"
+          ],
+          "relation": "common_travel_direction",
+          "source": "obligation:guidance",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "guidance acts along the guided motion over a shared span",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "linear_toothed_member",
+            "guide_member"
+          ],
+          "relation": "mating_adjacency",
+          "source": "obligation:alignment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "features held in alignment must meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop"
+          ],
+          "relation": "contact_at_extreme",
+          "source": "obligation:travel_limit",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a limit acts only where the motion reaches its extreme",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "housing"
+          ],
+          "relation": "disjoint_swept",
+          "source": "obligation:clearance",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a region kept clear must not be entered by the swept volume",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_member",
+            "housing"
+          ],
+          "relation": "exterior_reachable",
+          "source": "obligation:user_access",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a surface a user must reach cannot be sealed inside the boundary",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member_opposed"
+          ],
+          "relation": "common_travel_direction",
+          "source": "obligation:anti_rotation",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "the reacting element must run alongside the travel to hold the couple",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop_far"
+          ],
+          "relation": "contact_at_extreme",
+          "source": "obligation:travel_limit",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a limit acts only where the motion reaches its extreme",
+          "status": "not_checkable",
+          "detail": ""
+        }
+      ],
+      "states": [
+        {
+          "name": "retracted",
+          "role": "limited",
+          "holds": [],
+          "covers": [],
+          "clears": [],
+          "at_limit_of": [
+            "travel_stop"
+          ],
+          "why": "the output rests against one limit of its travel"
+        },
+        {
+          "name": "travelling",
+          "role": "moving",
+          "holds": [],
+          "covers": [],
+          "clears": [],
+          "at_limit_of": [],
+          "why": "input is being converted into output motion"
+        },
+        {
+          "name": "extended",
+          "role": "limited",
+          "holds": [],
+          "covers": [],
+          "clears": [],
+          "at_limit_of": [
+            "travel_stop"
+          ],
+          "why": "the output has reached the opposite limit of its travel"
+        }
+      ],
+      "transitions": [
+        {
+          "from_state": "retracted",
+          "to_state": "travelling",
+          "driven_by": "convert rotation to translation",
+          "moves": [
+            "travelling_member"
+          ],
+          "why": "input motion is transmitted to the output"
+        },
+        {
+          "from_state": "travelling",
+          "to_state": "extended",
+          "driven_by": "limit travel",
+          "moves": [
+            "travelling_member"
+          ],
+          "why": "travel continues until the limit bounds it"
+        }
+      ],
+      "constrained_by": [
+        "REQ-002",
+        "REQ-003"
+      ],
+      "bounds": [
+        {
+          "requirement_id": "REQ-002",
+          "comparator": "between",
+          "lower": 80.0,
+          "upper": 100.0,
+          "unit": "mm",
+          "precision": "bounded"
+        },
+        {
+          "requirement_id": "REQ-003",
+          "comparator": "==",
+          "lower": 1.0,
+          "upper": 1.0,
+          "unit": "kg",
+          "precision": "approximate"
+        }
+      ],
+      "load_path": [
+        "payload",
+        "travelling_member",
+        "linear_toothed_member",
+        "rotary_toothed_member",
+        "housing"
+      ],
+      "interfaces": [
+        {
+          "between": [
+            "input_member",
+            "transmission_shaft"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "torque",
+          "crosses_boundary": true,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "rotary_toothed_member",
+            "linear_toothed_member"
+          ],
+          "kind": "toothed_mesh",
+          "transmits": "tangential force",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "linear_toothed_member",
+            "travelling_member"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "travel force",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member"
+          ],
+          "kind": "sliding_joint",
+          "transmits": "reaction moment and side load",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "input_member",
+            "input_support"
+          ],
+          "kind": "rotational_joint",
+          "transmits": "radial load",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop"
+          ],
+          "kind": "contact_pair",
+          "transmits": "end-of-travel reaction",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "input_support",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "guide_member",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travel_stop",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "rotary_toothed_member",
+            "travelling_nut"
+          ],
+          "kind": "threaded_pair",
+          "transmits": "the conversion of rotation into translation",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travelling_nut",
+            "travelling_member"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "the converted travel and the payload reaction",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member_opposed"
+          ],
+          "kind": "sliding_joint",
+          "transmits": "the opposing half of the guidance couple",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "guide_member_opposed",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop_far"
+          ],
+          "kind": "contact_pair",
+          "transmits": "end-of-travel reaction at the far extreme",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travel_stop_far",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        }
+      ],
+      "spatial_implications": [
+        "the linear member spans the full travel plus engagement run-out",
+        "the rotary member sits beside the travel axis, widening the product"
+      ],
+      "motion_envelopes": [
+        "linear member sweeps its own length plus travel",
+        "rotary member sweeps a disc at the engagement plane"
+      ],
+      "tradeoffs": [
+        "speed and efficiency against the need for a separate holding function"
+      ],
+      "assumptions": [
+        "continuous rotary input is available at the boundary",
+        "4 solution choice(s) were left open by the user and are treated as available to this candidate"
+      ],
+      "downstream_decisions": [
+        "tooth proportions",
+        "engagement geometry",
+        "guide arrangement",
+        "holding function",
+        "unresolved at Stage 01: mechanical advantage required for hand crank operation",
+        "unresolved at Stage 01: required housing dimensions",
+        "unresolved at Stage 01: required transmission mechanism type"
+      ]
+    },
+    {
+      "id": "flexible_tension_drive",
+      "principle": "Winding a flexible tension member onto a rotating spool",
+      "parts": [
+        {
+          "moving": true,
+          "engineering_roles": [
+            "rotating",
+            "user_contact",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "shaft",
+          "permits_motion": "fixed",
+          "id": "FP-045",
+          "name": "input_member",
+          "role": "input",
+          "rationale": "moving element in the flexible_tension_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "joint",
+          "form": "collar",
+          "permits_motion": "rotation",
+          "id": "FP-046",
+          "name": "input_support",
+          "role": "support",
+          "rationale": "fixed element in the flexible_tension_drive chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "rotating",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "shaft",
+          "permits_motion": "fixed",
+          "id": "FP-047",
+          "name": "spool",
+          "role": "conversion",
+          "rationale": "moving element in the flexible_tension_drive chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "load_bearing"
+          ],
+          "motion_kind": "translation",
+          "element_class": "body",
+          "form": "flexible",
+          "permits_motion": "fixed",
+          "id": "FP-048",
+          "name": "tension_member",
+          "role": "transmission",
+          "rationale": "moving element in the flexible_tension_drive chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "translating",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "translation",
+          "element_class": "body",
+          "form": "plate",
+          "permits_motion": "fixed",
+          "id": "FP-049",
+          "name": "travelling_member",
+          "role": "output",
+          "rationale": "moving element in the flexible_tension_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "joint",
+          "form": "rail",
+          "permits_motion": "translation",
+          "id": "FP-050",
+          "name": "guide_member",
+          "role": "guidance",
+          "rationale": "fixed element in the flexible_tension_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "feature",
+          "form": "block",
+          "permits_motion": "fixed",
+          "id": "FP-051",
+          "name": "travel_stop",
+          "role": "limit",
+          "rationale": "fixed element in the flexible_tension_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "feature",
+          "form": "block",
+          "permits_motion": "fixed",
+          "id": "FP-052",
+          "name": "travel_stop_far",
+          "role": "limit",
+          "rationale": "fixed element in the flexible_tension_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "enclosure",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "body",
+          "form": "shell",
+          "permits_motion": "fixed",
+          "id": "FP-053",
+          "name": "housing",
+          "role": "structure",
+          "rationale": "fixed element in the flexible_tension_drive chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "translating",
+            "threaded_pair",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "translation",
+          "element_class": "body",
+          "form": "collar",
+          "permits_motion": "fixed",
+          "id": "FP-054",
+          "name": "travelling_nut",
+          "role": "conversion",
+          "rationale": "moving element in the flexible_tension_drive chain"
+        },
+        {
+          "moving": true,
+          "engineering_roles": [
+            "rotating",
+            "gear_pair",
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "rotation",
+          "element_class": "body",
+          "form": "shaft",
+          "permits_motion": "fixed",
+          "id": "FP-055",
+          "name": "redirect_member",
+          "role": "transmission",
+          "rationale": "moving element in the flexible_tension_drive chain"
+        },
+        {
+          "moving": false,
+          "engineering_roles": [
+            "load_bearing",
+            "manufactured"
+          ],
+          "motion_kind": "fixed",
+          "element_class": "joint",
+          "form": "rail",
+          "permits_motion": "translation",
+          "id": "FP-056",
+          "name": "guide_member_opposed",
+          "role": "guidance",
+          "rationale": "fixed element in the flexible_tension_drive chain"
+        }
+      ],
+      "motions": [
+        {
+          "id": "MO-006",
+          "driver": "input_member",
+          "driven": "travelling_member",
+          "relation": "rotation->translation",
+          "ratio_symbol": "continuous",
+          "dof": 1
+        }
+      ],
+      "strengths": [
+        "very low friction",
+        "tolerant of misalignment"
+      ],
+      "weaknesses": [
+        "carries tension only",
+        "requires a separate holding function"
+      ],
+      "risks": [
+        "uncontrolled descent if holding fails",
+        "spooling irregularity",
+        "slack accumulating on unloaded return"
+      ],
+      "open_questions": [
+        "spool proportions",
+        "routing path",
+        "holding function"
+      ],
+      "serves_requirements": [
+        "REQ-001"
+      ],
+      "functions": [
+        {
+          "function": "receive manual input",
+          "performed_by": [
+            "input_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "support the rotating input",
+          "performed_by": [
+            "input_support"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "transmit input across the enclosure boundary",
+          "performed_by": [
+            "input_member",
+            "housing"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "convert rotation to translation",
+          "performed_by": [
+            "spool"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "move the output",
+          "performed_by": [
+            "travelling_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "guide the output",
+          "performed_by": [
+            "guide_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "support the payload",
+          "performed_by": [
+            "travelling_member",
+            "guide_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "control reverse motion",
+          "performed_by": [
+            "spool"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "limit travel",
+          "performed_by": [
+            "travel_stop"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "transfer loads into the structure",
+          "performed_by": [
+            "housing"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "route and tension the flexible member",
+          "performed_by": [
+            "tension_member",
+            "guide_member"
+          ],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        },
+        {
+          "function": "provide a holding function",
+          "performed_by": [],
+          "serves_requirements": [
+            "REQ-001"
+          ]
+        }
+      ],
+      "element_chain": [
+        "input_member",
+        "spool",
+        "tension_member",
+        "travelling_member"
+      ],
+      "state_relations": [
+        "travel is proportional to wound length"
+      ],
+      "holding_principle": "none inherent; tension is lost when input is released",
+      "support_obligations": [
+        {
+          "element": "input_member",
+          "kind": "radial_support",
+          "reacted_by": "input_support",
+          "why": "a hand-driven input shaft must be located against side load"
+        },
+        {
+          "element": "spool",
+          "kind": "radial_support",
+          "reacted_by": "housing",
+          "why": "the spool must run on a fixed axis for winding to stay regular"
+        },
+        {
+          "element": "tension_member",
+          "kind": "alignment",
+          "reacted_by": "guide_member",
+          "why": "the tension path must be routed or it will slacken and jump"
+        },
+        {
+          "element": "travelling_member",
+          "kind": "guidance",
+          "reacted_by": "guide_member",
+          "why": "a tension member carries no moment, so the output needs its own guidance"
+        },
+        {
+          "element": "travelling_member",
+          "kind": "travel_limit",
+          "reacted_by": "travel_stop",
+          "why": "travel must end before the tension member fully unwinds"
+        },
+        {
+          "element": "travelling_member",
+          "kind": "clearance",
+          "reacted_by": "housing",
+          "why": "the full swept volume of the output must stay clear"
+        },
+        {
+          "element": "input_member",
+          "kind": "user_access",
+          "reacted_by": "housing",
+          "why": "the input must remain reachable while the mechanism stays enclosed"
+        },
+        {
+          "element": "travelling_member",
+          "kind": "anti_rotation",
+          "reacted_by": "guide_member_opposed",
+          "why": "a moment cannot be reacted at one station; guidance needs a couple"
+        },
+        {
+          "element": "travelling_member",
+          "kind": "travel_limit",
+          "reacted_by": "travel_stop_far",
+          "why": "a bidirectional travel needs a limit at each reachable extreme"
+        }
+      ],
+      "spatial_constraints": [
+        {
+          "between": [
+            "input_member",
+            "spool"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "spool",
+            "tension_member"
+          ],
+          "relation": "continuous_route",
+          "source": "interface:flexible_link",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a tension member needs a continuous route, not adjacency; remoteness is fine",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "tension_member",
+            "travelling_member"
+          ],
+          "relation": "continuous_route",
+          "source": "interface:flexible_link",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a tension member needs a continuous route, not adjacency; remoteness is fine",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member"
+          ],
+          "relation": "common_travel_direction",
+          "source": "interface:sliding_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a prismatic pair slides along one direction over a shared span",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_member",
+            "input_support"
+          ],
+          "relation": "shared_axis",
+          "source": "interface:rotational_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a revolute pair turns about one axis, so both members must lie on it",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:contact_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a contact pair transmits only where the surfaces meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_support",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "guide_member",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travel_stop",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "spool",
+            "travelling_nut"
+          ],
+          "relation": "coaxial_working_overlap",
+          "source": "interface:threaded_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a helical pair is coaxial and must stay engaged over its working length",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_nut",
+            "travelling_member"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member_opposed"
+          ],
+          "relation": "common_travel_direction",
+          "source": "interface:sliding_joint",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a prismatic pair slides along one direction over a shared span",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "guide_member_opposed",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop_far"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:contact_pair",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a contact pair transmits only where the surfaces meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travel_stop_far",
+            "housing"
+          ],
+          "relation": "mating_adjacency",
+          "source": "interface:fixed_attachment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a rigid attachment transmits through a shared interface",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_member",
+            "input_support"
+          ],
+          "relation": "axis_surrounded",
+          "source": "obligation:radial_support",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a radial reaction acts around the axis it locates",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "spool",
+            "housing"
+          ],
+          "relation": "axis_surrounded",
+          "source": "obligation:radial_support",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a radial reaction acts around the axis it locates",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "tension_member",
+            "guide_member"
+          ],
+          "relation": "mating_adjacency",
+          "source": "obligation:alignment",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "features held in alignment must meet",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member"
+          ],
+          "relation": "common_travel_direction",
+          "source": "obligation:guidance",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "guidance acts along the guided motion over a shared span",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop"
+          ],
+          "relation": "contact_at_extreme",
+          "source": "obligation:travel_limit",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a limit acts only where the motion reaches its extreme",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "housing"
+          ],
+          "relation": "disjoint_swept",
+          "source": "obligation:clearance",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a region kept clear must not be entered by the swept volume",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "input_member",
+            "housing"
+          ],
+          "relation": "exterior_reachable",
+          "source": "obligation:user_access",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a surface a user must reach cannot be sealed inside the boundary",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member_opposed"
+          ],
+          "relation": "common_travel_direction",
+          "source": "obligation:anti_rotation",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "the reacting element must run alongside the travel to hold the couple",
+          "status": "not_checkable",
+          "detail": ""
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop_far"
+          ],
+          "relation": "contact_at_extreme",
+          "source": "obligation:travel_limit",
+          "axis": null,
+          "at_station": null,
+          "anchor": null,
+          "rationale": "a limit acts only where the motion reaches its extreme",
+          "status": "not_checkable",
+          "detail": ""
+        }
+      ],
+      "states": [
+        {
+          "name": "retracted",
+          "role": "limited",
+          "holds": [],
+          "covers": [],
+          "clears": [],
+          "at_limit_of": [
+            "travel_stop"
+          ],
+          "why": "the output rests against one limit of its travel"
+        },
+        {
+          "name": "travelling",
+          "role": "moving",
+          "holds": [],
+          "covers": [],
+          "clears": [],
+          "at_limit_of": [],
+          "why": "input is being converted into output motion"
+        },
+        {
+          "name": "extended",
+          "role": "limited",
+          "holds": [],
+          "covers": [],
+          "clears": [],
+          "at_limit_of": [
+            "travel_stop"
+          ],
+          "why": "the output has reached the opposite limit of its travel"
+        }
+      ],
+      "transitions": [
+        {
+          "from_state": "retracted",
+          "to_state": "travelling",
+          "driven_by": "convert rotation to translation",
+          "moves": [
+            "travelling_member"
+          ],
+          "why": "input motion is transmitted to the output"
+        },
+        {
+          "from_state": "travelling",
+          "to_state": "extended",
+          "driven_by": "limit travel",
+          "moves": [
+            "travelling_member"
+          ],
+          "why": "travel continues until the limit bounds it"
+        }
+      ],
+      "constrained_by": [
+        "REQ-002",
+        "REQ-003"
+      ],
+      "bounds": [
+        {
+          "requirement_id": "REQ-002",
+          "comparator": "between",
+          "lower": 80.0,
+          "upper": 100.0,
+          "unit": "mm",
+          "precision": "bounded"
+        },
+        {
+          "requirement_id": "REQ-003",
+          "comparator": "==",
+          "lower": 1.0,
+          "upper": 1.0,
+          "unit": "kg",
+          "precision": "approximate"
+        }
+      ],
+      "load_path": [
+        "payload",
+        "travelling_member",
+        "tension_member",
+        "spool",
+        "housing"
+      ],
+      "interfaces": [
+        {
+          "between": [
+            "input_member",
+            "spool"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "torque",
+          "crosses_boundary": true,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "spool",
+            "tension_member"
+          ],
+          "kind": "flexible_link",
+          "transmits": "tension",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "tension_member",
+            "travelling_member"
+          ],
+          "kind": "flexible_link",
+          "transmits": "tension",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member"
+          ],
+          "kind": "sliding_joint",
+          "transmits": "reaction moment and side load",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "input_member",
+            "input_support"
+          ],
+          "kind": "rotational_joint",
+          "transmits": "radial load",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop"
+          ],
+          "kind": "contact_pair",
+          "transmits": "end-of-travel reaction",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "input_support",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "guide_member",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travel_stop",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "spool",
+            "travelling_nut"
+          ],
+          "kind": "threaded_pair",
+          "transmits": "the conversion of rotation into translation",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travelling_nut",
+            "travelling_member"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "the converted travel and the payload reaction",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travelling_member",
+            "guide_member_opposed"
+          ],
+          "kind": "sliding_joint",
+          "transmits": "the opposing half of the guidance couple",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "guide_member_opposed",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travelling_member",
+            "travel_stop_far"
+          ],
+          "kind": "contact_pair",
+          "transmits": "end-of-travel reaction at the far extreme",
+          "crosses_boundary": false,
+          "axis_relation": null
+        },
+        {
+          "between": [
+            "travel_stop_far",
+            "housing"
+          ],
+          "kind": "fixed_attachment",
+          "transmits": "reaction into the structure",
+          "crosses_boundary": false,
+          "axis_relation": null
+        }
+      ],
+      "spatial_implications": [
+        "the tension member needs a routing path of at least the travel length",
+        "the spool width grows with wound length"
+      ],
+      "motion_envelopes": [
+        "travelling member sweeps along the travel axis",
+        "the tension path sweeps a plane during winding"
+      ],
+      "tradeoffs": [
+        "low friction against the need for holding and routing discipline"
+      ],
+      "assumptions": [
+        "the load acts along one direction so tension is sufficient",
+        "4 solution choice(s) were left open by the user and are treated as available to this candidate"
+      ],
+      "downstream_decisions": [
+        "spool proportions",
+        "routing path",
+        "holding function",
+        "unresolved at Stage 01: mechanical advantage required for hand crank operation",
+        "unresolved at Stage 01: required housing dimensions",
+        "unresolved at Stage 01: required transmission mechanism type"
+      ]
+    }
+  ],
+  "selected_id": "screw_drive",
+  "selection_rationale": "selected from structured behaviour signatures none->state/held, rotation->translation/intermittent; ranked lexicographically on holding need, reversibility, unperformed functions and element count: {'screw_drive': (True, True, 0, -7), 'toothed_linear_drive': (False, True, -1, -8), 'flexible_tension_drive': (False, True, -1, -7)}",
+  "rejected": {
+    "toothed_linear_drive": "ranks (False, True, -1, -8) below screw_drive ((True, True, 0, -7)); does not itself perform: provide a holding function",
+    "flexible_tension_drive": "ranks (False, True, -1, -7) below screw_drive ((True, True, 0, -7)); does not itself perform: provide a holding function"
+  },
+  "contract_advisories": [
+    "REQ-002: requirement.behaviour — a quantitative bound without a transformation cannot be attached to a functional chain; the value is usable but its role is unstated",
+    "REQ-003: requirement.behaviour — a quantitative bound without a transformation cannot be attached to a functional chain; the value is usable but its role is unstated",
+    "REQ-009: requirement.behaviour — the transformation a behaviour performs determines which physical principles can realize it and how elements must be arranged"
+  ],
+  "undecided_between": []
+}

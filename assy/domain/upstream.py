@@ -438,6 +438,44 @@ class RequirementSpec(DomainObject):
 # --------------------------------------------------------------------------
 # Stage 02 - Mechanical Architecture
 # --------------------------------------------------------------------------
+class MotionKind(str, Enum):
+    """How a conceptual element moves. Declared, never inferred from a name.
+
+    Distinct from `engineering_roles`: a role tag says what an element *is for*
+    (``moving_boundary``, ``load_bearing``, ``compliant``); the motion kind says
+    how it *moves*. A lid is a moving boundary whose motion kind is rotation.
+    """
+
+    FIXED = "fixed"
+    ROTATION = "rotation"
+    TRANSLATION = "translation"
+    ROTATION_TRANSLATION = "rotation_translation"
+    COMPLIANT_DEFORMATION = "compliant_deformation"
+    UNSPECIFIED = "unspecified"
+
+
+class ElementClass(str, Enum):
+    """What kind of thing an element is, kinematically.
+
+    Orthogonal to `MechanismRole` (what it is *for*) and to `PieceKind` (how it is
+    *made*). A hinge is a `guidance` role, a `support_element` piece, and a JOINT.
+
+    Without this distinction a joint is indistinguishable from the members it
+    joins, so it acquires bulk, a position of its own, and a swept volume - none
+    of which a joint has. A hinge does not sweep a volume; the door it carries
+    does.
+    """
+
+    BODY = "body"
+    """Occupies volume, carries load, may move and sweep a region."""
+    JOINT = "joint"
+    """A relationship constraining relative motion between two bodies. It has no
+    independent position: it is located where the bodies it connects meet."""
+    FEATURE = "feature"
+    """A local detail on a host body - a catch, a stop, a detent. It has no bulk
+    of its own and moves with whatever it sits on."""
+
+
 class MechanismRole(str, Enum):
     INPUT = "input"
     TRANSMISSION = "transmission"
@@ -486,6 +524,134 @@ class InterfaceKind(str, Enum):
     USER_CONTACT = "user_contact"
 
 
+class AxisRelation(str, Enum):
+    """How an interface constrains the two axes it joins.
+
+    An interface that transmits motion is not free to join any two axes. A planar
+    pair - a spur mesh, a pin in a slot, a cam and follower - only engages if the
+    axes are parallel at a centre distance; a bevel exists precisely to make them
+    intersect; a nut runs collinear with its screw. Deriving each element's axis
+    independently and then declaring them coupled produces mechanisms that cannot
+    move, and no dimension is needed to detect it.
+    """
+
+    IDENTICAL = "identical"
+    """One axis shared, e.g. a shaft and its bearing or anything rigidly joined."""
+    PARALLEL = "parallel"
+    """Distinct parallel axes at a centre distance, e.g. a spur mesh or a pin pair."""
+    COLLINEAR = "collinear"
+    """Same line, e.g. a nut on its screw."""
+    INTERSECTING = "intersecting"
+    """Axes meet at an angle. This is what a redirect element is for."""
+    UNCONSTRAINED = "unconstrained"
+    """Genuinely free, e.g. a routed cable or a hand on a knob."""
+
+
+#: What each interface kind implies when the family does not say otherwise.
+#: A family overrides it where the same kind means something different - a bevel
+#: and a spur mesh are both TOOTHED_MESH and constrain axes oppositely.
+AXIS_RELATION_DEFAULT: dict["InterfaceKind", AxisRelation] = {}
+
+
+class StateRole(str, Enum):
+    """What a functional state is, mechanically.
+
+    Named roles rather than product words so a family declares meaning, not
+    vocabulary: a latch's "closed" and a drive's "retracted" are both HOLDING.
+    """
+
+    HOLDING = "holding"
+    """A state the mechanism maintains without continuous input."""
+    RELEASING = "releasing"
+    """Retention has been broken but motion has not yet occurred."""
+    MOVING = "moving"
+    """In transit between held states."""
+    LIMITED = "limited"
+    """At a motion limit, held by a stop rather than by retention."""
+    NEUTRAL = "neutral"
+
+
+class FunctionalState(BaseModel):
+    """One state the mechanism must be able to occupy.
+
+    Declared by the mechanism family because which states exist is mechanism
+    knowledge: a retention family has an engaged and a released state whatever
+    product it sits in. Stage 04 realises these in space; it does not invent them.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    name: str
+    role: StateRole
+    holds: list[str] = Field(default_factory=list)
+    """Elements whose engagement maintains this state."""
+    covers: list[str] = Field(default_factory=list)
+    """Apertures or openings occluded in this state."""
+    clears: list[str] = Field(default_factory=list)
+    """Apertures or openings left free in this state."""
+    at_limit_of: list[str] = Field(default_factory=list)
+    """Joints or features resting at a motion limit in this state."""
+    why: str = ""
+
+
+class StateTransition(BaseModel):
+    """A change between two functional states, and what drives it."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    from_state: str
+    to_state: str
+    driven_by: str
+    """The declared function that causes this transition."""
+    moves: list[str] = Field(default_factory=list)
+    why: str = ""
+
+
+class SpatialRelationKind(str, Enum):
+    """What a declared interface or obligation demands of relative position.
+
+    Each value is a distinct mechanical requirement. There is deliberately no
+    generic "coincident" catch-all: a threaded pair and a fixed attachment place
+    genuinely different demands, and collapsing them would make the check
+    unfalsifiable.
+    """
+
+    SHARED_AXIS = "shared_axis"
+    """Rotational joint: one axis, with a realizable adjacency along it."""
+    COMMON_TRAVEL_DIRECTION = "common_travel_direction"
+    """Sliding joint: same travel direction, with overlapping guided span."""
+    COAXIAL_WORKING_OVERLAP = "coaxial_working_overlap"
+    """Threaded pair: coaxial, and engaged over a shared working region."""
+    MATING_ADJACENCY = "mating_adjacency"
+    """Fixed attachment or contact pair: the mating interfaces must meet."""
+    AXIS_SURROUNDED = "axis_surrounded"
+    """Radial support: the supported axis passes through the support region."""
+    AXIAL_REACTION_STATION = "axial_reaction_station"
+    """Thrust reaction: the reactor lies on the axis at an end station."""
+    CONTACT_AT_EXTREME = "contact_at_extreme"
+    """Travel limit: contact occurs at a declared extreme of the motion."""
+    DISJOINT_SWEPT = "disjoint_swept"
+    """Clearance: the relevant swept regions must not intersect."""
+    CONTINUOUS_ROUTE = "continuous_route"
+    """Flexible link: a routing path exists; remoteness is permitted."""
+    EXTERIOR_REACHABLE = "exterior_reachable"
+    """User contact: the surface is reachable from outside the boundary."""
+    SEPARATED_ALONG_AXIS = "separated_along_axis"
+    """Two reactions of the same kind on one element must act at distinct stations.
+
+    Derived, not declared upstream: it is the mechanical reason a pair of supports
+    cannot collapse onto one place, and it replaces assigning them opposite ends by
+    iteration order.
+    """
+
+
+class ConstraintStatus(str, Enum):
+    SATISFIED = "satisfied"
+    VIOLATED = "violated"
+    NOT_CHECKABLE = "not_checkable"
+    """The placement model carries too little to decide. Never counted as a pass."""
+
+
 class SupportObligation(BaseModel):
     """One structural obligation an architecture places on the product.
 
@@ -503,6 +669,358 @@ class SupportObligation(BaseModel):
     """Engineering reason. Explanation only - never the machine-readable content."""
 
 
+class TopologyKind(str, Enum):
+    """The kind of topological entity a localized relation lives on.
+
+    A region says *which volume* something is in. Topology says *what it is
+    attached to*: a face, an edge, an axis, a corridor, a shared contact surface.
+    A hinge is not "somewhere in the closure region" - it is a line on an edge.
+    Without this a consumer must re-derive the attachment, and two consumers will
+    derive it differently.
+    """
+
+    FACE = "face"
+    """A bounding surface of one host."""
+    EDGE = "edge"
+    """A line on a host, where two of its faces meet. Where a hinge lives."""
+    AXIS = "axis"
+    """A line through the product frame. Where a shaft, bearing or thread lives."""
+    CORRIDOR = "corridor"
+    """A prismatic path along an axis. Where a guide or a routed link lives."""
+    CONTACT_SURFACE = "contact_surface"
+    """The shared surface between two hosts. Where a catch or a stop acts."""
+    VOLUME = "volume"
+    """A bulk region, used for keep-clear rather than attachment."""
+    BOUNDARY = "boundary"
+    """The enclosure surface, as an access or crossing site."""
+
+
+class JointType(str, Enum):
+    """Kinematic pair types. Contact is deliberately absent.
+
+    A contact is a *state-dependent interaction*, not a joint: it exists in some
+    states and not others, and modelling it as a joint would assert a permanent
+    freedom the mechanism does not have.
+    """
+
+    REVOLUTE = "revolute"
+    PRISMATIC = "prismatic"
+    HELICAL = "helical"
+    FIXED = "fixed"
+
+
+class KinematicJoint(BaseModel):
+    """A pair between two bodies, with a symbolic coordinate.
+
+    `q` is never a number here. It takes the values `q_min`, `between`, `q_max`,
+    which is enough to distinguish canonical states without asserting an angle or
+    a stroke.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    name: str
+    type: JointType
+    parent: str
+    child: str
+    axis: str | None = None
+    frame_on_parent: str = ""
+    frame_on_child: str = ""
+    why: str = ""
+
+
+class CouplingKind(str, Enum):
+    DIRECT = "direct"
+    ROTATION_TO_TRANSLATION = "rotation_to_translation"
+    ROTATION_TO_ROTATION = "rotation_to_rotation"
+    INTERMITTENT = "intermittent"
+
+
+class JointCoupling(BaseModel):
+    """Linked motion between two joints.
+
+    The *kind* of coupling is mechanism knowledge and is determined here; the
+    ratio that governs it is not. `ratio_symbol` names the quantity Stage 05-06
+    must resolve without asserting a value for it.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    driver: str
+    driven: str
+    kind: CouplingKind
+    ratio_symbol: str | None = None
+    resolved_by: str = "Stage 05-06"
+    why: str = ""
+
+
+class InteractionKind(str, Enum):
+    """A state-dependent relationship between two elements."""
+
+    CONTACT = "contact"
+    ENGAGEMENT = "engagement"
+    DISENGAGEMENT = "disengagement"
+    STOP_CONTACT = "stop_contact"
+    CLEARANCE = "clearance"
+
+
+class StateInteraction(BaseModel):
+    """What two elements are doing to each other in one state."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    state: str
+    kind: InteractionKind
+    between: tuple[str, str]
+    why: str = ""
+
+
+class PredicateKind(str, Enum):
+    COVERS = "covers"
+    CLEARS = "clears"
+    ENGAGED = "engaged"
+    RELEASED = "released"
+    AT_LIMIT = "at_limit"
+
+
+class StatePredicate(BaseModel):
+    """One checkable claim about a state, and whether it holds."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    state: str
+    predicate: PredicateKind
+    subject: str
+    object: str | None = None
+    holds: bool = False
+    evidence: str = ""
+
+
+class StatePose(BaseModel):
+    """A body's qualitative extent in one state.
+
+    The extent is an ordinal box per product axis: relative position, never a
+    dimension. `via_joint` names the joint whose coordinate put it there.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    state: str
+    body: str
+    extent: list[list[int]] = Field(default_factory=list)
+    containment: str = "interior"
+    via_joint: str | None = None
+    joint_value: str | None = None
+    why: str = ""
+
+
+class TransitionEnvelope(BaseModel):
+    """A conservative region a body may occupy while moving between two states.
+
+    Conservative means it is the union of the endpoint extents plus the span
+    between them - an over-estimate. It can show that two bodies **must** meet;
+    it can never show that they cannot, so it is not a collision proof.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    transition: str
+    body: str
+    extent: list[list[int]] = Field(default_factory=list)
+    conservative: bool = True
+    caveat: str = (
+        "qualitative over-estimate: sufficient to expose a necessary overlap, "
+        "never sufficient to certify clearance"
+    )
+
+
+class StateValidation(BaseModel):
+    """Whether one transition is qualitatively feasible, and what is unresolved."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    transition: str
+    feasible: bool = False
+    predicates: list[str] = Field(default_factory=list)
+    unresolved_risks: list[str] = Field(default_factory=list)
+    why: str = ""
+
+
+class Containment(str, Enum):
+    """Where a body sits relative to the enclosure boundary."""
+
+    INTERIOR = "interior"
+    BOUNDARY = "boundary"
+    EXTERIOR = "exterior"
+    SPANNING = "spanning"
+    """Present on both sides - a shaft entering an enclosure."""
+
+
+class RadialPosition(str, Enum):
+    ON_AXIS = "on_axis"
+    OFF_AXIS = "off_axis"
+
+
+class BodyPlacement(BaseModel):
+    """A body's qualitative position, derived from mechanical relationships.
+
+    `span` is an ordinal interval on the principal axis: a relative position, not
+    a coordinate and not a dimension. Two bodies sharing a slot are at the same
+    place along the axis; nothing is said about how far apart anything is.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    body: str
+    containment: Containment
+    radial: RadialPosition
+    axis: str
+    span: list[int] = Field(default_factory=list)
+    derived_from: list[str] = Field(default_factory=list)
+    """The mechanical facts that forced this placement, in the order applied."""
+
+
+class UnresolvedLayoutChoice(BaseModel):
+    """A position the mechanism constrains but does not fix.
+
+    Recorded rather than silently resolved: a reader must be able to see that the
+    layout is one of several equally valid ones.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    subject: str
+    question: str
+    options: list[str] = Field(default_factory=list)
+    blocks_stage05: bool = False
+    why: str = ""
+
+
+class LayoutConflict(BaseModel):
+    """A relation the synthesized layout cannot satisfy.
+
+    A conflict is never repaired by inventing a placement; it blocks Stage 05.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    between: tuple[str, str]
+    relation: str
+    detail: str = ""
+    why: str = ""
+
+
+class LocationBasis(str, Enum):
+    """The mechanical fact that determines where a localized feature sits.
+
+    A feature is not placed and then labelled. It exists at a place *because* of a
+    relationship, and the basis names which relationship put it there. If a
+    feature cannot cite a basis, its location was assigned rather than derived.
+    """
+
+    SHARED_BOUNDARY = "shared_boundary"
+    """Where two bodies meet - the closure line between a moving and a fixed one."""
+    COMMON_AXIS = "common_axis"
+    """The line two members share when one turns about the other."""
+    COAXIAL_OVERLAP = "coaxial_overlap"
+    """The span over which two coaxial members are simultaneously engaged."""
+    MOTION_CORRIDOR = "motion_corridor"
+    """The path a constrained body sweeps through its full travel."""
+    MOTION_EXTREME = "motion_extreme"
+    """An end of a body's travel, where a limit can act."""
+    REACTION_SITE = "reaction_site"
+    """Where a reaction force is transferred out of a moving element."""
+    ENGAGED_STATE_CONTACT = "engaged_state_contact"
+    """Where a retained and a retaining member meet in the state that is held."""
+    ACCESS_CROSSING = "access_crossing"
+    """Where an external agent crosses the enclosure boundary."""
+
+
+class LocationDerivation(BaseModel):
+    """Why a feature is where it is, and what about that is still free.
+
+    `determined` distinguishes a location the mechanism fixes from one it merely
+    constrains. Two bearings on one shaft must occupy distinct stations; which is
+    at which end the mechanism does not say. Recording that as free is the honest
+    answer - resolving it by declaration order asserts an engineering fact that
+    was never derived.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    basis: LocationBasis
+    from_relationship: str
+    participants: list[str] = Field(default_factory=list)
+    determined: bool = True
+    free_parameters: list[str] = Field(default_factory=list)
+    alternatives: str | None = None
+    why: str = ""
+
+
+class TopologicalAnchor(BaseModel):
+    """Where a relation or a local element is attached, topologically.
+
+    Deliberately allows *partial* resolution. Narrowing "attached to the closure"
+    down to "an edge of its +Z face" is real information even when which of the
+    four edges remains a downstream freedom. Recording the freedom is honest;
+    picking an edge here would be deciding geometry Stage 04 has no basis for.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    kind: TopologyKind
+    hosts: list[str] = Field(default_factory=list)
+    axis: str | None = None
+    faces: list[str] = Field(default_factory=list)
+    station: str | None = None
+    span: list[str] = Field(default_factory=list)
+    resolved: bool = True
+    """False when a free parameter remains - which edge, which side."""
+    open_parameter: str | None = None
+    derivation: LocationDerivation | None = None
+    """The mechanical relationship this location follows from."""
+    why: str = ""
+
+
+class ArchitectureBound(BaseModel):
+    """A quantitative bound, carried to the stages that must respect it."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    requirement_id: str
+    comparator: str
+    lower: float | None = None
+    upper: float | None = None
+    unit: str
+    precision: str = ""
+
+
+class SpatialConstraint(BaseModel):
+    """What a declared relationship demands of relative position.
+
+    Emitted by Stage 02 because the demand is mechanical knowledge - a threaded
+    pair is coaxial whatever product it sits in. Checked by Stage 04, which is the
+    first stage holding a placement to check it against.
+
+    Architecture level only: satisfaction here means the arrangement is not
+    self-contradictory, never that the geometry closes.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    between: tuple[str, str]
+    relation: SpatialRelationKind
+    source: str
+    """The interface or obligation this came from, e.g. `interface:threaded_pair`."""
+    axis: str | None = None
+    at_station: str | None = None
+    anchor: TopologicalAnchor | None = None
+    """Where this relation is attached. Stage 05 must not have to re-derive it."""
+    rationale: str = ""
+    status: ConstraintStatus = ConstraintStatus.NOT_CHECKABLE
+    detail: str = ""
+
+
 class ArchitecturalInterface(BaseModel):
     """Where two conceptual elements meet, and what crosses."""
 
@@ -513,6 +1031,29 @@ class ArchitecturalInterface(BaseModel):
     transmits: str = ""
     crosses_boundary: bool = False
     """True when this interface passes through the enclosure boundary."""
+    axis_relation: AxisRelation | None = None
+    """How this interface constrains the two axes it joins.
+
+    None means take the default for the kind. Stated explicitly where a family
+    means something the kind alone does not say, e.g. a bevel mesh.
+    """
+
+    @property
+    def axes(self) -> AxisRelation:
+        return self.axis_relation or AXIS_RELATION_DEFAULT.get(
+            self.kind, AxisRelation.UNCONSTRAINED)
+
+
+AXIS_RELATION_DEFAULT.update({
+    InterfaceKind.ROTATIONAL_JOINT: AxisRelation.IDENTICAL,
+    InterfaceKind.FIXED_ATTACHMENT: AxisRelation.IDENTICAL,
+    InterfaceKind.SLIDING_JOINT: AxisRelation.PARALLEL,
+    InterfaceKind.THREADED_PAIR: AxisRelation.COLLINEAR,
+    InterfaceKind.TOOTHED_MESH: AxisRelation.PARALLEL,
+    InterfaceKind.CONTACT_PAIR: AxisRelation.PARALLEL,
+    InterfaceKind.FLEXIBLE_LINK: AxisRelation.UNCONSTRAINED,
+    InterfaceKind.USER_CONTACT: AxisRelation.UNCONSTRAINED,
+})
 
 
 class ArchitecturalFunction(BaseModel):
@@ -540,11 +1081,24 @@ class FunctionalPart(BaseModel):
     survived only inside the prose `rationale`, which is not consumable.
     """
     engineering_roles: list[str] = Field(default_factory=list)
-    """Engineering role tags, e.g. rotating, translating, moving_boundary, compliant.
+    """Engineering role tags, e.g. load_bearing, moving_boundary, compliant.
 
     Carried so a consumer never has to re-query the knowledge base by mechanism id
-    to learn how an element behaves. `motions` declares one relation for the whole
-    chain, so it cannot say how each individual element moves.
+    to learn what an element is for. Orthogonal to `motion_kind`.
+    """
+    motion_kind: MotionKind = MotionKind.UNSPECIFIED
+    """How this element moves. `motions` declares one relation for the whole chain,
+    so it can never say how an individual element moves."""
+    element_class: ElementClass = ElementClass.BODY
+    """Body, joint or feature. Determines whether it has bulk and can sweep."""
+    form: str = "block"
+    """Which solid realizes this element. Form and function are inseparable."""
+    permits_motion: MotionKind = MotionKind.FIXED
+    """For a JOINT: the relative motion it allows between the bodies it connects.
+
+    This is where a motion axis is anchored. A body's `motion_kind` says how it
+    moves; the joint says what allows it, so a declared motion with no permitting
+    joint is ungrounded rather than merely undrawn.
     """
 
     id: str
@@ -589,8 +1143,18 @@ class MechanicalArchitectureCandidate(BaseModel):
     """How a maintained state is held, and how it is released. Conceptual only."""
     support_obligations: list[SupportObligation] = Field(default_factory=list)
     """What must be located or retained, without saying where or by what part."""
+    spatial_constraints: list[SpatialConstraint] = Field(default_factory=list)
+    """What the declared interfaces and obligations demand of relative position."""
+    states: list[FunctionalState] = Field(default_factory=list)
+    """The functional states this architecture must be able to occupy."""
+    transitions: list[StateTransition] = Field(default_factory=list)
+    """How the mechanism moves between those states."""
     constrained_by: list[str] = Field(default_factory=list)
     """Requirements whose quantitative bounds constrain this architecture."""
+    bounds: list["ArchitectureBound"] = Field(default_factory=list)
+    """The bounds themselves. Recording only the ids left every downstream stage
+    knowing that a dimension was constrained but not by what, so nothing could be
+    sized from a requirement."""
     load_path: list[str] = Field(default_factory=list)
     interfaces: list[ArchitecturalInterface] = Field(default_factory=list)
     spatial_implications: list[str] = Field(default_factory=list)
@@ -646,6 +1210,14 @@ class MechanicalArchitecture(DomainObject):
     rejected: dict[str, str] = Field(default_factory=dict)
     contract_advisories: list[str] = Field(default_factory=list)
     """Non-blocking Stage 01 gaps, carried forward rather than silently dropped."""
+    undecided_between: list[str] = Field(default_factory=list)
+    """Candidates the available criteria cannot separate.
+
+    Non-empty means `selected_id` was not derived. Every criterion Stage 02 has
+    ranked these equal, so the one named is a recorded arbitrary pick, not a
+    decision, and downstream stages must not present it as one. Resolving it
+    needs a discriminating requirement, not a re-weighting.
+    """
 
     @property
     def selected(self) -> MechanicalArchitectureCandidate:
@@ -728,9 +1300,57 @@ class ProductPiece(BaseModel):
     realises_elements: list[str] = Field(default_factory=list)
     """Stage 02 conceptual element names this piece realises."""
     engineering_roles: list[str] = Field(default_factory=list)
+    motion_kind: MotionKind = MotionKind.UNSPECIFIED
+    element_class: ElementClass = ElementClass.BODY
+    permits_motion: MotionKind = MotionKind.FIXED
+    form: str = "block"
     moving: bool = False
     external: bool = False
     rationale: str = ""
+
+
+class AccessAgent(str, Enum):
+    """Who or what must reach an internal target."""
+
+    USER_HAND = "user_hand"
+    PAYLOAD = "payload"
+    SERVICE_TOOL = "service_tool"
+    ASSEMBLY_TOOL = "assembly_tool"
+    CONSUMABLE = "consumable"
+    STORED_CONTENT = "stored_content"
+
+
+class AccessMode(str, Enum):
+    REACH = "reach"
+    ACTUATE = "actuate"
+    INSERT = "insert"
+    REMOVE = "remove"
+    LOAD = "load"
+    VIEW = "view"
+
+
+class AccessPath(BaseModel):
+    """A route an external subject must take to reach something inside.
+
+    Required paths are derived from structured facts - an access obligation on an
+    internal element, an externally originating load path, a piece installed after
+    the boundary closes. A required path with no boundary interface is reported,
+    never resolved by inventing an opening.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    agent: AccessAgent
+    mode: AccessMode
+    target: str
+    source_region: str | None = None
+    boundary_interface: str | None = None
+    destination_region: str | None = None
+    required: bool = True
+    required_direction: str | None = None
+    clearance_need: str | None = None
+    satisfied: bool = False
+    unmet_reason: str | None = None
 
 
 class ObligationOwnership(BaseModel):
@@ -758,6 +1378,18 @@ class ProductInterface(BaseModel):
     transmits: str = ""
     crosses_boundary: bool = False
     from_elements: tuple[str, str] | None = None
+    axis_relation: AxisRelation | None = None
+    """Carried from the architectural interface; None takes the kind's default.
+
+    Dropped here previously, which meant the constraint an interface places on
+    two axes existed in Stage 02 and was gone by Stage 04 - the stage that
+    actually assigns axes.
+    """
+
+    @property
+    def axes(self) -> AxisRelation:
+        return self.axis_relation or AXIS_RELATION_DEFAULT.get(
+            self.kind, AxisRelation.UNCONSTRAINED)
 
 
 class PlacementRelation(BaseModel):
@@ -796,6 +1428,7 @@ class ProductArchitecture(DomainObject):
     pieces: list[ProductPiece] = Field(default_factory=list)
     obligation_ownership: list[ObligationOwnership] = Field(default_factory=list)
     interfaces: list[ProductInterface] = Field(default_factory=list)
+    access_paths: list[AccessPath] = Field(default_factory=list)
     placements: list[PlacementRelation] = Field(default_factory=list)
     assembly_sequence: list[AssemblyStep] = Field(default_factory=list)
     load_path_ownership: list[LoadPathOwnership] = Field(default_factory=list)
@@ -822,23 +1455,75 @@ class ProductArchitecture(DomainObject):
 # --------------------------------------------------------------------------
 # Stage 04 - Concept Visualization
 # --------------------------------------------------------------------------
-class MotionClass(str, Enum):
-    """How a moving element sweeps space."""
+class ProductAxis(str, Enum):
+    """An axis of the *product* frame. Carries no world orientation.
 
-    ROTATIONAL = "rotational"
-    TRANSLATIONAL = "translational"
-    HINGED_ARC = "hinged_arc"
-    COMPOUND = "compound"
-    UNCLASSIFIED = "unclassified"
+    Nothing here means up, down, front or back. The frame is a labelling of the
+    product's own three directions; which one points at gravity is a later
+    decision and may differ per instance.
+    """
+
+    X = "x"
+    Y = "y"
+    Z = "z"
+
+
+class SignedFace(str, Enum):
+    """A face of the product envelope, named by the product-frame axis it faces."""
+
+    X_POS = "+X"
+    X_NEG = "-X"
+    Y_POS = "+Y"
+    Y_NEG = "-Y"
+    Z_POS = "+Z"
+    Z_NEG = "-Z"
+
+    @property
+    def axis(self) -> ProductAxis:
+        return ProductAxis(self.value[1].lower())
+
+    @property
+    def opposite(self) -> "SignedFace":
+        return SignedFace(("-" if self.value[0] == "+" else "+") + self.value[1])
+
+
+class FaceRole(str, Enum):
+    """What a face is for. A role never forces a face to be exclusive.
+
+    Two roles may share one face - a box opened and loaded through the same
+    aperture is normal. Sharing is recorded explicitly so it is a decision rather
+    than an accident.
+    """
+
+    OPERATING = "operating"
+    LOADING = "loading"
+    SERVICE = "service"
+    SEATING = "seating"
+    UNASSIGNED = "unassigned"
+
+
+class AxisStation(str, Enum):
+    """Where along an axis something sits. Geometric, not functional.
+
+    Deliberately not chain-start / chain-end: the two physical ends of an axis are
+    what a limit, a bearing or a stop acts at, and those are independent of which
+    end the input happens to enter.
+    """
+
+    NEGATIVE_END = "negative_end"
+    MID_SPAN = "mid_span"
+    POSITIVE_END = "positive_end"
+    RANGE_MIN = "range_min"
+    RANGE_MAX = "range_max"
 
 
 class SweptShape(str, Enum):
     """The qualitative shape of a swept region. Never a dimension."""
 
-    DISC = "disc"
-    PRISM = "prism"
-    ARC_SECTOR = "arc_sector"
-    COMPOUND = "compound"
+    CYLINDRICAL = "cylindrical"
+    PRISMATIC = "prismatic"
+    HELICAL = "helical"
+    DEFORMATION = "deformation"
     UNKNOWN = "unknown"
 
 
@@ -870,25 +1555,47 @@ class SpatialIssueKind(str, Enum):
     INTERFERENCE = "interference"
     ACCESS_BLOCKED = "access_blocked"
     ENVELOPE_CONFLICT = "envelope_conflict"
-    UNSUPPORTED_SPAN = "unsupported_span"
     ASSEMBLY_UNREACHABLE = "assembly_unreachable"
+    CONSTRAINT_VIOLATION = "constraint_violation"
+    UNGROUNDED_MOTION = "ungrounded_motion"
+    UNHOSTED_ELEMENT = "unhosted_element"
+    ACCESS_PATH_UNMET = "access_path_unmet"
+    MOTION_UNSPECIFIED = "motion_unspecified"
+    INVALID_STATE_TRANSITION = "invalid_state_transition"
+    """The declared motion does not carry the mechanism between its states."""
+    BROKEN_MOTION_CHAIN = "broken_motion_chain"
+    """Motion cannot propagate from the input to the output."""
 
 
-class ReferenceFrame(BaseModel):
-    """The coarse frame every placement is expressed in.
+class ProductReferenceFrame(BaseModel):
+    """Three signed product axes, plus what each one means.
 
-    Qualitative: it names axes and says what defined them. It never fixes an
-    origin, a direction cosine, or a dimension.
+    The primary axis is the one the principal motion runs along. The frame states
+    that relationship; it never states which way the product faces in the world.
     """
 
     model_config = ConfigDict(extra="forbid")
 
-    primary_axis: str
-    """What the principal motion runs along, named after the element defining it."""
-    primary_motion: MotionClass = MotionClass.UNCLASSIFIED
+    primary_axis: ProductAxis = ProductAxis.Z
+    secondary_axis: ProductAxis = ProductAxis.Y
+    lateral_axis: ProductAxis = ProductAxis.X
+    primary_motion: MotionKind = MotionKind.UNSPECIFIED
+    primary_element: str | None = None
     derived_from: str = ""
-    access_faces: list[str] = Field(default_factory=list)
-    """Faces that must remain reachable, named by the region requiring them."""
+    axis_meaning: dict[str, str] = Field(default_factory=dict)
+
+
+class BoundaryFace(BaseModel):
+    """One face of the envelope, its roles, and what sits on it."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    face: SignedFace
+    roles: list[FaceRole] = Field(default_factory=list)
+    hosts: list[str] = Field(default_factory=list)
+    shared: bool = False
+    """True when more than one role was deliberately assigned to this face."""
+    rationale: str = ""
 
 
 class RegionPlacement(BaseModel):
@@ -898,6 +1605,8 @@ class RegionPlacement(BaseModel):
     zone: SpatialZone
     relative_to: str | None = None
     why: str = ""
+    axis_station: AxisStation | None = None
+    face: SignedFace | None = None
     houses: list[str] = Field(default_factory=list)
     """Elements arranged in this region. Carried so the blueprint stands alone."""
 
@@ -918,7 +1627,19 @@ class PlacedPiece(BaseModel):
     zone: SpatialZone | None = None
     moving: bool = False
     external: bool = False
-    motion: "MotionClass | None" = None
+    motion_kind: MotionKind = MotionKind.UNSPECIFIED
+    element_class: ElementClass = ElementClass.BODY
+    permits_motion: MotionKind = MotionKind.FIXED
+    attached_to: list[str] = Field(default_factory=list)
+    """Bodies this joint connects, or the host body this feature sits on.
+
+    A joint and a feature have no independent position; this is what locates them.
+    """
+    anchor: TopologicalAnchor | None = None
+    """Which topological entity of its hosts this element is attached to."""
+    engineering_roles: list[str] = Field(default_factory=list)
+    axis_station: AxisStation | None = None
+    face: SignedFace | None = None
 
 
 class SweptVolumeSpec(BaseModel):
@@ -928,8 +1649,9 @@ class SweptVolumeSpec(BaseModel):
 
     region: str
     element: str
-    motion: MotionClass
+    motion: MotionKind
     shape: SweptShape
+    axis: ProductAxis | None = None
     external: bool = False
     must_stay_clear_of: list[str] = Field(default_factory=list)
 
@@ -996,7 +1718,19 @@ class ConceptVisualization(DomainObject):
     authoritative: bool = False
     image_refs: list[str] = Field(default_factory=list)
 
-    reference_frame: ReferenceFrame | None = None
+    reference_frame: ProductReferenceFrame | None = None
+    boundary_faces: list[BoundaryFace] = Field(default_factory=list)
+    spatial_constraints: list[SpatialConstraint] = Field(default_factory=list)
+    kinematic_joints: list[KinematicJoint] = Field(default_factory=list)
+    joint_couplings: list[JointCoupling] = Field(default_factory=list)
+    state_poses: list[StatePose] = Field(default_factory=list)
+    state_interactions: list[StateInteraction] = Field(default_factory=list)
+    state_predicates: list[StatePredicate] = Field(default_factory=list)
+    transition_envelopes: list[TransitionEnvelope] = Field(default_factory=list)
+    state_validations: list[StateValidation] = Field(default_factory=list)
+    body_placements: list[BodyPlacement] = Field(default_factory=list)
+    unresolved_layout_choices: list[UnresolvedLayoutChoice] = Field(default_factory=list)
+    layout_conflicts: list[LayoutConflict] = Field(default_factory=list)
     region_placements: list[RegionPlacement] = Field(default_factory=list)
     placed_pieces: list[PlacedPiece] = Field(default_factory=list)
     swept_volumes: list[SweptVolumeSpec] = Field(default_factory=list)

@@ -550,9 +550,13 @@ class RunArtifactWriter:
                     # The concept layout is a review artifact derived from the
                     # blueprint. It never feeds a decision, so a render failure
                     # is recorded as an absent image, not a failed stage.
+                    payload = _obj(obj)
+                    prod = result.get("ProductArchitecture")
+                    payload["_access_paths"] = (
+                        [_obj(a) for a in prod.access_paths] if prod else []
+                    )
                     obj.image_refs = [
-                        str(Path(pth).name)
-                        for pth in render_concept(_obj(obj), out)
+                        str(Path(pth).name) for pth in render_concept(payload, out)
                     ]
                     _dump(out / "output.json", _obj(obj))
             (out / "report.md").write_text(self._report(slot, obj, record, authority))

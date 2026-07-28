@@ -1,0 +1,355 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "SOLVED-001",
+    "design_id": "design-001",
+    "producer": "s06_parametric_solver",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "status": "underdetermined",
+  "parameters": [
+    {
+      "name": "closure_member.pinch_access",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-060",
+      "derived": false
+    },
+    {
+      "name": "closure_member.crank_radius",
+      "value": 40.0,
+      "unit": "mm",
+      "commitment_id": "C-062",
+      "derived": false
+    },
+    {
+      "name": "closure_member.grip_force",
+      "value": 0.0,
+      "unit": "N",
+      "commitment_id": "C-064",
+      "derived": false
+    },
+    {
+      "name": "closure_member.lead_angle",
+      "value": 30.0,
+      "unit": "deg",
+      "commitment_id": "C-066",
+      "derived": false
+    },
+    {
+      "name": "closure_member.retention_angle",
+      "value": 60.0,
+      "unit": "deg",
+      "commitment_id": "C-067",
+      "derived": false
+    },
+    {
+      "name": "closure_member.retention_force",
+      "value": 21.149,
+      "unit": "N",
+      "commitment_id": "C-068",
+      "derived": false
+    },
+    {
+      "name": "closure_member.release_force",
+      "value": 5.4,
+      "unit": "N",
+      "commitment_id": "C-069",
+      "derived": false
+    },
+    {
+      "name": "closure_member.self_locking_limit",
+      "value": 70.71,
+      "unit": "deg",
+      "commitment_id": "C-072",
+      "derived": true
+    },
+    {
+      "name": "closure_member.boundary_clearance",
+      "value": 1.5,
+      "unit": "mm",
+      "commitment_id": "C-081",
+      "derived": false
+    },
+    {
+      "name": "opening_interface.angular_range",
+      "value": 105.0,
+      "unit": "deg",
+      "commitment_id": "C-090",
+      "derived": true
+    },
+    {
+      "name": "opening_interface.hinge_support",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-091",
+      "derived": false
+    },
+    {
+      "name": "opening_interface.hinge_offset",
+      "value": 4.0,
+      "unit": "mm",
+      "commitment_id": "C-092",
+      "derived": false
+    },
+    {
+      "name": "opening_interface.depth",
+      "value": 90.0,
+      "unit": "mm",
+      "commitment_id": "C-093",
+      "derived": false
+    },
+    {
+      "name": "opening_interface.thickness",
+      "value": 6.0,
+      "unit": "mm",
+      "commitment_id": "C-094",
+      "derived": false
+    },
+    {
+      "name": "opening_interface.closing_clearance",
+      "value": 0.4,
+      "unit": "mm",
+      "commitment_id": "C-095",
+      "derived": false
+    },
+    {
+      "name": "opening_interface.swing_reach",
+      "value": 1.8,
+      "unit": "mm",
+      "commitment_id": "C-096",
+      "derived": false
+    },
+    {
+      "name": "opening_interface.rear_clearance",
+      "value": 5.0,
+      "unit": "mm",
+      "commitment_id": "C-097",
+      "derived": false
+    },
+    {
+      "name": "detent_feature.lead_angle",
+      "value": 30.0,
+      "unit": "deg",
+      "commitment_id": "C-134",
+      "derived": false
+    },
+    {
+      "name": "detent_feature.retention_angle",
+      "value": 60.0,
+      "unit": "deg",
+      "commitment_id": "C-135",
+      "derived": false
+    },
+    {
+      "name": "detent_feature.retention_force",
+      "value": 21.149,
+      "unit": "N",
+      "commitment_id": "C-136",
+      "derived": false
+    },
+    {
+      "name": "detent_feature.release_force",
+      "value": 5.4,
+      "unit": "N",
+      "commitment_id": "C-137",
+      "derived": false
+    },
+    {
+      "name": "detent_feature.self_locking_limit",
+      "value": 70.71,
+      "unit": "deg",
+      "commitment_id": "C-140",
+      "derived": true
+    },
+    {
+      "name": "housing.internal_height",
+      "value": 120.0,
+      "unit": "mm",
+      "commitment_id": "C-163",
+      "derived": false
+    },
+    {
+      "name": "housing.internal_width",
+      "value": 110.0,
+      "unit": "mm",
+      "commitment_id": "C-164",
+      "derived": false
+    },
+    {
+      "name": "housing.internal_depth",
+      "value": 90.0,
+      "unit": "mm",
+      "commitment_id": "C-165",
+      "derived": false
+    },
+    {
+      "name": "panel_alignment.tolerance_chain",
+      "value": 0.3,
+      "unit": "mm",
+      "commitment_id": "C-170",
+      "derived": true
+    },
+    {
+      "name": "motion.opening_interface.radial_support",
+      "value": 2.0,
+      "unit": "mm",
+      "commitment_id": "C-189",
+      "derived": false
+    },
+    {
+      "name": "motion.opening_interface.support_span",
+      "value": 60.0,
+      "unit": "mm",
+      "commitment_id": "C-190",
+      "derived": false
+    },
+    {
+      "name": "motion.opening_interface.diameter",
+      "value": 8.0,
+      "unit": "mm",
+      "commitment_id": "C-191",
+      "derived": false
+    },
+    {
+      "name": "motion.opening_interface.radial_load",
+      "value": 15.0,
+      "unit": "N",
+      "commitment_id": "C-192",
+      "derived": false
+    },
+    {
+      "name": "motion.opening_interface.deflection_allowable",
+      "value": 0.15,
+      "unit": "mm",
+      "commitment_id": "C-193",
+      "derived": false
+    },
+    {
+      "name": "housing.wall_thickness",
+      "value": 2.4,
+      "unit": "mm",
+      "commitment_id": "C-288",
+      "derived": false
+    },
+    {
+      "name": "closure_member.length",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-293",
+      "derived": false
+    },
+    {
+      "name": "closure_member.thickness",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-294",
+      "derived": false
+    },
+    {
+      "name": "closure_member.width",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-295",
+      "derived": false
+    },
+    {
+      "name": "detent_feature.height",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-296",
+      "derived": false
+    },
+    {
+      "name": "detent_feature.length",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-297",
+      "derived": false
+    },
+    {
+      "name": "detent_feature.width",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-298",
+      "derived": false
+    },
+    {
+      "name": "housing.height",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-299",
+      "derived": false
+    },
+    {
+      "name": "housing.length",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-300",
+      "derived": false
+    },
+    {
+      "name": "housing.wall",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-301",
+      "derived": false
+    },
+    {
+      "name": "housing.width",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-303",
+      "derived": false
+    },
+    {
+      "name": "opening_interface.length",
+      "value": 1.0,
+      "unit": "mm",
+      "commitment_id": "C-304",
+      "derived": false
+    }
+  ],
+  "satisfied": [
+    {
+      "commitment_id": "C-057",
+      "expression": "closure_member.length >= housing.length - 2*housing.wall",
+      "satisfied": true,
+      "residual": null,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-072",
+      "expression": "retention_angle < atan(1/mu)",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-140",
+      "expression": "retention_angle < atan(1/mu)",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    },
+    {
+      "commitment_id": "C-193",
+      "expression": "motion.opening_interface deflection allowable",
+      "satisfied": true,
+      "residual": 0.0,
+      "margin": null
+    }
+  ],
+  "violated": [],
+  "objective_values": {
+    "objective.envelope": 0.0,
+    "retention_vs_release": 0.0
+  },
+  "diagnostics": [
+    "2 objective(s) recorded but not optimised in this implementation",
+    "undetermined parameters: opening_interface.section, opening_stop.height, opening_stop.length, opening_stop.width"
+  ],
+  "source_definition_id": "CRED-001"
+}

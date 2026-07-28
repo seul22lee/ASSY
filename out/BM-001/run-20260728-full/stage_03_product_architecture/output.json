@@ -1,0 +1,592 @@
+{
+  "meta": {
+    "schema_version": "0.1.0",
+    "object_id": "PROD-001",
+    "design_id": "design-001",
+    "producer": "s03_product_architecture",
+    "parent_id": null,
+    "revision_reason": null,
+    "notes": []
+  },
+  "regions": [
+    {
+      "id": "RG-001",
+      "name": "working_volume",
+      "purpose": "the region the output element occupies and travels through",
+      "houses": [
+        "closure_member"
+      ],
+      "external": false,
+      "kind": "enclosed_volume",
+      "moving": false
+    },
+    {
+      "id": "RG-002",
+      "name": "support_region",
+      "purpose": "locates a moving element and reacts its loads",
+      "houses": [
+        "opening_interface"
+      ],
+      "external": false,
+      "kind": "support_zone",
+      "moving": false
+    },
+    {
+      "id": "RG-003",
+      "name": "retention_region",
+      "purpose": "holds the mechanism in state",
+      "houses": [
+        "detent_feature"
+      ],
+      "external": false,
+      "kind": "retention_zone",
+      "moving": false
+    },
+    {
+      "id": "RG-004",
+      "name": "travel_limit_region",
+      "purpose": "bounds the motion of a moving element",
+      "houses": [
+        "opening_stop"
+      ],
+      "external": false,
+      "kind": "travel_limit_zone",
+      "moving": false
+    },
+    {
+      "id": "RG-005",
+      "name": "structural_shell",
+      "purpose": "carries load and encloses the mechanism",
+      "houses": [
+        "housing"
+      ],
+      "external": false,
+      "kind": "structural",
+      "moving": false
+    },
+    {
+      "id": "RG-006",
+      "name": "closure_member_swept_volume",
+      "purpose": "the region swept by closure_member through its full range",
+      "houses": [
+        "closure_member"
+      ],
+      "external": false,
+      "kind": "swept_volume",
+      "moving": true
+    },
+    {
+      "id": "RG-007",
+      "name": "disturbance_region",
+      "purpose": "where the externally applied load (disturbance) acts on the product",
+      "houses": [
+        "disturbance"
+      ],
+      "external": true,
+      "kind": "payload",
+      "moving": false
+    },
+    {
+      "id": "RG-008",
+      "name": "closure_member_access_region",
+      "purpose": "externally reachable surface of closure_member",
+      "houses": [
+        "closure_member"
+      ],
+      "external": true,
+      "kind": "user_access",
+      "moving": false
+    }
+  ],
+  "pieces": [
+    {
+      "id": "PP-001",
+      "name": "closure_member",
+      "kind": "moving_body",
+      "realises_elements": [
+        "closure_member"
+      ],
+      "engineering_roles": [
+        "moving_boundary",
+        "user_contact",
+        "user_release",
+        "manufactured"
+      ],
+      "motion_kind": "rotation",
+      "element_class": "body",
+      "permits_motion": "fixed",
+      "form": "plate",
+      "moving": true,
+      "external": false,
+      "rationale": "realises the output element of the architecture"
+    },
+    {
+      "id": "PP-002",
+      "name": "opening_interface",
+      "kind": "support_element",
+      "realises_elements": [
+        "opening_interface"
+      ],
+      "engineering_roles": [
+        "hinged",
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "fixed",
+      "element_class": "joint",
+      "permits_motion": "rotation",
+      "form": "rail",
+      "moving": false,
+      "external": false,
+      "rationale": "realises the support element of the architecture"
+    },
+    {
+      "id": "PP-003",
+      "name": "detent_feature",
+      "kind": "retention_element",
+      "realises_elements": [
+        "detent_feature"
+      ],
+      "engineering_roles": [
+        "retention_interface",
+        "manufactured"
+      ],
+      "motion_kind": "fixed",
+      "element_class": "feature",
+      "permits_motion": "fixed",
+      "form": "block",
+      "moving": false,
+      "external": false,
+      "rationale": "realises the retention element of the architecture"
+    },
+    {
+      "id": "PP-004",
+      "name": "opening_stop",
+      "kind": "limit_element",
+      "realises_elements": [
+        "opening_stop"
+      ],
+      "engineering_roles": [
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "fixed",
+      "element_class": "feature",
+      "permits_motion": "fixed",
+      "form": "block",
+      "moving": false,
+      "external": false,
+      "rationale": "realises the limit element of the architecture"
+    },
+    {
+      "id": "PP-005",
+      "name": "housing",
+      "kind": "shell",
+      "realises_elements": [
+        "housing"
+      ],
+      "engineering_roles": [
+        "enclosure",
+        "load_bearing",
+        "manufactured"
+      ],
+      "motion_kind": "fixed",
+      "element_class": "body",
+      "permits_motion": "fixed",
+      "form": "shell",
+      "moving": false,
+      "external": false,
+      "rationale": "realises the structure element of the architecture"
+    }
+  ],
+  "obligation_ownership": [
+    {
+      "element": "closure_member",
+      "obligation": "guidance",
+      "owner_piece": "opening_interface",
+      "region": "support_region",
+      "unowned_reason": null
+    },
+    {
+      "element": "closure_member",
+      "obligation": "travel_limit",
+      "owner_piece": "opening_stop",
+      "region": "travel_limit_region",
+      "unowned_reason": null
+    },
+    {
+      "element": "closure_member",
+      "obligation": "user_access",
+      "owner_piece": "housing",
+      "region": "structural_shell",
+      "unowned_reason": null
+    },
+    {
+      "element": "detent_feature",
+      "obligation": "clearance",
+      "owner_piece": "housing",
+      "region": "structural_shell",
+      "unowned_reason": null
+    },
+    {
+      "element": "detent_feature",
+      "obligation": "alignment",
+      "owner_piece": "closure_member",
+      "region": "closure_member_access_region",
+      "unowned_reason": null
+    },
+    {
+      "element": "detent_feature",
+      "obligation": "structural_root",
+      "owner_piece": "housing",
+      "region": "structural_shell",
+      "unowned_reason": null
+    }
+  ],
+  "interfaces": [
+    {
+      "between": [
+        "closure_member",
+        "detent_feature"
+      ],
+      "kind": "contact_pair",
+      "transmits": "interference retention force",
+      "crosses_boundary": false,
+      "from_elements": [
+        "closure_member",
+        "detent_feature"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "closure_member",
+        "opening_interface"
+      ],
+      "kind": "rotational_joint",
+      "transmits": "opening motion and closure weight",
+      "crosses_boundary": false,
+      "from_elements": [
+        "closure_member",
+        "opening_interface"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "closure_member",
+        "opening_stop"
+      ],
+      "kind": "contact_pair",
+      "transmits": "end-of-opening reaction",
+      "crosses_boundary": false,
+      "from_elements": [
+        "closure_member",
+        "opening_stop"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "closure_member",
+        "housing"
+      ],
+      "kind": "user_contact",
+      "transmits": "release input",
+      "crosses_boundary": true,
+      "from_elements": [
+        "closure_member",
+        "housing"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "opening_interface",
+        "housing"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "reaction into the structure",
+      "crosses_boundary": false,
+      "from_elements": [
+        "opening_interface",
+        "housing"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "detent_feature",
+        "housing"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "reaction into the structure",
+      "crosses_boundary": false,
+      "from_elements": [
+        "detent_feature",
+        "housing"
+      ],
+      "axis_relation": null
+    },
+    {
+      "between": [
+        "opening_stop",
+        "housing"
+      ],
+      "kind": "fixed_attachment",
+      "transmits": "reaction into the structure",
+      "crosses_boundary": false,
+      "from_elements": [
+        "opening_stop",
+        "housing"
+      ],
+      "axis_relation": null
+    }
+  ],
+  "access_paths": [
+    {
+      "agent": "user_hand",
+      "mode": "actuate",
+      "target": "closure_member",
+      "source_region": null,
+      "boundary_interface": "closure_member~housing:user_contact",
+      "destination_region": "closure_member_access_region",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "payload",
+      "mode": "load",
+      "target": "closure_member",
+      "source_region": "disturbance_region",
+      "boundary_interface": "closure_member~housing:user_contact",
+      "destination_region": "closure_member_access_region",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": "disturbance must pass to closure_member without fouling",
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "closure_member",
+      "source_region": null,
+      "boundary_interface": "closure_member~housing:user_contact",
+      "destination_region": "closure_member_access_region",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "opening_interface",
+      "source_region": null,
+      "boundary_interface": "closure_member~housing:user_contact",
+      "destination_region": "support_region",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "detent_feature",
+      "source_region": null,
+      "boundary_interface": "closure_member~housing:user_contact",
+      "destination_region": "retention_region",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "opening_stop",
+      "source_region": null,
+      "boundary_interface": "closure_member~housing:user_contact",
+      "destination_region": "travel_limit_region",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    },
+    {
+      "agent": "assembly_tool",
+      "mode": "insert",
+      "target": "housing",
+      "source_region": null,
+      "boundary_interface": "closure_member~housing:user_contact",
+      "destination_region": "structural_shell",
+      "required": true,
+      "required_direction": null,
+      "clearance_need": null,
+      "satisfied": true,
+      "unmet_reason": null
+    }
+  ],
+  "placements": [
+    {
+      "subject": "closure_member",
+      "relation": "parallel",
+      "reference": "opening_interface",
+      "why": "guidance runs parallel to the guided motion"
+    },
+    {
+      "subject": "closure_member",
+      "relation": "bounds",
+      "reference": "opening_stop",
+      "why": "the limit bounds the travel of the element"
+    },
+    {
+      "subject": "closure_member",
+      "relation": "outside",
+      "reference": "housing",
+      "why": "the surface must be reachable from outside"
+    },
+    {
+      "subject": "detent_feature",
+      "relation": "inside",
+      "reference": "housing",
+      "why": "the swept region must stay clear inside the product"
+    },
+    {
+      "subject": "detent_feature",
+      "relation": "adjacent",
+      "reference": "closure_member",
+      "why": "aligned features must meet"
+    },
+    {
+      "subject": "detent_feature",
+      "relation": "adjacent",
+      "reference": "housing",
+      "why": "the root is built into the reacting structure"
+    },
+    {
+      "subject": "closure_member",
+      "relation": "crosses",
+      "reference": "housing",
+      "why": "this interface passes through the enclosure boundary"
+    }
+  ],
+  "assembly_sequence": [
+    {
+      "order": 1,
+      "action": "establish the structural shell: housing",
+      "pieces": [
+        "housing"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 2,
+      "action": "install the support element: opening_interface",
+      "pieces": [
+        "opening_interface"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 3,
+      "action": "install the moving body onto its supports: closure_member",
+      "pieces": [
+        "closure_member"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 4,
+      "action": "install the retaining element: detent_feature",
+      "pieces": [
+        "detent_feature"
+      ],
+      "enables": "supports the pieces installed after it"
+    },
+    {
+      "order": 5,
+      "action": "install the travel limit: opening_stop",
+      "pieces": [
+        "opening_stop"
+      ],
+      "enables": "supports the pieces installed after it"
+    }
+  ],
+  "load_path_ownership": [
+    {
+      "name": "primary",
+      "path": [
+        "disturbance",
+        "closure_member",
+        "detent_feature",
+        "housing"
+      ],
+      "owning_regions": [
+        "disturbance_region",
+        "closure_member_access_region",
+        "retention_region",
+        "structural_shell"
+      ],
+      "terminates_at": "housing"
+    },
+    {
+      "name": "actuation",
+      "path": [
+        "user input",
+        "detent_feature",
+        "closure_member"
+      ],
+      "owning_regions": [
+        "retention_region",
+        "closure_member_access_region"
+      ],
+      "terminates_at": "closure_member"
+    }
+  ],
+  "unresolved_decisions": [
+    "interference amount",
+    "feature form",
+    "material pairing",
+    "unresolved at Stage 01: specific dimensions of the box",
+    "unresolved at Stage 01: exact manufacturing cost constraints",
+    "unresolved at Stage 01: specific force requirements for operation",
+    "unresolved at Stage 01: specific durability requirements for repeated use",
+    "which conceptual elements are integrated into a single manufactured piece, and which stay separate",
+    "housing split direction and service-panel orientation",
+    "material and manufacturing process"
+  ],
+  "source_architecture_id": "MECH-001",
+  "source_candidate_id": "friction_detent_catch",
+  "serves_requirements": [
+    "REQ-001",
+    "REQ-002",
+    "REQ-008"
+  ],
+  "architecture_advisories": [],
+  "housing_strategy": "Enclosing shell with a removable service boundary; only interfaces declared as boundary-crossing reach the outside",
+  "user_interaction": [],
+  "assembly_strategy": "5 pieces installed supports-first, closing with the externally accessible elements",
+  "service_strategy": "A removable boundary exposes the enclosed elements without disturbing the output element",
+  "protection_strategy": "Moving elements stay within the enclosure; only declared boundary-crossing interfaces reach the user",
+  "manufacturing_intent": "",
+  "load_paths": [
+    "disturbance -> closure_member -> detent_feature -> housing",
+    "user input -> detent_feature -> closure_member"
+  ],
+  "proportions": "no protrusion beyond the closure boundary; the interference pair sits on the closure line itself",
+  "risks": [
+    "retention decaying with repeated use",
+    "accidental opening if preload is low",
+    "release force rising if the interference is set high"
+  ]
+}

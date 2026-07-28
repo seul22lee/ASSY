@@ -29,11 +29,16 @@ from typing import ClassVar
 
 from assy.domain.common import ObjectMeta, Stage, new_id
 from assy.domain.upstream import (
+    AccessAgent,
+    AccessMode,
+    AccessPath,
     AssemblyStep,
     InterfaceKind,
     LoadPathOwnership,
     MechanicalArchitecture,
+    ElementClass,
     MechanismRole,
+    MotionKind,
     ObligationKind,
     ObligationOwnership,
     PieceKind,
@@ -128,12 +133,39 @@ class ProductArchitecturePlanner(PipelineStage):
                 kind=PIECE_KIND[part.role],
                 realises_elements=[part.name],
                 engineering_roles=list(part.engineering_roles),
+                motion_kind=part.motion_kind,
+                element_class=part.element_class,
+                form=part.form,
+                permits_motion=part.permits_motion,
                 moving=part.moving,
                 external=REGION_INTENT[part.role][3],
                 rationale=f"realises the {part.role.value} element of the architecture",
             )
             for part in selected.parts
         ]
+        # An enclosed product that must admit something from outside needs an
+        # opening for it. This is the same derivation that produces a service
+        # cover from enclosure: a boundary that must be crossed implies a place
+        # where it is crossed. The aperture's form, size and closure are left open.
+        for agent in self._unserved_agents(selected, pieces):
+            pieces.append(
+                ProductPiece(
+                    id=new_id("PP"),
+                    name=f"{agent}_aperture",
+                    kind=PieceKind.COVER,
+                    motion_kind=MotionKind.FIXED,
+                    element_class=ElementClass.BODY,
+                    form="plate",
+                    moving=False,
+                    external=True,
+                    rationale=(
+                        f"an enclosed product must admit {agent} from outside, so a "
+                        "boundary opening is required; its form and closure are "
+                        "downstream choices"
+                    ),
+                )
+            )
+
         # An enclosed mechanism that a user must never open in normal use still has
         # to be assembled and serviced. The cover is implied by enclosure, not by
         # any word in the request.
@@ -143,6 +175,9 @@ class ProductArchitecturePlanner(PipelineStage):
                     id=new_id("PP"),
                     name="service_cover",
                     kind=PieceKind.COVER,
+                    motion_kind=MotionKind.FIXED,
+                    element_class=ElementClass.BODY,
+                    form="plate",
                     moving=False,
                     external=True,
                     rationale=(
@@ -152,6 +187,32 @@ class ProductArchitecturePlanner(PipelineStage):
                 )
             )
         return pieces
+
+    def _unserved_agents(self, selected, pieces) -> list[str]:
+        """Agents that must reach inside but have no crossing to reach through.
+
+        Derived from the same three triggers that create a required access path.
+        Only an *enclosed* product needs an aperture: an open frame is already
+        reachable.
+        """
+        if not self._is_enclosed(selected):
+            return []
+        element_names = {p.name for p in selected.parts}
+        external = {p.name for p in pieces if p.external}
+        crossing_names = {
+            n for i in selected.interfaces if i.crosses_boundary for n in i.between
+        }
+        agents: list[str] = []
+        if selected.load_path:
+            origin = selected.load_path[0]
+            if origin not in element_names:
+                target = next(
+                    (n for n in selected.load_path[1:] if n in element_names), None
+                )
+                if target is not None and target not in external \
+                        and target not in crossing_names:
+                    agents.append("payload")
+        return agents
 
     def _is_enclosed(self, selected) -> bool:
         """Enclosure is declared structurally: a shell element plus a crossing."""
@@ -318,6 +379,39 @@ class ProductArchitecturePlanner(PipelineStage):
         return placements
 
     # -- interfaces ----------------------------------------------------------
+    def _derived_piece_interfaces(self, selected, pieces) -> list[ProductInterface]:
+        """Pieces Stage 03 derives must be attached like any other.
+
+        A boundary opening that names no interface is as ungrounded as a bearing
+        that names none: it cannot be placed, and an unplaceable piece blocks
+        rather than receiving a plausible position.
+        """
+        shell = next(
+            (p.name for p in selected.parts if p.role is MechanismRole.STRUCTURE), None
+        )
+        out: list[ProductInterface] = []
+        if shell is None:
+            return out
+        element_names = {p.name for p in selected.parts}
+        target = None
+        if selected.load_path:
+            target = next(
+                (n for n in selected.load_path[1:] if n in element_names), None
+            )
+        for piece in pieces:
+            if piece.name.endswith("_aperture") and target:
+                out.append(ProductInterface(
+                    between=(piece.name, shell), kind=InterfaceKind.FIXED_ATTACHMENT,
+                    transmits="an opening formed in the boundary"))
+                out.append(ProductInterface(
+                    between=(piece.name, target), kind=InterfaceKind.USER_CONTACT,
+                    transmits="the admitted load", crosses_boundary=True))
+            elif piece.kind is PieceKind.COVER and not piece.name.endswith("_aperture"):
+                out.append(ProductInterface(
+                    between=(piece.name, shell), kind=InterfaceKind.FIXED_ATTACHMENT,
+                    transmits="a removable part of the boundary"))
+        return out
+
     def _interfaces(self, selected) -> list[ProductInterface]:
         return [
             ProductInterface(
@@ -325,10 +419,138 @@ class ProductArchitecturePlanner(PipelineStage):
                 kind=i.kind,
                 transmits=i.transmits,
                 crosses_boundary=i.crosses_boundary,
+                axis_relation=i.axis_relation,
                 from_elements=i.between,
             )
             for i in selected.interfaces
         ]
+
+    # -- access paths --------------------------------------------------------
+    def _access_paths(self, selected, pieces, regions) -> list[AccessPath]:
+        """Routes an external subject must take to reach something inside.
+
+        Derived from three structured triggers, none of which mentions a product:
+
+          1. an access obligation naming an element that is not itself external
+          2. a load path originating outside the declared element set
+          3. a piece that is enclosed and must still be installed or serviced
+
+        A required path with no boundary interface is reported unmet. Stage 03
+        never invents an opening to satisfy one - the opening's type, position and
+        mechanism are downstream choices.
+        """
+        element_names = {p.name for p in selected.parts}
+        external = {p.name for p in pieces if p.external}
+        region_of = {n: r.name for r in regions.values() for n in r.houses}
+        crossings = [i for i in selected.interfaces if i.crosses_boundary]
+        enclosed = self._is_enclosed(selected)
+
+        def opening_for(target: str) -> str | None:
+            """A boundary interface the target itself takes part in, if any."""
+            for i in crossings:
+                if target in i.between:
+                    return f"{i.between[0]}~{i.between[1]}:{i.kind.value}"
+            return None
+
+        def generic_opening() -> str | None:
+            cover = next((p.name for p in pieces if p.kind is PieceKind.COVER), None)
+            if cover:
+                return f"removable:{cover}"
+            return (
+                f"{crossings[0].between[0]}~{crossings[0].between[1]}"
+                f":{crossings[0].kind.value}"
+                if crossings
+                else None
+            )
+
+        paths: list[AccessPath] = []
+
+        # 1. an access obligation on an element that is not itself external
+        for o in selected.support_obligations:
+            if o.kind is not ObligationKind.USER_ACCESS:
+                continue
+            opening = opening_for(o.element) or (
+                None if o.element in external else generic_opening()
+            )
+            reachable = o.element in external or opening is not None
+            paths.append(
+                AccessPath(
+                    agent=AccessAgent.USER_HAND,
+                    mode=AccessMode.ACTUATE,
+                    target=o.element,
+                    source_region=None,
+                    boundary_interface=opening,
+                    destination_region=region_of.get(o.element),
+                    satisfied=reachable,
+                    unmet_reason=(
+                        None if reachable
+                        else "the element is inside the boundary and no interface crosses it"
+                    ),
+                )
+            )
+
+        # 2. a load path originating outside the declared element set
+        if selected.load_path:
+            origin = selected.load_path[0]
+            if origin not in element_names:
+                target = next(
+                    (n for n in selected.load_path[1:] if n in element_names), None
+                )
+                if target is not None:
+                    opening = opening_for(target)
+                    # The load bearer is reachable if it is external, takes part in
+                    # a boundary crossing, or the product declares an aperture for
+                    # this agent. A service cover is not a load route.
+                    aperture = next(
+                        (p.name for p in pieces if p.name.endswith("_aperture")
+                         and p.name.startswith("payload")), None
+                    )
+                    if aperture and opening is None:
+                        opening = f"aperture:{aperture}"
+                    reachable = target in external or opening is not None
+                    paths.append(
+                        AccessPath(
+                            agent=(
+                                AccessAgent.PAYLOAD if enclosed
+                                else AccessAgent.STORED_CONTENT
+                            ),
+                            mode=AccessMode.LOAD,
+                            target=target,
+                            source_region=f"{origin}_region",
+                            boundary_interface=opening,
+                            destination_region=region_of.get(target),
+                            clearance_need=f"{origin} must pass to {target} without fouling",
+                            satisfied=reachable,
+                            unmet_reason=(
+                                None if reachable
+                                else f"{origin} acts on {target}, which is inside the "
+                                "boundary, and no declared interface crosses it"
+                            ),
+                        )
+                    )
+
+        # 3. enclosed pieces still have to be installed and serviced
+        if enclosed:
+            opening = generic_opening()
+            for piece in pieces:
+                if piece.external or piece.kind is PieceKind.COVER:
+                    continue
+                paths.append(
+                    AccessPath(
+                        agent=AccessAgent.ASSEMBLY_TOOL,
+                        mode=AccessMode.INSERT,
+                        target=piece.name,
+                        boundary_interface=opening,
+                        destination_region=region_of.get(piece.name),
+                        required=True,
+                        satisfied=opening is not None,
+                        unmet_reason=(
+                            None if opening
+                            else "the mechanism is enclosed and no removable boundary exists"
+                        ),
+                    )
+                )
+        return paths
 
     # -- assembly ------------------------------------------------------------
     def _assembly(self, pieces: list[ProductPiece]) -> list[AssemblyStep]:
@@ -397,13 +619,20 @@ class ProductArchitecturePlanner(PipelineStage):
             for f in selected.functions
             if not f.performed_by
         ]
+        advisories += [
+            f"{a.agent.value} cannot reach {a.target}: {a.unmet_reason}"
+            for a in self._access_paths(selected, pieces, regions)
+            if a.required and not a.satisfied
+        ]
 
         return ProductArchitecture(
             meta=ObjectMeta(object_id=new_id("PROD"), producer=self.stage_id),
             regions=list(regions.values()),
             pieces=pieces,
             obligation_ownership=ownership,
-            interfaces=self._interfaces(selected),
+            interfaces=self._interfaces(selected)
+            + self._derived_piece_interfaces(selected, pieces),
+            access_paths=self._access_paths(selected, pieces, regions),
             placements=self._placements(selected),
             assembly_sequence=self._assembly(pieces),
             load_path_ownership=self._load_paths(selected, regions),

@@ -1,0 +1,75 @@
+{
+  "selected": "intermittent_indexing_pair",
+  "views": [
+    "side",
+    "front"
+  ],
+  "states": [
+    "dwell",
+    "advancing",
+    "indexed"
+  ],
+  "axes": {
+    "input_member": "x",
+    "driver_member": "x",
+    "input_support": "x",
+    "driver_member_engagement": "x",
+    "indexed_member_engagement": "x",
+    "indexed_member": "x",
+    "output_support": "x"
+  },
+  "free_choices": {
+    "station_count": "the output advances one station per input cycle; how many stations the cycle is divided into is not stated, so 6 is taken as a first cut and any count is equally valid"
+  },
+  "unplaced": [],
+  "contradictions": [],
+  "joints": {
+    "input_support": {
+      "type": "revolute",
+      "axis": "x",
+      "parent": "housing",
+      "child": "input_member"
+    },
+    "output_support": {
+      "type": "revolute",
+      "axis": "x",
+      "parent": "housing",
+      "child": "indexed_member"
+    },
+    "input_member~driver_member:fixed": {
+      "type": "fixed",
+      "axis": "z",
+      "parent": "input_member",
+      "child": "driver_member"
+    },
+    "housing~payload_aperture:fixed": {
+      "type": "fixed",
+      "axis": "z",
+      "parent": "housing",
+      "child": "payload_aperture"
+    },
+    "housing~service_cover:fixed": {
+      "type": "fixed",
+      "axis": "z",
+      "parent": "housing",
+      "child": "service_cover"
+    }
+  },
+  "coordinates": {
+    "dwell|input_support": 0.0,
+    "dwell|output_support": 0.0,
+    "dwell|input_member~driver_member:fixed": 0.0,
+    "dwell|housing~payload_aperture:fixed": 0.0,
+    "dwell|housing~service_cover:fixed": 0.0,
+    "advancing|input_support": 3.1416,
+    "advancing|output_support": 0.5236,
+    "advancing|input_member~driver_member:fixed": 3.1416,
+    "advancing|housing~payload_aperture:fixed": 3.1416,
+    "advancing|housing~service_cover:fixed": 3.1416,
+    "indexed|input_support": 6.2832,
+    "indexed|output_support": 1.0472,
+    "indexed|input_member~driver_member:fixed": 6.2832,
+    "indexed|housing~payload_aperture:fixed": 6.2832,
+    "indexed|housing~service_cover:fixed": 6.2832
+  }
+}

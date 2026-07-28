@@ -1,0 +1,132 @@
+BM-002   screw_drive
+
+stage 05 ready: False
+stage 07 status: partial  (15 parts, 2 failures)
+
+parameters 71, of which linked to a constraint: 17
+constraints 33, objectives 2
+stage 04 contradictions: 0, unplaced: 0
+
+CONSTRAINTS
+  (input_member.length/2) + (redirect_member.length/2) <= 0.675
+      input_member and redirect_member must not occupy the same space in state retracted; separated along x, their h
+  (input_member.diameter/2) + (travelling_member.width/2) <= 0.44
+      input_member and travelling_member must not occupy the same space in state retracted; separated along y, their
+  (payload_aperture.thickness/2) + (service_cover.thickness/2) <= 0
+      payload_aperture and service_cover must not occupy the same space in state retracted; separated along z, their
+  (payload_aperture.thickness/2) + (threaded_member.length/2) <= 0.5103
+      payload_aperture and threaded_member must not occupy the same space in state retracted; separated along z, the
+  (redirect_member.length/2) + (travelling_member.length/2) <= 1.295
+      redirect_member and travelling_member must not occupy the same space in state retracted; separated along x, th
+  (service_cover.thickness/2) + (threaded_member.length/2) <= 0.5103
+      service_cover and threaded_member must not occupy the same space in state retracted; separated along z, their 
+  (threaded_member.length/2) + (travelling_member.thickness/2) <= 0.6672
+      threaded_member and travelling_member must not occupy the same space in state retracted; separated along z, th
+  (transmission_shaft.length/2) + (travelling_member.length/2) <= 0.9575
+      transmission_shaft and travelling_member must not occupy the same space in state retracted; separated along x,
+  (input_member.length/2) + (redirect_member.length/2) <= 0.675
+      input_member and redirect_member must not occupy the same space in state travelling; separated along x, their 
+  (payload_aperture.thickness/2) + (service_cover.thickness/2) <= 0
+      payload_aperture and service_cover must not occupy the same space in state travelling; separated along z, thei
+  (payload_aperture.thickness/2) + (threaded_member.length/2) <= 0.5103
+      payload_aperture and threaded_member must not occupy the same space in state travelling; separated along z, th
+  (service_cover.thickness/2) + (threaded_member.length/2) <= 0.5103
+      service_cover and threaded_member must not occupy the same space in state travelling; separated along z, their
+  (threaded_member.diameter/2) + (travelling_member.length/2) <= 0.62
+      threaded_member and travelling_member must not occupy the same space in state travelling; separated along x, t
+  (input_member.length/2) + (redirect_member.length/2) <= 0.675
+      input_member and redirect_member must not occupy the same space in state extended; separated along x, their ha
+  (payload_aperture.thickness/2) + (service_cover.thickness/2) <= 0
+      payload_aperture and service_cover must not occupy the same space in state extended; separated along z, their 
+  (payload_aperture.thickness/2) + (threaded_member.length/2) <= 0.5103
+      payload_aperture and threaded_member must not occupy the same space in state extended; separated along z, thei
+  (service_cover.thickness/2) + (threaded_member.length/2) <= 0.5103
+      service_cover and threaded_member must not occupy the same space in state extended; separated along z, their h
+  (threaded_member.diameter/2) + (travelling_member.length/2) <= 0.62
+      threaded_member and travelling_member must not occupy the same space in state extended; separated along x, the
+  (travelling_member.thickness/2) + (travelling_nut.length/2) <= 0.1047
+      travelling_member and travelling_nut must not occupy the same space in state extended; separated along z, thei
+  thrust_support.bore = threaded_member.diameter + running_clearance
+      a journal turns inside its bore, so the bore is the shaft plus a running fit, never an independent dimension
+  input_support.bore = input_member.diameter + running_clearance
+      a journal turns inside its bore, so the bore is the shaft plus a running fit, never an independent dimension
+  threaded_member.diameter = travelling_nut.bore
+      both halves of a screw pair are cut on one nominal diameter
+  centre_distance(transmission_shaft,redirect_member) = (transmission_shaft.diameter + redirect_member.diameter)/2
+      meshing members touch on their pitch circles, which fixes the centre distance to the sum of the pitch radii
+  None
+      input_member deflection allowable
+  None
+      transmission_shaft deflection allowable
+  None
+      threaded_member deflection allowable
+  mu > tan(lambda)
+      screw must be self-locking
+  overhang/span < 1/(2*mu)
+      jamming index must stay below 1
+  overhang/span < 1/(2*mu)
+      jamming index must stay below 1
+  mu > tan(lambda)
+      screw must be self-locking
+  None
+      redirect_member deflection allowable
+  None
+      motion.input_support deflection allowable
+  None
+      motion.thrust_support deflection allowable
+
+PART TOPOLOGY
+  guide_member
+     anti_rotation_flat, boss, fastener_feature, mount_pad, rail_face
+  guide_member_opposed
+     anti_rotation_flat, boss, fastener_feature, mount_pad, rail_face
+  housing
+     bore, boss, cavity, clearance_recess, fastener_feature, foot, mount_pad, opening
+  input_member
+     fastener_feature, journal, mount_pad, shoulder
+  input_support
+     bearing_seat, boss, fastener_feature, mount_pad
+  payload_aperture
+     fastener_feature, mount_pad
+  redirect_member
+     fastener_feature, mount_pad, tooth_form
+  service_cover
+     fastener_feature, mount_pad
+  threaded_member
+     boss, fastener_feature, journal, mount_pad, shoulder, thread
+  thrust_support
+     bearing_seat, bore, boss, fastener_feature, mount_pad, shoulder, thrust_face
+  transmission_shaft
+     boss, fastener_feature, mount_pad, tooth_form
+  travel_stop
+     contact_face, fastener_feature, mount_pad, stop_face
+  travel_stop_far
+     contact_face, fastener_feature, mount_pad, stop_face
+  travelling_member
+     boss, contact_face, fastener_feature, grip, mount_pad, slide_face, thread
+  travelling_nut
+     fastener_feature, mount_pad, thread
+
+AXES
+  guide_member: z
+  guide_member_opposed: z
+  input_member: x
+  input_support: x
+  redirect_member: z
+  threaded_member: z
+  thrust_support: z
+  transmission_shaft: x
+  travel_stop: z
+  travel_stop_far: z
+  travelling_member: z
+  travelling_nut: z
+
+OPEN PROBLEMS
+  definition_closure_stale: 1
+  free_choice_organising_axis: 1
+  friction_wear: 6
+  motion_relation: 4
+  parameter_value: 20
+  requirement_REQ-002: 1
+  requirement_REQ-003: 1
+  system_solvable_stale: 7

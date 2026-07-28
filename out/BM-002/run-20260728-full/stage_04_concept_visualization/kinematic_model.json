@@ -1,0 +1,116 @@
+{
+  "selected": "screw_drive",
+  "views": [
+    "front",
+    "top"
+  ],
+  "states": [
+    "retracted",
+    "travelling",
+    "extended"
+  ],
+  "axes": {
+    "travelling_member": "z",
+    "travelling_nut": "z",
+    "input_member": "x",
+    "transmission_shaft": "x",
+    "input_support": "x",
+    "redirect_member": "z",
+    "threaded_member": "z",
+    "thrust_support": "z",
+    "guide_member": "z",
+    "guide_member_opposed": "z",
+    "travel_stop": "z",
+    "travel_stop_far": "z"
+  },
+  "free_choices": {
+    "organising_axis": "travelling_member travels along an axis the mechanism does not fix; z is taken as the default and any axis is equally valid until an orientation is stated"
+  },
+  "unplaced": [],
+  "contradictions": [],
+  "joints": {
+    "guide_member": {
+      "type": "prismatic",
+      "axis": "z",
+      "parent": "housing",
+      "child": "travelling_member"
+    },
+    "guide_member_opposed": {
+      "type": "prismatic",
+      "axis": "z",
+      "parent": "housing",
+      "child": "travelling_member"
+    },
+    "input_support": {
+      "type": "revolute",
+      "axis": "x",
+      "parent": "housing",
+      "child": "input_member"
+    },
+    "thrust_support": {
+      "type": "revolute",
+      "axis": "z",
+      "parent": "housing",
+      "child": "threaded_member"
+    },
+    "input_member~transmission_shaft:fixed": {
+      "type": "fixed",
+      "axis": "z",
+      "parent": "input_member",
+      "child": "transmission_shaft"
+    },
+    "threaded_member~travelling_nut:fixed": {
+      "type": "fixed",
+      "axis": "z",
+      "parent": "threaded_member",
+      "child": "travelling_nut"
+    },
+    "transmission_shaft~redirect_member:fixed": {
+      "type": "fixed",
+      "axis": "z",
+      "parent": "transmission_shaft",
+      "child": "redirect_member"
+    },
+    "housing~payload_aperture:fixed": {
+      "type": "fixed",
+      "axis": "z",
+      "parent": "housing",
+      "child": "payload_aperture"
+    },
+    "housing~service_cover:fixed": {
+      "type": "fixed",
+      "axis": "z",
+      "parent": "housing",
+      "child": "service_cover"
+    }
+  },
+  "coordinates": {
+    "retracted|guide_member": 0.0,
+    "retracted|guide_member_opposed": 0.0,
+    "retracted|input_support": 0.0,
+    "retracted|thrust_support": 0.0,
+    "retracted|input_member~transmission_shaft:fixed": 0.0,
+    "retracted|threaded_member~travelling_nut:fixed": 0.0,
+    "retracted|transmission_shaft~redirect_member:fixed": 0.0,
+    "retracted|housing~payload_aperture:fixed": 0.0,
+    "retracted|housing~service_cover:fixed": 0.0,
+    "travelling|guide_member": 0.45,
+    "travelling|guide_member_opposed": 0.45,
+    "travelling|input_support": 3.1416,
+    "travelling|thrust_support": 3.1416,
+    "travelling|input_member~transmission_shaft:fixed": 3.1416,
+    "travelling|threaded_member~travelling_nut:fixed": 3.1416,
+    "travelling|transmission_shaft~redirect_member:fixed": 3.1416,
+    "travelling|housing~payload_aperture:fixed": 3.1416,
+    "travelling|housing~service_cover:fixed": 3.1416,
+    "extended|guide_member": 0.9,
+    "extended|guide_member_opposed": 0.9,
+    "extended|input_support": 6.2832,
+    "extended|thrust_support": 6.2832,
+    "extended|input_member~transmission_shaft:fixed": 6.2832,
+    "extended|threaded_member~travelling_nut:fixed": 6.2832,
+    "extended|transmission_shaft~redirect_member:fixed": 6.2832,
+    "extended|housing~payload_aperture:fixed": 6.2832,
+    "extended|housing~service_cover:fixed": 6.2832
+  }
+}

@@ -1,0 +1,84 @@
+BM-101   intermittent_indexing_pair
+
+stage 05 ready: False
+stage 07 status: partial  (10 parts, 1 failures)
+
+parameters 44, of which linked to a constraint: 8
+constraints 16, objectives 1
+stage 04 contradictions: 0, unplaced: 0
+
+CONSTRAINTS
+  (indexed_member.diameter/2) + (payload_aperture.width/2) <= 0.44
+      indexed_member and payload_aperture must not occupy the same space in state dwell; separated along y, their ha
+  (indexed_member.diameter/2) + (service_cover.width/2) <= 0.44
+      indexed_member and service_cover must not occupy the same space in state dwell; separated along y, their half-
+  (payload_aperture.thickness/2) + (service_cover.thickness/2) <= 0
+      payload_aperture and service_cover must not occupy the same space in state dwell; separated along z, their hal
+  (0.5*(indexed_member.diameter/2) + 0.866*(indexed_member.diameter/2)) + (payload_aperture.width/2) <= 0.44
+      indexed_member and payload_aperture must not occupy the same space in state advancing; separated along y, thei
+  (0.5*(indexed_member.diameter/2) + 0.866*(indexed_member.diameter/2)) + (service_cover.width/2) <= 0.44
+      indexed_member and service_cover must not occupy the same space in state advancing; separated along y, their h
+  (payload_aperture.thickness/2) + (service_cover.thickness/2) <= 0
+      payload_aperture and service_cover must not occupy the same space in state advancing; separated along z, their
+  (0.866*(indexed_member.diameter/2) + 0.5*(indexed_member.diameter/2)) + (payload_aperture.width/2) <= 0.44
+      indexed_member and payload_aperture must not occupy the same space in state indexed; separated along y, their 
+  (0.866*(indexed_member.diameter/2) + 0.5*(indexed_member.diameter/2)) + (service_cover.width/2) <= 0.44
+      indexed_member and service_cover must not occupy the same space in state indexed; separated along y, their hal
+  (payload_aperture.thickness/2) + (service_cover.thickness/2) <= 0
+      payload_aperture and service_cover must not occupy the same space in state indexed; separated along z, their h
+  input_support.bore = input_member.diameter + running_clearance
+      a journal turns inside its bore, so the bore is the shaft plus a running fit, never an independent dimension
+  output_support.bore = indexed_member.diameter + running_clearance
+      a journal turns inside its bore, so the bore is the shaft plus a running fit, never an independent dimension
+  None
+      input_member deflection allowable
+  None
+      driver_member deflection allowable
+  None
+      indexed_member deflection allowable
+  None
+      motion.input_support deflection allowable
+  None
+      motion.output_support deflection allowable
+
+PART TOPOLOGY
+  driver_member
+     boss, fastener_feature, mount_pad
+  driver_member_engagement
+     boss, contact_face, fastener_feature, mount_pad
+  housing
+     bearing_seat, bore, boss, cavity, clearance_recess, fastener_feature, foot, lead_in, mount_pad, opening
+  indexed_member
+     fastener_feature, grip, journal, mount_pad, shoulder
+  indexed_member_engagement
+     boss, contact_face, fastener_feature, mount_pad
+  input_member
+     fastener_feature, journal, mount_pad, shoulder
+  input_support
+     bearing_seat, bore, boss, fastener_feature, mount_pad
+  output_support
+     bearing_seat, bore, boss, fastener_feature, mount_pad
+  payload_aperture
+     fastener_feature, mount_pad
+  service_cover
+     fastener_feature, mount_pad
+
+AXES
+  driver_member: x
+  driver_member_engagement: x
+  indexed_member: x
+  indexed_member_engagement: x
+  input_member: x
+  input_support: x
+  output_support: x
+
+OPEN PROBLEMS
+  definition_closure_stale: 1
+  dwell_retention: 4
+  engagement_clearance: 4
+  free_choice_station_count: 1
+  friction_wear: 5
+  index_relation: 4
+  motion_relation: 2
+  parameter_value: 15
+  system_solvable_stale: 6

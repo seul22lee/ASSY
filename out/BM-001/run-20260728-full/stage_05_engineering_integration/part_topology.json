@@ -1,0 +1,39 @@
+{
+  "closure_member": [
+    "contact_face",
+    "grip",
+    "journal",
+    "lead_in",
+    "shoulder"
+  ],
+  "detent_feature": [
+    "contact_face",
+    "fastener_feature",
+    "mount_pad"
+  ],
+  "housing": [
+    "boss",
+    "cavity",
+    "clearance_recess",
+    "fastener_feature",
+    "foot",
+    "mount_pad",
+    "opening",
+    "root_fillet",
+    "through_bore"
+  ],
+  "opening_interface": [
+    "bearing_seat",
+    "bore",
+    "boss",
+    "fastener_feature",
+    "mount_pad",
+    "rail_face"
+  ],
+  "opening_stop": [
+    "contact_face",
+    "fastener_feature",
+    "mount_pad",
+    "stop_face"
+  ]
+}

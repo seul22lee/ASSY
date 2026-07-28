@@ -1,0 +1,66 @@
+{
+  "driver_member": [
+    "boss",
+    "fastener_feature",
+    "mount_pad"
+  ],
+  "driver_member_engagement": [
+    "boss",
+    "contact_face",
+    "fastener_feature",
+    "mount_pad"
+  ],
+  "housing": [
+    "bearing_seat",
+    "bore",
+    "boss",
+    "cavity",
+    "clearance_recess",
+    "fastener_feature",
+    "foot",
+    "lead_in",
+    "mount_pad",
+    "opening"
+  ],
+  "indexed_member": [
+    "fastener_feature",
+    "grip",
+    "journal",
+    "mount_pad",
+    "shoulder"
+  ],
+  "indexed_member_engagement": [
+    "boss",
+    "contact_face",
+    "fastener_feature",
+    "mount_pad"
+  ],
+  "input_member": [
+    "fastener_feature",
+    "journal",
+    "mount_pad",
+    "shoulder"
+  ],
+  "input_support": [
+    "bearing_seat",
+    "bore",
+    "boss",
+    "fastener_feature",
+    "mount_pad"
+  ],
+  "output_support": [
+    "bearing_seat",
+    "bore",
+    "boss",
+    "fastener_feature",
+    "mount_pad"
+  ],
+  "payload_aperture": [
+    "fastener_feature",
+    "mount_pad"
+  ],
+  "service_cover": [
+    "fastener_feature",
+    "mount_pad"
+  ]
+}

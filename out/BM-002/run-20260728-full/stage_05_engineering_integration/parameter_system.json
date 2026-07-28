@@ -1,0 +1,327 @@
+{
+  "parameters": [
+    "guide_member.length",
+    "guide_member.section",
+    "guide_member_opposed.length",
+    "guide_member_opposed.section",
+    "housing.height",
+    "housing.internal_depth",
+    "housing.internal_height",
+    "housing.internal_width",
+    "housing.length",
+    "housing.wall",
+    "housing.wall_thickness",
+    "housing.width",
+    "input_member.crank_radius",
+    "input_member.diameter",
+    "input_member.length",
+    "input_member.pinch_access",
+    "input_member.radial_load",
+    "input_member.support_span",
+    "input_support.bore",
+    "input_support.length",
+    "motion.input_support.diameter",
+    "motion.input_support.radial_load",
+    "motion.input_support.support_span",
+    "motion.thrust_support.diameter",
+    "motion.thrust_support.radial_load",
+    "motion.thrust_support.support_span",
+    "payload_aperture.length",
+    "payload_aperture.thickness",
+    "payload_aperture.width",
+    "redirect_member.centre_distance",
+    "redirect_member.diameter",
+    "redirect_member.length",
+    "redirect_member.module",
+    "redirect_member.radial_load",
+    "redirect_member.support_span",
+    "service_cover.length",
+    "service_cover.thickness",
+    "service_cover.width",
+    "threaded_member.diameter",
+    "threaded_member.lead",
+    "threaded_member.length",
+    "threaded_member.pitch_diameter",
+    "threaded_member.radial_load",
+    "threaded_member.raise_torque",
+    "threaded_member.support_span",
+    "thrust_support.bore",
+    "thrust_support.length",
+    "transmission_shaft.diameter",
+    "transmission_shaft.length",
+    "transmission_shaft.radial_load",
+    "transmission_shaft.support_span",
+    "travel_stop.height",
+    "travel_stop.length",
+    "travel_stop.width",
+    "travel_stop_far.height",
+    "travel_stop_far.length",
+    "travel_stop_far.width",
+    "travelling_member.guide_overhang",
+    "travelling_member.guide_span",
+    "travelling_member.length",
+    "travelling_member.motion_clearance",
+    "travelling_member.thickness",
+    "travelling_member.width",
+    "travelling_nut.bore",
+    "travelling_nut.guide_overhang",
+    "travelling_nut.guide_span",
+    "travelling_nut.lead",
+    "travelling_nut.length",
+    "travelling_nut.motion_clearance",
+    "travelling_nut.pitch_diameter",
+    "travelling_nut.raise_torque"
+  ],
+  "linked": [
+    "input_member.diameter",
+    "input_member.length",
+    "input_support.bore",
+    "payload_aperture.thickness",
+    "redirect_member.diameter",
+    "redirect_member.length",
+    "service_cover.thickness",
+    "threaded_member.diameter",
+    "threaded_member.length",
+    "thrust_support.bore",
+    "transmission_shaft.diameter",
+    "transmission_shaft.length",
+    "travelling_member.length",
+    "travelling_member.thickness",
+    "travelling_member.width",
+    "travelling_nut.bore",
+    "travelling_nut.length"
+  ],
+  "unlinked": [
+    "guide_member.length",
+    "guide_member.section",
+    "guide_member_opposed.length",
+    "guide_member_opposed.section",
+    "housing.height",
+    "housing.internal_depth",
+    "housing.internal_height",
+    "housing.internal_width",
+    "housing.length",
+    "housing.wall",
+    "housing.wall_thickness",
+    "housing.width",
+    "input_member.crank_radius",
+    "input_member.pinch_access",
+    "input_member.radial_load",
+    "input_member.support_span",
+    "input_support.length",
+    "motion.input_support.diameter",
+    "motion.input_support.radial_load",
+    "motion.input_support.support_span",
+    "motion.thrust_support.diameter",
+    "motion.thrust_support.radial_load",
+    "motion.thrust_support.support_span",
+    "payload_aperture.length",
+    "payload_aperture.width",
+    "redirect_member.centre_distance",
+    "redirect_member.module",
+    "redirect_member.radial_load",
+    "redirect_member.support_span",
+    "service_cover.length",
+    "service_cover.width",
+    "threaded_member.lead",
+    "threaded_member.pitch_diameter",
+    "threaded_member.radial_load",
+    "threaded_member.raise_torque",
+    "threaded_member.support_span",
+    "thrust_support.length",
+    "transmission_shaft.radial_load",
+    "transmission_shaft.support_span",
+    "travel_stop.height",
+    "travel_stop.length",
+    "travel_stop.width",
+    "travel_stop_far.height",
+    "travel_stop_far.length",
+    "travel_stop_far.width",
+    "travelling_member.guide_overhang",
+    "travelling_member.guide_span",
+    "travelling_member.motion_clearance",
+    "travelling_nut.guide_overhang",
+    "travelling_nut.guide_span",
+    "travelling_nut.lead",
+    "travelling_nut.motion_clearance",
+    "travelling_nut.pitch_diameter",
+    "travelling_nut.raise_torque"
+  ],
+  "constraints": [
+    {
+      "subject": "disjoint.input_member.redirect_member.retracted",
+      "expression": "(input_member.length/2) + (redirect_member.length/2) <= 0.675",
+      "why": "input_member and redirect_member must not occupy the same space in state retracted; separated along x, their half-extents must fit the 0.675 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.input_member.travelling_member.retracted",
+      "expression": "(input_member.diameter/2) + (travelling_member.width/2) <= 0.44",
+      "why": "input_member and travelling_member must not occupy the same space in state retracted; separated along y, their half-extents must fit the 0.44 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.payload_aperture.service_cover.retracted",
+      "expression": "(payload_aperture.thickness/2) + (service_cover.thickness/2) <= 0",
+      "why": "payload_aperture and service_cover must not occupy the same space in state retracted; separated along z, their half-extents must fit the 0 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.payload_aperture.threaded_member.retracted",
+      "expression": "(payload_aperture.thickness/2) + (threaded_member.length/2) <= 0.5103",
+      "why": "payload_aperture and threaded_member must not occupy the same space in state retracted; separated along z, their half-extents must fit the 0.5103 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.redirect_member.travelling_member.retracted",
+      "expression": "(redirect_member.length/2) + (travelling_member.length/2) <= 1.295",
+      "why": "redirect_member and travelling_member must not occupy the same space in state retracted; separated along x, their half-extents must fit the 1.295 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.service_cover.threaded_member.retracted",
+      "expression": "(service_cover.thickness/2) + (threaded_member.length/2) <= 0.5103",
+      "why": "service_cover and threaded_member must not occupy the same space in state retracted; separated along z, their half-extents must fit the 0.5103 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.threaded_member.travelling_member.retracted",
+      "expression": "(threaded_member.length/2) + (travelling_member.thickness/2) <= 0.6672",
+      "why": "threaded_member and travelling_member must not occupy the same space in state retracted; separated along z, their half-extents must fit the 0.6672 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.transmission_shaft.travelling_member.retracted",
+      "expression": "(transmission_shaft.length/2) + (travelling_member.length/2) <= 0.9575",
+      "why": "transmission_shaft and travelling_member must not occupy the same space in state retracted; separated along x, their half-extents must fit the 0.9575 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.input_member.redirect_member.travelling",
+      "expression": "(input_member.length/2) + (redirect_member.length/2) <= 0.675",
+      "why": "input_member and redirect_member must not occupy the same space in state travelling; separated along x, their half-extents must fit the 0.675 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.payload_aperture.service_cover.travelling",
+      "expression": "(payload_aperture.thickness/2) + (service_cover.thickness/2) <= 0",
+      "why": "payload_aperture and service_cover must not occupy the same space in state travelling; separated along z, their half-extents must fit the 0 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.payload_aperture.threaded_member.travelling",
+      "expression": "(payload_aperture.thickness/2) + (threaded_member.length/2) <= 0.5103",
+      "why": "payload_aperture and threaded_member must not occupy the same space in state travelling; separated along z, their half-extents must fit the 0.5103 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.service_cover.threaded_member.travelling",
+      "expression": "(service_cover.thickness/2) + (threaded_member.length/2) <= 0.5103",
+      "why": "service_cover and threaded_member must not occupy the same space in state travelling; separated along z, their half-extents must fit the 0.5103 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.threaded_member.travelling_member.travelling",
+      "expression": "(threaded_member.diameter/2) + (travelling_member.length/2) <= 0.62",
+      "why": "threaded_member and travelling_member must not occupy the same space in state travelling; separated along x, their half-extents must fit the 0.62 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.input_member.redirect_member.extended",
+      "expression": "(input_member.length/2) + (redirect_member.length/2) <= 0.675",
+      "why": "input_member and redirect_member must not occupy the same space in state extended; separated along x, their half-extents must fit the 0.675 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.payload_aperture.service_cover.extended",
+      "expression": "(payload_aperture.thickness/2) + (service_cover.thickness/2) <= 0",
+      "why": "payload_aperture and service_cover must not occupy the same space in state extended; separated along z, their half-extents must fit the 0 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.payload_aperture.threaded_member.extended",
+      "expression": "(payload_aperture.thickness/2) + (threaded_member.length/2) <= 0.5103",
+      "why": "payload_aperture and threaded_member must not occupy the same space in state extended; separated along z, their half-extents must fit the 0.5103 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.service_cover.threaded_member.extended",
+      "expression": "(service_cover.thickness/2) + (threaded_member.length/2) <= 0.5103",
+      "why": "service_cover and threaded_member must not occupy the same space in state extended; separated along z, their half-extents must fit the 0.5103 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.threaded_member.travelling_member.extended",
+      "expression": "(threaded_member.diameter/2) + (travelling_member.length/2) <= 0.62",
+      "why": "threaded_member and travelling_member must not occupy the same space in state extended; separated along x, their half-extents must fit the 0.62 available at the concept layout"
+    },
+    {
+      "subject": "disjoint.travelling_member.travelling_nut.extended",
+      "expression": "(travelling_member.thickness/2) + (travelling_nut.length/2) <= 0.1047",
+      "why": "travelling_member and travelling_nut must not occupy the same space in state extended; separated along z, their half-extents must fit the 0.1047 available at the concept layout"
+    },
+    {
+      "subject": "fit.threaded_member.thrust_support",
+      "expression": "thrust_support.bore = threaded_member.diameter + running_clearance",
+      "why": "a journal turns inside its bore, so the bore is the shaft plus a running fit, never an independent dimension"
+    },
+    {
+      "subject": "fit.input_member.input_support",
+      "expression": "input_support.bore = input_member.diameter + running_clearance",
+      "why": "a journal turns inside its bore, so the bore is the shaft plus a running fit, never an independent dimension"
+    },
+    {
+      "subject": "thread_fit.threaded_member.travelling_nut",
+      "expression": "threaded_member.diameter = travelling_nut.bore",
+      "why": "both halves of a screw pair are cut on one nominal diameter"
+    },
+    {
+      "subject": "mesh.transmission_shaft.redirect_member",
+      "expression": "centre_distance(transmission_shaft,redirect_member) = (transmission_shaft.diameter + redirect_member.diameter)/2",
+      "why": "meshing members touch on their pitch circles, which fixes the centre distance to the sum of the pitch radii"
+    },
+    {
+      "subject": "input_member.deflection_allowable",
+      "expression": null,
+      "why": "input_member deflection allowable"
+    },
+    {
+      "subject": "transmission_shaft.deflection_allowable",
+      "expression": null,
+      "why": "transmission_shaft deflection allowable"
+    },
+    {
+      "subject": "threaded_member.deflection_allowable",
+      "expression": null,
+      "why": "threaded_member deflection allowable"
+    },
+    {
+      "subject": "threaded_member.backdrive_behaviour",
+      "expression": "mu > tan(lambda)",
+      "why": "screw must be self-locking"
+    },
+    {
+      "subject": "travelling_member.jamming_index",
+      "expression": "overhang/span < 1/(2*mu)",
+      "why": "jamming index must stay below 1"
+    },
+    {
+      "subject": "travelling_nut.jamming_index",
+      "expression": "overhang/span < 1/(2*mu)",
+      "why": "jamming index must stay below 1"
+    },
+    {
+      "subject": "travelling_nut.backdrive_behaviour",
+      "expression": "mu > tan(lambda)",
+      "why": "screw must be self-locking"
+    },
+    {
+      "subject": "redirect_member.deflection_allowable",
+      "expression": null,
+      "why": "redirect_member deflection allowable"
+    },
+    {
+      "subject": "motion.input_support.deflection_allowable",
+      "expression": null,
+      "why": "motion.input_support deflection allowable"
+    },
+    {
+      "subject": "motion.thrust_support.deflection_allowable",
+      "expression": null,
+      "why": "motion.thrust_support deflection allowable"
+    }
+  ],
+  "objectives": [
+    {
+      "subject": "objective.envelope",
+      "expression": "minimise (housing.height/2) + (input_member.length/2) + (payload_aperture.thickness/2) + (redirect_member.length/2) + (service_cover.thickness/2) + (threaded_member.length/2) + (transmission_shaft.length/2) + (travelling_member.thickness/2) + (travelling_nut.length/2)"
+    },
+    {
+      "subject": "input_effort",
+      "expression": "minimize(raise_torque) subject to mu > tan(lambda)"
+    }
+  ]
+}

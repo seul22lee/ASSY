@@ -1,0 +1,44 @@
+BM-001   friction_detent_catch
+
+stage 05 ready: False
+stage 07 status: partial  (5 parts, 1 failures)
+
+parameters 35, of which linked to a constraint: 3
+constraints 4, objectives 2
+stage 04 contradictions: 0, unplaced: 0
+
+CONSTRAINTS
+  closure_member.length >= housing.length - 2*housing.wall
+      a closure occludes an aperture only if it is at least as large as the opening it covers
+  retention_angle < atan(1/mu)
+      closure_member retention angle must stay below the self-locking angle
+  retention_angle < atan(1/mu)
+      detent_feature retention angle must stay below the self-locking angle
+  None
+      motion.opening_interface deflection allowable
+
+PART TOPOLOGY
+  closure_member
+     contact_face, grip, journal, lead_in, shoulder
+  detent_feature
+     contact_face, fastener_feature, mount_pad
+  housing
+     boss, cavity, clearance_recess, fastener_feature, foot, mount_pad, opening, root_fillet, through_bore
+  opening_interface
+     bearing_seat, bore, boss, fastener_feature, mount_pad, rail_face
+  opening_stop
+     contact_face, fastener_feature, mount_pad, stop_face
+
+AXES
+  closure_member: x
+  detent_feature: x
+  opening_interface: x
+  opening_stop: x
+
+OPEN PROBLEMS
+  definition_closure_stale: 1
+  friction_wear: 1
+  motion_relation: 1
+  parameter_value: 4
+  system_solvable_stale: 2
+  unalgebraic_clears: 1
